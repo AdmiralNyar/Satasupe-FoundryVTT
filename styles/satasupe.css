@@ -1,0 +1,1108 @@
+.flexrow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.flexrow > * {
+  flex: 1;
+}
+.flexrow .flex1 {
+  flex: 1;
+}
+.flexrow .flex2 {
+  flex: 2;
+}
+.flexrow .flex3 {
+  flex: 3;
+}
+.flexrow .flex4 {
+  flex: 4;
+}
+
+.flexcol {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+.flexcol > * {
+  flex: 1;
+}
+.flexcol .flex1 {
+  flex: 1;
+}
+.flexcol .flex2 {
+  flex: 2;
+}
+.flexcol .flex3 {
+  flex: 3;
+}
+.flexcol .flex4 {
+  flex: 4;
+}
+
+.dice-roll .dice-total.success {
+  color: green;
+}
+.dice-roll .dice-total.failure {
+  color: red;
+}
+
+.dice-roll .dice-total.fumble{
+  background-color: rgb(26, 26, 26);
+  text-shadow: 1px white;
+}
+
+.dice-roll .dice-total.critical{
+  background-color: gold;
+  text-shadow: 1px black;
+}
+
+.karma-header .header-fields{
+  display:grid;
+  grid-template-columns: 2fr 3fr;
+  grid-template-areas: "name type";
+}
+
+.karma-header .header-fields .header-names {
+  grid-area: name;
+  display: inline-block;
+  justify-self: center;
+  align-self: center;
+}
+
+.karma-header .header-fields .header-names .otherlangName{
+  height: 28px;
+  justify-self: center;
+
+}
+
+.karma-header .header-fields .header-names .otherlangName input{
+  width:90%;
+  font-weight: inherit;
+  font-style:italic;
+  text-align: center;
+  margin-left: 10px;
+  font-size:18px;
+}
+
+.karma-sheet nav.sheet-tabs.karma{
+  margin: 0 0;
+}
+
+.karma-header .header-fields .header-names .name {
+ width: auto;
+ height: 20px;
+}
+
+.karma-header .header-fields .header-names .name input{
+  font-size: 26px;
+  width:100%;
+  font-weight: bold;
+  text-align: center;
+}
+
+.karma-header .header-fields .header-settings{
+  display:inline-block;
+  margin-left: 5px;
+}
+
+.karma-header .header-fields .header-settings input{
+  width: 95%;
+  margin: 2px 0;
+}
+
+.karma-header .header-fields .header-settings select{
+  width: 95%;
+  margin: 5px 0;
+}
+
+.satasupe .sheet-body.karma-sheet-body{
+  display: inline-grid;
+  height: 66%;
+  width:100%;
+}
+
+.tab[data-tab]{
+  display: none;
+}
+
+.karma-sheet .tab[data-tab].active{
+  display: inline-grid;
+}
+
+.karma-sheet .tab[data-tab="description"].active{
+  display: inline-grid;
+}
+
+.karma-sheet .tab[data-tab="description"]{
+  display: none;
+}
+
+.karma-sheet .tab[data-tab="setting"].active{
+  display: block;
+}
+
+.karma-sheet .tab[data-tab="setting"]{
+  display: none;
+}
+
+.karma-sheet-body .description.active{
+  display:inline-grid;
+  width:100%;
+  height: 100%;
+  grid-template-columns: 3fr 4fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+  "timing image"
+  "effect effect";
+}
+
+.karma-sheet-body .description.active .text{
+  grid-area: timing;
+  display:inline-block;
+  align-content: space-around;
+  height: 100%;
+}
+
+.karma-sheet-body .description.active .text div{
+  margin: 10px 0;
+  height: 30px;
+  width: 100%;
+}
+
+.karma-sheet-body .description.active .text div.karma-check{
+  margin: 0;
+}
+
+
+.karma-sheet-body .description.active .text div select {
+  width: 70%;
+}
+
+.karma-sheet-body .description.active .text div.karma-check{
+  display:inline-block;
+}
+
+.karma-sheet-body .description.active .text div.karma-check label{
+  float:left;
+  margin: 10px 0;
+  width:28%;
+  align-self: center;
+}
+
+.karma-sheet-body .description.active .text div.karma-check div{
+  float:right;
+  width:70%;
+  font-size: 14px;
+  align-self: center;
+}
+
+.karma-sheet-body .description.active .photo{
+  grid-area: image;
+  width:100%;
+  height: 95%;
+  text-align: center;
+}
+
+.karma-sheet-body .description.active .photo .sheet-portrait img{
+  object-fit: contain;
+  border: 0;
+  height: 15%;
+  width: 50%;
+}
+
+.karma-sheet-body .description.active .effect{
+  display:inline-grid;
+  grid-area:effect;
+  grid-template-rows: auto 28px;
+  text-align: center;
+  width:100%;
+  grid-template-areas: "eftex" "flavor";
+}
+
+.karma-sheet-body .description.active .effect .effect-editor{
+  grid-area:eftex;
+}
+
+.karma-sheet-body .description.active .effect .effect-editor textarea{
+ font-size: 1.2em;
+ height: 91%;
+ width:97%;
+}
+
+.karma-sheet-body .description.active .effect .flavor-box{
+  grid-area:flavor;
+  justify-self: center;
+  width:97%;
+}
+
+.karma-sheet-body .description.active .effect .flavor-box input{
+  font-style: italic;
+}
+
+.karma-sheet-body .setting div.setting-header label.checkbox {
+  font-size: 1.1em;
+}
+
+.karma-sheet-body .setting div.setting-main label.checkbox {
+  font-size: 1.1em;
+}
+
+.karma-sheet-body .setting div input[type="text"]{
+  text-align: center;
+  width:80%;
+}
+
+.karma-sheet-body .setting div.setting-main{
+  height: 90%;
+}
+
+.karma-sheet-body .setting div.setting-main div {
+  margin:10px 0;
+  height: 48px;
+  font-size: 1.1em;
+}
+
+.karma-sheet-body .setting div.setting-main .check-difficlty-normal{
+  width:70%;
+  height: 48px;
+}
+
+.karma-sheet-body .setting div.setting-main div.check-other-difficulty{
+  height: 48px;
+}
+
+.satasupe {
+  /* Sheet Tabs */
+  /* Items List */
+  /* Attributes */
+}
+
+.satasupe form .container section.sheet-body div.equipment{
+  margin: 0px auto;
+  width:95%;
+}
+
+.satasupe .window-header {
+  margin: 4px 4px 0 4px;
+  width: auto;
+}
+
+.satasupe .window-content {
+  margin: 0 8px 8px 8px;
+  padding: 0;
+  font-size: 0.8rem;
+}
+.satasupe form {
+  display: inline-block;
+  border: 1px solid;
+}
+
+.satasupe form .container {
+  margin: -1px;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 300px 40px auto;
+  width: 100%;
+  height: 100%;
+}
+
+.satasupe form .container .sheet-header {
+  width: 100%;
+  height: 290px;
+  border: 0;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns:142px 2fr 3fr;
+  column-gap:8px;
+  grid-template-areas: "photo infos characteristics";
+}
+
+.satasupe form .container .sheet-header .sheet-portrait {
+  grid-area: photo;
+  padding: 0 4px;
+  display: inline-grid;
+  padding-top: 10px;
+  align-items: center;
+  height: 100%;
+  grid-template-columns: 1fr;
+  grid-template-rows: 140px auto;
+  grid-template-areas: "image" "status";
+  justify-content: left;
+}
+
+.satasupe form .container .sheet-header .sheet-portrait .photo {
+  grid-area: image;
+  object-fit: contain;
+  border: 0;
+  height: auto;
+  width: 100%;
+}
+
+.satasupe form .container .sheet-header .sheet-portrait .status {
+  grid-area: status;
+  display: inline-grid;
+  justify-content: end;
+  grid-template-rows:1fr 1fr 1fr;
+  grid-template-columns:1fr 1fr;
+  padding-bottom: 15px;
+  height: auto;
+  width: auto;
+}
+
+.satasupe form .container .sheet-header .sheet-portrait .status-box{
+  display: inline-grid;
+  grid-template-rows: 22px 1fr;
+  width: 40px;
+  height: 100%;
+  justify-self: center;
+  align-self: center;
+  grid-template-areas: "statusName" "statusScore";
+  align-items: baseline;
+}
+
+.satasupe form .container .sheet-header .sheet-portrait .status-box .status-name {
+  color: rgba(0, 0, 0, 1);
+  grid-area: statusName;
+  justify-self: center;
+  align-self: center;
+  line-height: 1.4rem;
+}
+
+.satasupe form .container .sheet-header .sheet-portrait .status-box .status-score {
+  grid-area: statusScore;
+  width: 20px;
+  border-radius: 4px;
+  justify-self: center;
+  align-self: center;
+  color: rgba(0, 0, 0, 1);
+  background: rgba(255, 255, 255, 0);
+}
+
+.satasupe form .container .sheet-header .sheet-portrait .status-box .status-score input {
+  font-size: 0.85rem;
+  height: 19px;
+  width: 24px;
+}
+
+.satasupe form .container .sheet-header .sheet-portrait .status-box .status-score.double {
+  width: 30px;
+}
+
+.satasupe form .container .sheet-header .infos {
+  display: inline-block;
+  grid-area: infos;
+  min-width: 172px;
+  padding: 0 6px;
+  border-right: 2px solid;
+  border-color: rgba(43, 55, 83, 0.5);
+}
+
+.satasupe form .container .sheet-header .infos .row{
+  align-items: center;
+  padding-bottom: 1px;
+}
+
+.satasupe form .container .sheet-header .infos .row label{
+  height: auto;
+  line-height: normal;
+}
+
+.satasupe form .container .sheet-header .infos .row input{
+  height: auto;
+  width: auto;
+  line-height: normal;
+}
+
+.satasupe form .container .sheet-header .infos .row a{
+  display: contents;
+}
+
+.satasupe form .container .sheet-header .infos .row i{
+  padding-top: 7px;
+}
+
+.satasupe form .container .sheet-header .characteristics{
+  grid-area: characteristics;
+  display: inline-grid;
+  padding-top: 10px;
+  justify-content: left;
+  height: 100%;
+  grid-template-rows:1fr 1fr 1fr 0.8fr;
+  grid-template-columns:1fr;
+  grid-template-areas:
+  "circumstance"
+  "aptitude"
+  "others"
+  "exp";
+}
+
+.satasupe form .container .sheet-header .characteristics .char-boxes {
+  padding-left: 5px;
+  justify-content: left;
+  display: grid;
+  grid-area: circumstance;
+  grid-template-rows: 22px 22px 30px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas:
+  "tytle tytle tytle tytle tytle"
+  "data data data data data"
+  "data data data data data";
+}
+
+.satasupe form .container .sheet-header .characteristics .char-boxes2 {
+  grid-area: aptitude;
+  padding-left: 5px;
+  display: inline-grid;
+  grid-template-rows: 75.5px;
+  grid-template-columns: minmax(130px, 2fr) 3fr;
+  grid-template-areas: "aptitude combat";
+}
+
+.satasupe form .container .sheet-header .characteristics .aptitude{
+  grid-area: aptitude;
+  grid-template-rows: 22px 22px 30px;
+  display: inline-grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-areas:
+  "tytle tytle"
+  "data data"
+  "data data";
+}
+
+.satasupe form .container .sheet-header .characteristics .combat{
+  grid-area:combat;
+  grid-template-rows: 22px 22px 30px;
+  display: inline-grid;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-areas:
+  "tytle tytle tytle"
+  "data data data"
+  "data data data";
+}
+
+.satasupe form .container .sheet-header .characteristics .char-boxtytle {
+  display: grid;
+  grid-area: tytle;
+  grid-template-columns: auto;
+  grid-template-rows: 24px;
+  grid-template-areas: "tytleName";
+}
+
+.satasupe form .container .sheet-header .characteristics .char-boxtytle .tytle-name {
+  font-weight: 900;
+  color: rgba(0, 0, 0, 1);
+  grid-area: tytleName;
+  justify-self: center;
+  line-height: 1.4rem;
+}
+
+.satasupe form .container .sheet-header .characteristics .char-box {
+  display: inline-grid;
+  grid-template-columns: 62px;
+  justify-self: center;
+  grid-template-rows: 22px 30px;
+  grid-template-areas: "characName" "characScore";
+  align-items: baseline;
+}
+
+.satasupe form .container .sheet-header .characteristics .char-box .charac-name {
+  color: rgba(0, 0, 0, 1);
+  grid-area: characName;
+  justify-self: center;
+  line-height: 1.4rem;
+}
+
+.satasupe form .container .sheet-header .characteristics .char-box .charac-score {
+  grid-area: characScore;
+  width: 50px;
+  border-radius: 4px;
+  justify-self: center;
+  align-self: center;
+  color: rgba(0, 0, 0, 1);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.satasupe form .container .sheet-header .characteristics .char-box .charac-score .main-score {
+  align-self: center;
+  width: calc(100% + 2px);
+  grid-area: mainScore;
+}
+
+.satasupe form .container .sheet-header .characteristics .char-box .charac-score input {
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.satasupe form .container .sheet-header .characteristics input {
+  text-align: center;
+  color: rgba(0, 0, 0, 1);
+}
+
+.satasupe form .container .sheet-header .characteristics input:hover,
+.satasupe form .container .sheet-header .characteristics input:focus {
+  background: transparent;
+}
+
+.satasupe form .container .sheet-header .characteristics input:read-only {
+  border: 1px solid transparent;
+  box-shadow: none;
+  cursor: default;
+}
+
+.satasupe form .container .sheet-header .characteristics .others{
+  grid-area: others;
+  padding-left: 5px;
+  justify-content: left;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.satasupe form .container .sheet-header .characteristics .others .attribs-boxes{
+  display: inline-grid;
+  grid-template-rows: 20px 53px;
+  justify-self: center;
+}
+
+.satasupe form .container .sheet-header .characteristics .attribs{
+  display: inline-grid;
+  justify-self: center;
+  grid-template-rows: 20px 53px;
+  grid-template-areas: "othersName" "othersScore";
+  align-items: baseline;
+}
+
+.satasupe form .container .sheet-header .characteristics .attribs .others-name {
+  color: rgba(0, 0, 0, 1);
+  grid-area: othersName;
+  justify-self: center;
+  align-self: end;
+  line-height: 1.0rem;
+  font-size: 1.3rem;
+}
+
+.satasupe form .container .sheet-header .characteristics .attribs .others-score {
+  grid-area: othersScore;
+  border-radius: 6px;
+  height: 80%;
+  width: 80%;
+  justify-self: center;
+  align-self: center;
+  color: rgba(0, 0, 0, 1);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.satasupe form .container .sheet-header .characteristics .attribs .others-score .main-score {
+  align-self: center;
+  height: 100%;
+  grid-area: mainScore;
+}
+
+.satasupe form .container .sheet-header .characteristics .attribs .others-score input {
+  font-weight: bold;
+  font-size: 2rem;
+  height: 100%;
+  width: 100%;
+}
+
+.satasupe form .container .sheet-header .characteristics .exp {
+  grid-area: exp;
+  padding-left: 5px;
+  justify-content: left;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.satasupe form .container .sheet-header .characteristics .exp .exp-boxes {
+  display: inline-grid;
+  grid-template-rows: 15px 20px;
+  justify-self: center;
+}
+
+.satasupe form .container .sheet-header .characteristics .exp-box{
+  display: inline-grid;
+  justify-self: center;
+  grid-template-rows: 15px 20px;
+  grid-template-areas: "expName" "expScore";
+  align-items: baseline;
+}
+
+.satasupe form .container .sheet-header .characteristics .exp-box .exp-name {
+  color: rgba(0, 0, 0, 1);
+  grid-area: expName;
+  justify-self: center;
+  align-self: end;
+  line-height: 1.0rem;
+  font-size: 0.6rem;
+}
+
+.satasupe form .container .sheet-header .characteristics .exp-box .exp-score {
+  grid-area: expScore;
+  border-radius: 6px;
+  height: 20px;
+  width: 50px;
+  justify-self: center;
+  align-self: center;
+  color: rgb(0, 0, 0, 1);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.satasupe form .container .sheet-header .characteristics .exp-box .exp-score input {
+  font-weight: bold;
+  font-size: 0.9rem;
+  height: 20px;
+  width: 50px;
+}
+
+.satasupe .sheet-header .profile-img {
+  flex: 0 0 100px;
+  height: 100px;
+  margin-right: 10px;
+}
+.satasupe .sheet-header .header-fields {
+  flex: 1;
+  height: 100px;
+}
+.satasupe .sheet-header h1.charname {
+  height: 50px;
+  padding: 0px;
+  margin: 5px 0;
+  border-bottom: 0;
+}
+.satasupe .sheet-header h1.charname input {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+.satasupe .resource {
+  width: 50%;
+  height: 40px;
+  margin-top: 10px;
+  float: left;
+  text-align: center;
+}
+.satasupe .resource input {
+  width: 100px;
+  height: 28px;
+}
+
+.satasupe .chatpalette-panel table.variable-setting-table.hide-table{
+  display: none;
+}
+
+.satasupe .chatpalette-panel table .variable-setting-tbody div.on-off{
+  text-align:center; 
+}
+
+.satasupe .history-panel {
+  width:98%;
+  margin: 5px auto;
+  justify-self: center;
+  display:grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+  "scenario"
+  "background";
+}
+
+.satasupe .history-panel div.title label,
+.satasupe .history-panel div.title div {
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1em;
+  width:80%;
+}
+
+.satasupe .history-panel div.title div {
+  width:18%;
+}
+
+.satasupe .history-panel textarea {
+  min-height: 26px;
+}
+
+.satasupe .history-panel .background-zone{
+  border-top-width: 2px;
+  border-top-color: rgba(43, 55, 83, 0.5);
+  border-top-style: solid;
+}
+
+.satasupe .history-panel .background-zone .background-header{
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.satasupe .other-panel {
+  width:98%;
+  margin: 5px auto;
+  justify-self: center;
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+  "hobby prisoner"
+  "hobby addiction";
+}
+
+.satasupe .other-panel .prisoner-zone {
+  grid-area: prisoner;
+  padding: 0 0;
+}
+
+.satasupe .other-panel .prisoner-zone table{
+  margin-top:0px;
+}
+
+.satasupe .other-panel .prisoner-zone .title label,
+.satasupe .other-panel .prisoner-zone .title div{
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1em;
+  width:70%;
+}
+
+.satasupe .other-panel .prisoner-zone .title div{
+  width:28%;
+}
+
+.satasupe .other-panel .prisoner-zone th,
+.satasupe .other-panel .prisoner-zone td{
+  height:22px;
+  padding: 0 0;
+}
+
+.satasupe .other-panel .prisoner-zone td.checkbox{
+  text-align: center;
+}
+
+.satasupe .other-panel .prisoner-zone td input[type="text"]{
+  height:20px;
+}
+
+.satasupe .other-panel .prisoner-zone td input[type="checkbox"]{
+  width: 15px;
+  height:15px;
+  margin: 2px 2px;
+}
+
+.satasupe .other-panel .addiction-zone {
+  grid-area: addiction;
+  padding: 0 0;
+}
+
+.satasupe .other-panel .addiction-zone table{
+  margin-top:0px;
+}
+
+.satasupe .other-panel .addiction-zone .title label,
+.satasupe .other-panel .addiction-zone .title div{
+  display: inline-block;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1em;
+  width:70%;
+}
+
+.satasupe .other-panel .addiction-zone .title div{
+  width:28%;
+}
+
+.satasupe .other-panel .addiction-zone th,
+.satasupe .other-panel .addiction-zone td{
+  height:22px;
+  padding: 0 0;
+}
+
+.satasupe .other-panel .addiction-zone td.checkbox{
+  text-align: center;
+}
+
+.satasupe .other-panel .addiction-zone td input[type="text"]{
+  height:20px;
+}
+
+.satasupe .other-panel .addiction-zone td input[type="checkbox"]{
+  width: 15px;
+  height:15px;
+  margin: 2px 2px;
+}
+
+.satasupe .other-panel .hobby-zone {
+  display: grid;
+  height: 96%;
+  margin: 0 5px;
+  border-bottom: 1px solid;
+  border-right:1px solid;
+  grid-area: hobby;
+  grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas: "number subculture culture earnest holiday comfort red-light";
+}
+
+.satasupe .other-panel .hobby-zone div.family-type div.line{
+  border-top:1px solid;
+  border-left:1px solid;
+  display: grid;
+}
+
+.satasupe .other-panel .hobby-zone div.family-type div.line div.family{
+  font-size:0.75em;
+  font-weight: bold;
+}
+
+.satasupe .other-panel .hobby-zone div.family-type div.line div{
+  border:none;
+  align-self: center;
+  justify-self: center;
+}
+
+.satasupe .other-panel .addiction-zone{
+  grid-area:addiction;
+}
+
+.satasupe .other-panel .hobby-zone div button{
+	width: 65px;
+	height: 20px;
+	border: solid 1px #888;
+	color: black;
+	text-decoration: none;
+  padding:0 2px;
+  margin: 2.5px 2.5px;
+	text-align: center;
+  font-size: 9.5px;
+	line-height: 17px;
+	background-color: #f8f3df;
+	border-radius: 8px;
+	transition: all 400ms ease-in-out ;
+	box-shadow: inset 0 -2px 2px rgba(0,0,0, 0.5);
+
+}
+
+.satasupe .other-panel .hobby-zone div button:hover{
+	background-color: #cecaba;
+	animation: big 0.1s;
+  animation-fill-mode: both;
+}
+
+.satasupe .other-panel .hobby-zone div button:active{
+	animation: small 0.1s;
+  animation-fill-mode: both;
+  color: rgb(71, 36, 36);
+  box-shadow: none;
+}
+
+@keyframes big{
+  0% {transform: scale(1);}
+  100% {transform: scale(1.05);}
+}
+
+@keyframes small{
+  100% {transform: scale(0.95);}
+}
+
+.satasupe .other-panel .hobby-zone div button.button-on{
+  color: white;
+  border: none;
+  background-color: #242320;
+  height: 19.5px;
+  box-shadow: inset 0 0 3px 2px rgba(255, 255, 255, 0.705);
+}
+
+.satasupe .other-panel .hobby-zone .number {
+grid-area:number;
+display: grid;
+grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.satasupe .other-panel .hobby-zone div.subculture {
+  grid-area:subculture;
+  display: grid;
+  grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.satasupe .other-panel .hobby-zone .culture {
+  grid-area:culture;
+  display: grid;
+  grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.satasupe .other-panel .hobby-zone .earnest {
+  grid-area:earnest;
+  display: grid;
+  grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.satasupe .other-panel .hobby-zone .holiday {
+  grid-area:holiday;
+  display: grid;
+  grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.satasupe .other-panel .hobby-zone .comfort {
+  grid-area:comfort;
+  display: grid;
+  grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.satasupe .other-panel .hobby-zone .red-light {
+  grid-area:red-light;
+  display: grid;
+  grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.satasupe .karma-panel {
+  width:98%;
+  margin: 5px auto;
+  justify-self: center;
+}
+
+.satasupe .karma-table  {
+ border: 1px solid #736953a6;
+ width: 100%;
+ table-layout: fixed;
+}
+
+.satasupe .karma-table .karma-header{
+  border: 1px solid #736953a6;
+}
+
+.satasupe .karma-table .inner-table{
+  table-layout: fixed;
+  text-align: center;
+}
+
+.satasupe .karma-table tr.no-Sort{
+  table-layout:auto;
+}
+
+.satasupe .karma-table tr.no-Sort th.karma-typeName{
+  width: 140px;
+}
+.satasupe .karma-table .karma-header th.karma-typeName{
+  min-width: 170px;
+}
+
+.satasupe .karma-table .karma-list td.karma-typeName{
+  min-width: 140px;
+}
+.satasupe .karma-table .karma-header th.karma-typeName{
+  min-width: 170px;
+}
+
+.satasupe .karma-table .karma-list td.item-image{
+  width: 30px;
+}
+.satasupe .karma-table .karma-header th.item-image{
+  width: 0px;
+}
+
+.satasupe .karma-table .karma-list td.item-name,
+.satasupe .karma-table .karma-header th.item-name{
+  width: auto;
+}
+
+.satasupe .karma-table .karma-list td.item-timing,
+.satasupe .karma-table .karma-header th.item-timing{
+  width: 100px;
+}
+
+.satasupe .karma-table .karma-list td.item-target,
+.satasupe .karma-table .karma-header th.item-target{
+  width: 65px;
+}
+
+.satasupe .karma-table .karma-list td.item-check,
+.satasupe .karma-table .karma-header th.item-check{
+  width: auto;
+}
+
+.satasupe .karma-table .karma-list td.item-button,
+.satasupe .karma-table .karma-header th.item-button{
+  width: 65px;
+}
+
+.satasupe .karma-table .karma-header .sort-table-up{
+  display: none;
+}
+
+.satasupe .karma-table .karma-header .sort-table-down{
+  display: none;
+}
+
+.satasupe .karma-table table{
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(0, 0, 0, 0);
+  border-top: none;
+  border-bottom: none;
+  margin: 0;
+}
+
+.satasupe .karma-table .inner-table tr {
+  border-bottom:1px dashed #999;
+}
+
+.satasupe .karma-table .karma-row td {
+  padding: 0;
+}
+
+.satasupe .karma-table .karma-list .close-detail{
+  display: none;
+}
+.satasupe .karma-table .item-hide{
+  display: none;
+}
+
+.chatpalette-table tbody td div.chatsend{
+  text-align: center;
+}
+
+.satasupe .tabs {
+  flex: 0 0 40px;
+  border-top: 1px solid #AAA;
+  border-bottom: 1px solid #AAA;
+}
+.satasupe .tabs .item {
+  line-height: 40px;
+  font-weight: bold;
+}
+.satasupe .tabs .item.active {
+  text-decoration: underline;
+  text-shadow: red;
+}
+.satasupe .sheet-body {
+  height: auto;
+  width: auto;
+  overflow: hidden;
+}
+.satasupe .sheet-body .tab {
+  height: 100%;
+  overflow-y: auto;
+}
+.satasupe .editor,
+.satasupe .editor-content {
+  height: 100%;
+}
+
+.satasupe.sheet.actor {
+  min-width: 560px;
+  min-height: 420px;
+}
+
+.satasupe.sheet.actor .inventory-list {
+  list-style: none;
+  margin:0;
+  padding: 0 5px;
+  overflow-y:auto;
+  scrollbar-width:thin;
+}
+
+.satasupe.sheet.item {
+  min-width: 460px;
+  min-height: 400px;
+}

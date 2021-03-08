@@ -1,0 +1,80 @@
+<div class="history-panel" style="height:100%">
+    <div class="scenario-zone">
+        <div class="title">
+            <label>PLAYED SCENARIO LIST</label>
+            <div class='add-new-scenario'><a class="button" title="Add new played scenario"><i class="fas fa-plus"></i></a></div>
+        </div>
+        <table id="scenario-table" class="scenario-table">
+            <thead>
+                <tr class="header">
+                    <th class="scenario-title">TITLE</th>
+                    <th class="scenario-DD">DD</th>
+                    <th class="scenario-Day">DAY</th>
+                    <th class="new-advanced-karma">ADVANCED KARMA</th>
+                    <th class="scenario-exp">EXP</th>
+                    <th class="scenario-note">NOTE</th>
+                    <th class="space"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each data.scenario as |section index|}}
+                    <tr class='scenario-section' data-index='{{index}}' draggable="true">
+                        <td>
+                            <div class="title-section section-key" data-sectionkey="title">
+                                <input class="scenario-title-input section-input" type="text" name="section.title" placeholder="Senario title" data-dtype="String" value="{{section.title}}"/>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="dd-section section-key" data-sectionKey="dd">
+                                <input class="scenario-dd-input section-input" type="text" name="section.dd" placeholder="Senario DD" data-dtype="String" value="{{section.dd}}"/>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="day-section section-key" data-sectionkey="day">
+                                <input class="scenario-day-input section-input" type="text" name="section.day" placeholder="Senario Day" data-dtype="String" value="{{section.day}}"/>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="karma-section section-key" data-sectionkey="karma">
+                                <select class="section-input" name="section.karma" data-dtype="String">
+                                    {{#select section.karma}}
+                                        <option hidden value="">SELECT</option>
+                                        <option value="boss">BOSS</option>
+                                        <option value="spiv">SPIV</option>
+                                        <option value="torpedo">TORPEDO</option>
+                                        <option value="bodyguard">BODYGUARD</option>
+                                        <option value="masher">MASHER</option>
+                                        <option value="goddamnliar">GOD-DAMN LIAR</option>
+                                        <option value="fivefingers">FIVE FINGERS</option>
+                                        <option value="hotrod">HOT ROD</option>
+                                        <option value="batcarrier">BAT CARRIER</option>
+                                        <option value="illegalmeister">ILLEGAL MEISTER</option>
+                                        <option value="psycho">PSYCHO</option>
+                                        <option value="hopelesscase">HOPELESS CASE</option>
+                                    {{/select}}
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="exp-section section-key" data-sectionkey="exp">
+                                <input class="scenario-exp-input section-input" type="text" name="section.exp" placeholder="Senario exp" data-dtype="String" value="{{section.exp}}"/>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="note-section section-key" data-sectionkey="note">
+                                <textarea class="scenario-note-input section-input" rows="1" cols="10">{{section.note}}</textarea>
+                            </div>
+                        </td>
+                        <td class="item-controls">
+                            <a class="delete-scenario-section section-input" title="DELITE"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <div class="background-zone">
+        <label class="background-header">CHARACTER BACKGROUND</label>
+        {{editor content=data.bg.bg.value target="data.bg.bg.value" style="height:95%" button=true owner=owner editable=editable}}
+    </div>
+</div>

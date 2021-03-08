@@ -1,0 +1,278 @@
+<form class="{{cssClass}} flexcol" autocomplete="off" data-actor-id="{{actor._id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
+    <div class="container">
+
+        {{!-- Sheet Header --}}
+        <section class="sheet-header">
+            <div class="sheet-portrait">
+                <img class="photo" src="{{actor.img}}" title="{{actor.name}}" data-edit="img"/>
+                <div class="status">
+                    <div class="status-box">
+                        <div class="status-name">TURN</div>
+                        <div class="status-score"><label class="checkbox"><input type="checkbox" name="data.status.turn.value" {{checked data.status.turn.value}}/></label></div>
+                    </div>
+                    <div class="status-box">
+                        <div class="status-name">FUMBLE</div>
+                        <div class="status-score"><input name="data.status.fumble.value" type="text" value="{{data.status.fumble.value}}"/></div>
+                    </div>
+                    <div class="status-box">
+                        <div class="status-name">SLEEP</div>
+                        <div class="status-score"><input name="data.status.sleep.value" type="text" value="{{data.status.sleep.value}}"/></div>
+                    </div>
+                    <div class="status-box">
+                        <div class="status-name">TRAUMA</div>
+                        <div class="status-score"><input name="data.status.trauma.value" type="text" value="{{data.status.trauma.value}}"/></div>
+                    </div>
+                    <div class="status-box">
+                        <div class="status-name">Wound</div>
+                        {{#if data.status.unconscious.value}}
+                        <div class="status-score"><i class="fas fa-user-slash"></i></div>
+                        {{else}}
+                            {{#if data.status.mpmajorWounds.value}}
+                                {{#if data.status.bpmajorWounds.value}}
+                                    <div class="status-score double"><i class="fas fa-head-side-virus"></i> <i class="fas fa-user-injured"></i></div>
+                                {{else}}
+                                    <div class="status-score"><i class="fas fa-head-side-virus"></i></div>
+                                {{/if}}
+                            {{else}}
+                                {{#if data.status.bpmajorWounds.value}}
+                                    <div class="status-score"><i class="fas fa-user-injured"></i></div>
+                                {{else}}
+                                    <div class="status-score"><i class="fas fa-smile"></i></div>
+                                {{/if}}
+                            {{/if}}
+                        {{/if}}
+                    </div>
+                    <div class="status-box">
+                        <div class="status-name">ALERT</div>
+                        <div class="status-score"><label class="checkbox"><input type="checkbox" name="data.status.alert.value" {{checked data.status.alert.value}}/></label></div>
+                    </div>
+                </div>
+            </div>
+            <div class="infos">
+                <div class="row flexrow">
+                    <label>NAME :</label>
+                    <input name="name" type="text" value="{{actor.name}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>HOMELAND :</label>
+                    <input name="data.infos.homeland" type="text" value="{{data.infos.homeland}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>SEX :</label>
+                    <input name="data.infos.sex" type="text" value="{{data.infos.sex}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>AGE :</label>
+                    <input name="data.infos.age" type="text" value="{{data.infos.age}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>STYLE :</label>
+                    <input name="data.infos.style" type="text" value="{{data.infos.style}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>LIKES :</label>
+                    <input name="data.infos.likes" type="text" value="{{data.infos.likes}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>DISLIKES :</label>
+                    <input name="data.infos.dislikes" type="text" value="{{data.infos.dislikes}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>TEAM :</label>
+                    <input name="data.infos.team" type="text" value="{{data.infos.team}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>ALLIANCE :</label>
+                    <input name="data.infos.alliance" type="text" value="{{data.infos.alliance}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>HIERARCHY :</label>
+                    <input name="data.infos.hierarchy" type="text" value="{{data.infos.hierarchy}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>SURFACE :</label>
+                    <input name="data.infos.surface" type="text" value="{{data.infos.surface}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>LANGUAGE :</label>
+                    <input name="data.infos.language" type="text" value="{{data.infos.language}}"/>
+                </div>
+                <div class="row flexrow favorite">
+                    <label><a class="favorite-button">FAVORITE :</a></label>
+                    <input name="data.infos.favorite" type="text" value="{{data.infos.favorite}}"/>
+                </div>
+            </div>
+            <div class="characteristics">
+                <div class="char-boxes">
+                    <div class="char-boxtytle">
+                        <div class="tytle-name">CIRCUMSTANCE</div>
+                    </div>
+                    {{#each data.circumstance as |circumstance key|}}
+                    <div class="char-box"  data-characteristic="{{key}}" draggable="true">
+                        <div class="charac-name">{{localize circumstance.short}}</div>
+                        <div class="charac-score">
+                            <div class="main-score">
+                                <input class="characteristic-score" type="text" name="data.circumstance.{{key}}.value" value="{{circumstance.value}}" data-dtype="Number"/>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+                <div class="char-boxes2">
+                    <div class="aptitude">
+                        <div class="char-boxtytle">
+                            <div class="tytle-name">APTITUDE</div>
+                        </div>
+                        {{#each data.aptitude as |aptitude key|}}
+                        <div class="char-box"  data-characteristic="{{key}}" draggable="true">
+                            <div class="charac-name">{{localize aptitude.short}}</div>
+                            <div class="charac-score">
+                                <div class="main-score">
+                                    <input class="characteristic-score" type="text" name="data.aptitude.{{key}}.value" value="{{aptitude.value}}" data-dtype="Number"/>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                    <div class="combat">
+                        <div class="char-boxtytle">
+                            <div class="tytle-name">COMBAT POINT (total:{{data.exp.combatpower.value}})</div>
+                        </div>
+                        {{#each data.combat as |combat key|}}
+                        <div class="char-box"  data-characteristic="{{key}}" draggable="true">
+                            <div class="charac-name">{{localize combat.short}}</div>
+                            <div class="charac-score">
+                                <div class="main-score">
+                                    <input class="characteristic-score" type="text" name="data.combat.{{key}}.value" value="{{combat.value}}" data-dtype="Number"/>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+                <div class="others">
+                    <div class="attribs-boxes">
+                        <div class="attribs">
+                            <div class="others-name">BP</div>
+                            <div class="others-score">
+                                <div class="main-score">
+                                    <input name="data.attribs.bp.value" type="text" value="{{data.attribs.bp.value}}" data-dtype="Number"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="attribs-boxes">
+                        <div class="attribs">
+                            <div class="others-name">MP</div>
+                            <div class="others-score">
+                                <div class="main-score">
+                                    <input name="data.attribs.mp.value" type="text" value="{{data.attribs.mp.value}}" data-dtype="Number"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="attribs-boxes">
+                        <div class="attribs">
+                            <div class="others-name">WP</div>
+                            <div class="others-score">
+                                <div class="main-score">
+                                    <input name="data.attribs.wallet.value" type="text" value="{{data.attribs.wallet.value}}" data-dtype="Number"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="attribs-boxes">
+                        <div class="attribs">
+                            <div class="others-name">ALIGN</div>
+                            <div class="others-score">
+                                <div class="main-score">
+                                    <input name="data.attribs.alignment.value" type="text" value="{{data.attribs.alignment.value}}" data-dtype="Number"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="attribs-boxes">
+                        <div class="attribs">
+                            <div class="others-name">DRP</div>
+                            <div class="others-score">
+                                <div class="main-score">
+                                    <input name="data.attribs.drp.value" type="text" value="{{data.attribs.drp.value}}" data-dtype="Number"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="exp">
+                    <div class="exp-boxes">
+                        <div class="exp-box">
+                            <div class="exp-name">UNUSED Exp.</div>
+                            <div class="exp-score">
+                                <input name="data.usedexp.unused" type="text" value="{{data.usedexp.unused}}" data-dtype="Number"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-boxes">
+                        <div class="exp-box">
+                            <div class="exp-name">GAINED Exp.</div>
+                            <div class="exp-score">
+                                <input name="data.exp.expgain.value" type="text" value="{{data.exp.expgain.value}}" data-dtype="Number"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-boxes">
+                        <div class="exp-box">
+                            <div class="exp-name">UPKEEP</div>
+                            <div class="exp-score">
+                                <input name="data.exp.upkeep.value" type="text" value="{{data.exp.upkeep.value}}" data-dtype="Number"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-boxes">
+                        <div class="exp-box">
+                            <div class="exp-name">Mythos</div>
+                            <div class="exp-score">
+                                <input name="data.exp.mythos.value" type="text" value="{{data.exp.mythos.value}}" data-dtype="Number"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-boxes">
+                        <div class="exp-box">
+                            <div class="exp-name">SAN</div>
+                            <div class="exp-score">
+                                <input name="data.exp.san.value" type="text" value="{{data.exp.san.value}}" data-dtype="Number"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {{!-- Sheet Tab Navigation --}}
+        <nav class="sheet-tabs tabs" data-group="primary">
+            <a class="item" data-tab="other-status">Other Status</a>
+            <a class="item" data-tab="karma">Karma</a>
+            <a class="item" data-tab="equipment">Equipment</a>
+            <a class="item" data-tab="history">History</a>
+            <a class="item" data-tab="chatpalette">CHAT PALETTE</a>
+        </nav>
+
+        {{!-- Sheet Body --}}
+        <section class="sheet-body">
+            <div class="tab other-status" data-group="primary" data-tab="other-status">
+                {{> "systems/satasupe/templates/parts/actor-other.html"}}
+            </div>
+            <div class="tab karma" data-group="primary" data-tab="karma">
+                {{> "systems/satasupe/templates/parts/actor-karma.html"}}
+            </div>
+            <div class="tab equipment" data-group="primary" data-tab="equipment">
+                {{editor content=data.text.text.value target="data.text.text.value" style="height:95%" button=true owner=owner editable=editable}}
+            </div>
+            <div class="tab history" data-group="primary" data-tab="history">
+                {{> "systems/satasupe/templates/parts/actor-history.html"}}
+            </div>
+            <div class="tab chatpalette" data-group="primary" data-tab="chatpalette">
+                {{> "systems/satasupe/templates/parts/actor-chatpalette.html"}}
+            </div>
+        </section>
+    </div>
+</form>

@@ -1,0 +1,29 @@
+{
+  "name": "satasupe",
+  "title": "Asian Punk RPG: Satasupe",
+  "description": "Asian punk rpg simple game system",
+  "version": "0.1.0",
+  "minimumCoreVersion": "0.7.0",
+  "compatibleCoreVersion": "0.7.9",
+  "templateVersion": 2,
+  "author": "ADNyar",
+  "esmodules": ["module/Satasupe.js"],
+  "styles": ["styles/Satasupe.css"],
+  "packs": [],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "initiative": "@combat.reflex.value",
+  "gridDistance": 5,
+  "gridUnits": "m",
+  "primaryTokenAttribute": "attribs.bp",
+  "secondaryTokenAttribute": "attribs.mp",
+  "url": "",
+  "manifest": "",
+  "download": "",
+  "license": "LICENSE.txt"
+}
