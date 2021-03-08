@@ -1,0 +1,86 @@
+<div class="karma-panel" style="height: 100%">
+	{{#if actor.karmaSortable}}
+		<table id="karma-table" class="karma-table">
+			<thead>
+				<tr class="karma-header">
+					<th id="0" class="karma-typeName item-controls"><a class="item-control sort-table-before" title="up sort">KARMA NAME  <i class="fas fa-sort"></i></a><a class="item-control sort-table-up" title="up sort">KARMA NAME  <i class="fas fa-sort-up"></i></a><a class="item-control sort-table-down" title="down sort">KARMA NAME  <i class="fas fa-sort-down"></i></a></th>
+					<th id="1" class="item-image"></th>
+					<th id="2" class="item-name item-controls"><a class="item-control sort-table-before" title="up sort">INOU / DAISYO NAME  <i class="fas fa-sort"></i></a><a class="item-control sort-table-up" title="up sort">INOU / DAISYO NAME  <i class="fas fa-sort-up"></i></a><a class="item-control sort-table-down" title="down sort">INOU / DAISYO NAME  <i class="fas fa-sort-down"></i></a></th>
+					<th id="3" class="item-timing item-controls"><a class="item-control sort-table-before" title="up sort">TIMING  <i class="fas fa-sort"></i></a><a class="item-control sort-table-up" title="up sort">TIMING  <i class="fas fa-sort-up"></i></a><a class="item-control sort-table-down" title="down sort">TIMING  <i class="fas fa-sort-down"></i></a></th>
+					<th id="4" class="item-target item-controls"><a class="item-control sort-table-before" title="up sort">TARGET  <i class="fas fa-sort"></i></a><a class="item-control sort-table-up" title="up sort">TARGET  <i class="fas fa-sort-up"></i></a><a class="item-control sort-table-down" title="down sort">TARGET  <i class="fas fa-sort-down"></i></a></th>
+					<th id="5" class="item-check item-controls"><a class="item-control sort-table-before" title="up sort">CHECK  <i class="fas fa-sort"></i></a><a class="item-control sort-table-up" title="up sort">CHECK  <i class="fas fa-sort-up"></i></a><a class="item-control sort-table-down" title="down sort">CHECK  <i class="fas fa-sort-down"></i></a></th>
+					<th id="6" class="item-button item-controls"><a class="item-control add-item" title="Create item" data-type="karma"><i class="fas fa-plus"></i> Add item</a></th>
+				</tr>
+			</thead>
+			<tbody class="main-body">
+				{{#each actor.karma as |item id|}}
+					<tr class="item karma-row" data-item-id="{{item._id}}" draggable="true">
+						<td colspan="7">
+							<table rules="none" class="inner-table">
+								<tr class="karma-list">
+									<td class="karma-typeName">{{item.data.type.label}}<br>{{item.data.description.typeName}}</td>
+									<td class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="20" height="20"/></td>
+									<td class="item-name">{{item.data.abilityType.label}} :{{item.name}}</td>
+									<td class="item-timing">{{item.data.timing.label}}</td>
+									<td class="item-target">{{item.data.target.label}}</td>
+									<td class="item-check">{{#if item.data.check.none}}NONE{{else}}{{#if item.data.check.type}}〔ALIGNMENT〕 / {{item.data.check.alignment.label}}{{else}}〔{{localize item.data.check.checkValue.label}}〕/ {{item.data.check.difficulty}}{{/if}}{{/if}}</td>
+									<td class="item-button item-controls">
+										<a class="item-control show-detail" title="OPEN DETAIL"><i class="fas fa-eye"></i></a><a class="item-control close-detail" title="CLOSE DETAIL"><i class="fas fa-eye-slash"></i></a>
+										<a class="item-control item-edit" title="EDIT"><i class="fas fa-edit"></i></a>
+										<a class="item-control item-delete" title="DELITE"><i class="fas fa-trash"></i></a>
+									</td>
+								</tr>
+								<tr class="item-detail">
+									<td colspan="7" class="item-hide">{{item.data.flavor}}</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	{{else}}
+		<table id="karma-table" class="karma-table">
+			<thead>
+				<tr class="karma-header noSort">
+					<th data-id="karma-typeName">KARMA NAME</th>
+					<th data-id="item-image"></th>
+					<th data-id="item-name">INOU / DAISYO NAME</th>
+					<th data-id="item-timing">TIMING</th>
+					<th data-id="item-target">TARGET</th>
+					<th data-id="item-check">CHECK</th>
+					<th data-id="item-button item-controls"><a class="item-control add-item" title="Create item" data-type="karma"><i class="fas fa-plus"></i> Add item</a></th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each actor.karma as |item id|}}
+					<tr class="item karma-row" data-item-id="{{item._id}}" draggable="true">
+						{{#if_odd @index}}
+						{{else}}
+							<td class="karma-typeName" rowspan="2">{{item.data.type.label}}<br>{{item.data.description.typeName}}</td>
+						{{/if_odd}}
+						<td colspan="6">
+							<table rules="none" class="inner-table">
+								<tr class="karma-list" draggable="true">
+									<td class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="20" height="20"/></td>
+									<td class="item-name">{{item.data.abilityType.label}} :{{item.name}}</td>
+									<td class="item-timing">{{item.data.timing.label}}</td>
+									<td class="item-target">{{item.data.target.label}}</td>
+									<td class="item-check">{{#if item.data.check.none}}NONE{{else}}{{#if item.data.check.type}}〔ALIGNMENT〕 / {{item.data.check.alignment.label}}{{else}}〔{{localize item.data.check.checkValue.label}}〕/ {{item.data.check.difficulty}}{{/if}}{{/if}}</td>
+									<td class="item-button item-controls">
+										<a class="item-control show-detail" title="OPEN DETAIL"><i class="fas fa-eye"></i></a><a class="item-control close-detail" title="CLOSE DETAIL"><i class="fas fa-eye-slash"></i></a>
+										<a class="item-control item-edit" title="EDIT"><i class="fas fa-edit"></i></a>
+										<a class="item-control item-delete" title="DELITE"><i class="fas fa-trash"></i></a>
+									</td>
+								</tr>
+								<tr class="item-detail">
+									<td colspan="6" class="item-hide">{{item.data.flavor}}</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	{{/if}}
+</div>
