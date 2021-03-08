@@ -1,0 +1,540 @@
+{
+  "Actor": {
+    "types": ["character"],
+    "templates":{
+      "circumstance":{
+        "circumstance":{
+          "crime":{
+            "value":1,
+            "max":null,
+            "short":"CRIME",
+            "label":"CRIME",
+            "folmula":null,
+            "variable":null,
+            "substitution":false
+          },
+          "life":{
+            "value":1,
+            "max":null,
+            "short":"LIFE",
+            "label":"LIFE",
+            "folmula":null,
+            "variable":null,
+            "substitution":false
+          },
+          "love":{
+            "value":1,
+            "max":null,
+            "short":"LOVE",
+            "label":"LOVE",
+            "folmula":null,
+            "variable":null,
+            "substitution":false
+          },
+          "cluture":{
+            "value":1,
+            "max":null,
+            "short":"CULTURE",
+            "label":"CULTURE",
+            "folmula":null,
+            "variable":null,
+            "substitution":false
+          },
+          "combat":{
+            "value":1,
+            "max":null,
+            "short":"CIRCUMSTANCE.COMBAT",
+            "label":"CIRCUMSTANCE.COMBAT",
+            "folmula":null,
+            "variable":null,
+            "substitution":false
+          }
+        }
+      },
+      "aptitude":{
+        "aptitude":{
+          "body":{
+            "value":3,
+            "short":"BODY",
+            "label":"BODY",
+            "folmula":null,
+            "variable":null,
+            "substitution":false
+          },
+          "mind":{
+            "value":3,
+            "short":"MIND",
+            "label":"MIND",
+            "folmula":null,
+            "variable":null,
+            "substitution":false
+          }
+        }
+      },
+      "attribs":{
+        "attribs":{
+          "alignment":{
+            "value": null,
+            "max": null,
+            "short": "align",
+            "label": "ALIGNMENT",
+            "auto": true,
+            "variable":null,
+            "substitution":false
+          },
+          "bp":{
+            "value": 10,
+            "max": 10,
+            "short": "bp",
+            "label": "BODY POINTS",
+            "auto": true,
+            "variable":null,
+            "substitution":false
+          },
+          "mp":{
+            "value": 10,
+            "max": 10,
+            "short": "mp",
+            "label": "MIND POINTS",
+            "auto": true,
+            "variable":null,
+            "substitution":false
+          },
+          "wallet":{
+            "value": null,
+            "max": null,
+            "short": "WP",
+            "label": "WALLET POINTS",
+            "auto": true,
+            "variable":null,
+            "substitution":false
+          },
+          "drp":{
+            "value": null,
+            "max": null,
+            "short": "DRP",
+            "label": "Damage Reduction POINTS",
+            "auto": true,
+            "variable":null,
+            "substitution":false
+          }
+        }
+      },
+      "combat":{
+        "combat": {
+          "reflex": {
+            "value": 1,
+            "max": 9,
+            "short": "REFLEX",
+            "label": "REFLEX",
+            "folmula": null,
+            "variable":null,
+            "substitution":false
+          },
+          "arms": {
+            "value":1,
+            "max": 9,
+            "short": "ARMS",
+            "label": "ARMS",
+            "folmula": null,
+            "variable":null,
+            "substitution":false
+          },
+          "damage": {
+            "value":1,
+            "max": 9,
+            "short": "DAMAGE",
+            "label": "DAMAGE",
+            "folmula": null,
+            "variable":null,
+            "substitution":false
+          }
+        }
+      },
+      "exp":{
+        "exp":{
+          "combatpower":{
+            "value": null,
+            "max": null,
+            "short": "CP",
+            "label": "COMBAT POWER",
+            "folmula": null,
+            "auto":true
+          },
+          "expgain":{
+            "value": null,
+            "max": null,
+            "short": "expgain",
+            "label": "expgain",
+            "folmula": null,
+            "auto":true
+          },
+          "upkeep":{
+            "value": null,
+            "max": null,
+            "short": "upkeep",
+            "label": "upkeep",
+            "folmula": null,
+            "auto":true,
+            "case": false
+          },
+          "mythos":{
+            "value": null,
+            "max": null,
+            "short": "mythos",
+            "label": "Cthulhu Mythos",
+            "folmula": null,
+            "auto":true
+          },
+          "san":{
+            "value": null,
+            "max": null,
+            "short": "SAN",
+            "label": "SANITY POINT",
+            "folmula": null,
+            "auto":true
+          }
+        }
+      },
+      "status":{
+        "status":{
+          "bpmajorWounds":{
+            "type": "Boolean",
+            "value": false
+          },
+          "mpmajorWounds":{
+            "type": "Boolean",
+            "value": false
+          },
+          "majorWoundsOffset":{
+            "value": 0,
+            "max": 2,
+            "short": "Major Wounds",
+            "label": "Major Wounds Offset",
+            "folmula": null,
+            "auto":true,
+            "variable":null,
+            "substitution":false
+          },
+          "death":{
+            "type": "Boolean",
+            "value": false
+          },
+          "unconscious":{
+            "type": "Boolean",
+            "value": false
+          },
+          "sleep":{
+            "value": null,
+            "max": null,
+            "explain": "not sleep turn",
+            "label": "sleep",
+            "auto": true
+          },
+          "fumble":{
+            "value": 1,
+            "max": 6,
+            "explain": "fumble number",
+            "label": "fumble",
+            "auto": true,
+            "variable":null,
+            "substitution":false
+          },
+          "turn":{
+            "type": "Boolean",
+            "value": false
+          },
+          "alert":{
+            "type": "Boolean",
+            "value": false
+          },
+          "trauma":{
+            "value": 0,
+            "max": null,
+            "explain": "trauma number",
+            "label": "trauma",
+            "auto": true,
+            "variable":null,
+            "substitution":false
+          },
+          "allonoff":{
+            "type": "Boolean",
+            "value": false,
+            "variableonoff":false
+          }
+        }
+      },
+      "hobby":{
+        "hobby":{
+          "subculture":{
+            "abnormal":{
+              "type": "Boolean",
+              "value": false,
+              "label": "ABNORMAL"
+            },
+            "kawai":{
+              "type": "Boolean",
+              "value": false,
+              "label": "KAWAII"
+            },
+            "outrageous":{
+              "type": "Boolean",
+              "value": false,
+              "label": "OUTRAGEOUS"
+            },
+            "fanatic":{
+              "type": "Boolean",
+              "value": false,
+              "label": "FANATIC"
+            },
+            "otaku":{
+              "type": "Boolean",
+              "value": false,
+              "label": "OTAKU"
+            }
+          },
+          "culture":{
+            "music":{
+              "type": "Boolean",
+              "value": false,
+              "label": "MUSIC"
+            },
+            "trend":{
+              "type": "Boolean",
+              "value": false,
+              "label": "TREND"
+            },
+            "reading":{
+              "type": "Boolean",
+              "value": false,
+              "label": "READING"
+            },
+            "perform":{
+              "type": "Boolean",
+              "value": false,
+              "label": "PERFORM"
+            },
+            "art":{
+              "type": "Boolean",
+              "value": false,
+              "label": "ART"
+            }
+          },
+          "earnest":{
+            "cavil":{
+              "type": "Boolean",
+              "value": false,
+              "label": "CAVIL"
+            },
+            "meddling":{
+              "type": "Boolean",
+              "value": false,
+              "label": "MEDDLING"
+            },
+            "housework":{
+              "type": "Boolean",
+              "value": false,
+              "label": "HOUSEWORK"
+            },
+            "swot":{
+              "type": "Boolean",
+              "value": false,
+              "label": "SWOT"
+            },
+            "health":{
+              "type": "Boolean",
+              "value": false,
+              "label": "HEALTH"
+            }
+          },
+          "holiday":{
+            "outdoor":{
+              "type": "Boolean",
+              "value": false,
+              "label": "OUTDOOR"
+            },
+            "craft":{
+              "type": "Boolean",
+              "value": false,
+              "label": "CRAFT"
+            },
+            "sport":{
+              "type": "Boolean",
+              "value": false,
+              "label": "SPORT"
+            },
+            "celebrity":{
+              "type": "Boolean",
+              "value": false,
+              "label": "CELEBRITY"
+            },
+            "travel":{
+              "type": "Boolean",
+              "value": false,
+              "label": "TRAVEL"
+            }
+          },
+          "comfort":{
+            "nurture":{
+              "type": "Boolean",
+              "value": false,
+              "label": "NURTURE"
+            },
+            "lonely":{
+              "type": "Boolean",
+              "value": false,
+              "label": "LONELY"
+            },
+            "killtime":{
+              "type": "Boolean",
+              "value": false,
+              "label": "KILL TIME"
+            },
+            "creed":{
+              "type": "Boolean",
+              "value": false,
+              "label": "CREED"
+            },
+            "wabisabi":{
+              "type": "Boolean",
+              "value": false,
+              "label": "WABISABI"
+            }
+          },
+          "redLight":{
+            "adult":{
+              "type": "Boolean",
+              "value": false,
+              "label": "ADULT"
+            },
+            "eat":{
+              "type": "Boolean",
+              "value": false,
+              "label": "EAT"
+            },
+            "gamble":{
+              "type": "Boolean",
+              "value": false,
+              "label": "GAMBLE"
+            },
+            "gossip":{
+              "type": "Boolean",
+              "value": false,
+              "label": "GOSSIP"
+            },
+            "fashion":{
+              "type": "Boolean",
+              "value": false,
+              "label": "FASHION"
+            }
+          }
+        }
+      },
+      "text":{
+        "text":{
+          "type": "string",
+          "value": ""
+        }
+      },
+      "bg":{
+        "bg":{
+          "type": "string",
+          "value": ""
+        }
+      },
+     "prisoner":{},
+     "variable":{}
+    },
+    "character": {
+      "templates":[
+        "circumstance",
+        "aptitude",
+        "attribs",
+        "combat",
+        "exp",
+        "status",
+        "hobby",
+        "text",
+        "bg",
+        "prisoner",
+        "variable"
+      ],
+      "infos":{
+        "name": "",
+        "homeland": "",
+        "sex": "",
+        "age": "",
+        "style": "",
+        "likes": "",
+        "dislikes": "",
+        "team": "",
+        "alliance": "",
+        "hierarchy": "",
+        "surface": "",
+        "language": "",
+        "favorite": ""
+      }
+    }
+  },
+  "Item": {
+    "types": ["item", "karma", "inventry","chatpalette"],
+    "item": {
+      "description": "",
+      "quantity": 1,
+      "weight": 0,
+      "attributes": {},
+      "groups": {}
+    },
+    "karma":{
+      "description":{
+        "otherName":"",
+        "typeName":""
+      },
+      "abilityType":{
+        "name":"",
+        "label": ""
+      },
+      "type": {
+        "name":"",
+        "label": ""
+      },
+      "timing":{
+        "name":"",
+        "label": ""
+      },
+      "target":{
+        "name":"",
+        "label": ""
+      },
+      "check":{
+        "none": true,
+        "type":false,
+        "difficulty": 5,
+        "alignment":{
+          "name":"",
+          "label": ""
+        },
+        "checkValue": {
+          "name":"",
+          "label":""
+        },
+        "checkText":""
+      },
+      "effect": "",
+      "flavor": ""
+    },
+    "inventry":{
+      "description": "",
+      "quantity": 1,
+      "weight": 0,
+      "attributes": {},
+      "groups": {}
+    },
+    "chatpalette":{
+      "chatpalette":{
+        "chat":null
+      },
+      "description": []
+    }
+  }
+}
