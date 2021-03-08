@@ -2,7 +2,7 @@
   "name": "satasupe",
   "title": "Asian Punk RPG: Satasupe",
   "description": "Asian punk rpg simple game system",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "minimumCoreVersion": "0.7.0",
   "compatibleCoreVersion": "0.7.9",
   "templateVersion": 2,
@@ -22,8 +22,8 @@
   "gridUnits": "m",
   "primaryTokenAttribute": "attribs.bp",
   "secondaryTokenAttribute": "attribs.mp",
-  "url": "",
-  "manifest": "",
-  "download": "",
-  "license": "LICENSE.txt"
+  "url": "https://github.com/AdmiralNyar/Satasupe-FoundryVTT",
+  "manifest": "https://raw.githubusercontent.com/AdmiralNyar/Satasupe-FoundryVTT/main/system.json",
+  "download": "https://github.com/AdmiralNyar/Satasupe-FoundryVTT/archive/v0.1.0.zip",
+  "license": "LICENSE"
 }
