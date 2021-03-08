@@ -187,7 +187,7 @@ export class SatasupeActorSheet extends ActorSheet {
     const chatpalette = [];
     for(let i of sheetData.items){
       let item = i.data;
-      i.img = i.img || DEAFAULT_TOKEN;
+      i.img = i.img || DEFAULT_TOKEN;
       if(i.type ==="item"){
         gear.push(i);
       }
