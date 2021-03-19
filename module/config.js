@@ -1,80 +1,83 @@
 export const SATASUPE = {};
 
 SATASUPE.circumstance = {
-    'crime' : 'CRIME',
-    'life'  : 'LIFE',
-    'love' : 'LOVE',
-    'cluture':'CLUTURE',
-    'combat' : 'CIRCUMSTANCE.COMBAT'
+    crime : 'CIRCUMSTANCE.CRIME',
+    life  : 'CIRCUMSTANCE.LIFE',
+    love : 'CIRCUMSTANCE.LOVE',
+    cluture :'CIRCUMSTANCE.CULTURE',
+    combat : 'CIRCUMSTANCE.COMBAT'
 };
 
 SATASUPE.apitude = {
-    'body' : 'BODY',
-    'mind' : 'MIND'
+    body : 'APTITUDE.BODY',
+    mind : 'APTITUDE.MIND'
 };
 
 SATASUPE.check = {
-    crime : 'CRIME',
-    life  : 'LIFE',
-    love : 'LOVE',
-    cluture :'CLUTURE',
+    crime : 'CIRCUMSTANCE.CRIME',
+    life  : 'CIRCUMSTANCE.LIFE',
+    love : 'CIRCUMSTANCE.LOVE',
+    cluture :'CIRCUMSTANCE.CULTURE',
     combat : 'CIRCUMSTANCE.COMBAT',
-    body : 'BODY',
-    mind : 'MIND'
+    body : 'APTITUDE.BODY',
+    mind : 'APTITUDE.MIND'
 };
 
 SATASUPE.abilityType = {
-    talent : 'INOU',
-    compensation : 'DAISYO',
-    heteromorph : 'HETEROMORPH'
+    talent : 'SATASUPE.Talent',
+    compensation : 'SATASUPE.COMPENSATION',
+    heteromorph : 'SATASUPE.HETEROMORPH'
 };
 
 SATASUPE.karmaType = {
-    basic : 'BASIC KARMA',
-    advanced : 'ADVANCED KARMA',
-    monster : 'MONSTER KARMA',
-    alliance : 'ALLIANCE KARMA',
-    wideuse : 'WIDEUSE KARMA',
-    bad : 'BAD KARMA',
-    team : 'TEAM KARMA',
-    booster : 'BOOSTER KARMA',
-    deadman : 'HETEROMORPH',
-    newbie : 'NEWBIE KARMA'
+    basic : 'KARMA.BASIC',
+    advanced : 'KARMA.ADVANCED',
+    monster : 'KARMA.MONSTER',
+    alliance : 'KARMA.ALLIANCE',
+    wideuse : 'KARMA.WIDEUSE',
+    bad : 'KARMA.BAD',
+    team : 'KARMA.TEAM',
+    booster : 'KARMA.BOOSTER',
+    deadman : 'KARMA.HETEROMORPH',
+    newbie : 'KARMA.NEWBIE',
+    gamer : 'KARMA.GAMER'
 }
 
 SATASUPE.checkType = {
-    circumstance : 'SCORE',
-    aptitude : 'APTITUDE',
-    alignment : 'ALIGNMENT'
+    circumstance : 'SATASUPE.CRICUMSTANCE',
+    aptitude : 'SATASUPE.APTITUDE',
+    alignment : 'SATASUPE.ALIGNMENT'
 };
 
 SATASUPE.alignment = {
-    calm : 'CALM',
-    dither : 'DITHER',
-    desire : 'DESIRE'
+    calm : 'ALIGNMENT.CALM',
+    dither : 'ALIGNMENT.DITHER',
+    desire : 'ALIGNMENT.DESIRE'
 }
 
 SATASUPE.target = {
-    own :'OWN',
-    other:'OTHER',
-    team:'TEAM',
-    area:'AREA',
-    item:'ITEM'
+    own :'SATASUPE.Own',
+    other:'SATASUPE.Other',
+    team:'SATASUPE.Team',
+    area:'SATASUPE.Area',
+    item:'SATASUPE.Item'
 }
 
 SATASUPE.timing = {
-    passive:'PASSIVE EFFECT',
-    planning : 'PLANNING EFFECT',
-    support : 'SUPPORT EFFECT',
-    auxiliary : 'AUXILIARY EFFECT',
-    interrupt : 'INTERRUPT EFFECT',
-    prologue : 'PROLOGUE EFFECT',
-    spilogue : 'EPILOGUE EFFECT'
+    passive:'SATASUPE.Passive',
+    planning : 'SATASUPE.Planning',
+    support : 'SATASUPE.Support',
+    auxiliary : 'SATASUPE.Auxiliary',
+    interrupt : 'SATASUPE.Interrupt',
+    prologue : 'SATASUPE.Prologue',
+    epilogue : 'SATASUPE.Epilogue'
 }
 
-SATASUPE.newKarmaName = 'New Karma';
+SATASUPE.newKarmaName = 'SATASUPE.NewKarmaName';
 
-SATASUPE.newChatpaletteName = 'New Chatpalette';
+SATASUPE.newChatpaletteName = 'SATASUPE.NewChatPaletteName';
+
+SATASUPE.newItemName = 'SATASUPE.NewItemName';
 
 SATASUPE.referenceable = {
     crime : 'this.actor.data.data.circumstance.crime.value',

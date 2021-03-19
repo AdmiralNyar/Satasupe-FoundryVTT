@@ -71,6 +71,18 @@ export class SatasupeItem extends Item {
       await this.update({'data.chatpalette.chat' : chat});
     }
 
+    async toggleSpecial(specialName, specialtextName, type){
+      if(specialName){
+        let specialValue = this.data.data[type]?.special[specialName]?.value;
+        if(!(typeof specialValue === "boolean")) specialValue = specialValue === 'false' ? true : false;
+        await this.update( {[`data.${type}.special.${specialName}.value`]: !specialValue});
+      }else{
+        let specialtextValue = this.data.data[type]?.specialtext[specialtextName]?.value;
+        if(!(typeof specialtextValue === "boolean")) specialtextValue = specialtextValue === 'false' ? true : false;
+        await this.update( {[`data.${type}.specialtext.${specialtextName}.value`]: !specialtextValue});
+      }
+    }
+
     async roll() {
       // Basic template rendering data
       const token = this.actor.token;

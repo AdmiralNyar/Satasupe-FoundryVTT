@@ -1,164 +1,167 @@
 <form class="flexcol {{cssClass}} karma-sheet" autocomplete="off">
-    <header class="karma-sheet-header">
-        <div class="item-header karma-header">
-            <div class="header-fields">
-                <div class="header-names flexrow">
-                    <h4 class="otherlangName"><input name="data.description.otherName" type="text" value="{{data.description.otherName}}" placeholder="other language name"/></h4>
-                    <h1 class="name"><input name="name" value="{{item.name}}" placeholder="name"/></h1>
-                </div>
-                <div class="header-settings">
-                    <div class="karma-type select-group stacked">
-                        <select name="data.type.name" data-dtype="String">
-                                <option hidden value="">SELECT</option>
-                            {{#select data.type.name}}
-                                <option value="basic">BASIC KARMA</option>
-                                <option value="advanced">ADVANCED KARMA</option>
-                                <option value="monster">MONSTER KARMA</option>
-                                <option value="alliance">ALLIANCE KARMA</option>
-                                <option value="wideuse">WIDE USE KARMA</option>
-                                <option value="bad">BAD KARMA</option>
-                                <option value="team">TEAM KARMA</option>
-                                <option value="booster">BOOSTER KARMA</option>
-                                <option value="deadman">HETEROMORPH</option>
-                                <option value="newbie">NEWBIE KARMA</option>
-                            {{/select}}                     
-                        </select>
+    <div class="karma-content">
+        <header class="karma-sheet-header">
+            <div class="karma-header">
+                <div class="header-fields">
+                    <div class="header-names flexrow">
+                        <h4 class="otherlangName"><input name="data.description.otherName" type="text" value="{{data.description.otherName}}" placeholder="{{localize 'SATASUPE.OtherLangName'}}"/></h4>
+                        <h1 class="name"><input name="name" value="{{item.name}}" placeholder="{{localize 'SATASUPE.KarmaName'}}"/></h1>
                     </div>
-                    <div class="karma-typeName">
-                        <input name="data.description.typeName" type="text" value="{{data.description.typeName}}" placeholder="karma type name"/>
-                    </div>
-                    <div class="goodORbad">
-                        <select name="data.abilityType.name" data-dtype="String">
-                                <option hidden value="">SELECT</option>
-                            {{#select data.abilityType.name}}
-                                <option value="talent">INOU</option>
-                                <option value="compensation">DAISYO</option>
-                                <option value="heteromorph">HETEROMORPH</option>
-                            {{/select}}
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <nav class="sheet-tabs tabs karma" data-group="primary">
-        <a class="item active" data-tab="description" >MAIN</a>
-        <a class="item" data-tab="setting" >SETTING</a>
-    </nav>
-
-    <section class="sheet-body karma-sheet-body">
-        <div class="tab description active" data-group="primary" data-tab="description">
-            <div class="text">
-                <div class="margin karma-timing select-group stacked">
-                    <label>TIMING :</label>
-                    <select name="data.timing.name" data-dtype="String">
-                            <option hidden value="">SELECT</option>
-                        {{#select data.timing.name}}
-                            <option value="passive">PASSIVE EFFECT</option>
-                            <option value="planning">PLANNING EFFECT</option>
-                            <option value="support">SUPPORT EFFECT</option>
-                            <option value="auxiliary">AUXILIARY EFFECT</option>
-                            <option value="interrupt">INTERRUPT EFFECT</option>
-                            <option value="prologue">PROLOGUE EFFECT</option>
-                            <option value="epilogue">EPILOGUE EFFECT</option>
-                        {{/select}}
-                    </select>
-                </div>
-
-                <div class="margin karma-target select-group stacked">
-                    <label>TARGET :</label>
-                    <select name="data.target.name" data-dtype="String">
-                            <option hidden value="">SELECT</option>
-                        {{#select data.target.name}}
-                            <option value="own">OWN</option>
-                            <option value="other">OTHER</option>
-                            <option value="team">TEAM</option>
-                            <option value="area">AREA</option>
-                            <option value="item">ITEM</option>
-                        {{/select}} 
-                    </select>
-                </div>
-                <div class="margin karma-check">
-                    <label>CHECK :</label>
-                    {{#if data.check.none}}
-                        <div class="tytle-name">NONE</div>
-                    {{else}}
-                        <div class="tytle-name">{{#if data.check.type}}〔ALIGNMENT〕/ {{_alignment}}{{else}}〔{{_propertiesValue}}〕/ {{data.check.difficulty}}{{/if}}</div>
-                    {{/if}}
-                </div>
-            </div>
-            <div class="photo">
-                <div class="sheet-portrait">
-                    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
-                </div>
-            </div>
-
-            <div class="effect">
-                <div class="effect-editor">
-                    <textarea class="effect-area" rows="4" cols="30" placeholder="effect text">{{data.effect}}</textarea>
-                </div>
-                <div class="flavor-box">
-                    <input name="data.flavor" type="text" value="{{data.flavor}}" placeholder="flavor text"/>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="tab setting" data-group="primary" data-tab="setting">
-
-            <div class="setting-header">
-                <label class="checkbox">
-                    NO CHECK <input type="checkbox" name="data.check.none" {{checked data.check.none}}/>
-                </label>
-            </div>
-
-            {{#unless data.check.none}}
-                <div class="setting-main">
-                    <div class="karma-type select-group stacked">
-                        <label class="checkbox">
-                            ALIGNMENT? <input type="checkbox" name="data.check.type" {{checked data.check.type}}/>
-                        </label>
-                    </div>
-
-                    {{#unless data.check.type}}
-                        <div class="check-value select-group stacked">
-                            <label>CHECK VALUE</label>
-                                <select class="circumstance-type" name="data.check.checkValue.name" data-dtype="String">
-                                {{#select data.check.checkValue.name}}
-                                        <option value="crime" selected>CRIME</option>
-                                        <option value="life">LIFE</option>
-                                        <option value="love">LOVE</option>
-                                        <option value="cluture">CLUTURE</option>
-                                        <option value="combat">COMBAT</option>
-                                        <option value="body" >BODY</option>
-                                        <option value="mind">MIND</option>
-                                {{/select}}
-                                </select>
+                    <div class="header-settings">
+                        <div class="karma-type select-group stacked">
+                            <select name="data.type.name" data-dtype="String">
+                                    <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                                {{#select data.type.name}}
+                                    <option value="basic">{{localize 'KARMA.BASIC'}}</option>
+                                    <option value="advanced">{{localize 'KARMA.ADVANCED'}}</option>
+                                    <option value="newbie">{{localize 'KARMA.NEWBIE'}}</option>
+                                    <option value="wideuse">{{localize 'KARMA.WIDEUSE'}}</option>
+                                    <option value="booster">{{localize 'KARMA.BOOSTER'}}</option>
+                                    <option value="team">{{localize 'KARMA.TEAM'}}</option>
+                                    <option value="alliance">{{localize 'KARMA.ALLIANCE'}}</option>
+                                    <option value="deadman">{{localize 'KARMA.HETEROMORPH'}}</option>
+                                    <option value="monster">{{localize 'KARMA.MONSTER'}}</option>                               
+                                    <option value="bad">{{localize 'KARMA.BAD'}}</option>
+                                    <option value="gamer">{{localize 'KARMA.GAMER'}}</option>
+                                {{/select}}                     
+                            </select>
                         </div>
-                        <div class="check-difficulty-normal stacked">
-                            <label>CHECK DIFFICULTY</label>
-                            <input name="data.check.difficulty" type="text" value="{{data.check.difficulty}}">
+                        <div class="karma-typeName">
+                            <input name="data.description.typeName" type="text" value="{{data.description.typeName}}" placeholder="{{localize 'SATASUPE.KarmaTypeName'}}"/>
                         </div>
-                    {{else}}
-                        <div class="check-difficulty-align stacked">
-                            <label>CHECK DIFFICULTY</label>
-                            <select name="data.check.alignment.name" data-dtype="String">
-                                {{#select data.check.alignment.name}}
-                                <option value="calm" selected>CALM</option>
-                                <option value="dither">DITHER</option>
-                                <option value="desire">DESIRE</option>
+                        <div class="goodORbad">
+                            <select name="data.abilityType.name" data-dtype="String">
+                                    <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                                {{#select data.abilityType.name}}
+                                    <option value="talent">{{localize 'SATASUPE.Talent'}}</option>
+                                    <option value="compensation">{{localize 'SATASUPE.COMPENSATION'}}</option>
+                                    <option value="heteromorph">{{localize 'SATASUPE.HETEROMORPH'}}</option>
                                 {{/select}}
                             </select>
                         </div>
-                    {{/unless}}
-
-                    <div class="check-other-difficulty stacked">
-                        <label>OTHER DIFFICULTY TEXT</label>
-                        <input name="data.check.checkText" type="text" value="{{data.check.checkText}}" placeholder="e.g.: If mission succeeded, 7. Other case 11">
                     </div>
                 </div>
-            {{/unless}}
-        </div>
-    </section>
+            </div>
+        </header>
+
+        <nav class="sheet-tabs tabs karma" data-group="primary">
+            <a class="item active" data-tab="description" >{{localize 'SATASUPE.Main'}}</a>
+            <a class="item" data-tab="setting" >{{localize 'SATASUPE.Setting'}}</a>
+        </nav>
+
+        <section class="sheet-body karma-sheet-body">
+            <div class="tab description active" data-group="primary" data-tab="description">
+                <div class="text">
+                    <div class="margin karma-timing select-group stacked">
+                        <label>{{localize 'SATASUPE.Timing'}} :</label>
+                        <select name="data.timing.name" data-dtype="String">
+                                <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                            {{#select data.timing.name}}
+                                <option value="passive">{{localize 'SATASUPE.Passive'}}</option>
+                                <option value="planning">{{localize 'SATASUPE.Planning'}}</option>
+                                <option value="support">{{localize 'SATASUPE.Support'}}</option>
+                                <option value="auxiliary">{{localize 'SATASUPE.Auxiliary'}}</option>
+                                <option value="interrupt">{{localize 'SATASUPE.Interrupt'}}</option>
+                                <option value="prologue">{{localize 'SATASUPE.Prologue'}}</option>
+                                <option value="epilogue">{{localize 'SATASUPE.Epilogue'}}</option>
+                            {{/select}}
+                        </select>
+                    </div>
+
+                    <div class="margin karma-target select-group stacked">
+                        <label>{{localize 'SATASUPE.Target'}} :</label>
+                        <select name="data.target.name" data-dtype="String">
+                                <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                            {{#select data.target.name}}
+                                <option value="own">{{localize 'SATASUPE.Own'}}</option>
+                                <option value="other">{{localize 'SATASUPE.Other'}}</option>
+                                <option value="team">{{localize 'SATASUPE.Team'}}</option>
+                                <option value="area">{{localize 'SATASUPE.Area'}}</option>
+                                <option value="item">{{localize 'SATASUPE.Item'}}</option>
+                            {{/select}} 
+                        </select>
+                    </div>
+                    <div class="margin karma-check">
+                        <label>{{localize 'SATASUPE.Check'}} :</label>
+                        {{#if data.check.none}}
+                            <div class="tytle-name">{{localize 'SATASUPE.None'}}</div>
+                        {{else}}
+                            <div class="tytle-name">{{#if data.check.type}}〔{{localize 'ATTRIBS.ALIGNMENTS'}}〕/ {{localize _alignment}}{{else}}〔{{localize _propertiesValue}}〕/ {{data.check.difficulty}}{{/if}}</div>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="photo">
+                    <div class="sheet-portrait">
+                        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+                    </div>
+                </div>
+
+                <div class="effect">
+                    <div class="effect-editor">
+                        <textarea class="effect-area" rows="4" cols="30" placeholder="{{localize 'SATASUPE.KarmaEffect'}}">{{data.effect}}</textarea>
+                    </div>
+                    <div class="flavor-box">
+                        <input name="data.flavor" type="text" value="{{data.flavor}}" placeholder="{{localize 'SATASUPE.KarmaFlavor'}}"/>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="tab setting" data-group="primary" data-tab="setting">
+
+                <div class="setting-header">
+                    <label class="checkbox">
+                        {{localize 'SATASUPE.NoCheck'}} <input type="checkbox" name="data.check.none" {{checked data.check.none}}/>
+                    </label>
+                </div>
+
+                {{#unless data.check.none}}
+                    <div class="setting-main">
+                        <div class="karma-type select-group stacked">
+                            <label class="checkbox">
+                                {{localize 'SATASUPE.ALIGNMENTCHECK'}} <input type="checkbox" name="data.check.type" {{checked data.check.type}}/>
+                            </label>
+                        </div>
+
+                        {{#unless data.check.type}}
+                            <div class="check-value select-group stacked">
+                                <label>{{localize 'SATASUPE.CheckCharacteristics'}}</label>
+                                    <select class="circumstance-type" name="data.check.checkValue.name" data-dtype="String">
+                                    {{#select data.check.checkValue.name}}
+                                            <option value="crime" selected>{{localize 'CIRCUMSTANCE.CRIME'}}</option>
+                                            <option value="life">{{localize 'CIRCUMSTANCE.LIFE'}}</option>
+                                            <option value="love">{{localize 'CIRCUMSTANCE.LOVE'}}</option>
+                                            <option value="cluture">{{localize 'CIRCUMSTANCE.CULTURE'}}</option>
+                                            <option value="combat">{{localize 'CIRCUMSTANCE.COMBAT'}}</option>
+                                            <option value="body" >{{localize 'APTITUDE.BODY'}}</option>
+                                            <option value="mind">{{localize 'APTITUDE.MIND'}}</option>
+                                    {{/select}}
+                                    </select>
+                            </div>
+                            <div class="check-difficulty-normal stacked">
+                                <label>{{localize 'SATASUPE.Difficulty'}}</label>
+                                <input name="data.check.difficulty" type="text" value="{{data.check.difficulty}}">
+                            </div>
+                        {{else}}
+                            <div class="check-difficulty-align stacked">
+                                <label>{{localize 'SATASUPE.Difficulty'}}</label>
+                                <select name="data.check.alignment.name" data-dtype="String">
+                                    {{#select data.check.alignment.name}}
+                                    <option value="calm" selected>{{localize 'ALIGNMENT.CALM'}}</option>
+                                    <option value="dither">{{localize 'ALIGNMENT.DITHER'}}</option>
+                                    <option value="desire">{{localize 'ALIGNMENT.DESIRE'}}</option>
+                                    {{/select}}
+                                </select>
+                            </div>
+                        {{/unless}}
+
+                        <div class="check-other-difficulty stacked">
+                            <label>{{localize 'SATASUPE.OtherDifficulty'}}</label>
+                            <input name="data.check.checkText" type="text" value="{{data.check.checkText}}" placeholder="{{localize 'SATASUPE.DifficultyExample'}}">
+                        </div>
+                    </div>
+                {{/unless}}
+            </div>
+        </section>
+    </div>
 </form>

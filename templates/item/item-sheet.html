@@ -1,55 +1,359 @@
-<form class="flexcol {{cssClass}}" autocomplete="off">
-    <header class="sheet-header">
-        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
-        <div class="header-fields">
-            <h1>Unimplemented!</h1>
-            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
-            <div class="resource">
-                <label>Quantity</label>
-                <input type="text" name="data.quantity" value="{{data.quantity}}" data-dtype="Number" />
-            </div>
-            <div class="resource">
-                <label>Weight</label>
-                <input type="text" name="data.weight" value="{{data.weight}}" data-dtype="Number" />
+<form class="flexcol {{cssClass}} item-sheet" autocomplete="off">
+    <header class="sheet-header　item-sheet-header">
+        <div class="item-header">
+            <div class="header-fields">
+                <div class="header-names flexrow">
+                    <h4 class="otherlangName"><input name="data.otherName" type="text" value="{{data.otherName}}" placeholder="{{localize 'SATASUPE.OtherLangName'}}"/></h4>
+                    <h1 class="name"><input name="name" value="{{item.name}}" placeholder="Item Name"/></h1>
+                </div>
+                <div class="img">
+                    <img class="photo" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
+                </div>
+                <div class="header-settings select-group stacked">
+                    <div class="weapon-setting settings">
+                        <label>{{localize 'SATASUPE.WEAPON'}} :</label>
+                        <input type="checkbox" name="data.typew" {{checked data.typew}}/>
+                    </div>
+                    <div class="veicle-setting settings">
+                        <label>{{localize 'SATASUPE.VEICLE'}} :</label>
+                        <input type="checkbox" name="data.typev" {{checked data.typev}}/>
+                    </div>
+                    <div class="props-setting settings">
+                        <label>{{localize 'SATASUPE.PROPS'}} :</label>
+                        <input type="checkbox" name="data.typep" {{checked data.typep}}/>
+                    </div>
+                    <div class="gadjet-setting settings">
+                        <label>{{localize 'SATASUPE.GADJET'}} :</label>
+                        <input type="checkbox" name="data.typeg" {{checked data.typeg}}/>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
 
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="description">Description</a>
-        <a class="item" data-tab="attributes">Attributes</a>
+        {{#if data.typew}}<a class="item" data-tab="weapon">{{localize 'SATASUPE.WEAPON'}}</a>{{/if}}
+        {{#if data.typev}}<a class="item" data-tab="veicle">{{localize 'SATASUPE.VEICLE'}}</a>{{/if}}
+        {{#if data.typep}}<a class="item" data-tab="props">{{localize 'SATASUPE.PROPS'}}</a>{{/if}}
+        {{#if data.typeg}}<a class="item" data-tab="gadjet">{{localize 'SATASUPE.GADJET'}}</a>{{/if}}
     </nav>
 
     {{!-- Sheet Body --}}
-    <section class="sheet-body">
+    <section class="sheet-body item-sheet-body">
 
-        {{!-- Description Tab --}}
-        <div class="tab" data-group="primary" data-tab="description">
-            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+        {{!-- Weapon Tab --}}
+        <div class="tab" data-group="primary" data-tab="weapon">
+            <div class="weapon-detail detail">
+                <div class="weapon-type">
+                    <label>{{localize 'SATASUPE.TYPE'}} :</label>
+                    <select name="data.weapon.wtype" data-dtype="String">
+                        <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                    {{#select data.weapon.wtype}}
+                        <option value="meleeweapon">{{localize 'SATASUPE.MELEEWEAPON'}}</option>
+                        <option value="meleeweaponmartial">{{localize 'SATASUPE.MELEEWEAPONMARTIAL'}}</option>
+                        <option value="meleeweaponmechanical">{{localize 'SATASUPE.MELEEWEAPONMECH'}}</option>
+                        <option value="throwingweapon">{{localize 'SATASUPE.THROWINGWEAPON'}}</option>
+                        <option value="anticrime">{{localize 'SATASUPE.ANTICRIME'}}</option>
+                        <option value="pistol">{{localize 'SATASUPE.PISTOL'}}</option>
+                        <option value="silencedpistol">{{localize 'SATASUPE.SILENCEDPISTOL'}}</option>
+                        <option value="smg">{{localize 'SATASUPE.SMG'}}</option>
+                        <option value="assaultrifle">{{localize 'SATASUPE.ASSAULTTIFLE'}}</option>
+                        <option value="sniperrifle">{{localize 'SATASUPE.SNIPERRIFLE'}}</option>
+                        <option value="shotgun">{{localize 'SATASUPE.SHOTGUN'}}</option>
+                        <option value="heavyweapon">{{localize 'SATASUPE.HEAVYWEAPON'}}</option>
+                        <option value="grimoire">{{localize 'SATASUPE.GRIMOIRE'}}</option>
+                        <option value="shield">{{localize 'SATASUPE.SHIELD'}}</option>
+                        <option value="electronicweapon">{{localize 'SATASUPE.ELECTRONICWEAPON'}}</option>
+                    {{/select}}
+                    </select>
+                </div>
+                <div class="weapon-price">
+                    <label>{{localize 'SATASUPE.PRICE'}} :</label>
+                    <input name="data.weapon.price.value" type="text" value="{{data.weapon.price.value}}"/>
+                </div>
+                <div class="weapon-hit">
+                    <label>{{localize 'SATASUPE.HIT'}} :</label>
+                    <input name="data.weapon.hit" type="text" value="{{data.weapon.hit}}"/>
+                </div>
+                <div class="weapon-damageadd">
+                    <label>{{localize 'SATASUPE.DAMAGE'}} :</label>
+                    <input class="damage" name="data.weapon.damageadd" type="text" value="{{data.weapon.damageadd}}"/>
+                </div>
+                <div class="weapon-range">
+                    <label>{{localize 'SATASUPE.RANGE'}} :</label>
+                    <select name="data.weapon.range" data-dtype="String">
+                        <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                    {{#select data.weapon.range}}
+                        <option value="melee">{{localize 'SATASUPE.MELEE'}}</option>
+                        <option value="shot">{{localize 'SATASUPE.SHOT'}}</option>
+                    {{/select}}
+                    </select>
+                </div>
+                <div class="upkeep">
+                    <label>{{localize 'EXP.UPKEEPS'}} :</label>
+                    <input class="checkbox item-upkeep" type="checkbox" name="data.weapon.upkeep" {{checked data.weapon.upkeep}}/>
+                </div>
+            </div>
+            <div class="weapon-special special">
+                <label>{{localize 'SATASUPE.SPECIAL'}} :</label>
+                <div class="weapon-special-switch switch">
+                    {{#each data.weapon.special as |special key|}}
+                        <div class="special-button">
+                            <button class="special-button {{#if special.value}}button-on{{/if}}" data-special="{{key}}" data-itemtype="weapon" type="button">
+                                {{localize special.label}}
+                            </button>
+                        </div>
+                    {{/each}}
+                    {{#each data.weapon.specialtext as |specialtext key|}}
+                        <div class="special-button">
+                            <button class="special-button {{#if specialtext.value}}button-on{{/if}}" data-specialtext="{{key}}" data-itemtype="weapon" type="button">
+                                {{localize specialtext.label}}
+                            </button>
+                            {{#if specialtext.value}}<input class="specialtext-input" type="text"  data-specialtext="{{key}}" name="specialtext.number" value="{{specialtext.number}}"/>{{/if}}
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
         </div>
 
-        {{!-- Attributes Tab --}}
-        <div class="tab attributes" data-group="primary" data-tab="attributes">
-            <header class="attributes-header flexrow">
-                <span class="attribute-key">{{localize "SATASUPE.AttributeKey"}}</span>
-                <span class="attribute-value">{{localize "SATASUPE.AttributeValue"}}</span>
-                <span class="attribute-label">{{localize "SATASUPE.AttributeLabel"}}</span>
-                <span class="attribute-dtype">{{localize "SATASUPE.AttributeDtype"}}</span>
-                <a class="attribute-control" data-action="create" data-group="{{group}}"><i class="fas fa-plus"></i></a>
-            </header>
-
-            {{!-- Render the attribute list partial. --}}
-            {{> "systems/satasupe/templates/parts/sheet-attributes.html" attributes=data.ungroupedAttributes dtypes=dtypes}}
-
-            {{!-- Render the grouped attributes partial and control. --}}
-            <div class="groups">
-                {{> "systems/satasupe/templates/parts/sheet-groups.html" attributes=data.groupedAttributes groups=data.groups dtypes=dtypes}}
-
-                <div class="group-controls flexrow">
-                    <input class="group-prefix" type="text" val=""/>
-                    <a class="button group-control" data-action="create-group"><i class="fas fa-plus"></i>Add Attribute Group</a>
+        {{!-- veicle Tab --}}
+        <div class="tab" data-group="primary" data-tab="veicle">
+            <div class="veicle-detail detail">
+                <div class="veicle-type">
+                    <label>{{localize 'SATASUPE.TYPE'}} :</label>
+                    <select name="data.veicle.vtype" data-dtype="String">
+                        <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                    {{#select data.veicle.vtype}}
+                        <option value="skateboard">{{localize 'SATASUPE.SKATEBOARD'}}</option>
+                        <option value="hotrod">{{localize 'SATASUPE.HOTROD'}}</option>
+                        <option value="bicycle">{{localize 'SATASUPE.BICYCLE'}}</option>
+                        <option value="stall">{{localize 'SATASUPE.STALL'}}</option>
+                        <option value="animal">{{localize 'SATASUPE.ANIMAL'}}</option>
+                        <option value="autotricycle">{{localize 'SATASUPE.AUTOTRICYCLE'}}</option>
+                        <option value="sidecar">{{localize 'SATASUPE.SIDECAR'}}</option>
+                        <option value="minimotorcycle">{{localize 'SATASUPE.MINIMOTORCYCLE'}}</option>
+                        <option value="middlemotorcycle">{{localize 'SATASUPE.MIDDLEMOTORCYCLE'}}</option>
+                        <option value="bigmotorcycle">{{localize 'SATASUPE.BIGMOTORCYCLE'}}</option>
+                        <option value="cabinmotorcycle">{{localize 'SATASUPE.CABINMOTORCYCLE'}}</option>
+                        <option value="minivan">{{localize 'SATASUPE.MINIVAN'}}</option>
+                        <option value="lighttruck">{{localize 'SATASUPE.LIGHTTRUCK'}}</option>
+                        <option value="middletruck">{{localize 'SATASUPE.MIDDLETRUCK'}}</option>
+                        <option value="normalcar">{{localize 'SATASUPE.NORMALCAR'}}</option>
+                        <option value="minicar">{{localize 'SATASUPE.MINICAR'}}</option>
+                        <option value="offroadvehicle">{{localize 'SATASUPE.OFFROADVEHICLE'}}</option>
+                        <option value="sportcar">{{localize 'SATASUPE.SPORTCAR'}}</option>
+                        <option value="convertible">{{localize 'SATASUPE.CONVERTIBLE'}}</option>
+                        <option value="luxurycar">{{localize 'SATASUPE.LUXURYCAR'}}</option>
+                        <option value="limousine">{{localize 'SATASUPE.LIMOUSINE'}}</option>
+                        <option value="bus">{{localize 'SATASUPE.BUS'}}</option>
+                        <option value="train">{{localize 'SATASUPE.TRAIN'}}</option>
+                        <option value="farmmachine">{{localize 'SATASUPE.FARMMACHINE'}}</option>
+                        <option value="forklift">{{localize 'SATASUPE.FORKLIFT'}}</option>
+                        <option value="heavymachine">{{localize 'SATASUPE.HEAVYMACHINE'}}</option>
+                        <option value="boat">{{localize 'SATASUPE.BOAT'}}</option>
+                        <option value="jetskibike">{{localize 'SATASUPE.JETSKIBIKE'}}</option>
+                        <option value="ship">{{localize 'SATASUPE.SHIP'}}</option>
+                        <option value="baloon">{{localize 'SATASUPE.BALOON'}}</option>
+                        <option value="airplane">{{localize 'SATASUPE.AIRPLANE'}}</option>
+                        <option value="helicopter">{{localize 'SATASUPE.HELICOPTER'}}</option>
+                        <option value="attackhelicopter">{{localize 'SATASUPE.ATTACKHELICOPTER'}}</option>
+                        <option value="amphibian">{{localize 'SATASUPE.AMPHIBIAN'}}</option>
+                        <option value="armorcar">{{localize 'SATASUPE.ARMORCAR'}}</option>
+                        <option value="tank">{{localize 'SATASUPE.TANK'}}</option>
+                        <option value="otherveicle">{{localize 'SATASUPE.OTHERVEICLE'}}</option>
+                    {{/select}}
+                    </select>
                 </div>
+                <div class="veicle-price">
+                    <label>{{localize 'SATASUPE.PRICE'}} :</label>
+                    <input name="data.veicle.price.value" type="text" value="{{data.veicle.price.value}}"/>
+                </div>
+                <div class="veicle-speed">
+                    <label>{{localize 'SATASUPE.SPEED'}} :</label>
+                    <input name="data.veicle.speed" type="text" value="{{data.veicle.speed}}"/>
+                </div>
+                <div class="veicle-drp">
+                    <label>{{localize 'SATASUPE.CARBODY'}} :</label>
+                    <input name="data.veicle.drp" type="text" value="{{data.veicle.drp}}"/>
+                </div>
+                <div class="veicle-capacity">
+                    <label>{{localize 'SATASUPE.CAPACITY'}} :</label>
+                    <input name="data.veicle.capacity" type="text" value="{{data.veicle.capasity}}"/>
+                </div>
+                <div class="upkeep">
+                    <label>{{localize 'EXP.UPKEEPS'}} :</label>
+                    <input class="checkbox item-upkeep" type="checkbox" name="data.veicle.upkeep" {{checked data.veicle.upkeep}}/>
+                </div>
+            </div>
+            <div class="veicle-special special">
+                <label>{{localize 'SATASUPE.SPECIAL'}} :</label>
+                <div class="veicle-special-switch switch">
+                    {{#each data.veicle.special as |special key|}}
+                        <div class="special-button">
+                            <button class="special-button {{#if special.value}}button-on{{/if}}" data-special="{{key}}" data-itemtype="veicle" type="button">
+                                {{localize special.label}}
+                            </button>
+                        </div>
+                    {{/each}}
+                    {{#each data.veicle.specialtext as |specialtext key|}}
+                    <div class="special-button">
+                        <button class="special-button {{#if specialtext.value}}button-on{{/if}}" data-specialtext="{{key}}" data-itemtype="veicle" type="button">
+                            {{localize specialtext.label}}
+                        </button>
+                        {{#if specialtext.value}}<input class="specialtext-input" type="text" data-specialtext="{{key}}" name="specialtext.number" value="{{specialtext.number}}"/>{{/if}}
+                    </div>
+                {{/each}}
+                </div>
+            </div>
+        </div>
+
+        {{!-- Props Tab --}}
+        <div class="tab" data-group="primary" data-tab="props">
+            <div class="props-detail detail">
+                <div class="props-type">
+                    <label>{{localize 'SATASUPE.TYPE'}} :</label>
+                    <select name="data.props.ptype" data-dtype="String">
+                        <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                    {{#select data.props.ptype}}
+                        <option value="money">{{localize 'SATASUPE.MONEY'}}</option>
+                        <option value="communication">{{localize 'SATASUPE.COMMUNICATION'}}</option>
+                        <option value="security">{{localize 'SATASUPE.SECURITY'}}</option>
+                        <option value="drug">{{localize 'SATASUPE.DRUG'}}</option>
+                        <option value="commodity">{{localize 'SATASUPE.COMODITY'}}</option>
+                        <option value="facility">{{localize 'SATASUPE.FACILITY'}}</option>
+                        <option value="follower">{{localize 'SATASUPE.FOLLOWER'}}</option>
+                        <option value="service">{{localize 'SATASUPE.SERVICE'}}</option>
+                    {{/select}}
+                    </select>
+                </div>
+                <div class="props-price">
+                    <label>{{localize 'SATASUPE.PRICE'}} :</label>
+                    <input name="data.props.price.value" type="text" value="{{data.props.price.value}}"/>
+                </div>
+                <div class="addcapacity">
+                    <label>{{localize 'SATASUPE.ADDCAPACITY'}} :</label>
+                    <input type="text" name="data.props.addcapacity" value="{{data.props.addcapacity}}"/>
+                </div>
+                <div class="props-timing">
+                    <label>{{localize 'SATASUPE.Timing'}} :</label>
+                    <select name="data.props.timing" data-dtype="String">
+                        <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                    {{#select data.props.timing}}
+                        <option value="passive">{{localize 'SATASUPE.Passive'}}</option>
+                        <option value="planning">{{localize 'SATASUPE.Planning'}}</option>
+                        <option value="support">{{localize 'SATASUPE.Support'}}</option>
+                        <option value="auxiliary">{{localize 'SATASUPE.Auxiliary'}}</option>
+                        <option value="interrupt">{{localize 'SATASUPE.Interrupt'}}</option>
+                        <option value="prologue">{{localize 'SATASUPE.Prologue'}}</option>
+                        <option value="epilogue">{{localize 'SATASUPE.Epilogue'}}</option>
+                    {{/select}}
+                    </select>
+                </div>
+                {{#if data.props.special.mini.value}}
+                <div class="props-ministock">
+                    <label>{{localize 'SATASUPE.STOCK'}} :</label>
+                    <select name="data.props.minivalue" data-dtype="String">
+                        <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                    {{#select data.props.minivalue}}
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    {{/select}}
+                    </select>
+                </div>
+                {{/if}}
+                <div class="upkeep">
+                    <label>{{localize 'EXP.UPKEEPS'}} :</label>
+                    <input class="checkbox item-upkeep" type="checkbox" name="data.props.upkeep" {{checked data.props.upkeep}}/>
+                </div>
+            </div>
+            <div class="props-effect effect">
+                <label>{{localize 'SATASUPE.KarmaEffect'}} :</label>
+                <textarea class="props-effect-area effect-area" rows="4" cols="30" placeholder="{{localize 'SATASUPE.KarmaEffect'}}">{{data.props.effect}}</textarea>
+            </div>
+            <div class="props-special special">
+                <label>{{localize 'SATASUPE.SPECIAL'}} :</label>
+                <div class="props-special-switch switch">
+                    {{#each data.props.special as |special key|}}
+                        <div class="special-button">
+                            <button class="special-button  {{#if special.value}}button-on{{/if}}"  data-special="{{key}}" data-itemtype="props" type="button">
+                                {{localize special.label}}
+                            </button>
+                        </div>
+                    {{/each}}
+                    {{#each data.props.specialtext as |specialtext key|}}
+                    <div class="special-button">
+                        <button class="special-button {{#if specialtext.value}}button-on{{/if}}" data-specialtext="{{key}}" data-itemtype="props" type="button">
+                            {{localize specialtext.label}}
+                        </button>
+                        {{#if specialtext.value}}<input class="specialtext-input" type="text"  data-specialtext="{{key}}" name="specialtext.number" value="{{specialtext.number}}"/>{{/if}}
+                    </div>
+                {{/each}}
+                </div>
+            </div>
+        </div>
+
+        {{!-- Gadjet Tab --}}
+        <div class="tab" data-group="primary" data-tab="gadjet">
+            <div class="gadjet-detail detail">
+                <div class="gadjet-type">
+                    <label>{{localize 'SATASUPE.TYPE'}} :</label>
+                    <select name="data.gadjet.gtype" data-dtype="String">
+                        <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                    {{#select data.gadjet.gtype}}
+                        <option value="wideuse">{{localize 'SATASUPE.WIDEUSEGADJET'}}</option>
+                        <option value="hobby">{{localize 'SATASUPE.HOBBYGADJET'}}</option>
+                        <option value="alliance">{{localize 'SATASUPE.ALLIANCEGADJET'}}</option>
+                    {{/select}}
+                    </select>
+                </div>
+                <div class="gadjet-hobby">
+                    <label>{{localize 'SATASUPE.HOBBY'}} :</label>
+                    <input name="data.gadjet.hobby" type="text" value="{{data.gadjet.hobby}}"/>
+                </div>
+                <div class="addcapacity">
+                    <label>{{localize 'SATASUPE.ADDCAPACITY'}} :</label>
+                    <input type="text" name="data.gadjet.addcapacity" value="{{data.gadjet.addcapacity}}"/>
+                </div>
+                <div class="gadjet-timing">
+                    <label>{{localize 'SATASUPE.Timing'}} :</label>
+                    <select name="data.gadjet.timing" data-dtype="String">
+                        <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                    {{#select data.gadjet.timing}}
+                        <option value="passive">{{localize 'SATASUPE.Passive'}}</option>
+                        <option value="planning">{{localize 'SATASUPE.Planning'}}</option>
+                        <option value="support">{{localize 'SATASUPE.Support'}}</option>
+                        <option value="auxiliary">{{localize 'SATASUPE.Auxiliary'}}</option>
+                        <option value="interrupt">{{localize 'SATASUPE.Interrupt'}}</option>
+                        <option value="prologue">{{localize 'SATASUPE.Prologue'}}</option>
+                        <option value="epilogue">{{localize 'SATASUPE.Epilogue'}}</option>
+                    {{/select}}
+                    </select>
+                </div>
+                <div class="gadjet-times">
+                    <label>{{localize 'SATASUPE.TIMES'}} :</label>
+                    {{#uniqueif data.gadjet.times.ttype "!==" "unlimit"}}<input name="data.gadjet.times.tnumber" type="text" value="{{data.gadjet.times.tnumber}}"/><label class="space">    /  </label>{{/uniqueif}}
+                    <select name="data.gadjet.times.ttype" data-dtype="String">
+                        <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                    {{#select data.gadjet.times.ttype}}
+                        <option value="normal">{{localize 'SATASUPE.TIME'}}</option>
+                        <option value="consumable">{{localize 'SATASUPE.SONSUMABLE'}}</option>
+                        <option value="unlimit">{{localize 'SATASUPE.UNLIMIT'}}</option>
+                    {{/select}}
+                    </select>
+                </div>
+            </div>
+            <div class="gadjet-effect effect">
+                <label>{{localize 'SATASUPE.KarmaEffect'}} :</label>
+                <textarea class="gadjet-effect-area effect-area" rows="4" cols="30" placeholder="{{localize 'SATASUPE.KarmaEffect'}}">{{data.gadjet.effect}}</textarea>
             </div>
         </div>
     </section>

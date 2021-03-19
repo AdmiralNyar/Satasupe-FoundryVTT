@@ -11,7 +11,7 @@ export class SatasupeItemSheet extends ItemSheet {
     return mergeObject(super.defaultOptions, {
       classes: ["satasupe", "sheet", "item"],
       width: 520,
-      height: 480,
+      height: 545,
       tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description"}],
     });
   }
@@ -40,23 +40,63 @@ export class SatasupeItemSheet extends ItemSheet {
 	activateListeners(html) {
     super.activateListeners(html);
 
+    html.find("button.special-button").click( this._onSpecialButtonToggle.bind(this));
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
   }
 
   /* -------------------------------------------- */
 
-  /** @override 
+  /** @override */
   _updateObject(event, formData) {
-    console.log(formData);
-    console.log(this.object);
+    if( event.currentTarget){
+      if(event.currentTarget.classList){
+        if(this.object.data.type == 'item'){
+          if(this.object.options.actor){
+            if(event.currentTarget.classList.contains('item-upkeep')){
+              const bool = event.currentTarget.checked;
+              this.object.options.actor.updateEquipmentUpkeep(bool);
+            }
+          }
+          if(event.currentTarget.classList.contains('effect-area')){
+            const key = event.currentTarget.closest('.tab').dataset.tab
+            this._updateEffectArea(this.object, event.currentTarget.value, key);
+          }
+          if(event.currentTarget.classList.contains('specialtext-input')){
+            const key = event.currentTarget.closest('.tab').dataset.tab;
+            const specialtext = event.currentTarget.dataset.specialtext;
+            this._updateSpecialtext(this.object, event.currentTarget.value, key, specialtext);
+          }
+        }
+      }
+    }
 
-    // Handle attribute and group updates.
+    /* Handle attribute and group updates.
     formData = EntitySheetHelper.updateAttributes(formData, this);
-    formData = EntitySheetHelper.updateGroups(formData, this);
+    formData = EntitySheetHelper.updateGroups(formData, this);*/
 
     // Update the Actor with the new form values.
     return this.object.update(formData);
   }
-  */
+  
+  async _updateEffectArea(object, value, key){
+      const efare = duplicate(object.data.data);
+      efare[key].effect = value;
+      await this.item.update({'data': efare});
+  }
+
+  
+  async _updateSpecialtext(object, value, key, specialtextname){
+      const stext = duplicate(object.data.data);
+      stext[key].specialtext[specialtextname].number = value;
+      await this.item.update({'data': stext});
+  }
+
+  async _onSpecialButtonToggle(event){
+    event.preventDefault();
+    if((event.currentTarget.dataset.special|| event.currentTarget.dataset.specialtext)&& event.currentTarget.dataset.itemtype){
+      await this.item.toggleSpecial( event.currentTarget.dataset.special, event.currentTarget.dataset.specialtext, event.currentTarget.dataset.itemtype);
+    }
+  }
+
 }
