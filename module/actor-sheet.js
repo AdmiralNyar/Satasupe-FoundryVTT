@@ -535,23 +535,17 @@ export class SatasupeActorSheet extends ActorSheet {
   async _geardrop(event){
     var id = JSON.parse(event.originalEvent.dataTransfer.getData('text/plain'));
     let dataset = event.currentTarget.dataset;
-    console.log(dataset);
     let item = this.actor.data.items;
     for(let i = 0 ; i < item.length ; i++){
       if(item[i]._id === id.key){
-        console.log(dataset.nowcontain);
-        console.log(dataset.capacity);
         if(Number(dataset.nowcontain) < Number(dataset.capacity)){
           if((dataset.placetype == 'veicle') && (item[i].data.typev||(item[i].data.typep&&(item[i].data.props.special.normalstorage.value||item[i].data.props.special.room.value&&(dataset.habitable == 'false'))))){
           }else{
             if((dataset.placetype == 'normal')&&(item[i].data.typep&&item[i].data.props.special.room.value)){}else{
               if(((dataset.placetype == 'haven')||(dataset.placetype == 'haven2'))&&(item[i].data.typep&&item[i].data.props.special.normalstorage.value)){}else{
                 if(((item[i].data.typep&&(item[i].data.props.addcapacity !== 0))||(item[i].data.typeg&&(item[i].data.gadjet.addcapacity !== 0)))&&(dataset.placetype == item[i].name)){}else{
-                  console.log(dataset.placetype);
-                  console.log(item[i].data);
                   const gear = duplicate(this.actor.data.items);
                   gear[i].data.storage = dataset.placetype;
-                  console.log(gear);
                   await this.actor.update({'items' : gear});
                 }
               }
@@ -565,7 +559,6 @@ export class SatasupeActorSheet extends ActorSheet {
   async _deleteItemSection(ev){
     const li = $(ev.currentTarget).parents(".item");
     const id = li.attr("data-item-id");
-    console.log(this);
     let item = this.object.data.items;
     let newkeep = this.object.data.data.exp.upkeep.value == null ? 0 : this.object.data.data.exp.upkeep.value;
     for(let i = 0 ; i < item.length ; i++){
@@ -844,6 +837,9 @@ export class SatasupeActorSheet extends ActorSheet {
     }
     const user = this.actor.user ? this.actor.user : game.user;
     actor.data.attribs.alignment.value = align;
+    if( game.modules.get('dice-so-nice')?.active){
+      await game.dice3d.showForRoll(roll,user);
+    }
     let text = `<br>=>` + game.i18n.format('SATASUPE.AlignmentRollresult',{align: align});
     let chatData = {
       content : await roll.render(),
@@ -851,7 +847,6 @@ export class SatasupeActorSheet extends ActorSheet {
       speaker: ChatMessage.getSpeaker({actor : this.actor}),
       flavor: game.i18n.localize("SATASUPE.AlignmentRolltitle") + text,
     };
-    console.log("ok");
     ChatMessage.create(chatData);
     const updated = {_id:actor.id, data:actor.data};
     game.actors.get(actor._id).update(updated);
@@ -996,7 +991,6 @@ export class SatasupeActorSheet extends ActorSheet {
     }else{
 			let div = $(`<div class="item-summary">${chatData.effect}</div>`);
 			let props = $('<div class="item-properties"></div>');
-			// chatData.properties.forEach(p => props.append(`<span class="tag">${p}</span>`));
 			div.append(props);
 			li.append(div.hide());
 			div.slideDown(200);
@@ -1010,7 +1004,6 @@ export class SatasupeActorSheet extends ActorSheet {
     let item = this.actor.data.items;
     const speaker = this.actor;
     const user = this.actor.user ? this.actor.user : game.user;
-    //console.log(this.item.data.data.chatpalette.chat[index]);
     for(let i = 0; i < item.length ; i++){
       if(item[i]._id !== id){
       }else{
@@ -1043,14 +1036,12 @@ export class SatasupeActorSheet extends ActorSheet {
               }
             }
             if(!actor.variable) actor.variable = [];
-            console.log( this.actor);
             for(let j = 0; j < actor.variable.length ; j++){
               if((actor.variable[j].variable == repal[i]) && actor.variable[j].substitution){
                 text = text.replace(re,actor.variable[j].title);
                 break;
               }
             }
-            console.log(text);
           }
           if(text.match(/\{.*?\}/g)){
             text = text.replace(/\{.*?\}/g, '0');
