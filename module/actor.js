@@ -92,7 +92,6 @@ export class SatasupeActor extends Actor {
   }
 
   async createEmptyKarma( event = null){
-    console.log(this);
     let showSheet = event ? !event.shiftKey: true;
     if( !this.getItemIdByName(game.i18n.localize(SATASUPE.newKarmaName))) return this.createKarma( game.i18n.localize(SATASUPE.newKarmaName), showSheet);
     let index = 0;
@@ -117,7 +116,6 @@ export class SatasupeActor extends Actor {
   }
 
   createEmptyItem( event = null){
-    console.log(this);
     let showSheet = event ? !event.shiftKey: true;
     if( !this.getItemIdByName(game.i18n.localize(SATASUPE.newItemName))) return this.createItem( game.i18n.localize(SATASUPE.newItemName), showSheet);
     let index = 0;
