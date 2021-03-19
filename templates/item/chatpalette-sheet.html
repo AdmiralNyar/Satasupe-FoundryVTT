@@ -3,9 +3,9 @@
         <table id="chatpalette-table" class="chatpalette-table">
             <thead>
                 <tr class="header">
-                    <th class="dice-folmula-text">Folmula</th>
-                    <th class="other-message">Message</th>
-                    <th class="add-new-chat"><a class="button" title="Add new chat palette"><i class="fas fa-plus"></i></a></th>
+                    <th class="dice-folmula-text" title="{{localize 'SATASUPE.DicebotCommandExplanation'}}">{{localize 'SATASUPE.DiceFolmula'}}</th>
+                    <th class="other-message">{{localize 'SATASUPE.DiceMessage'}}</th>
+                    <th class="add-new-chat"><a class="button" title="{{localize 'SATASUPE.AddChatpalette'}}"><i class="fas fa-plus"></i></a></th>
                     <th class="space"> </th>
                 </tr>
             </thead>
@@ -14,21 +14,21 @@
                     <tr class="chatpalette-section" data-index='{{index}}' draggable="true">
                         <td>
                             <div class="text-section section-key" data-sectionkey="text">
-                                <input class="text-input  section-input" type="text" name="section.text" data-dtype="String" value="{{section.text}}" placeholder="dice formula"/>
+                                <input class="text-input  section-input" type="text" name="section.text" data-dtype="String" value="{{section.text}}" placeholder="{{localize 'SATASUPE.DiceFolmula'}}"/>
                             </div>
                         </td>
                         <td>
                             <div class="message-section section-key" data-sectionkey="message">
-                                <input class="message-input  section-input" type="text" name="section.message" data-dtype="String" value="{{section.message}}" placeholder="other text"/>
+                                <input class="message-input  section-input" type="text" name="section.message" data-dtype="String" value="{{section.message}}" placeholder="{{localize 'SATASUPE.DiceMessage'}}"/>
                             <div>
                         </td>
                         <td>
                             <div  class="chatsend">
-                                <input class="chatsend-button" type="button" value="Submit!"/> 
+                                <input class="chatsend-button" type="button" value="{{localize 'SATASUPE.SUBMIT'}}"/> 
                             </div>
                         </td>
                         <td class="item-controls">
-                            <a class="delete-chatpalette-section" title="DELITE"><i class="fas fa-trash"></i></a>
+                            <a class="delete-chatpalette-section" title="{{localize 'SATASUPE.Delete'}}"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
                 {{/each}}

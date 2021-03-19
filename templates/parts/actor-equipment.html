@@ -1,0 +1,340 @@
+<div class="equipment-panel" style="height:100%">
+    <div class="element-zone">
+        <div class="weapon">
+            <table id="weapon-table" class="weapon-table equipment-table">
+                <thead>
+                    <tr class="weapon-header equipment-header">
+                        <th id="0" class="item-image"></th>
+                        <th id="1" class="item-name">{{localize 'SATASUPE.WEAPONNAME'}}  </th>
+                        <th id="2" class="item-hit">{{localize 'SATASUPE.HIT'}}  </th>
+                        <th id="3" class="item-damage">{{localize 'SATASUPE.DAMAGE'}}  </th>
+                        <th id="4" class="item-range">{{localize 'SATASUPE.RANGE'}}  </th>
+                        <th id="5" class="item-price">{{localize 'SATASUPE.PRICE'}}  </th>
+                        <th id="6" class="item-upkeep">{{localize 'EXP.UPKEEPS'}}  </th>
+                        <th id="7" class="item-button item-controls"><a class="item-control add-item" title="{{localize 'SATASUPE.NewItemName'}}" data-type="item"><i class="fas fa-plus"></i>     </a></th>
+                    </tr>
+                </thead>
+                <tbody class="main-body">
+                    {{#each actor.gear as |item id|}}
+                        {{#if item.data.typew}}
+                            <tr class="item weapon-row equipment-row" data-item-id="{{item._id}}" data-itemtype="weapon" draggable="true">
+                                <td colspan="8">
+                                    <table rules="none" class="inner-table">
+                                        <tr class="weapon-list equipment-list">
+                                            <td class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="20" height="20"/></td>
+                                            <td class="item-name">{{item.name}}</td>
+                                            <td class="item-hit">{{item.data.weapon.hit}}</td>
+                                            <td class="item-damage">{{item.data.weapon.damageadd}}</td>
+                                            <td class="item-range">{{item.data.weapon.range}}</td>
+                                            <td class="item-price">{{item.data.weapon.price.value}}</td>
+                                            <td class="item-upkeep"><input class="checkbox item-upkeepcheck" type="checkbox" name="item.data.weapon.upkeep" {{checked item.data.weapon.upkeep}}/></td>
+                                            <td class="item-button item-controls">
+                                                <a class="item-control show-detail" title="{{localize 'SATASUPE.OpenDetail'}}"><i class="fas fa-eye"></i></a><a class="item-control close-detail" title="{{localize 'SATASUPE.CloseDetail'}}"><i class="fas fa-eye-slash"></i></a>
+                                                <a class="item-control item-edit" title="{{localize 'SATASUPE.Edit'}}"><i class="fas fa-edit"></i></a>
+                                                <a class="item-control item-delete" title="{{localize 'SATASUPE.Delete'}}"><i class="fas fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="item-detail">
+                                            <td colspan="8" class="item-hide">
+                                                {{#each item.data.weapon.special as |special key|}}
+                                                    {{#if special.value}}
+                                                        <button class="special-button  {{#if special.value}}button-on{{/if}}"  data-special="{{key}}" type="button">
+                                                            {{localize special.label}}
+                                                        </button>
+                                                    {{/if}}
+                                                {{/each}}
+                                                {{#each item.data.weapon.specialtext as |specialtext key|}}
+                                                    {{#if specialtext.value}}
+                                                        <button class="special-button  {{#if special.value}}button-on{{/if}}"  data-special="{{key}}" type="button">
+                                                            {{localize specialtext.label}}: {{specialtext.number}}
+                                                        </button>
+                                                    {{/if}}
+                                                {{/each}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        {{/if}}
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <div class="veicle">
+            <table id="veicle-table" class="veicle-table equipment-table">
+                <thead>
+                    <tr class="veicle-header equipment-header">
+                        <th id="0" class="item-image"></th>
+                        <th id="1" class="item-name">{{localize 'SATASUPE.VEICLENAME'}}  </th>
+                        <th id="2" class="item-speed">{{localize 'SATASUPE.SPEED'}}  </th>
+                        <th id="3" class="item-drp">{{localize 'SATASUPE.CARBODY'}}  </th>
+                        <th id="4" class="item-capacity">{{localize 'SATASUPE.CAPACITY'}}  </th>
+                        <th id="5" class="item-price">{{localize 'SATASUPE.PRICE'}}  </th>
+                        <th id="6" class="item-upkeep">{{localize 'EXP.UPKEEPS'}}  </th>
+                        <th id="7" class="item-button item-controls"><a class="item-control add-item" title="{{localize 'SATASUPE.NewItemName'}}" data-type="item"><i class="fas fa-plus"></i>     </a></th>
+                    </tr>
+                </thead>
+                <tbody class="main-body">
+                    {{#each actor.gear as |item id|}}
+                        {{#if item.data.typev}}
+                            <tr class="item veicle-row equipment-row" data-item-id="{{item._id}}" data-itemtype="veicle" draggable="true">
+                                <td colspan="8">
+                                    <table rules="none" class="inner-table">
+                                        <tr class="veicle-list equipment-list">
+                                            <td class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="20" height="20"/></td>
+                                            <td class="item-name">{{item.name}}</td>
+                                            <td class="item-speed">{{item.data.veicle.speed}}</td>
+                                            <td class="item-drp">{{item.data.veicle.drp}}</td>
+                                            <td class="item-capacity">{{item.data.veicle.capacity}}</td>
+                                            <td class="item-price">{{item.data.veicle.price.value}}</td>
+                                            <td class="item-upkeep"><input class="checkbox item-upkeepcheck" type="checkbox" name="item.data.veicle.upkeep" {{checked item.data.veicle.upkeep}}/></td>
+                                            <td class="item-button item-controls">
+                                                <a class="item-control show-detail" title="{{localize 'SATASUPE.OpenDetail'}}"><i class="fas fa-eye"></i></a><a class="item-control close-detail" title="{{localize 'SATASUPE.CloseDetail'}}"><i class="fas fa-eye-slash"></i></a>
+                                                <a class="item-control item-edit" title="{{localize 'SATASUPE.Edit'}}"><i class="fas fa-edit"></i></a>
+                                                <a class="item-control item-delete" title="{{localize 'SATASUPE.Delete'}}"><i class="fas fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="item-detail">
+                                            <td colspan="8" class="item-hide">
+                                                {{#each item.data.veicle.special as |special key|}}
+                                                    {{#if special.value}}
+                                                        <button class="special-button  {{#if special.value}}button-on{{/if}}"  data-special="{{key}}" type="button">
+                                                            {{localize special.label}}
+                                                        </button>
+                                                    {{/if}}
+                                                {{/each}}
+                                                {{#each item.data.veicle.specialtext as |specialtext key|}}
+                                                    {{#if specialtext.value}}
+                                                        <button class="special-button  {{#if special.value}}button-on{{/if}}"  data-special="{{key}}" type="button">
+                                                            {{localize specialtext.label}}: {{specialtext.number}}
+                                                        </button>
+                                                    {{/if}}
+                                                {{/each}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        {{/if}}
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <div class="props">
+            <table id="props-table" class="props-table equipment-table">
+                <thead>
+                    <tr class="props-header equipment-header">
+                        <th id="0" class="item-image"></th>
+                        <th id="1" class="item-name">{{localize 'SATASUPE.PROPSNAME'}}  </th>
+                        <th id="2" class="item-timing">{{localize 'SATASUPE.Timing'}}  </th>
+                        <th id="3" class="item-minivalue">{{localize 'SATASUPE.STOCK'}}  </th>
+                        <th id="4" class="item-capacity">{{localize 'SATASUPE.ADDCAPACITY'}}  </th>
+                        <th id="5" class="item-price">{{localize 'SATASUPE.PRICE'}}  </th>
+                        <th id="6" class="item-upkeep">{{localize 'EXP.UPKEEPS'}}  </th>
+                        <th id="7" class="item-button item-controls"><a class="item-control add-item" title="{{localize 'SATASUPE.NewItemName'}}" data-type="item"><i class="fas fa-plus"></i>     </a></th>
+                    </tr>
+                </thead>
+                <tbody class="main-body">
+                    {{#each actor.gear as |item id|}}
+                        {{#if item.data.typep}}
+                            <tr class="item props-row equipment-row" data-item-id="{{item._id}}" data-itemtype="props" draggable="true">
+                                <td colspan="8">
+                                    <table rules="none" class="inner-table">
+                                        <tr class="props-list equipment-list">
+                                            <td class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="20" height="20"/></td>
+                                            <td class="item-name">{{item.name}}</td>
+                                            <td class="item-timing">{{item.data.props.timing}}</td>
+                                            <td class="item-minivalue">
+                                                {{#if item.data.props.special.mini.value}}
+                                                    <select class="item-minivalue-select" name="item.data.props.minivalue" data-dtype="String">
+                                                        <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                                                    {{#select item.data.props.minivalue}}
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                        <option value="10">10</option>
+                                                    {{/select}}
+                                                    </select>
+                                                {{/if}} 
+                                            </td>
+                                            <td class="item-capacity">{{#uniqueif item.data.props.addcapacity "!==" "0"}}{{item.data.props.addcapacity}}{{/uniqueif}} </td>
+                                            <td class="item-price">{{item.data.props.price.value}}</td>
+                                            <td class="item-upkeep"><input class="checkbox item-upkeepcheck" type="checkbox" name="item.data.props.upkeep" {{checked item.data.props.upkeep}}/></td>
+                                            <td class="item-button item-controls">
+                                                <a class="item-control show-detail" title="{{localize 'SATASUPE.OpenDetail'}}"><i class="fas fa-eye"></i></a><a class="item-control close-detail" title="{{localize 'SATASUPE.CloseDetail'}}"><i class="fas fa-eye-slash"></i></a>
+                                                <a class="item-control item-edit" title="{{localize 'SATASUPE.Edit'}}"><i class="fas fa-edit"></i></a>
+                                                <a class="item-control item-delete" title="{{localize 'SATASUPE.Delete'}}"><i class="fas fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="item-detail">
+                                            <td colspan="8" class="item-hide">
+                                                {{#each item.data.props.special as |special key|}}
+                                                    {{#if special.value}}
+                                                        <button class="special-button  {{#if special.value}}button-on{{/if}}"  data-special="{{key}}" type="button">
+                                                            {{localize special.label}}
+                                                        </button>
+                                                    {{/if}}
+                                                {{/each}}
+                                                {{#each item.data.props.specialtext as |specialtext key|}}
+                                                    {{#if specialtext.value}}
+                                                        <button class="special-button  {{#if special.value}}button-on{{/if}}"  data-special="{{key}}" type="button">
+                                                            {{localize specialtext.label}}: {{specialtext.number}}
+                                                        </button>
+                                                    {{/if}}
+                                                {{/each}}
+                                                {{#if item.data.props.effect}}
+                                                    <button class="special-button  {{#if special.value}}button-on{{/if}}" type="button">
+                                                        Effect: {{item.data.props.effect}}
+                                                    </button>
+                                                {{/if}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        {{/if}}
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <div class="gadjet">
+            <table id="gadjet-table" class="gadjet-table equipment-table">
+                <thead>
+                    <tr class="gadjet-header equipment-header">
+                        <th id="0" class="item-image"></th>
+                        <th id="1" class="item-name">{{localize 'SATASUPE.GADJETNAME'}}  </th>
+                        <th id="2" class="item-timing">{{localize 'SATASUPE.Timing'}}  </th>
+                        <th id="3" class="item-times">{{localize 'SATASUPE.TIMES'}}  </th>
+                        <th id="4" class="item-capacity">{{localize 'SATASUPE.ADDCAPACITY'}}  </th>
+                        <th id="5" class="item-button item-controls"><a class="item-control add-item" title="{{localize 'SATASUPE.NewItemName'}}" data-type="item"><i class="fas fa-plus"></i>     </a></th>
+                    </tr>
+                </thead>
+                <tbody class="main-body">
+                    {{#each actor.gear as |item id|}}
+                        {{#if item.data.typeg}}
+                            <tr class="item gadjet-row equipment-row" data-item-id="{{item._id}}" data-itemtype="gadjet" draggable="true">
+                                <td colspan="6">
+                                    <table rules="none" class="inner-table">
+                                        <tr class="gadjet-list equipment-list">
+                                            <td class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="20" height="20"/></td>
+                                            <td class="item-name">{{item.name}}</td>
+                                            <td class="item-timing">{{item.data.gadjet.timing}}</td>
+                                            <td class="item-times">{{#uniqueif item.data.gadjet.times.ttype "!==" "unlimit"}}{{item.data.gadjet.times.tnumber}}<label class="space">    /  </label>{{/uniqueif}}{{item.data.gadjet.times.ttype}}</td>
+                                            <td class="item-capacity">{{#uniqueif item.data.gadjet.addcapacity "!==" "0"}}{{item.data.gadjet.addcapacity}}{{/uniqueif}} </td>
+                                            <td class="item-button item-controls">
+                                                <a class="item-control item-edit" title="{{localize 'SATASUPE.Edit'}}"><i class="fas fa-edit"></i></a>
+                                                <a class="item-control item-delete" title="{{localize 'SATASUPE.Delete'}}"><i class="fas fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        {{/if}}
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="placement-zone">
+        <div class="normal-place">
+            <label>{{localize 'SATASUPE.NORMALEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentcapacity.normal}} ]</label>
+            <div class="normal-placement drparea" data-placetype="normal" data-capacity="{{data.equipmentcapacity.normal}}" data-nowcontain="{{data.equipmentplace.normal}}">
+                {{#each actor.gear as |item id|}}
+                    {{#uniqueif item.data.storage "==" "normal"}}
+                        <button class="gear-name-button" data-id={{id}} data-key={{item._id}} type="button" draggable="true" style="width:fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">
+                            {{item.name}}
+                        </button>
+                    {{/uniqueif}}
+                {{/each}}
+            </div>
+        </div>
+        <div class="haven-place">
+            <label>{{localize 'SATASUPE.HAVENEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentcapacity.haven}}, {{localize 'SATASUPE.COMFORT'}} : {{data.equipmentcapacity.comfort}}, {{localize 'SATASUPE.Security'}} : {{data.equipmentattribs.security}}]</label>
+            <label class="add-haven">  {{localize 'SATASUPE.ADDHAVEN'}} : <input class="checkbox second-haven-check" type="checkbox" name="data.status.secondhaven.value" {{checked data.status.secondhaven.value}}/></label>
+            <div class="haven-placement drparea" data-placetype="haven" data-capacity="{{data.equipmentcapacity.haven}}" data-nowcontain="{{data.equipmentplace.haven}}">
+                {{#each actor.gear as |item id|}}
+                    {{#uniqueif item.data.storage "==" "haven"}}
+                        <button class="gear-name-button" data-id={{id}} data-key={{item._id}} type="button" draggable="true" style="width:fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">
+                            {{item.name}}
+                        </button>
+                    {{/uniqueif}}
+                {{/each}}
+            </div>
+        </div>
+        {{#if data.status.secondhaven.value}}
+            <div class="haven2-place">
+                <label>{{localize 'SATASUPE.HAVEN2EQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentcapacity.haven2}}, {{localize 'SATASUPE.COMFORT'}} : {{data.equipmentcapacity.comfort2}}, {{localize 'SATASUPE.Security'}} : {{data.equipmentattribs.security2}}]</label>
+                <select class="second-haven-place" name="data.infos.haven2" data-dtype="String" value="{{data.infos.haven2}}" data-nowcontain="{{data.equipmentplace.haven2}}">
+                    <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                {{#select data.infos.haven2}}
+                    <option value="minami">{{localize 'SATASUPE.MINAMI'}}</option>
+                    <option value="chinatown">{{localize 'SATASUPE.CHINATOWN'}}</option>
+                    <option value="warship">{{localize 'SATASUPE.WARSHIP'}}</option>
+                    <option value="civic">{{localize 'SATASUPE.CIVIC'}}</option>
+                    <option value="downtown">{{localize 'SATASUPE.DOWNTOWN'}}</option>
+                    <option value="shaokin">{{localize 'SATASUPE.SHAOKIN'}}</option>
+                {{/select}}
+            </select>
+            <div class="haven2-placement drparea" data-placetype="haven2" data-capacity="{{data.equipmentcapacity.haven2}}"  data-nowcontain="{{data.equipmentplace.haven}}">
+                {{#each actor.gear as |item id|}}
+                    {{#uniqueif item.data.storage "==" "haven2"}}
+                        <button class="gear-name-button" data-id={{id}} data-key={{item._id}} type="button" draggable="true" style="width:fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">
+                            {{item.name}}
+                        </button>
+                    {{/uniqueif}}
+                {{/each}}
+            </div>
+            </div>
+        {{/if}}
+        {{#if data.equipmentattribs.veiclehave}}
+            <div class="veicle-place">
+                <label>{{localize 'SATASUPE.VEICLEEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentcapacity.veicle}} ]</label>
+                <div class="veicle-placement drparea" data-placetype="veicle" data-habitable="{{data.equipmentattribs.habitable}}" data-capacity="{{data.equipmentcapacity.veicle}}" data-nowcontain="{{data.equipmentplace.veicle}}">
+                    {{#each actor.gear as |item id|}}
+                        {{#uniqueif item.data.storage "==" "veicle"}}
+                            <button class="gear-name-button" data-id={{id}} data-key={{item._id}} type="button" draggable="true" style="width:fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">
+                                {{item.name}}
+                            </button>
+                        {{/uniqueif}}
+                    {{/each}}
+                </div>
+            </div>
+        {{/if}}
+        {{#each data.addcapacity as |addcapacity name|}}
+            {{#uniqueif addcapacity.capacity "!=" "0"}}
+                <div class="addcapacity-place">
+                    <label>{{name}}({{localize 'SATASUPE.ADDCAPACITY'}}) [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{addcapacity.capacity}} ]</label>
+                    <div class="add-placement drparea" data-placetype="{{name}}" data-storageplace="{{addcapacity.storage}}" data-capacity="{{addcapacity.capacity}}" data-nowcontain="{{addcapacity.equipmentplace}}">
+                        {{#each ../actor.gear as |item id|}}
+                            {{#uniqueif name "==" item.data.storage}}
+                                <button class="gear-name-button" data-id={{id}} data-key={{item._id}} type="button" draggable="true" style="width:fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">
+                                    {{item.name}}
+                                </button>
+                            {{/uniqueif}}
+                        {{/each}}
+                    </div>
+                </div>
+            {{/uniqueif}}
+        {{/each}}
+        <div class="ground-place">
+            <label>{{localize 'SATASUPE.GROUNDEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentcapacity.other}} ]</label>
+            <button class="empty-ground" type="button" style="width:fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">{{localize 'SATASUPE.EMPTY'}}</button>
+            <button class="all-drop-ground" type="button" style="margin-left:5px; width:fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">{{localize 'SATASUPE.ALLDROP'}}</button>
+            <div class="ground-placement drparea" data-placetype="" data-capacity="{{data.equipmentcapacity.other}}" data-nowcontain="{{data.equipmentplace.other}}">
+                {{#each actor.gear as |item id|}}
+                    {{#uniqueif item.data.storage "==" ""}}
+                        <button class="gear-name-button" data-id={{id}} data-key={{item._id}} type="button" draggable="true" style="width:fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">
+                            {{item.name}}
+                        </button>
+                    {{/uniqueif}}
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>

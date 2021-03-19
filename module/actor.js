@@ -12,6 +12,52 @@ export class SatasupeActor extends Actor {
     super.prepareData();
     this.data.data.groups = this.data.data.groups || {};
     this.data.data.attributes = this.data.data.attributes || {};
+    const itemData = this.data.items || [];
+
+    for(let i of itemData){
+      if(i.type === 'karma') {
+        this._prepareActorData(i);
+      }
+    }
+  }
+
+  _prepareActorData(itemData){
+    const data = itemData.data;
+    for (let [key, value] of Object.entries(SATASUPE['timing'])){
+      if(key == data.timing.name){
+        data.timing.label = value;
+      }
+    }
+    for (let [key, value] of Object.entries(SATASUPE['target'])){
+      if(key == data.target.name){
+        data.target.label = value;
+      }
+    }
+    for (let [key, value] of Object.entries(SATASUPE['karmaType'])){
+      if(key == data.type.name){
+        data.type.label = value;
+      }
+    }
+    for (let [key, value] of Object.entries(SATASUPE['abilityType'])){
+      if(key == data.abilityType.name){
+        data.abilityType.label = value;
+      }
+    }
+    if(data.check.none){}else{
+      if(data.check.type){
+        for (let [key, value] of Object.entries(SATASUPE['alignment'])){
+          if(key == data.check.alignment.name){
+            data.check.alignment.label = value;
+          }
+        }
+      }else{
+        for (let [key, value] of Object.entries(SATASUPE['check'])){
+          if(key == data.check.checkValue.name){
+            data.check.checkValue.label = value;
+          }
+        } 
+      }
+    }
   }
 
   /* -------------------------------------------- */
@@ -36,7 +82,18 @@ export class SatasupeActor extends Actor {
     return created;
   }
 
+  async createItem( itemName, showSheet = false){
+    const data = {
+      name: itemName,
+      type: 'item',
+      data:{}
+    };
+    const created = await this.createEmbeddedEntity('OwnedItem', data, { renderSheet: showSheet});
+    return created;
+  }
+
   async createEmptyKarma( event = null){
+    console.log(this);
     let showSheet = event ? !event.shiftKey: true;
     if( !this.getItemIdByName(game.i18n.localize(SATASUPE.newKarmaName))) return this.createKarma( game.i18n.localize(SATASUPE.newKarmaName), showSheet);
     let index = 0;
@@ -58,6 +115,19 @@ export class SatasupeActor extends Actor {
       chatpaletteName = game.i18n.localize(SATASUPE.newChatpaletteName) + ' ' + index;
     }
     return this.createChatpalette( chatpaletteName, showSheet)
+  }
+
+  createEmptyItem( event = null){
+    console.log(this);
+    let showSheet = event ? !event.shiftKey: true;
+    if( !this.getItemIdByName(game.i18n.localize(SATASUPE.newItemName))) return this.createItem( game.i18n.localize(SATASUPE.newItemName), showSheet);
+    let index = 0;
+    let itemName = game.i18n.localize(SATASUPE.newItemName) + ' ' + index;
+    while( this.getItemIdByName(itemName)){
+      index++;
+      itemName = game.i18n.localize(SATASUPE.newItemName) + ' ' + index;
+    }
+    return this.createItem( itemName, showSheet)
   }
 
   getItemIdByName( itemName){
@@ -112,6 +182,8 @@ export class SatasupeActor extends Actor {
         return await super.createEmbeddedEntity(embeddedName, data, options);
       case 'chatpalette':
         return await super.createEmbeddedEntity(embeddedName, data, options);
+      case 'item':
+        return await super.createEmbeddedEntity(embeddedName, data, options);
       }
   }
 
@@ -130,12 +202,23 @@ export class SatasupeActor extends Actor {
 
   async deleteScenarioSection( index){
     const scena = duplicate(this.data.data.scenario);
+    if(scena[index].exp){
+      let newgainexp = this.data.data.exp.expgain.value == null ? 0 : this.data.data.exp.expgain.value;
+      newgainexp = newgainexp - scena[index].exp;
+      await this.update({'data.exp.expgain.value' : newgainexp});
+    }
     scena.splice(index, 1);
     await this.update( {'data.scenario' : scena});
   }
 
   async updateScenarioSection(index, value, key){
     const scena = duplicate(this.data.data.scenario);
+    if(key == "exp"){
+      const deff = value - scena[index].exp;
+      let newgainexp = this.data.data.exp.expgain.value == null ? 0 : this.data.data.exp.expgain.value;
+      newgainexp = newgainexp + deff;
+      await this.update({'data.exp.expgain.value' : newgainexp});
+    }
     scena[index][key] = value;
     await this.update({'data.scenario' : scena});
   }
@@ -196,6 +279,83 @@ export class SatasupeActor extends Actor {
     }
   }
 
+  async updateEquipmentUpkeep(bool){
+    let newkeep = this.data.data.exp.upkeep.value == null ? 0 : this.data.data.exp.upkeep.value;
+    if(bool){
+      newkeep +=1;
+    }else{
+      newkeep -=1;
+    }
+    await this.update({'data.exp.upkeep.value' : newkeep});
+  }
+
+  async updateEquipmentStorage( index, value){
+    let item = this.data.items;
+    for(let i = 0; i < item.length ; i++){
+      if(item[i]._id == index){
+        const equip = duplicate(this.data.items);
+        equip[i].data.storage = value;
+           await this.update({'items' : equip});
+      }
+    }
+  }
+
+  async updateEquipmentSection( index, key){
+    let item = this.data.items;
+    for(let i = 0; i < item.length ; i++){
+      if(item[i]._id == index){
+        const equip = duplicate(this.data.items);
+        if(!(typeof equip[i].data[key].upkeep === "boolean")) equip[i].data[key].upkeep = equip[i].data[key].upkeep ==='false' ? true : false;
+        equip[i].data[key].upkeep = !equip[i].data[key].upkeep;
+        let newkeep = this.data.data.exp.upkeep.value == null ? 0 : this.data.data.exp.upkeep.value;
+        if(equip[i].data[key].upkeep){
+          newkeep +=1;
+        }else{
+          newkeep -=1;
+        }
+        await this.update({'data.exp.upkeep.value' : newkeep});
+        await this.update({'items' : equip});
+      }
+    }    
+  }
+
+  async updateEquipmentMiniSection( index, key, value){
+    let item = this.data.items;
+    for(let i = 0; i < item.length ; i++){
+      if(item[i]._id == index){
+        const equip = duplicate(this.data.items);
+        equip[i].data[key].minivalue = value;
+        await this.update({'items' : equip});
+      }
+    }
+  }
+
+  async createVariableSection( title = null){
+    const vari = this.data.data.variable ? this.data.data.variable : [];
+    vari.push({
+      title:title,
+      variable : null,
+      substitution : false
+    });
+    await this.update( {'data.variable' : vari});
+  }
+
+  async updateVariableSection( index, value, key){
+    const vari = duplicate(this.data.data.variable);
+    if(key=='substitution'){
+      vari[index][key] = !vari[index][key];
+    }else{
+      vari[index][key] = value;
+    }
+    await this.update( {'data.variable' : vari});
+  }
+
+  async deleteVariableSection( index){
+    const vari = duplicate(this.data.data.variable);
+    vari.splice(index, 1);
+    await this.update({'data.variable' : vari});
+  }
+
   async createPrisonerSection( title = null){
     const pris = this.data.data.prisoner ? this.data.data.prisoner : [];
     pris.push( {
@@ -218,29 +378,27 @@ export class SatasupeActor extends Actor {
     if(!(typeof pris[index][key] === "boolean")) pris[index][key] = pris[index][key] === 'false' ? true:false;
     pris[index][key] = !pris[index][key];
 
-    if(key == "exp" || key == "keep"){
-      if(pris[index].exp == true && pris[index].keep == true){
-        await this.update({'data.exp.upkeep.case': true});
-      }
-    }
     if(key == "exp"){
       let newkeep = this.data.data.exp.upkeep.value == null ? 0 : this.data.data.exp.upkeep.value;
-      if( pris[index][key]){
+      if( pris[index].exp){
         newkeep += 1;
+        if( !pris[index].keep){
+          pris[index].keep = !pris[index].keep;
+        }
       }else{
-        await this.update({'data.exp.upkeep.case': false});
+        if( pris[index].keep){
+          pris[index].keep = !pris[index].keep;
+        }
         newkeep -= 1;
       }
       await this.update({'data.exp.upkeep.value' : newkeep});
     }
     if(key == "keep"){
       let newgainexp = this.data.data.exp.expgain.value == null ? 0 : this.data.data.exp.expgain.value;
-      if( pris[index][key]){
+      if( pris[index].keep){
       }else{
         if( !pris[index].exp){
-          if(!this.data.data.exp.upkeep.case){
-            newgainexp += 1;
-          }
+          newgainexp += 1;
         }
       }
       await this.update({'data.exp.expgain.value' : newgainexp});
@@ -250,6 +408,16 @@ export class SatasupeActor extends Actor {
 
   async deletePrisonerSection( index){
     const pris = duplicate(this.data.data.prisoner);
+    if(pris[index].exp){
+      let newkeep = this.data.data.exp.upkeep.value == null ? 0 : this.data.data.exp.upkeep.value;
+      newkeep -=1;
+      await this.update({'data.exp.upkeep.value' : newkeep});
+    }
+    if(pris[index].keep && !pris[index].exp){
+      let newgainexp = this.data.data.exp.expgain.value == null ? 0 : this.data.data.exp.expgain.value;
+      newgainexp += 1;
+      await this.update({'data.exp.expgain.value' : newgainexp});
+    }
     pris.splice(index, 1);
     await this.update( {'data.prisoner' : pris});
   }
