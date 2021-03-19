@@ -13,7 +13,8 @@ export const preloadHandlebarsTemplates = async function() {
     "systems/satasupe/templates/parts/sheet-groups.html",
     "systems/satasupe/templates/parts/actor-other.html",
     "systems/satasupe/templates/parts/actor-history.html",
-    "systems/satasupe/templates/parts/actor-chatpalette.html"
+    "systems/satasupe/templates/parts/actor-chatpalette.html",
+    "systems/satasupe/templates/parts/actor-equipment.html"
   ];
 
   // Load the template parts

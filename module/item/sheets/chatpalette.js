@@ -67,51 +67,6 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
   
     /* -------------------------------------------- */
 
-    showDiceRoll(rands){
-        if (rands){
-            let data = {};
-            for(let i = 0; i < rands.length ; i++){
-                let typenum = rands[i].sides;
-                let bcresult = rands[i].value;
-                var addData = {throws:[{dice:[{result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}}]}]};
-                data.push(addData);
-            }
-            game.dice3d.show(data);
-        }else{
-            return null;
-        }
-    }
-
-    
-    static _getbcdice(tex){
-        var request = new XMLHttpRequest();
-        var param = "command=" + tex;
-        var url = "https://bcdice.onlinesession.app/v2/game_system/Satasupe/roll?" + param;
-        request.open("GET",url,true);
-        request.onload = function(){
-            var data = this.response;
-        };
-        request.send();
-        /*
-        $.getJSON('https://bcdice.onlinesession.app/v2/game_system/Satasupe/roll?',
-            {                
-                command: "1D20"
-            },
-            function(json){
-                new ChatMessage(json.text)
-            }
-        )
-        .done(function(data){
-            console.log(data);
-            if(data){
-                new ChatMessage(data.text)
-            }else{
-                console.log(tex);
-            }
-        }
-        )*/
-    }
-
     _sendMessage(event,index){
         event.preventDefault();
         let text = this.item.data.data.chatpalette.chat[index].text ? this.item.data.data.chatpalette.chat[index].text : "";
@@ -120,6 +75,20 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
             return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
         text = text.replace(/　/g," ");
         text = text.replace(/\s+/g, ""); 
+        let add = text.match(/(?<=\().*?(?=\))/g);
+        if(add){
+          for(let j = 0; j < add.length; j++){
+            let dev = add[j].match(/(\/|\*|\(|\)|\,)/g);
+            if(!dev){
+              var small = add[j].match(/(?:(?:[\+\-]+)?\d+)/g);
+              let math =  0;
+              for(let k=0; k < small.length; k++){
+                math += parseInt(small[k], 10);
+              }
+              text=text.replace(new RegExp('\\(' + add[j].replace(/(\+|\-)/g,'\\$&') + '\\)', 'g'),math);
+            }
+          }
+        }
         var request = new XMLHttpRequest();
         var param = "command=" + text;
         var server = game.settings.get("satasupe", "BCDice");
@@ -127,87 +96,160 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
         request.open("GET",url,true);
         request.responseType = 'json';
         request.onload = function(){
-            var data = this.response;
-            if(!data.ok){
-                ui.notifications.error('This Dice formula is not function! Please spell-check.');
-            }
-            let rands = data.rands;
-            if (data.rands){
-                let dicedata = {throws:[{dice:[]}]};
-                for(let i = 0; i < rands.length ; i++){
-                    let typenum = rands[i].sides;
-                    let bcresult = rands[i].value;
-                    var addData = {result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}};
-                    dicedata.throws[0].dice[i]=addData;
+            if(request.status==200){
+                var data = this.response;
+                if(!data.ok){
+                    ui.notifications.error(game.i18n.localize("ALERTMESSAGE.DiceFormulaUnread"));
                 }
-                var dicen = {};
-                data.rands.forEach(elm => {
-                    if(dicen[elm.sides]){
-                        dicen[`${elm.sides}`].number += 1;
-                        dicen[`${elm.sides}`].value.push(elm.value);
-                    }else{
-                        dicen[`${elm.sides}`] = {};
-                        dicen[`${elm.sides}`]['number'] = 1;
-                        dicen[`${elm.sides}`]['value'] = [elm.value];
+                let rands = data.rands;
+                if (data.rands){
+                    let dicedata = {throws:[{dice:[]}]};
+                    for(let i = 0; i < rands.length ; i++){
+                        let typenum = rands[i].sides;
+                        let bcresult = rands[i].value;
+                        var addData = {result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}};
+                        dicedata.throws[0].dice[i]=addData;
                     }
-                })
-                game.dice3d.show(dicedata);
-            }else{
-                return null;
-            }
-            var belowtext = "";
-            for(let [k, v] of Object.entries(dicen)){
-                let sumv = v.value.reduce(function(sum,element){return sum+element},0); 
-                belowtext += "<section class=\"tooltip-part\"><div class=\"dice\"><span class=\"part-formula part-header flexrow\">"
-                belowtext += `${v.number}d${k}`
-                belowtext += "<div class=\"flex1\"></div><span class=\"part-total flex0\">"
-                belowtext +=  `${sumv}</span></span><ol class=\"dice-rolls\">`
-                for(let dice of v.value){
-                    belowtext += `<li class=\"roll die d${k}\">${dice}</li>`
-                }
-                belowtext += "</ol></div></section></div>"
-            }
-            var successtext = ""
-            if(data.success || data.failure || data.critical || data.fumble){
-                if(data.success){
-                    if(data.critical){
-                        successtext = "<div class=\"dice-total success critical\">CRITICAL SUCCESS!!</div>";
-                    }else{
-                        successtext = "<div class=\"dice-total success\">SUCCESS!</div>";
+                    var dicen = {};
+                    data.rands.forEach(elm => {
+                        if(dicen[elm.sides]){
+                            dicen[`${elm.sides}`].number += 1;
+                            dicen[`${elm.sides}`].value.push(elm.value);
+                        }else{
+                            dicen[`${elm.sides}`] = {};
+                            dicen[`${elm.sides}`]['number'] = 1;
+                            dicen[`${elm.sides}`]['value'] = [elm.value];
+                        }
+                    })
+                    if( game.modules.get('dice-so-nice')?.active){
+                        game.dice3d.show(dicedata);
                     }
-                }else if(!data.fumble){
-                    successtext = "<div class=\"dice-total failure\">FAILURE</div>";
                 }else{
-                    successtext = "<div class=\"dice-total failure fumble\">FUMBLE</div>";
+                    return null;
                 }
+                var belowtext = "";
+                for(let [k, v] of Object.entries(dicen)){
+                    let sumv = v.value.reduce(function(sum,element){return sum+element},0); 
+                    belowtext += "<section class=\"tooltip-part\"><div class=\"dice\"><span class=\"part-formula part-header flexrow\">"
+                    belowtext += `${v.number}d${k}`
+                    belowtext += "<div class=\"flex1\"></div><span class=\"part-total flex0\">"
+                    belowtext +=  `${sumv}</span></span><ol class=\"dice-rolls\">`
+                    for(let dice of v.value){
+                        belowtext += `<li class=\"roll die d${k}\">${dice}</li>`
+                    }
+                    belowtext += "</ol></div></section></div>"
+                }
+                var successtext = ""
+                if(data.success || data.failure || data.critical || data.fumble){
+                    if(data.success){
+                        if(data.critical){
+                            successtext = "<div class=\"dice-total success critical\">";
+                            successtext += game.i18n.localize("SATASUPE.CRITICAL");
+                            successtext += "</div>";
+                        }else{
+                            successtext = "<div class=\"dice-total success\">";
+                            successtext += game.i18n.localize("SATASUPE.SUCCESS");
+                            successtext += "</div>";
+                        }
+                    }else if(!data.fumble){
+                        successtext = "<div class=\"dice-total failure\">";
+                        successtext += game.i18n.localize("SATASUPE.FAILURE");
+                        successtext += "</div>";
+                        }else{
+                        successtext = "<div class=\"dice-total failure fumble\">";
+                        successtext += game.i18n.localize("SATASUPE.FUMBLE");
+                        successtext += "</div>";
+                    }
+                }
+                var text_line = data.text.replace(/\r?\n/g,"<br>");
+                var contenthtml = "<div><div>" + message + "<br>"+ text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
+                ChatMessage.create({user:game.user._id,speaker:ChatMessage.getSpeaker(),content:contenthtml},{});
             }
-            var contenthtml = "<div><div>" + message + "<br>"+ data.text + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
-            ChatMessage.create({user:game.user._id,speaker:ChatMessage.getSpeaker(),content:contenthtml},{});
         };
         request.send();
-    }
-}
-        /*
-        let repl = text.match(/(?<=\().*?(?=\))/g);
-        const re = /\{.*?\}/;
-        if(repl){
-            for (let i = 0 ; i < repl.length ; i++){
-                console.log(repl[i]);
-                for(let[key, value] of Object.entries(SATASUPE['replace'])){
-                    if(key == repl[i]){
-                        text = text.replace(re,value);
+
+        request.onerror=function(){
+            console.log("Server1 connect error");
+            var request2 = new XMLHttpRequest();
+        var param2 = "command=" + text;
+        var server2 = game.settings.get("satasupe", "BCDice2");
+        var url2 = server2 + "/game_system/Satasupe/roll?" + param2;
+        request2.open("GET",url2,true);
+        request2.responseType = 'json';
+        request2.onload = function(){
+            if(request2.status==200){
+                var data2 = this.response;
+                if(!data2.ok){
+                    ui.notifications.error(game.i18n.localize("ALERTMESSAGE.DiceFormulaUnread"));
+                }
+                let rands = data2.rands;
+                if (data2.rands){
+                    let dicedata = {throws:[{dice:[]}]};
+                    for(let i = 0; i < rands.length ; i++){
+                        let typenum = rands[i].sides;
+                        let bcresult = rands[i].value;
+                        var addData = {result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}};
+                        dicedata.throws[0].dice[i]=addData;
+                    }
+                    var dicen = {};
+                    data2.rands.forEach(elm => {
+                        if(dicen[elm.sides]){
+                            dicen[`${elm.sides}`].number += 1;
+                            dicen[`${elm.sides}`].value.push(elm.value);
+                        }else{
+                            dicen[`${elm.sides}`] = {};
+                            dicen[`${elm.sides}`]['number'] = 1;
+                            dicen[`${elm.sides}`]['value'] = [elm.value];
+                        }
+                    })
+                    if( game.modules.get('dice-so-nice')?.active){
+                        game.dice3d.show(dicedata);
+                    }
+                }else{
+                    return null;
+                }
+                var belowtext = "";
+                for(let [k, v] of Object.entries(dicen)){
+                    let sumv = v.value.reduce(function(sum,element){return sum+element},0); 
+                    belowtext += "<section class=\"tooltip-part\"><div class=\"dice\"><span class=\"part-formula part-header flexrow\">"
+                    belowtext += `${v.number}d${k}`
+                    belowtext += "<div class=\"flex1\"></div><span class=\"part-total flex0\">"
+                    belowtext +=  `${sumv}</span></span><ol class=\"dice-rolls\">`
+                    for(let dice of v.value){
+                        belowtext += `<li class=\"roll die d${k}\">${dice}</li>`
+                    }
+                    belowtext += "</ol></div></section></div>"
+                }
+                var successtext = ""
+                if(data2.success || data2.failure || data2.critical || data2.fumble){
+                    if(data2.success){
+                        if(data2.critical){
+                            successtext = "<div class=\"dice-total success critical\">";
+                            successtext += game.i18n.localize("SATASUPE.CRITICAL");
+                            successtext += "</div>";
+                        }else{
+                            successtext = "<div class=\"dice-total success\">";
+                            successtext += game.i18n.localize("SATASUPE.SUCCESS");
+                            successtext += "</div>";
+                        }
+                    }else if(!data2.fumble){
+                        successtext = "<div class=\"dice-total failure\">";
+                        successtext += game.i18n.localize("SATASUPE.FAILURE");
+                        successtext += "</div>";
+                    }else{
+                        successtext = "<div class=\"dice-total failure fumble\">";
+                        successtext += game.i18n.localize("SATASUPE.FUMBLE");
+                        successtext += "</div>";
                     }
                 }
+                var text_line2 = data2.text.replace(/\r?\n/g,"<br>");
+                var contenthtml = "<div><div>" + message + "<br>"+ text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
+                ChatMessage.create({user:game.user._id,speaker:ChatMessage.getSpeaker(),content:contenthtml},{});
             }
+        };
+        request2.send();
         }
-
-        console.log(text);
-        new ChatMessage(data.text)
-
-        //this.showDiceRoll(rolled.rands);
-        //new ChatMessage(data.text)
-        //this.showDiceRoll();
-        //this.getBCDice(); \{.*?\}
     }
-  }*/
+}
+
   

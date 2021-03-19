@@ -7,8 +7,8 @@
           "crime":{
             "value":1,
             "max":null,
-            "short":"CRIME",
-            "label":"CRIME",
+            "short":"CIRCUMSTANCE.CRIME",
+            "label":"CIRCUMSTANCE.CRIME",
             "folmula":null,
             "variable":null,
             "substitution":false
@@ -16,8 +16,8 @@
           "life":{
             "value":1,
             "max":null,
-            "short":"LIFE",
-            "label":"LIFE",
+            "short":"CIRCUMSTANCE.LIFE",
+            "label":"CIRCUMSTANCE.LIFE",
             "folmula":null,
             "variable":null,
             "substitution":false
@@ -25,8 +25,8 @@
           "love":{
             "value":1,
             "max":null,
-            "short":"LOVE",
-            "label":"LOVE",
+            "short":"CIRCUMSTANCE.LOVE",
+            "label":"CIRCUMSTANCE.LOVE",
             "folmula":null,
             "variable":null,
             "substitution":false
@@ -34,8 +34,8 @@
           "cluture":{
             "value":1,
             "max":null,
-            "short":"CULTURE",
-            "label":"CULTURE",
+            "short":"CIRCUMSTANCE.CULTURE",
+            "label":"CIRCUMSTANCE.CULTURE",
             "folmula":null,
             "variable":null,
             "substitution":false
@@ -55,16 +55,16 @@
         "aptitude":{
           "body":{
             "value":3,
-            "short":"BODY",
-            "label":"BODY",
+            "short":"APTITUDE.BODY",
+            "label":"APTITUDE.BODY",
             "folmula":null,
             "variable":null,
             "substitution":false
           },
           "mind":{
             "value":3,
-            "short":"MIND",
-            "label":"MIND",
+            "short":"APTITUDE.MIND",
+            "label":"APTITUDE.MIND",
             "folmula":null,
             "variable":null,
             "substitution":false
@@ -76,8 +76,8 @@
           "alignment":{
             "value": null,
             "max": null,
-            "short": "align",
-            "label": "ALIGNMENT",
+            "short": "ATTRIBS.ALIGNMENTS",
+            "label": "ATTRIBS.ALIGNMENTL",
             "auto": true,
             "variable":null,
             "substitution":false
@@ -85,8 +85,8 @@
           "bp":{
             "value": 10,
             "max": 10,
-            "short": "bp",
-            "label": "BODY POINTS",
+            "short": "ATTRIBS.BPS",
+            "label": "ATTRIBS.BPL",
             "auto": true,
             "variable":null,
             "substitution":false
@@ -94,8 +94,8 @@
           "mp":{
             "value": 10,
             "max": 10,
-            "short": "mp",
-            "label": "MIND POINTS",
+            "short": "ATTRIBS.MPS",
+            "label": "ATTRIBS.MPL",
             "auto": true,
             "variable":null,
             "substitution":false
@@ -103,8 +103,8 @@
           "wallet":{
             "value": null,
             "max": null,
-            "short": "WP",
-            "label": "WALLET POINTS",
+            "short": "ATTRIBS.WPS",
+            "label": "ATTRIBS.WPL",
             "auto": true,
             "variable":null,
             "substitution":false
@@ -112,8 +112,8 @@
           "drp":{
             "value": null,
             "max": null,
-            "short": "DRP",
-            "label": "Damage Reduction POINTS",
+            "short": "ATTRIBS.DRPS",
+            "label": "ATTRIBS.DRPL",
             "auto": true,
             "variable":null,
             "substitution":false
@@ -125,8 +125,8 @@
           "reflex": {
             "value": 1,
             "max": 9,
-            "short": "REFLEX",
-            "label": "REFLEX",
+            "short": "COMBAT.REFLEX",
+            "label": "COMBAT.REFLEX",
             "folmula": null,
             "variable":null,
             "substitution":false
@@ -134,8 +134,8 @@
           "arms": {
             "value":1,
             "max": 9,
-            "short": "ARMS",
-            "label": "ARMS",
+            "short": "COMBAT.ARMS",
+            "label": "COMBAT.ARMS",
             "folmula": null,
             "variable":null,
             "substitution":false
@@ -143,8 +143,8 @@
           "damage": {
             "value":1,
             "max": 9,
-            "short": "DAMAGE",
-            "label": "DAMAGE",
+            "short": "COMBAT.DAMAGE",
+            "label": "COMBAT.DAMAGE",
             "folmula": null,
             "variable":null,
             "substitution":false
@@ -156,24 +156,24 @@
           "combatpower":{
             "value": null,
             "max": null,
-            "short": "CP",
-            "label": "COMBAT POWER",
+            "short": "EXP.COMBATPOWERS",
+            "label": "EXP.COMBATPOWERL",
             "folmula": null,
             "auto":true
           },
           "expgain":{
             "value": null,
             "max": null,
-            "short": "expgain",
-            "label": "expgain",
+            "short": "EXP.EXPGAINS",
+            "label": "EXP.EXPGAINL",
             "folmula": null,
             "auto":true
           },
           "upkeep":{
             "value": null,
             "max": null,
-            "short": "upkeep",
-            "label": "upkeep",
+            "short": "EXP.UPKEEPS",
+            "label": "EXP.UPKEEPL",
             "folmula": null,
             "auto":true,
             "case": false
@@ -181,16 +181,16 @@
           "mythos":{
             "value": null,
             "max": null,
-            "short": "mythos",
-            "label": "Cthulhu Mythos",
+            "short": "EXP.MYTHOSS",
+            "label": "EXP.MYTHOSL",
             "folmula": null,
             "auto":true
           },
           "san":{
             "value": null,
             "max": null,
-            "short": "SAN",
-            "label": "SANITY POINT",
+            "short": "EXP.SANS",
+            "label": "EXP.SANL",
             "folmula": null,
             "auto":true
           }
@@ -209,8 +209,8 @@
           "majorWoundsOffset":{
             "value": 0,
             "max": 2,
-            "short": "Major Wounds",
-            "label": "Major Wounds Offset",
+            "short": "STATUS.MajorWoundesOffsetS",
+            "label": "STATUS.MajorWoundesOffsetL",
             "folmula": null,
             "auto":true,
             "variable":null,
@@ -227,15 +227,17 @@
           "sleep":{
             "value": null,
             "max": null,
-            "explain": "not sleep turn",
-            "label": "sleep",
-            "auto": true
+            "explain": "STATUS.SleepL",
+            "label": "STATUS.SleepS",
+            "auto": true,
+            "variable":null,
+            "substitution":false
           },
           "fumble":{
             "value": 1,
             "max": 6,
-            "explain": "fumble number",
-            "label": "fumble",
+            "explain": "STATUS.FumbleL",
+            "label": "STATUS.FumbleS",
             "auto": true,
             "variable":null,
             "substitution":false
@@ -251,8 +253,8 @@
           "trauma":{
             "value": 0,
             "max": null,
-            "explain": "trauma number",
-            "label": "trauma",
+            "explain": "STATUS.TraumaL",
+            "label": "STATUS.TraumaS",
             "auto": true,
             "variable":null,
             "substitution":false
@@ -261,6 +263,10 @@
             "type": "Boolean",
             "value": false,
             "variableonoff":false
+          },
+          "secondhaven":{
+            "type": "Boolean",
+            "value": false
           }
         }
       },
@@ -270,162 +276,162 @@
             "abnormal":{
               "type": "Boolean",
               "value": false,
-              "label": "ABNORMAL"
+              "label": "HOBBY.Abnormal"
             },
             "kawai":{
               "type": "Boolean",
               "value": false,
-              "label": "KAWAII"
+              "label": "HOBBY.KAWAII"
             },
             "outrageous":{
               "type": "Boolean",
               "value": false,
-              "label": "OUTRAGEOUS"
+              "label": "HOBBY.OUTRAGEOUS"
             },
             "fanatic":{
               "type": "Boolean",
               "value": false,
-              "label": "FANATIC"
+              "label": "HOBBY.FANATIC"
             },
             "otaku":{
               "type": "Boolean",
               "value": false,
-              "label": "OTAKU"
+              "label": "HOBBY.OTAKU"
             }
           },
           "culture":{
             "music":{
               "type": "Boolean",
               "value": false,
-              "label": "MUSIC"
+              "label": "HOBBY.MUSIC"
             },
             "trend":{
               "type": "Boolean",
               "value": false,
-              "label": "TREND"
+              "label": "HOBBY.TREND"
             },
             "reading":{
               "type": "Boolean",
               "value": false,
-              "label": "READING"
+              "label": "HOBBY.READING"
             },
             "perform":{
               "type": "Boolean",
               "value": false,
-              "label": "PERFORM"
+              "label": "HOBBY.PERFORM"
             },
             "art":{
               "type": "Boolean",
               "value": false,
-              "label": "ART"
+              "label": "HOBBY.ART"
             }
           },
           "earnest":{
             "cavil":{
               "type": "Boolean",
               "value": false,
-              "label": "CAVIL"
+              "label": "HOBBY.CAVIL"
             },
             "meddling":{
               "type": "Boolean",
               "value": false,
-              "label": "MEDDLING"
+              "label": "HOBBY.MEDDLING"
             },
             "housework":{
               "type": "Boolean",
               "value": false,
-              "label": "HOUSEWORK"
+              "label": "HOBBY.HOUSEWORK"
             },
             "swot":{
               "type": "Boolean",
               "value": false,
-              "label": "SWOT"
+              "label": "HOBBY.SWOT"
             },
             "health":{
               "type": "Boolean",
               "value": false,
-              "label": "HEALTH"
+              "label": "HOBBY.HEALTH"
             }
           },
           "holiday":{
             "outdoor":{
               "type": "Boolean",
               "value": false,
-              "label": "OUTDOOR"
+              "label": "HOBBY.OUTDOOR"
             },
             "craft":{
               "type": "Boolean",
               "value": false,
-              "label": "CRAFT"
+              "label": "HOBBY.CRAFT"
             },
             "sport":{
               "type": "Boolean",
               "value": false,
-              "label": "SPORT"
+              "label": "HOBBY.SPORT"
             },
             "celebrity":{
               "type": "Boolean",
               "value": false,
-              "label": "CELEBRITY"
+              "label": "HOBBY.CELEBRITY"
             },
             "travel":{
               "type": "Boolean",
               "value": false,
-              "label": "TRAVEL"
+              "label": "HOBBY.TRAVEL"
             }
           },
           "comfort":{
             "nurture":{
               "type": "Boolean",
               "value": false,
-              "label": "NURTURE"
+              "label": "HOBBY.NURTURE"
             },
             "lonely":{
               "type": "Boolean",
               "value": false,
-              "label": "LONELY"
+              "label": "HOBBY.LONELY"
             },
             "killtime":{
               "type": "Boolean",
               "value": false,
-              "label": "KILL TIME"
+              "label": "HOBBY.KILLTIME"
             },
             "creed":{
               "type": "Boolean",
               "value": false,
-              "label": "CREED"
+              "label": "HOBBY.CREED"
             },
             "wabisabi":{
               "type": "Boolean",
               "value": false,
-              "label": "WABISABI"
+              "label": "HOBBY.WABISABI"
             }
           },
           "redLight":{
             "adult":{
               "type": "Boolean",
               "value": false,
-              "label": "ADULT"
+              "label": "HOBBY.ADULT"
             },
             "eat":{
               "type": "Boolean",
               "value": false,
-              "label": "EAT"
+              "label": "HOBBY.EAT"
             },
             "gamble":{
               "type": "Boolean",
               "value": false,
-              "label": "GAMBLE"
+              "label": "HOBBY.GAMBLE"
             },
             "gossip":{
               "type": "Boolean",
               "value": false,
-              "label": "GOSSIP"
+              "label": "HOBBY.GOSSIP"
             },
             "fashion":{
               "type": "Boolean",
               "value": false,
-              "label": "FASHION"
+              "label": "HOBBY.FASHION"
             }
           }
         }
@@ -472,7 +478,9 @@
         "hierarchy": "",
         "surface": "",
         "language": "",
-        "favorite": ""
+        "favorite": "",
+        "haven":"",
+        "haven2":""
       }
     }
   },
@@ -480,10 +488,324 @@
     "types": ["item", "karma", "inventry","chatpalette"],
     "item": {
       "description": "",
-      "quantity": 1,
-      "weight": 0,
-      "attributes": {},
-      "groups": {}
+      "otherName":"",
+      "typew":false,
+      "typev":false,
+      "typep":false,
+      "typeg":false,
+      "storage":"",
+      "weapon":{
+        "wtype":"",
+        "hit":"",
+        "damageadd":"",
+        "range":"",
+        "special":{
+          "satasupe":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.SATASUPE"
+          },
+          "revolver":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.REVOLVER"
+          },
+          "shotgun":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.SHOTGUN"
+          },
+          "longrange":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.LONGRANGE"
+          },
+          "murdrum":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.MURDRUM"
+          },
+          "full":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.FULL"
+          },
+          "stun":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.STUN"
+          },
+          "blast":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.BLAST"
+          },
+          "crash":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.CRASH"
+          },
+          "twohand":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.TWOHAND"
+          },
+          "breakable":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.FULLBREAKABLE"
+          },
+          "dram":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.FULLDRAM"
+          },
+          "stability":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.STABILITY"
+          },
+          "poison":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.POISON"
+          },
+          "mystery":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.MYSTERY"
+          },
+          "reach":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.REACH"
+          }
+        },
+        "specialtext":{
+          "kill":{
+            "type": "Boolean",
+            "value": false,
+            "number":"",
+            "label": "SPEC.KILL"
+          },
+          "shock":{
+            "type": "Boolean",
+            "value": false,
+            "number":"",
+            "label": "SPEC.SHOCK"
+          },
+          "target":{
+            "type": "Boolean",
+            "value": false,
+            "number":"",
+            "label": "SPEC.TARGET"
+          },
+          "barrage":{
+            "type": "Boolean",
+            "value": false,
+            "number":"",
+            "label": "SPEC.BARRAGE"
+          },
+          "limit1":{
+            "type": "Boolean",
+            "value": false,
+            "number":"",
+            "label": "SPEC.LIMIT1"
+          },
+          "limit2":{
+            "type": "Boolean",
+            "value": false,
+            "number":"",
+            "label": "SPEC.LIMIT2"
+          },
+          "exterminate":{
+            "type": "Boolean",
+            "value": false,
+            "number":"",
+            "label": "SPEC.EXTERMINATE"
+          },
+          "upkeepcost":{
+            "type": "Boolean",
+            "value": false,
+            "number":"",
+            "label": "SPEC.UPKEEPCOST"
+          }
+        },
+        "upkeep":false,
+        "price":{
+          "value":"",
+          "max":9
+        }
+      },
+      "veicle":{
+        "vtype":"",
+        "speed":"",
+        "drp":"",
+        "capacity":"",
+        "special":{
+          "flesh":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.FLESH"
+          },
+          "vcombat":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.VEICLECOMBAT"
+          },
+          "portable":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.PORTABLE"
+          },
+          "unbalance":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.UNBALANCE"
+          },
+          "seduction":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.SEDUCTION"
+          },
+          "habitable":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.HABITABLE"
+          },
+          "safety":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.SAFETY"
+          },
+          "sky":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.SKY"
+          },
+          "light":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.LIGHT"
+          },
+          "onwater":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.ONWATER"
+          },
+          "crunch":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.CRUNCH"
+          }
+        },
+        "specialtext":{
+          "upkeepcost":{
+            "type": "Boolean",
+            "value": false,
+            "number":"",
+            "label": "SPEC.UPKEEPCOST"
+          }
+        },
+        "upkeep":false,
+        "price":{
+          "value":"",
+          "max":9
+        }
+      },
+      "props":{
+        "ptype":"",
+        "timing":"",
+        "minivalue":"",
+        "addcapacity":0,
+        "special":{
+          "mini":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.MINI"
+          },
+          "consumable":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.CONSUMABLE"
+          },
+          "multiple":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.MULTIPLE"
+          },
+          "normalstorage":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.NORMALSTORAGE"
+          },
+          "room":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.ROOM"
+          },
+          "noncumulative":{
+            "type": "Boolean",
+            "value": false,
+            "label": "SPEC.NONCUMULATIVE"
+          }
+        },
+        "specialtext":{
+          "addiction":{
+            "type": "Boolean",
+            "value": false,
+            "number":"",
+            "label": "SPEC.ADDICTION"
+          },
+          "furniture":{
+            "type": "Boolean",
+            "value": false,
+            "number":"",
+            "label": "SPEC.FURNITURE"
+          },
+          "limit1":{
+            "type": "Boolean",
+            "value": false,
+            "number":"",
+            "label": "SPEC.LIMIT1"
+          },
+          "limit2":{
+            "type": "Boolean",
+            "value": false,
+            "number":"",
+            "label": "SPEC.LIMIT2"
+          },
+          "upkeepcost":{
+            "type": "Boolean",
+            "value": false,
+            "number":0,
+            "label": "SPEC.UPKEEPCOST"
+          },
+          "securityadd":{
+            "type": "Boolean",
+            "value": false,
+            "number":0,
+            "label": "SPEC.SECURITY"
+          }
+        },
+        "upkeep":false,
+        "price":{
+          "value":"",
+          "max":9
+        },
+        "effect":""
+      },
+      "gadjet":{
+        "gtype":"",
+        "timing":"",
+        "times":{
+          "ttype":"",
+          "tnumber":""
+        },
+        "hobby":"",
+        "addcapacity":0,
+        "effect":""
+      }
     },
     "karma":{
       "description":{

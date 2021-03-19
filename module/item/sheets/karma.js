@@ -17,8 +17,8 @@ export class SatasupeKarmaSheet extends ItemSheet {
 
     getData(){
         const data = super.getData();
-        data._alignment = "CALM";
-        data._propertiesValue ="CRIME";
+        data._alignment = game.i18n.localize("ALIGNMENT.CALM");
+        data._propertiesValue =game.i18n.localize("CIRCUMSTANCE.CRIME");
 
         for( let [key, value] of Object.entries(SATASUPE['check'])){
             if (key === data.data.check.checkValue){

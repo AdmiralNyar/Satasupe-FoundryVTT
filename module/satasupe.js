@@ -68,8 +68,8 @@ Hooks.once("init", async function() {
   });
 
   game.settings.register("satasupe", "karmaSortable", {
-    name: "Karma sort?",
-    hint: "If click label,karma would sort.",
+    name: "SETTINGS.SatasupekarmaSortN",
+    hint: "SETTINGS.SatasupekarmaSortL",
     scope: 'world',
     type: Boolean,
     config: true,
@@ -83,6 +83,15 @@ Hooks.once("init", async function() {
     type: String,
     config: true,
     default: `https://bcdice.onlinesession.app/v2`
+  });
+
+  game.settings.register("satasupe", "BCDice2", {
+    name: "SETTINGS.SatasupeBCDiceAPIN2",
+    hint: "SETTINGS.SatasupeBCDiceAPIL2",
+    scope: 'world',
+    type: String,
+    config: true,
+    default: `https://bcdice.trpg.net/v2`
   });
 
   /**
@@ -117,7 +126,6 @@ Hooks.once("init", async function() {
    *  > false
    */
   Handlebars.registerHelper('uniqueif', function (v1, operator, v2, options) {
-
     switch (operator) {
         case '==':
             return (v1 == v2) ? options.fn(this) : options.inverse(this);
