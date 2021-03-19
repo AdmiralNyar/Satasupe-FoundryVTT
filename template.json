@@ -637,7 +637,7 @@
           "max":9
         }
       },
-      "veicle":{
+      "vehicle":{
         "vtype":"",
         "speed":"",
         "drp":"",
@@ -651,7 +651,7 @@
           "vcombat":{
             "type": "Boolean",
             "value": false,
-            "label": "SPEC.VEICLECOMBAT"
+            "label": "SPEC.VEHICLECOMBAT"
           },
           "portable":{
             "type": "Boolean",
