@@ -1,6 +1,4 @@
 {
-    "SETTINGS.SatasupeMacroShorthandN": "Shortened Macro Syntax",
-    "SETTINGS.SatasupeMacroShorthandL": "Enable a shortened macro syntax which allows referencing attributes directly, for example @str instead of @attributes.str.value. Disable this setting if you need the ability to reference the full attribute model, for example @attributes.str.label.",
     "SETTINGS.SatasupekarmaSortN": "カルマのソート可能にするか",
     "SETTINGS.SatasupekarmaSortL": "アクターシートのカルマの表のラベルのクリックでソート可能にするか？（カルマの表示方法も変更）",
     "SETTINGS.SatasupeBCDiceAPIN": "BCDice-apiのプライマリサーバのURLの指定",
@@ -403,6 +401,8 @@
     "SATASUPE.Favorite":"好み",
     "SATASUPE.Haven":"アジト",
     "SATASUPE.FavoriteRoll":"クリックで自動ロール!",
+    "SATASUPE.AlignmentRollresult":"性業値が{align}になった",
+    "SATASUPE.AlignmentRolltitle": "性業値ロール！",
 
     "SATASUPE.ResourceMin": "Min",
     "SATASUPE.ResourceValue": "Value",
