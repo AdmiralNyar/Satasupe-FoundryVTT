@@ -44,17 +44,5 @@ export class SatasupeInventrySheet extends ItemSheet {
 
   /* -------------------------------------------- */
 
-  /** @override 
-  _updateObject(event, formData) {
-    console.log(formData);
-    console.log(this.object);
 
-    // Handle attribute and group updates.
-    formData = EntitySheetHelper.updateAttributes(formData, this);
-    formData = EntitySheetHelper.updateGroups(formData, this);
-
-    // Update the Actor with the new form values.
-    return this.object.update(formData);
-  }
-  */
 }

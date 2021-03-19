@@ -11,7 +11,6 @@ import { SatasupeItemSheet } from "./item-sheet.js";
 import { SatasupeItem } from "./item/item.js";
 import { SatasupeActorSheet } from "./actor-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
-import { createsatasupeMacro } from "./macro.js";
 import { SatasupeKarmaSheet } from "./item/sheets/karma.js";
 import { SatasupeInventrySheet } from "./item/sheets/inventry.js";
 import { SatasupeChatpaletteSheet} from "./item/sheets/chatpalette.js";
@@ -33,13 +32,7 @@ Hooks.once("init", async function() {
 
   game.satasupe = {
     SatasupeActor,
-    createsatasupeMacro,
     SatasupeItem
-		/**macros:{
-		*	skillCheck: Utilities.skillCheckMacro,
-		*	weaponCheck: Utilities.weaponCheckMacro
-		*}
-    */
   };
 
 
@@ -55,17 +48,6 @@ Hooks.once("init", async function() {
   Items.registerSheet("satasupe", SatasupeInventrySheet, { types: ['inventry'], makeDefault: true});
   Items.registerSheet("satasupe", SatasupeChatpaletteSheet, { types: ['chatpalette'], makeDefault: true});
   Items.registerSheet("satasupe", SatasupeItemSheet, { makeDefault: true });
-
-
-  // Register system settings
-  game.settings.register("satasupe", "macroShorthand", {
-    name: "SETTINGS.SatasupeMacroShorthandN",
-    hint: "SETTINGS.SatasupeMacroShorthandL",
-    scope: "world",
-    type: Boolean,
-    default: true,
-    config: true
-  });
 
   game.settings.register("satasupe", "karmaSortable", {
     name: "SETTINGS.SatasupekarmaSortN",
@@ -155,8 +137,3 @@ Hooks.once("init", async function() {
   // Preload template partials.
   preloadHandlebarsTemplates();
 });
-
-/**
- * Macrobar hook.
- */
-Hooks.on("hotbarDrop", (bar, data, slot) => createsatasupeMacro(data, slot));

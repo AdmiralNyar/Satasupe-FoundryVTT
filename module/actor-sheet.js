@@ -1,4 +1,3 @@
-import { EntitySheetHelper } from "./helper.js";
 import { SatasupeInventrySheet } from "./item/sheets/inventry.js";
 import { SatasupeChatpaletteSheet} from "./item/sheets/chatpalette.js";
 import { SATASUPE } from "./config.js";
@@ -358,7 +357,6 @@ export class SatasupeActorSheet extends ActorSheet {
     if(data.data.hobbychoicenumber > Math.ceil((Number(data.data.circumstance.life.value)+Number(data.data.circumstance.cluture.value))/2)){
       data.data.hobbynumerror = true;
     }else{data.data.hobbynumerror = false;}
-    console.log(data.data.hobbynumerror);
 
     return data;
   }
@@ -401,10 +399,6 @@ export class SatasupeActorSheet extends ActorSheet {
 
     // Everything below here is only needed if the sheet is editable
     if ( !this.options.editable ) return;
-
-    // Handle rollable items and attributes
-    html.find(".items .rollable").on("click", this._onItemRoll.bind(this));
-    html.find(".attributes").on("click", "a.attribute-roll", EntitySheetHelper.onAttributeRoll.bind(this));
 
     // Update Inventory Item
     html.find('.item-edit').click(ev => {
@@ -504,22 +498,6 @@ export class SatasupeActorSheet extends ActorSheet {
       const id = li.attr("data-item-id");
       this._sendMessage(ev, index, id);
     });
-
-    // Add draggable for macros.
-    html.find(".attributes a.attribute-roll").each((i, a) => {
-      a.setAttribute("draggable", true);
-      a.addEventListener("dragstart", ev => {
-        let dragData = ev.currentTarget.dataset;
-        ev.dataTransfer.setData('text/plain', JSON.stringify(dragData));
-      }, false);
-    });
-
-    // Add or Remove Attribute
-    html.find(".attributes").on("click", ".attribute-control", EntitySheetHelper.onClickAttributeControl.bind(this));
-
-    // Add attribute groups.
-    html.find(".groups").on("click", ".group-control", EntitySheetHelper.onClickAttributeGroupControl.bind(this));
-
   }
 
   _geardragstart(event){
@@ -823,8 +801,6 @@ export class SatasupeActorSheet extends ActorSheet {
         }
       }
     }
-    formData = EntitySheetHelper.updateAttributes(formData, this);
-    formData = EntitySheetHelper.updateGroups(formData, this);
     return this.object.update(formData);
   }
 
@@ -842,19 +818,11 @@ export class SatasupeActorSheet extends ActorSheet {
     $(button).prev().show();
   }
 
-  _createAlignment(event){
+  async _createAlignment(event){
     event.preventDefault();
-    let speakerData = {};
-    let speaker;
-    if(this.actor){
-      if(this.token) speakerData.token = this.token;
-      else speakerData.actor = this.actor;
-      speaker = ChatMessage.getSpeaker(speakerData);
-    }else{
-      speaker = ChatMessage.getSpeaker;
-    }
+
     const actor = this.actor.data;
-    const roll = new Roll('2D6');
+    const roll = new Roll('2d6');
     roll.roll();
     let align = 0;
     if(roll._total == 6 ||roll._total == 7 || roll._total == 8){
@@ -872,13 +840,17 @@ export class SatasupeActorSheet extends ActorSheet {
     }else if(roll._total == 2){
       align = 4;
     }
+    const user = this.actor.user ? this.actor.user : game.user;
     actor.data.attribs.alignment.value = align;
-    let text = `<br>=>Your Alignment is ${align}.`
+    let text = `<br>=>` + game.i18n.format('SATASUPE.AlignmentRollresult',{align: align});
     let chatData = {
-      speaker: speaker,
-      flavor: "Alignment Roll!" + text,
+      content : await roll.render(),
+      user: user._id,
+      speaker: ChatMessage.getSpeaker({actor : this.actor}),
+      flavor: game.i18n.localize("SATASUPE.AlignmentRolltitle") + text,
     };
-    roll.toMessage(chatData);
+    console.log("ok");
+    ChatMessage.create(chatData);
     const updated = {_id:actor.id, data:actor.data};
     game.actors.get(actor._id).update(updated);
   }
@@ -886,6 +858,8 @@ export class SatasupeActorSheet extends ActorSheet {
   createFavorite(event){
     event.preventDefault();
     const actor = this.actor.data;
+    const speaker = this.actor;
+    const user = this.actor.user ? this.actor.user : game.user;
     var text = "NPCT"
     var request = new XMLHttpRequest();
     var param = "command=" + text;
@@ -938,7 +912,7 @@ export class SatasupeActorSheet extends ActorSheet {
           return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
         var favoriteText = halftext.replace(/.*?\):/g,"")
         var contenthtml = "<div><div>" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
-        ChatMessage.create({user:game.user._id,speaker:ChatMessage.getSpeaker(),content:contenthtml},{});
+        ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
         actor.data.infos.favorite = favoriteText;
         const updated = {_id:actor.id, data:actor.data};
         game.actors.get(actor._id).update(updated);
@@ -999,7 +973,7 @@ export class SatasupeActorSheet extends ActorSheet {
           return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
         var favoriteText = halftext.replace(/.*?\):/g,"")
         var contenthtml = "<div><div>" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
-        ChatMessage.create({user:game.user._id,speaker:ChatMessage.getSpeaker(),content:contenthtml},{});
+        ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
         actor.data.infos.favorite = favoriteText;
         const updated = {_id:actor.id, data:actor.data};
         game.actors.get(actor._id).update(updated);
@@ -1032,6 +1006,8 @@ export class SatasupeActorSheet extends ActorSheet {
     event.preventDefault();
     let actor = this.actor.data.data;
     let item = this.actor.data.items;
+    const speaker = this.actor;
+    const user = this.actor.user ? this.actor.user : game.user;
     //console.log(this.item.data.data.chatpalette.chat[index]);
     for(let i = 0; i < item.length ; i++){
       if(item[i]._id !== id){
@@ -1167,7 +1143,7 @@ export class SatasupeActorSheet extends ActorSheet {
             }
             var text_line = data.text.replace(/\r?\n/g,"<br>");
             var contenthtml = "<div><div>" + message + "<br>"+ text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
-            ChatMessage.create({user:game.user._id,speaker:ChatMessage.getSpeaker(),content:contenthtml},{});
+            ChatMessage.create({user:user._id,speaker:ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
           }
         };
         request.send();
@@ -1248,7 +1224,7 @@ export class SatasupeActorSheet extends ActorSheet {
             }
             var text_line2 = data2.text.replace(/\r?\n/g,"<br>");
             var contenthtml = "<div><div>" + message + "<br>"+ text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
-            ChatMessage.create({user:game.user._id,speaker:ChatMessage.getSpeaker(),content:contenthtml},{});
+            ChatMessage.create({user:user._id,speaker:ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
           }
         };
         request2.send();
