@@ -162,8 +162,8 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
                     }
                 }
                 var text_line = data.text.replace(/\r?\n/g,"<br>");
-                var contenthtml = "<div><div>" + message + "<br>"+ text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
-                ChatMessage.create({user:game.user._id,speaker:ChatMessage.getSpeaker(),content:contenthtml},{});
+                var contenthtml = "<div><div>" + "<br>"+ text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
+                ChatMessage.create({user:game.user._id,speaker:ChatMessage.getSpeaker(),content:contenthtml,flavor:message},{});
             }
         };
         request.send();
@@ -243,8 +243,8 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
                     }
                 }
                 var text_line2 = data2.text.replace(/\r?\n/g,"<br>");
-                var contenthtml = "<div><div>" + message + "<br>"+ text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
-                ChatMessage.create({user:game.user._id,speaker:ChatMessage.getSpeaker(),content:contenthtml},{});
+                var contenthtml = "<div><div>" + "<br>"+ text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
+                ChatMessage.create({user:game.user._id,speaker:ChatMessage.getSpeaker(),content:contenthtml,flavor:message},{});
             }
         };
         request2.send();

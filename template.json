@@ -449,7 +449,7 @@
         }
       },
      "prisoner":{},
-     "variable":{}
+     "variable":[]
     },
     "character": {
       "templates":[
@@ -485,7 +485,7 @@
     }
   },
   "Item": {
-    "types": ["item", "karma", "inventry","chatpalette"],
+    "types": ["item", "karma", "chatpalette"],
     "item": {
       "description": "",
       "otherName":"",
@@ -844,13 +844,6 @@
       },
       "effect": "",
       "flavor": ""
-    },
-    "inventry":{
-      "description": "",
-      "quantity": 1,
-      "weight": 0,
-      "attributes": {},
-      "groups": {}
     },
     "chatpalette":{
       "chatpalette":{
