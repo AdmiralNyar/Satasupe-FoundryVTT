@@ -14,8 +14,8 @@
                         <label>{{localize 'SATASUPE.WEAPON'}} :</label>
                         <input type="checkbox" name="data.typew" {{checked data.typew}}/>
                     </div>
-                    <div class="veicle-setting settings">
-                        <label>{{localize 'SATASUPE.VEICLE'}} :</label>
+                    <div class="vehicle-setting settings">
+                        <label>{{localize 'SATASUPE.VEHICLE'}} :</label>
                         <input type="checkbox" name="data.typev" {{checked data.typev}}/>
                     </div>
                     <div class="props-setting settings">
@@ -34,7 +34,7 @@
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
         {{#if data.typew}}<a class="item" data-tab="weapon">{{localize 'SATASUPE.WEAPON'}}</a>{{/if}}
-        {{#if data.typev}}<a class="item" data-tab="veicle">{{localize 'SATASUPE.VEICLE'}}</a>{{/if}}
+        {{#if data.typev}}<a class="item" data-tab="vehicle">{{localize 'SATASUPE.VEHICLE'}}</a>{{/if}}
         {{#if data.typep}}<a class="item" data-tab="props">{{localize 'SATASUPE.PROPS'}}</a>{{/if}}
         {{#if data.typeg}}<a class="item" data-tab="gadjet">{{localize 'SATASUPE.GADJET'}}</a>{{/if}}
     </nav>
@@ -117,14 +117,14 @@
             </div>
         </div>
 
-        {{!-- veicle Tab --}}
-        <div class="tab" data-group="primary" data-tab="veicle">
-            <div class="veicle-detail detail">
-                <div class="veicle-type">
+        {{!-- vehicle Tab --}}
+        <div class="tab" data-group="primary" data-tab="vehicle">
+            <div class="vehicle-detail detail">
+                <div class="vehicle-type">
                     <label>{{localize 'SATASUPE.TYPE'}} :</label>
-                    <select name="data.veicle.vtype" data-dtype="String">
+                    <select name="data.vehicle.vtype" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                    {{#select data.veicle.vtype}}
+                    {{#select data.vehicle.vtype}}
                         <option value="skateboard">{{localize 'SATASUPE.SKATEBOARD'}}</option>
                         <option value="hotrod">{{localize 'SATASUPE.HOTROD'}}</option>
                         <option value="bicycle">{{localize 'SATASUPE.BICYCLE'}}</option>
@@ -161,44 +161,44 @@
                         <option value="amphibian">{{localize 'SATASUPE.AMPHIBIAN'}}</option>
                         <option value="armorcar">{{localize 'SATASUPE.ARMORCAR'}}</option>
                         <option value="tank">{{localize 'SATASUPE.TANK'}}</option>
-                        <option value="otherveicle">{{localize 'SATASUPE.OTHERVEICLE'}}</option>
+                        <option value="othervehicle">{{localize 'SATASUPE.OTHERVEHICLE'}}</option>
                     {{/select}}
                     </select>
                 </div>
-                <div class="veicle-price">
+                <div class="vehicle-price">
                     <label>{{localize 'SATASUPE.PRICE'}} :</label>
-                    <input name="data.veicle.price.value" type="text" value="{{data.veicle.price.value}}"/>
+                    <input name="data.vehicle.price.value" type="text" value="{{data.vehicle.price.value}}"/>
                 </div>
-                <div class="veicle-speed">
+                <div class="vehicle-speed">
                     <label>{{localize 'SATASUPE.SPEED'}} :</label>
-                    <input name="data.veicle.speed" type="text" value="{{data.veicle.speed}}"/>
+                    <input name="data.vehicle.speed" type="text" value="{{data.vehicle.speed}}"/>
                 </div>
-                <div class="veicle-drp">
+                <div class="vehicle-drp">
                     <label>{{localize 'SATASUPE.CARBODY'}} :</label>
-                    <input name="data.veicle.drp" type="text" value="{{data.veicle.drp}}"/>
+                    <input name="data.vehicle.drp" type="text" value="{{data.vehicle.drp}}"/>
                 </div>
-                <div class="veicle-capacity">
+                <div class="vehicle-capacity">
                     <label>{{localize 'SATASUPE.CAPACITY'}} :</label>
-                    <input name="data.veicle.capacity" type="text" value="{{data.veicle.capasity}}"/>
+                    <input name="data.vehicle.capacity" type="text" value="{{data.vehicle.capasity}}"/>
                 </div>
                 <div class="upkeep">
                     <label>{{localize 'EXP.UPKEEPS'}} :</label>
-                    <input class="checkbox item-upkeep" type="checkbox" name="data.veicle.upkeep" {{checked data.veicle.upkeep}}/>
+                    <input class="checkbox item-upkeep" type="checkbox" name="data.vehicle.upkeep" {{checked data.vehicle.upkeep}}/>
                 </div>
             </div>
-            <div class="veicle-special special">
+            <div class="vehicle-special special">
                 <label>{{localize 'SATASUPE.SPECIAL'}} :</label>
-                <div class="veicle-special-switch switch">
-                    {{#each data.veicle.special as |special key|}}
+                <div class="vehicle-special-switch switch">
+                    {{#each data.vehicle.special as |special key|}}
                         <div class="special-button">
-                            <button class="special-button {{#if special.value}}button-on{{/if}}" data-special="{{key}}" data-itemtype="veicle" type="button">
+                            <button class="special-button {{#if special.value}}button-on{{/if}}" data-special="{{key}}" data-itemtype="vehicle" type="button">
                                 {{localize special.label}}
                             </button>
                         </div>
                     {{/each}}
-                    {{#each data.veicle.specialtext as |specialtext key|}}
+                    {{#each data.vehicle.specialtext as |specialtext key|}}
                     <div class="special-button">
-                        <button class="special-button {{#if specialtext.value}}button-on{{/if}}" data-specialtext="{{key}}" data-itemtype="veicle" type="button">
+                        <button class="special-button {{#if specialtext.value}}button-on{{/if}}" data-specialtext="{{key}}" data-itemtype="vehicle" type="button">
                             {{localize specialtext.label}}
                         </button>
                         {{#if specialtext.value}}<input class="specialtext-input" type="text" data-specialtext="{{key}}" name="specialtext.number" value="{{specialtext.number}}"/>{{/if}}

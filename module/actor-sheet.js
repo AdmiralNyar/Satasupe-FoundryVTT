@@ -182,12 +182,12 @@ export class SatasupeActorSheet extends ActorSheet {
     data.data.equipmentcapacity.normal = Number(data.data.circumstance.crime.value) + Number(data.data.aptitude.body.value);
     data.data.equipmentcapacity.haven = 10;
     data.data.equipmentcapacity.haven2 = 10;
-    data.data.equipmentcapacity.veicle = 0;
+    data.data.equipmentcapacity.vehicle = 0;
     data.data.equipmentcapacity.comfort=10;
     data.data.equipmentcapacity.comfort2=10;
     data.data.equipmentcapacity.add = 0;
     data.data.equipmentplace.normal = 0;
-    data.data.equipmentplace.veicle = 0;
+    data.data.equipmentplace.vehicle = 0;
     data.data.equipmentplace.add = 0;
     data.data.equipmentplace.haven = 0;
     data.data.equipmentplace.haven2 = 0;
@@ -200,14 +200,14 @@ export class SatasupeActorSheet extends ActorSheet {
     data.data.equipmentattribs.security2 = 0;
     data.data.equipmentattribs.securityadd2 = 0;
     data.data.equipmentattribs.placeorder2 = 0;
-    data.data.equipmentattribs.veiclehave = false;
+    data.data.equipmentattribs.vehiclehave = false;
     data.data.equipmentattribs.habitable = false;
     data.data.hobbynumerror = false;
     for(let i = 0; i < data.items.length ; i++){
       if(data.items[i].type == 'item'){
-        if(data.items[i].data.typev&&Number(data.items[i].data.veicle.capacity)){
-          data.data.equipmentcapacity.veicle = data.items[i].data.veicle.capacity;
-          data.data.equipmentattribs.habitable = data.items[i].data.veicle.special.habitable.value || data.data.equipmentattribs.habitable;
+        if(data.items[i].data.typev&&Number(data.items[i].data.vehicle.capacity)){
+          data.data.equipmentcapacity.vehicle = data.items[i].data.vehicle.capacity;
+          data.data.equipmentattribs.habitable = data.items[i].data.vehicle.special.habitable.value || data.data.equipmentattribs.habitable;
         }
         if((Number(data.items[i].data.props.addcapacity) && data.items[i].data.typep) || (Number(data.items[i].data.gadjet.addcapacity) && data.items[i].data.typep)){
           data.data.equipmentcapacity.add += Number(data.items[i].data.props.addcapacity) + Number(data.items[i].data.gadjet.addcapacity);
@@ -239,11 +239,11 @@ export class SatasupeActorSheet extends ActorSheet {
             data.data.equipmentplace.haven2 -=1;
           }
         }
-        if(data.items[i].data.storage == 'veicle') {
+        if(data.items[i].data.storage == 'vehicle') {
           if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
-            data.data.equipmentplace.veicle += (data.items[i].data.props.minivalue / 10);
+            data.data.equipmentplace.vehicle += (data.items[i].data.props.minivalue / 10);
           }else{
-            data.data.equipmentplace.veicle +=1;
+            data.data.equipmentplace.vehicle +=1;
           }
         }
         if(!data.items[i].data.storage) {
@@ -254,7 +254,7 @@ export class SatasupeActorSheet extends ActorSheet {
           }
         }
 
-        data.data.equipmentattribs.veiclehave = data.items[i].data.typev || data.data.equipmentattribs.veiclehave;
+        data.data.equipmentattribs.vehiclehave = data.items[i].data.typev || data.data.equipmentattribs.vehiclehave;
         
         //
         if((data.items[i].data.typep && (data.items[i].data.props.addcapacity !==0))||(data.items[i].data.typeg && (data.items[i].data.gadjet.addcapacity !==0))){
@@ -283,12 +283,12 @@ export class SatasupeActorSheet extends ActorSheet {
           }
         }
         if(data.items[i].data.typep && data.items[i].data.props.specialtext.upkeepcost.value) data.data.equipmentattribs.upkeep += Number(data.items[i].data.props.specialtext.upkeepcost.number);
-        if(data.items[i].data.typev && data.items[i].data.veicle.specialtext.upkeepcost.value) data.data.equipmentattribs.upkeep += Number(data.items[i].data.veicle.specialtext.upkeepcost.number);
+        if(data.items[i].data.typev && data.items[i].data.vehicle.specialtext.upkeepcost.value) data.data.equipmentattribs.upkeep += Number(data.items[i].data.vehicle.specialtext.upkeepcost.number);
         if(data.items[i].data.typew && data.items[i].data.weapon.specialtext.upkeepcost.value) data.data.equipmentattribs.upkeep += Number(data.items[i].data.weapon.specialtext.upkeepcost.number);
       }
     }
     data.data.equipmentplace.normal = Math.ceil(data.data.equipmentplace.normal);
-    data.data.equipmentplace.veicle = Math.ceil(data.data.equipmentplace.veicle);
+    data.data.equipmentplace.vehicle = Math.ceil(data.data.equipmentplace.vehicle);
     data.data.equipmentplace.haven = Math.ceil(data.data.equipmentplace.haven);
     data.data.equipmentplace.haven2 = Math.ceil(data.data.equipmentplace.haven2);
     data.data.equipmentplace.other = Math.ceil(data.data.equipmentplace.other);
@@ -539,7 +539,7 @@ export class SatasupeActorSheet extends ActorSheet {
     for(let i = 0 ; i < item.length ; i++){
       if(item[i]._id === id.key){
         if(Number(dataset.nowcontain) < Number(dataset.capacity)){
-          if((dataset.placetype == 'veicle') && (item[i].data.typev||(item[i].data.typep&&(item[i].data.props.special.normalstorage.value||item[i].data.props.special.room.value&&(dataset.habitable == 'false'))))){
+          if((dataset.placetype == 'vehicle') && (item[i].data.typev||(item[i].data.typep&&(item[i].data.props.special.normalstorage.value||item[i].data.props.special.room.value&&(dataset.habitable == 'false'))))){
           }else{
             if((dataset.placetype == 'normal')&&(item[i].data.typep&&item[i].data.props.special.room.value)){}else{
               if(((dataset.placetype == 'haven')||(dataset.placetype == 'haven2'))&&(item[i].data.typep&&item[i].data.props.special.normalstorage.value)){}else{
@@ -567,7 +567,7 @@ export class SatasupeActorSheet extends ActorSheet {
           if(item[i].data.weapon.upkeep) newkeep = newkeep - 1;
         }
         if(item[i].data.typev){
-          if(item[i].data.veicle.upkeep) newkeep = newkeep - 1;
+          if(item[i].data.vehicle.upkeep) newkeep = newkeep - 1;
         }
         if(item[i].data.typep){
           if(item[i].data.props.upkeep) newkeep = newkeep - 1;
