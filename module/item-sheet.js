@@ -1,5 +1,3 @@
-import { EntitySheetHelper } from "./helper.js";
-
 /**
  * Extend the basic ItemSheet with some very Simple modifications
  * @extends {ItemSheet}
@@ -70,10 +68,6 @@ export class SatasupeItemSheet extends ItemSheet {
         }
       }
     }
-
-    /* Handle attribute and group updates.
-    formData = EntitySheetHelper.updateAttributes(formData, this);
-    formData = EntitySheetHelper.updateGroups(formData, this);*/
 
     // Update the Actor with the new form values.
     return this.object.update(formData);
