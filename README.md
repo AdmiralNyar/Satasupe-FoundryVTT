@@ -19,11 +19,11 @@ and [Token Mold](https://github.com/Moerill/token-mold#token-mold) module.
 To install and use the Satasupe system for Foundry Virtual Tabletop, simply paste the following URL into the 
 **Install System** dialog on the Setup menu of the application.
 
-https://raw.githubsercontent.com/AdmiralNyar/Satasupe-FoundryVTT/main/system.json
+https://github.com/AdmiralNyar/Satasupe-FoundryVTT/raw/main/system.json
 
 If you wish to manually install the system, you must clone or extract it into the ``Data/systems/satasupe`` folder. You
 may do this by cloning the repository or downloading a zip archive from the
-[Releases Page](https://github.com/AdmiralNyar/Satasupe-FoundryVTT/archive/v0.1.1.zip).
+[Releases Page](https://github.com/AdmiralNyar/Satasupe-FoundryVTT/releases).
 
 For a while I can't merge (and review) pull request.
 Only issues will be accepted (can be read).
