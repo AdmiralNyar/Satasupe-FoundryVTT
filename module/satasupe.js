@@ -45,7 +45,7 @@ Hooks.once("init", async function() {
   Actors.registerSheet("satasupe", SatasupeActorSheet, { makeDefault: true });
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("satasupe", SatasupeKarmaSheet, { types: ['karma'], makeDefault: true });
-  Items.registerSheet("satasupe", SatasupeInventrySheet, { types: ['inventry'], makeDefault: true});
+  //Items.registerSheet("satasupe", SatasupeInventrySheet, { types: ['inventry'], makeDefault: true});
   Items.registerSheet("satasupe", SatasupeChatpaletteSheet, { types: ['chatpalette'], makeDefault: true});
   Items.registerSheet("satasupe", SatasupeItemSheet, { makeDefault: true });
 

@@ -1,6 +1,7 @@
 # Satasupe System
 
-!! This game system is β-version !!
+!! This game system is prerelease version !!
+   (Currently under review and approval)
 
 This game system for [Foundry Virtual Tabletop](http://foundryvtt.com) 
 provides character sheet and game system 
@@ -33,4 +34,6 @@ Sorry!!
 ## Licence
 The software component of this system is distributed under the GNUv3 license.
 This system is based on [Simple Worldbuilding System](https://gitlab.com/foundrynet/worldbuilding/-/tree/master).
+I created this system referring to [CoC7-FoundryVTT](https://github.com/HavlockV/CoC7-FoundryVTT).
 
+Svg art source : https://icooon-mono.com
