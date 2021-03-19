@@ -168,6 +168,8 @@ export class SatasupeActorSheet extends ActorSheet {
       }else{}
     } 
 
+    data.data.variable = [];
+
     data.data.usedexp.unused = 13 - data.data.usedexp.value + Number(data.data.exp.expgain.value) - Number(data.data.exp.upkeep.value);
     if(data.data.usedexp.unused < 0){
       if(!data.data.status.alert.value) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.EXPPoints"));
@@ -1040,7 +1042,8 @@ export class SatasupeActorSheet extends ActorSheet {
                 break;
               }
             }
-            console.log(text);
+            if(!actor.variable) actor.variable = [];
+            console.log( this.actor);
             for(let j = 0; j < actor.variable.length ; j++){
               if((actor.variable[j].variable == repal[i]) && actor.variable[j].substitution){
                 text = text.replace(re,actor.variable[j].title);
@@ -1142,8 +1145,8 @@ export class SatasupeActorSheet extends ActorSheet {
               }
             }
             var text_line = data.text.replace(/\r?\n/g,"<br>");
-            var contenthtml = "<div><div>" + message + "<br>"+ text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
-            ChatMessage.create({user:user._id,speaker:ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+            var contenthtml = "<div><div>" + "<br>"+ text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
+            ChatMessage.create({user:user._id,speaker:ChatMessage.getSpeaker({actor : speaker}),content:contenthtml,flavor:message},{});
           }
         };
         request.send();
@@ -1223,8 +1226,8 @@ export class SatasupeActorSheet extends ActorSheet {
                 }
             }
             var text_line2 = data2.text.replace(/\r?\n/g,"<br>");
-            var contenthtml = "<div><div>" + message + "<br>"+ text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
-            ChatMessage.create({user:user._id,speaker:ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+            var contenthtml = "<div><div>" + "<br>"+ text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
+            ChatMessage.create({user:user._id,speaker:ChatMessage.getSpeaker({actor : speaker}),content:contenthtml,flavor:message},{});
           }
         };
         request2.send();
