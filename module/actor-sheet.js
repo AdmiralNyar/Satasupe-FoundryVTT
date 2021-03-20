@@ -168,8 +168,6 @@ export class SatasupeActorSheet extends ActorSheet {
       }else{}
     } 
 
-    data.data.variable = [];
-
     data.data.usedexp.unused = 13 - data.data.usedexp.value + Number(data.data.exp.expgain.value) - Number(data.data.exp.upkeep.value);
     if(data.data.usedexp.unused < 0){
       if(!data.data.status.alert.value) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.EXPPoints"));
