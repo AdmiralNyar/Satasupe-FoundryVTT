@@ -7,8 +7,8 @@
   "compatibleCoreVersion": "0.7.9",
   "templateVersion": 2,
   "author": "ADNyar",
-  "esmodules": ["module/Satasupe.js"],
-  "styles": ["styles/Satasupe.css"],
+  "esmodules": ["module/satasupe.js"],
+  "styles": ["styles/satasupe.css"],
   "packs": [],
   "languages": [
     {
