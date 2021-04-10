@@ -15,6 +15,17 @@ export class SatasupeKarmaSheet extends ItemSheet {
         return 'systems/satasupe/templates/item/karma-sheet.html';
     }
 
+    async _updateObject(event, formData) {
+        if( event.currentTarget){
+          if(event.currentTarget.classList){
+            if(event.currentTarget.classList.contains('effect-area')){
+                this._updateEffectArea(this.object, event.currentTarget.value);
+            }
+          }
+        }
+        return this.object.update(formData);
+      }
+
     getData(){
         const data = super.getData();
         data._alignment = game.i18n.localize("ALIGNMENT.CALM");
@@ -39,6 +50,13 @@ export class SatasupeKarmaSheet extends ItemSheet {
         */
         return data;
     }
+
+    async _updateEffectArea(object, value){
+        const kar = duplicate(object.data.data);
+        kar.effect = value;
+        await this.item.update({'data': kar});
+    }
+
 /*
     activateListeners(html) {
         super.activateListeners(html);

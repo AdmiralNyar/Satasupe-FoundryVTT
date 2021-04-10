@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["character"],
+    "types": ["character", "npc"],
     "templates":{
       "circumstance":{
         "circumstance":{
@@ -482,6 +482,38 @@
         "haven":"",
         "haven2":""
       }
+    },
+    "npc": {
+      "templates":[
+        "circumstance",
+        "aptitude",
+        "attribs",
+        "combat",
+        "exp",
+        "status",
+        "hobby",
+        "text",
+        "bg",
+        "prisoner",
+        "variable"
+      ],
+      "infos":{
+        "name": "",
+        "homeland": "",
+        "sex": "",
+        "age": "",
+        "style": "",
+        "likes": "",
+        "dislikes": "",
+        "team": "",
+        "alliance": "",
+        "hierarchy": "",
+        "surface": "",
+        "language": "",
+        "favorite": "",
+        "haven":"",
+        "haven2":""
+      }
     }
   },
   "Item": {
@@ -847,7 +879,9 @@
     },
     "chatpalette":{
       "chatpalette":{
-        "chat":null
+        "chat":[
+          {"text" : null, "message" : null}
+        ]
       },
       "description": []
     }

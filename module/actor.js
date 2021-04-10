@@ -15,12 +15,12 @@ export class SatasupeActor extends Actor {
 
     for(let i of itemData){
       if(i.type === 'karma') {
-        this._prepareActorData(i);
+        this._prepareActorKarmaData(i);
       }
     }
   }
 
-  _prepareActorData(itemData){
+  _prepareActorKarmaData(itemData){
     const data = itemData.data;
     for (let [key, value] of Object.entries(SATASUPE['timing'])){
       if(key == data.timing.name){
@@ -155,7 +155,7 @@ export class SatasupeActor extends Actor {
   }
 
   async createScenarioSection( title = null){
-    const scena = this.data.data.scenario ? this.data.data.scenario : [];
+    const scena = this.data.data.scenario ? duplicate(this.data.data.scenario) : [];
     scena.push({
       title : title,
       dd : null,
@@ -191,7 +191,7 @@ export class SatasupeActor extends Actor {
   }
 
   async createAddictionSection( title = null){
-    const addic = this.data.data.addiction ? this.data.data.addiction : [];
+    const addic = this.data.data.addiction ? duplicate(this.data.data.addiction) : [];
     addic.push({
       title : title,
       use : false
@@ -297,8 +297,29 @@ export class SatasupeActor extends Actor {
     }
   }
 
+  async updateMajorWounds(formData){
+    const mw = duplicate(this.data.data.status);
+    if(formData['data.attribs.bp.value'] <= 5){
+      if(formData['data.attribs.mp.value'] <= 5){
+        mw.majorWoundsOffset.value = 2;
+        await this.update({ 'data.status' : mw});
+      }else{
+        mw.majorWoundsOffset.value = 1;
+        await this.update({ 'data.status' : mw});
+      }
+    }else{
+      if(formData['data.attribs.mp.value'] <= 5){
+        mw.majorWoundsOffset.value = 1;
+        await this.update({ 'data.status' : mw});
+      }else{
+        mw.majorWoundsOffset.value = 0;
+        await this.update({ 'data.status' : mw});
+      }
+    }
+  }
+
   async createVariableSection( title = null){
-    const vari = this.data.data.variable ? this.data.data.variable : [];
+    const vari = this.data.data.variable ? duplicate(this.data.data.variable) : [];
     vari.push({
       title:title,
       variable : null,
@@ -324,7 +345,7 @@ export class SatasupeActor extends Actor {
   }
 
   async createPrisonerSection( title = null){
-    const pris = this.data.data.prisoner ? this.data.data.prisoner : [];
+    const pris = this.data.data.prisoner ? duplicate(this.data.data.prisoner) : [];
     pris.push( {
       title : title,
       keep : false,

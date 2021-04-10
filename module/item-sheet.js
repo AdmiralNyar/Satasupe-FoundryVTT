@@ -78,7 +78,6 @@ export class SatasupeItemSheet extends ItemSheet {
       efare[key].effect = value;
       await this.item.update({'data': efare});
   }
-
   
   async _updateSpecialtext(object, value, key, specialtextname){
       const stext = duplicate(object.data.data);
