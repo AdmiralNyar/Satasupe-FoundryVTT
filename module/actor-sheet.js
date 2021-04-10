@@ -525,10 +525,8 @@ export class SatasupeActorSheet extends ActorSheet {
 
   async _emptyGroundCreate(event){
     let item = this.object.data.items;
-    console.log(item);
     for(let i = 0; i < item.length ; i++){
       if(item[i].type == "item"){
-        console.log(i);
         if(item[i].data.storage == ""){
           const id = item[i]._id;
           await this.object.deleteOwnedItem(id);
@@ -874,7 +872,6 @@ export class SatasupeActorSheet extends ActorSheet {
 
   createFavorite(event){
     event.preventDefault();
-    console.log(this);
     const up = this;
     const actor = duplicate(this.object.data);
     const speaker = this.object;
@@ -933,10 +930,7 @@ export class SatasupeActorSheet extends ActorSheet {
         var contenthtml = "<div><div>" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
         ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
         actor.data.infos.favorite = favoriteText;
-        const updated = {_id:actor.id, data:actor.data};
-        console.log(up);
         up.object.update({'data': actor.data});
-        console.log(up);
       }
     };
     request.send();
@@ -996,8 +990,7 @@ export class SatasupeActorSheet extends ActorSheet {
         var contenthtml = "<div><div>" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
         ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
         actor.data.infos.favorite = favoriteText;
-        const updated = {_id:actor.id, data:actor.data};
-        game.actors.get(actor._id).update(updated);
+        up.object.update({'data': actor.data});
       }
     };
       request2.send();
