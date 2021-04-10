@@ -85,8 +85,8 @@
                     <select name="data.weapon.range" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
                     {{#select data.weapon.range}}
-                        <option value="melee">{{localize 'SATASUPE.MELEE'}}</option>
-                        <option value="shot">{{localize 'SATASUPE.SHOT'}}</option>
+                        <option value="SATASUPE.MELEE">{{localize 'SATASUPE.MELEE'}}</option>
+                        <option value="SATASUPE.SHOT">{{localize 'SATASUPE.SHOT'}}</option>
                     {{/select}}
                     </select>
                 </div>
@@ -177,9 +177,9 @@
                     <label>{{localize 'SATASUPE.CARBODY'}} :</label>
                     <input name="data.vehicle.drp" type="text" value="{{data.vehicle.drp}}"/>
                 </div>
-                <div class="vehicle-capacity">
+                <div class="vehicle-capacity eftype" data-eftype="capacity">
                     <label>{{localize 'SATASUPE.CAPACITY'}} :</label>
-                    <input name="data.vehicle.capacity" type="text" value="{{data.vehicle.capasity}}"/>
+                    <input class="effect-data" name="data.vehicle.capacity" type="text" value="{{data.vehicle.capacity}}"/>
                 </div>
                 <div class="upkeep">
                     <label>{{localize 'EXP.UPKEEPS'}} :</label>
@@ -240,13 +240,13 @@
                     <select name="data.props.timing" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
                     {{#select data.props.timing}}
-                        <option value="passive">{{localize 'SATASUPE.Passive'}}</option>
-                        <option value="planning">{{localize 'SATASUPE.Planning'}}</option>
-                        <option value="support">{{localize 'SATASUPE.Support'}}</option>
-                        <option value="auxiliary">{{localize 'SATASUPE.Auxiliary'}}</option>
-                        <option value="interrupt">{{localize 'SATASUPE.Interrupt'}}</option>
-                        <option value="prologue">{{localize 'SATASUPE.Prologue'}}</option>
-                        <option value="epilogue">{{localize 'SATASUPE.Epilogue'}}</option>
+                        <option value="SATASUPE.Passive">{{localize 'SATASUPE.Passive'}}</option>
+                        <option value="SATASUPE.Planning">{{localize 'SATASUPE.Planning'}}</option>
+                        <option value="SATASUPE.Support">{{localize 'SATASUPE.Support'}}</option>
+                        <option value="SATASUPE.Auxiliary">{{localize 'SATASUPE.Auxiliary'}}</option>
+                        <option value="SATASUPE.Interrupt">{{localize 'SATASUPE.Interrupt'}}</option>
+                        <option value="SATASUPE.Prologue">{{localize 'SATASUPE.Prologue'}}</option>
+                        <option value="SATASUPE.Epilogue">{{localize 'SATASUPE.Epilogue'}}</option>
                     {{/select}}
                     </select>
                 </div>
@@ -328,13 +328,13 @@
                     <select name="data.gadjet.timing" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
                     {{#select data.gadjet.timing}}
-                        <option value="passive">{{localize 'SATASUPE.Passive'}}</option>
-                        <option value="planning">{{localize 'SATASUPE.Planning'}}</option>
-                        <option value="support">{{localize 'SATASUPE.Support'}}</option>
-                        <option value="auxiliary">{{localize 'SATASUPE.Auxiliary'}}</option>
-                        <option value="interrupt">{{localize 'SATASUPE.Interrupt'}}</option>
-                        <option value="prologue">{{localize 'SATASUPE.Prologue'}}</option>
-                        <option value="epilogue">{{localize 'SATASUPE.Epilogue'}}</option>
+                        <option value="SATASUPE.Passive">{{localize 'SATASUPE.Passive'}}</option>
+                        <option value="SATASUPE.Planning">{{localize 'SATASUPE.Planning'}}</option>
+                        <option value="SATASUPE.Support">{{localize 'SATASUPE.Support'}}</option>
+                        <option value="SATASUPE.Auxiliary">{{localize 'SATASUPE.Auxiliary'}}</option>
+                        <option value="SATASUPE.Interrupt">{{localize 'SATASUPE.Interrupt'}}</option>
+                        <option value="SATASUPE.Prologue">{{localize 'SATASUPE.Prologue'}}</option>
+                        <option value="SATASUPE.Epilogue">{{localize 'SATASUPE.Epilogue'}}</option>
                     {{/select}}
                     </select>
                 </div>
@@ -344,9 +344,9 @@
                     <select name="data.gadjet.times.ttype" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
                     {{#select data.gadjet.times.ttype}}
-                        <option value="normal">{{localize 'SATASUPE.TIME'}}</option>
-                        <option value="consumable">{{localize 'SATASUPE.SONSUMABLE'}}</option>
-                        <option value="unlimit">{{localize 'SATASUPE.UNLIMIT'}}</option>
+                        <option value="SATASUPE.TIME">{{localize 'SATASUPE.TIME'}}</option>
+                        <option value="SATASUPE.SONSUMABLE">{{localize 'SATASUPE.SONSUMABLE'}}</option>
+                        <option value="SATASUPE.UNLIMIT">{{localize 'SATASUPE.UNLIMIT'}}</option>
                     {{/select}}
                     </select>
                 </div>

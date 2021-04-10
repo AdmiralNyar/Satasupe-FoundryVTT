@@ -14,7 +14,8 @@ export const preloadHandlebarsTemplates = async function() {
     "systems/satasupe/templates/parts/actor-other.html",
     "systems/satasupe/templates/parts/actor-history.html",
     "systems/satasupe/templates/parts/actor-chatpalette.html",
-    "systems/satasupe/templates/parts/actor-equipment.html"
+    "systems/satasupe/templates/parts/actor-equipment.html",
+    "systems/satasupe/templates/parts/npc-history.html"
   ];
 
   // Load the template parts

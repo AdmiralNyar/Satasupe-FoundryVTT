@@ -99,3 +99,14 @@ SATASUPE.referenceable = {
     reflex : 'this.actor.data.data.combat.reflex.value',
     wallet : 'this.actor.data.data.attribs.wallet.value',
 }
+
+SATASUPE.range = {
+    melee : 'SATASUPE.MELEE',
+    shot : 'SATASUPE.SHOT'
+}
+
+SATASUPE.times ={
+    normal : 'SATASUPE.TIME',
+    consumable : 'SATASUPE.SONSUMABLE',
+    unlimit : 'SATASUPE.UNLIMIT'
+}
