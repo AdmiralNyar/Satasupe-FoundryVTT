@@ -145,7 +145,7 @@ div.container nav.tabs a,
 
 .item-header .header-fields .header-names .name {
   width: auto;
-  height: 20px;
+  height: 37px;
  }
 
  .item-header .header-fields .header-names h1.name {
@@ -275,6 +275,7 @@ div.container nav.tabs a,
 .item-sheet-body div.special{
   margin: 15px 15px;
   width:fit-content;
+  width:-moz-fit-content;
 }
 
 .item-sheet-body div.special label{
@@ -292,6 +293,7 @@ div.container nav.tabs a,
 
 .item-sheet-body div.special div.switch div.special-button{
   width:fit-content;
+  width:-moz-fit-content;
   margin:2px 2px;
   display: flex;
 
@@ -299,6 +301,7 @@ div.container nav.tabs a,
 
 .item-sheet-body div.special div.switch div.special-button button{
   width:fit-content;
+  width:-moz-fit-content;
 	height: 26px;
 	border: solid 1px #888;
 	color: black;
@@ -345,6 +348,7 @@ div.container nav.tabs a,
 
 .item-sheet-body div.special div.switch div.special-button input{
   width:fit-content;
+  width:-moz-fit-content;
   min-width: 20px;
 }
 
@@ -1043,7 +1047,7 @@ div.container nav.tabs a,
   border-top-color: rgba(43, 55, 83, 0.5);
   border-top-style: solid;
 }
-
+.satasupe .history-panel .background .background-header,
 .satasupe .history-panel .background-zone .background-header{
   font-weight: bold;
   font-size: 1.1em;
@@ -1516,6 +1520,7 @@ grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
 
  .satasupe .equipment-table tr.item-detail .item-hide button.special-button{
   width:fit-content;
+  width:-moz-fit-content;
   margin: 2px;
   line-height: 14px;
   font-size: 0.8rem;

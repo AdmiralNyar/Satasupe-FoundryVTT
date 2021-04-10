@@ -1,0 +1,91 @@
+<form class="{{cssClass}} flexcol" autocomplete="off" data-actor-id="{{actor._id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
+    <div class="container">
+
+        {{!-- Sheet Header --}}
+        <section class="sheet-header">
+            <div class="sheet-portrait">
+                <img class="photo" src="{{actor.img}}" title="{{actor.name}}" data-edit="img"/>
+            </div>
+            <div class="infos">
+                <div class="row flexrow">
+                    <label>{{localize 'SATASUPE.Name'}} :</label>
+                    <input name="name" type="text" value="{{actor.name}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>{{localize 'SATASUPE.Homeland'}} :</label>
+                    <input name="data.infos.homeland" type="text" value="{{data.infos.homeland}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>{{localize 'SATASUPE.Sex'}} :</label>
+                    <input name="data.infos.sex" type="text" value="{{data.infos.sex}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>{{localize 'SATASUPE.Age'}} :</label>
+                    <input name="data.infos.age" type="text" value="{{data.infos.age}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>{{localize 'SATASUPE.Style'}} :</label>
+                    <input name="data.infos.style" type="text" value="{{data.infos.style}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>{{localize 'SATASUPE.Likes'}} :</label>
+                    <input name="data.infos.likes" type="text" value="{{data.infos.likes}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>{{localize 'SATASUPE.Dislikes'}} :</label>
+                    <input name="data.infos.dislikes" type="text" value="{{data.infos.dislikes}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>{{localize 'SATASUPE.Team'}} :</label>
+                    <input name="data.infos.team" type="text" value="{{data.infos.team}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>{{localize 'SATASUPE.Alliance'}} :</label>
+                    <input name="data.infos.alliance" type="text" value="{{data.infos.alliance}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>{{localize 'SATASUPE.Hierarchy'}} :</label>
+                    <input name="data.infos.hierarchy" type="text" value="{{data.infos.hierarchy}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>{{localize 'SATASUPE.Surface'}} :</label>
+                    <input name="data.infos.surface" type="text" value="{{data.infos.surface}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>{{localize 'SATASUPE.Language'}} :</label>
+                    <input name="data.infos.language" type="text" value="{{data.infos.language}}"/>
+                </div>
+                <div class="row flexrow favorite">
+                    <label><a class="favorite-button" title="{{localize 'SATASUPE.FavoriteRoll'}}">{{localize 'SATASUPE.Favorite'}} :</a></label>
+                    <input name="data.infos.favorite" type="text" value="{{data.infos.favorite}}"/>
+                </div>
+                <div class="row flexrow">
+                    <label>{{localize 'SATASUPE.Haven'}} :</label>
+                    <select class="haven-place" name="data.infos.haven" data-dtype="String" value="{{data.infos.haven}}">
+                            <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                        {{#select data.infos.haven}}
+                            <option value="minami">{{localize 'SATASUPE.MINAMI'}}</option>
+                            <option value="chinatown">{{localize 'SATASUPE.CHINATOWN'}}</option>
+                            <option value="warship">{{localize 'SATASUPE.WARSHIP'}}</option>
+                            <option value="civic">{{localize 'SATASUPE.CIVIC'}}</option>
+                            <option value="downtown">{{localize 'SATASUPE.DOWNTOWN'}}</option>
+                            <option value="shaokin">{{localize 'SATASUPE.SHAOKIN'}}</option>
+                        {{/select}}
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        {{!-- Sheet Tab Navigation --}}
+        <nav class="sheet-tabs tabs" data-group="primary">
+            <a class="item" data-tab="history">{{localize 'SATASUPE.History'}}</a>
+        </nav>
+
+        {{!-- Sheet Body --}}
+        <section class="sheet-body">
+            <div class="tab history" data-group="primary" data-tab="history">
+                {{> "systems/satasupe/templates/parts/npc-history.html"}}
+            </div>
+        </section>
+    </div>
+</form>

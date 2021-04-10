@@ -19,6 +19,15 @@ export class SatasupeActorSheet extends ActorSheet {
     });
   }
 
+  /** @override */
+  get template() {
+    if(this.actor.data.type === "npc"){
+      if ( !game.user.isGM && this.actor.limited ) return "systems/satasupe/templates/npclimit-sheet.html";
+      return `systems/satasupe/templates/npc-sheet.html`;
+    }else{
+      return `systems/satasupe/templates/actor-sheet.html`;
+    }
+  }
 
 
   /* -------------------------------------------- */
@@ -31,6 +40,9 @@ export class SatasupeActorSheet extends ActorSheet {
       attr.isCheckbox = attr.dtype === "Boolean";
     }
     if (this.actor.data.type == 'character') {
+      this._prepareCharacterItems(data);
+    }
+    if (this.actor.data.type == 'npc') {
       this._prepareCharacterItems(data);
     }
 
@@ -97,11 +109,9 @@ export class SatasupeActorSheet extends ActorSheet {
         }else if(data.data.attribs.bp.value > 0){data.data.status.unconscious.value = false;}
         if(!data.data.status.mpmajorWounds.value) data.data.status.mpmajorWounds.value = true;
         if(!data.data.status.bpmajorWounds.value) data.data.status.bpmajorWounds.value = true;
-        data.data.status.majorWoundsOffset = 2;
       }else{
         if(!data.data.status.bpmajorWounds.value) data.data.status.bpmajorWounds.value = true;
         if(data.data.status.mpmajorWounds.value) data.data.status.mpmajorWounds.value = false;
-        data.data.status.majorWoundsOffset.value = 1;
       }
     }else{
       if(data.data.attribs.mp.value <= 5){
@@ -110,11 +120,13 @@ export class SatasupeActorSheet extends ActorSheet {
         }else if(data.data.attribs.bp.value > 0){data.data.status.unconscious.value = false;}
         if(!data.data.status.mpmajorWounds.value) data.data.status.mpmajorWounds.value = true;
         if(data.data.status.bpmajorWounds.value) data.data.status.bpmajorWounds.value = false;
-        data.data.status.majorWoundsOffset.value = 1;
       }else{
-        data.data.status.majorWoundsOffset.value = 0;
+        if(data.data.status.bpmajorWounds.value) data.data.status.bpmajorWounds.value = false;
+        if(data.data.status.mpmajorWounds.value) data.data.status.mpmajorWounds.value = false;
+        if(data.data.status.unconscious.value) data.data.status.unconscious.value = false;
       }
     }
+
     if(data.data.status.trauma.value > 0 || data.data.status.trauma.value){
       data.data.attribs.mp.max = data.data.attribs.mp.max? (Number(data.data.attribs.mp.max) - Number(data.data.status.trauma.value)) : (10 -Number(data.data.status.trauma.value));
     }
@@ -426,6 +438,7 @@ export class SatasupeActorSheet extends ActorSheet {
 
     html.find('.gear-name-button').on("dragstart", this._geardragstart.bind(this));
     html.find('div.drparea').on("drop", this._geardrop.bind(this));
+    html.find('.gear-name-button').on("dblclick", this._gearedit.bind(this));
 
     html.find('.all-on-off-button').click(ev =>{
       const nowonoff = this.actor.data.data.status.allonoff.value;
@@ -500,18 +513,25 @@ export class SatasupeActorSheet extends ActorSheet {
     });
   }
 
+  _gearedit(event){
+    const item = this.actor.getOwnedItem(event.currentTarget.dataset.key);
+    item.sheet.render(true);
+  }
+
   _geardragstart(event){
     let id = event.currentTarget.dataset;
     event.originalEvent.dataTransfer.setData('text/plain', JSON.stringify(id));
   }
 
-  _emptyGroundCreate(event){
-    let item = this.actor.data.items;
+  async _emptyGroundCreate(event){
+    let item = this.object.data.items;
+    console.log(item);
     for(let i = 0; i < item.length ; i++){
       if(item[i].type == "item"){
+        console.log(i);
         if(item[i].data.storage == ""){
           const id = item[i]._id;
-          this.actor.deleteOwnedItem(id);
+          await this.object.deleteOwnedItem(id);
         }
       }
     }
@@ -792,6 +812,9 @@ export class SatasupeActorSheet extends ActorSheet {
           const index = li.attr("data-item-id");
           this.actor.updateEquipmentStorage( index, event.currentTarget.value);
         }
+        if(event.currentTarget.classList.contains('bp') || event.currentTarget.classList.contains('mp')){
+          this.actor.updateMajorWounds(formData);
+        }
       }
     }
     return this.object.update(formData);
@@ -813,8 +836,7 @@ export class SatasupeActorSheet extends ActorSheet {
 
   async _createAlignment(event){
     event.preventDefault();
-
-    const actor = this.actor.data;
+    const actor = duplicate(this.object.data);
     const roll = new Roll('2d6');
     roll.roll();
     let align = 0;
@@ -833,7 +855,7 @@ export class SatasupeActorSheet extends ActorSheet {
     }else if(roll._total == 2){
       align = 4;
     }
-    const user = this.actor.user ? this.actor.user : game.user;
+    const user = this.object.user ? this.object.user : game.user;
     actor.data.attribs.alignment.value = align;
     if( game.modules.get('dice-so-nice')?.active){
       await game.dice3d.showForRoll(roll,user);
@@ -842,19 +864,21 @@ export class SatasupeActorSheet extends ActorSheet {
     let chatData = {
       content : await roll.render(),
       user: user._id,
-      speaker: ChatMessage.getSpeaker({actor : this.actor}),
+      speaker: ChatMessage.getSpeaker({actor : this.object}),
       flavor: game.i18n.localize("SATASUPE.AlignmentRolltitle") + text,
     };
     ChatMessage.create(chatData);
     const updated = {_id:actor.id, data:actor.data};
-    game.actors.get(actor._id).update(updated);
+    await this.object.update({'data.attribs': actor.data.attribs});
   }
 
   createFavorite(event){
     event.preventDefault();
-    const actor = this.actor.data;
-    const speaker = this.actor;
-    const user = this.actor.user ? this.actor.user : game.user;
+    console.log(this);
+    const up = this;
+    const actor = duplicate(this.object.data);
+    const speaker = this.object;
+    const user = this.object.user ? this.object.user : game.user;
     var text = "NPCT"
     var request = new XMLHttpRequest();
     var param = "command=" + text;
@@ -910,7 +934,9 @@ export class SatasupeActorSheet extends ActorSheet {
         ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
         actor.data.infos.favorite = favoriteText;
         const updated = {_id:actor.id, data:actor.data};
-        game.actors.get(actor._id).update(updated);
+        console.log(up);
+        up.object.update({'data': actor.data});
+        console.log(up);
       }
     };
     request.send();
