@@ -67,9 +67,7 @@ export class SatasupeActor extends Actor {
       type: 'karma',
       data: {}
     };
-    console.log(showSheet);
     const created = await this.createEmbeddedEntity('OwnedItem', data, { renderSheet: showSheet});
-    console.log(showSheet);
     return created;
   }
 
@@ -146,7 +144,6 @@ export class SatasupeActor extends Actor {
   }
 
   async createEmbeddedEntity(embeddedName, data, options){
-    console.log("options");
     switch( data.type){
       case 'karma':
         return await super.createEmbeddedEntity(embeddedName, data, options);
