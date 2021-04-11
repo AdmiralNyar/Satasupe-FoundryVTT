@@ -650,7 +650,7 @@ export class SatasupeActorSheet extends ActorSheet {
       aptitude.body.substitution = aptitude.mind.substitution = true;
       attribs.alignment.substitution = attribs.bp.substitution = attribs.mp.substitution = attribs.wallet.substitution = attribs.drp.substitution = true;
       combat.reflex.substitution = combat.arms.substitution = combat.damage.substitution = true;
-      status.majorWoundsOffset.substitution = status.fumble.substitution = status.trauma.substitution = true;
+      status.majorWoundsOffset.substitution = status.sleep.substitution = status.fumble.substitution = status.trauma.substitution = true;
       for(let i=0 ; i < variable.length ; i++){
         variable[i].substitution = true;
       }
@@ -659,7 +659,7 @@ export class SatasupeActorSheet extends ActorSheet {
       aptitude.body.substitution = aptitude.mind.substitution = false;
       attribs.alignment.substitution = attribs.bp.substitution = attribs.mp.substitution = attribs.wallet.substitution = attribs.drp.substitution = false;
       combat.reflex.substitution = combat.arms.substitution = combat.damage.substitution = false;
-      status.majorWoundsOffset.substitution = status.fumble.substitution = status.trauma.substitution = false;
+      status.majorWoundsOffset.substitution = status.sleep.substitution = status.fumble.substitution = status.trauma.substitution = false;
       for(let j=0 ; j < variable.length ; j++){
         variable[j].substitution = false;
       }
