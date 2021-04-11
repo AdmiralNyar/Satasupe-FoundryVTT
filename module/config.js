@@ -89,6 +89,7 @@ SATASUPE.referenceable = {
     mind : 'this.actor.data.data.aptitude.mind.value',
     alignment : 'this.actor.data.data.attribs.alignment.value',
     majorWoundsOffset : 'this.actor.data.data.status.majorWoundsOffset.value',
+    sleep : 'this.actor.data.data.status.sleep.value',
     fumble : 'this.actor.data.data.status.fumble.value',
     arms : 'this.actor.data.data.combat.arms.value',
     damage : 'this.actor.data.data.combat.damage.value',
