@@ -1,0 +1,67 @@
+<form class="{{cssClass}} flexcol" autocomplete="off" style="overflow-y: scroll;overflow-x: scroll;">
+    <div class="investigation-header" style="white-space: nowrap">
+        <div class="investigation-name" style="display: inline-block;width:70%; min-width: 300px;">
+            <label class="investigation-namelabel" style="display: inline-block;">{{localize 'SATASUPE.InvestigationName'}} :</label>
+            <input style="display: inline-block;" name="name" value="{{item.name}}"/>
+        </div>
+        <div class="item-controls" style="display: inline-block;text-align: right;min-width:100px;width:28%">
+            <a class="button item-control target-set"><i class="fas fa-cogs"></i></a>
+        </div>
+    </div>
+
+    <div class="investigation-main">
+        <div class="investigation-sl" style="white-space: nowrap;margin-bottom:15px">
+
+        </div>
+        <div class="investigation-property" style="width: fit-content;white-space: nowrap;">
+                   
+        </div>    
+    </div>
+
+    <div class="investigation-target" style="display: none;">
+        <label style="display:inline-block">{{localize 'SATASUPE.TargetTopicSettings'}}</label>
+        <button class="target-add" type="button" style="display:inline-block;width:fit-content;height:fit-content;margin: 2px 5px;line-height: 18px;">{{localize 'SATASUPE.AddTarget'}}</button>
+        <button class="target-remove" type="button" style="display:inline-block;width:fit-content;height:fit-content;margin: 2px 5px;line-height: 18px;">{{localize 'SATASUPE.RemoveTarget'}}</button>
+        <div>
+            {{#each data.target as |info index|}}
+            <div style="display: block;border:1px solid black;margin:2px 2px 5px 2px;padding:2px 0px">
+                <div style="display: inline-block;"><label style="display: inline-block;width:30px">SL : </label><input class="targetsl" data-index="{{index}}" style="display: inline-block;width:fit-content" type="number" min="1" name="info.sl" value="{{info.sl}}" data-dtype="Number"/></div>
+                <div style="display: block;">
+                <button class="tag-add" type="button" data-targetn="{{index}}" style="display:inline-block;width:fit-content;height:fit-content;margin: 2px 5px;">{{localize 'SATASUPE.AddTargetTag'}}</button>
+                <button class="tag-remove" type="button" data-targetn="{{index}}" style="display:inline-block;width:fit-content;height:fit-content;margin: 2px 5px;">{{localize 'SATASUPE.RemoveTargetTag'}}</button>
+                </div>
+                <div style="display: block;margin: 5px 5px;padding: 5px 0px;border:1px solid black">
+                    {{#each info.tag as |hobby ind|}}
+                    <div style="white-space: nowrap;display: inline-block;">
+                        <label style="display: inline-block;">{{localize 'SATASUPE.Tag'}}{{ind}} : </label>
+                        <select class="targettagselect" data-index="{{index}}" data-ind="{{ind}}" name="{{hobby}}" style="display: inline-block;margin-right: 5px;" data-dtype="String">
+                            <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                        {{#select hobby}}
+                            {{#each ../../data.hobbylist as |list key|}}
+                                <option value="{{key}}">{{localize list}}</option>
+                            {{/each}}
+                        {{/select}}
+                        </select>
+                        </div>
+                    {{/each}}
+                </div>
+                <div style="display:block;">
+                    <div style="display: inline-block;"><label style="display: inline-block;">{{localize 'SATASUPE.TargetOpen'}} : </label><input class="targetopen" data-index="{{index}}" style="display: inline-block;" type="checkbox" name="info.open" {{checked info.open}}/></div>
+                    <div style="display: inline-block;">
+                        <label style="display: inline-block;">{{localize 'SATASUPE.SuccessMusic'}} :</label>
+                        <select class="playlistselect" data-index="{{index}}" style="display: inline-block;margin-right: 5px;" data-dtype="String">
+                            <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                            {{#select info.playlist}}
+                                {{#each ../data.playlist as |list key|}}
+                                        <option value="{{list._id}}">{{list.name}}</option>
+                                {{/each}}
+                            {{/select}}
+                        </select>
+                    </div>
+                </div>
+                <textarea style="display: block;width:calc(100% - 10px);margin: 5px" class="targetinfo" data-index="{{index}}" rows="3" cols="60" placeholder="Infomation">{{info.info}}</textarea>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</form>
