@@ -164,16 +164,54 @@ export class SatasupeInvestigationSheet extends ItemSheet {
       ChatMessage.create({speaker: ChatMessage.getSpeaker({alias : "DD"}),content:content});
     }
     if(playlistid){
-      await this.playplay(playlistid);
+      console.log(playlistid);
+      await this.playplayS(playlistid);
     }
   }
 
   async _findMessage(content, playlistid){
-    if(content == "") content += " ";
-    ChatMessage.create({speaker: ChatMessage.getSpeaker({alias : "DD"}),content:content});
+    if(content != ""){
+      ChatMessage.create({speaker: ChatMessage.getSpeaker({alias : "DD"}),content:content});
+    }
     if(playlistid){
       await this.playplay(playlistid);
     }
+  }
+
+  static async playplayS(id){
+    const playlist = game.playlists.get(id);
+    const alllist = Array.from(game.playlists);
+    var playingid = [];
+    const asyncFunc = function(count) {
+      return new Promise(function(resolve, reject){
+        if(count == 1){
+          console.log("OK");
+          for(let i = 0;i<alllist.length;i++){
+            if(alllist[i].playing){
+              playingid.push(alllist[i].id);
+            }            
+          }
+          for(let j = 0;j<playingid.length;j++){
+            let play = game.playlists.get(playingid[j]);
+            async function stop(p){
+              await p.stopAll();
+            }
+            stop(play);
+          }
+          resolve();
+        }else if(count == 2){
+          playlist.playAll();
+          resolve();
+        }
+      });
+    }
+    await asyncFunc(1)
+      .then(function(response){
+        return asyncFunc(2);
+      })
+      .catch(function(error){
+        console.log("error");
+      });
   }
 
   async playplay(id){
@@ -183,6 +221,7 @@ export class SatasupeInvestigationSheet extends ItemSheet {
     const asyncFunc = function(count) {
       return new Promise(function(resolve, reject){
         if(count == 1){
+          console.log("OK");
           for(let i = 0;i<alllist.length;i++){
             if(alllist[i].playing){
               playingid.push(alllist[i].id);
