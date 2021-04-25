@@ -12,8 +12,9 @@ import { SatasupeItem } from "./item/item.js";
 import { SatasupeActorSheet } from "./actor-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 import { SatasupeKarmaSheet } from "./item/sheets/karma.js";
-import { SatasupeInventrySheet } from "./item/sheets/inventry.js";
+import { SatasupeInvestigationSheet } from "./item/sheets/investigation.js";
 import { SatasupeChatpaletteSheet} from "./item/sheets/chatpalette.js";
+import { SATASUPE} from './config.js';
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -45,7 +46,7 @@ Hooks.once("init", async function() {
   Actors.registerSheet("satasupe", SatasupeActorSheet, { makeDefault: true });
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("satasupe", SatasupeKarmaSheet, { types: ['karma'], makeDefault: true });
-  //Items.registerSheet("satasupe", SatasupeInventrySheet, { types: ['inventry'], makeDefault: true});
+  Items.registerSheet("satasupe", SatasupeInvestigationSheet, { types: ['investigation'], makeDefault: true});
   Items.registerSheet("satasupe", SatasupeChatpaletteSheet, { types: ['chatpalette'], makeDefault: true});
   Items.registerSheet("satasupe", SatasupeItemSheet, { makeDefault: true });
 
@@ -136,4 +137,106 @@ Hooks.once("init", async function() {
 
   // Preload template partials.
   preloadHandlebarsTemplates();
+});
+
+Hooks.on("renderItemSheet", async (app, html, data) => {
+  if(app.object.data.type == "investigation"){
+    if(app.object.data.permission.default != 3) ui.notifications.error("default permission is't owner!");
+    const maxsl = data.data.maxsl + 3;
+    for(let i = 0; i < maxsl;i++){
+      if(i==0){
+        $(`.investigation-main .investigation-sl`).append(`<div class="sl${i}list" style="vertical-align: top;display: inline-block;width: 200px;"><div class="sllist" style="display: inline-block;width:50px;vertical-align: top;">SL ${i}</div><button class="start-topic-add" type="button" style="vertical-align: top;display:inline-block;width:120px;height:fit-content;margin: 0px 2px 0px 5px;line-height: 16px;">${ game.i18n.localize("SATASUPE.AddStartTopic")}</button></div>`);
+        var tagzone = "";
+        tagzone = SatasupeInvestigationSheet.tagzone_create(i, data, 0, -1);
+        $(`.investigation-main .investigation-property`).append(tagzone);
+      }else{
+        $(`.investigation-main .investigation-sl`).append(`<div class="sl${i}list" style="vertical-align: top;display: inline-block;width: 200px;"><div class="sllist" style="display: inline-block;width:50px;vertical-align: top;">SL ${i}</div></div>`);
+      }
+    }
+
+    for(let k = 0; k < data.data.target.length; k++){
+      if(data.data.target[k].open){
+        let place = data.data.target[k].sl;
+        var taglist = "";
+        for(let l=0; l < data.data.target[k].tag.length; l++){
+          for(let [key,v] of Object.entries(SATASUPE['hobby'])){
+            if(data.data.target[k].tag[l]){
+              if(key == data.data.target[k].tag[l]){
+                taglist += game.i18n.localize(v);
+                if(l != (data.data.target[k].tag.length - 1))taglist += ", ";
+              }
+            }
+          }
+        }
+        if(data.data.target[k].checked) taglist += " ★";
+        $(`.investigation-main .investigation-sl .sl${place}list`).append(`<div class="target-sl" style="width:150px;display:block;white-space:normal;">TARGET : ${taglist}</div>`);
+      }
+    }
+
+    for(let j=1;j<data.data.dendrogram.length;j++){
+      if(Object.keys(data.data.dendrogram[j]).length){
+        const parentindex = data.data.dendrogram[j].path[data.data.dendrogram[j].path.length - 2];
+        const sl = data.data.dendrogram[j].sl;
+        let tagaddzone ="";
+        var style = $(`<style>.tagindex${parentindex}::after{content: "";display: flex;position: relative;justify-content: flex-end;top: 12px;left: auto;width: 20px;height: 0px;border-top: 3px solid brown;}</style>`);
+        if(sl == 0){
+          tagaddzone = SatasupeInvestigationSheet.tagzone_create(j, data, 0, -1);
+          $(`.investigation-main .investigation-property`).append(tagaddzone);
+        }else{
+          tagaddzone = SatasupeInvestigationSheet.tagzone_create(j, data, sl, data.data.dendrogram[parentindex].sl);
+          $(`.investigation-main .investigation-property .indexnum${parentindex}`).append(tagaddzone);
+          $(`.investigation-main .investigation-property .listindex${parentindex}`).append(style);
+          if(sl < data.data.dendrogram[parentindex].sl){
+            $(`.investigation-main .investigation-property .indexnum${parentindex}.tree`).css('padding-top','50px');
+          }
+        }
+      }
+    }
+
+    html.find('.target-set').click( ev => {
+      app.object.update({'data.gmsetting': !data.data.gmsetting});
+      if(data.data.gmsetting && game.user.isGM){
+        $(`.investigation-main`).css('display','none');
+        $(`.investigation-target`).css('display','');
+      }else{
+        $(`.investigation-main`).css('display','');
+        $(`.investigation-target`).css('display','none');
+      }
+    });
+    if(data.data.gmsetting && game.user.isGM){
+      $(`.investigation-main`).css('display','none');
+      $(`.investigation-target`).css('display','');
+    }else{
+      $(`.investigation-main`).css('display','');
+      $(`.investigation-target`).css('display','none');
+    }
+    html.find('.add-branch').click( ev => {
+      const index = parseInt(ev.currentTarget.dataset.slindex);
+      let view = true;
+      if(app.object.data.data.dendrogram[index].playerlist.length == 0){
+        view = true;
+      }
+      for(let m=0; m < app.object.data.data.dendrogram[index].playerlist.length; m++){
+        if((app.object.data.data.dendrogram[index].playerlist[m].id != game.user._id) || (game.user.isGM)){
+        }else if((app.object.data.data.dendrogram[index].playerlist[m].id == game.user._id) && (!game.user.isGM)){ 
+          ui.notifications.error("once selected!");
+          view = false;
+        }
+      }
+      if(view){
+        if(data.data.dendrogram[index].tag){
+          SatasupeInvestigationSheet._createBranch(ev, app.object, index, data);
+        }else{
+          ui.notifications.error("parent tag is not selected!");
+        }
+      }
+    });
+    html.find('.tag-delete').click( ev => {
+      const index = parseInt(ev.currentTarget.dataset.slindex);
+      SatasupeInvestigationSheet._deleteBranch(ev, app.object, index, data);
+    });
+    html.find('.start-topic-add').click( ev =>{
+      SatasupeInvestigationSheet._createStartTopic(ev, app.object);
+    });
+  }
 });

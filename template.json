@@ -517,7 +517,7 @@
     }
   },
   "Item": {
-    "types": ["item", "karma", "chatpalette"],
+    "types": ["item", "karma", "chatpalette", "investigation"],
     "item": {
       "description": "",
       "otherName":"",
@@ -884,6 +884,30 @@
         ]
       },
       "description": []
+    },
+    "investigation":{
+      "target":[
+        {
+          "sl":null,
+          "tag":[{}],
+          "open":true,
+          "info":"",
+          "checked":false,
+          "playlist":""
+        }
+      ],
+      "dendrogram":[
+        {
+          "key": "0",
+          "tag": null,
+          "playerlist":[],
+          "sl":0,
+          "edit":true,
+          "path":["0"],
+          "children": ["0"]
+        }
+      ],
+      "gmsetting":false
     }
   }
 }
