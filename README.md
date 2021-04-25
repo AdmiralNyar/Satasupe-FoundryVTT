@@ -1,8 +1,5 @@
 # Satasupe System
 
-!! This game system is prerelease version !!
-   (Currently under review and approval)
-
 This game system for [Foundry Virtual Tabletop](http://foundryvtt.com) 
 provides character sheet support for Asian punk rpg Satasupe(The Rule book is only Japanese Edition).
 (http://www.bouken.jp/product/satasupe/)

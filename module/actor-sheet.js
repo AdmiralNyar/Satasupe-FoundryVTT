@@ -1,4 +1,4 @@
-import { SatasupeInventrySheet } from "./item/sheets/inventry.js";
+import { SatasupeInvestigationSheet } from "./item/sheets/investigation.js";
 import { SatasupeChatpaletteSheet} from "./item/sheets/chatpalette.js";
 import { SATASUPE } from "./config.js";
 /**
@@ -380,7 +380,7 @@ export class SatasupeActorSheet extends ActorSheet {
     const actorData = sheetData.actor;
     const karma = [];
     const gear = [];
-    const inventry = [];
+    const investigation = [];
     const chatpalette = [];
     for(let i of sheetData.items){
       let item = i.data;
@@ -391,8 +391,8 @@ export class SatasupeActorSheet extends ActorSheet {
       else if(i.type ==="karma"){
         karma.push(i);
       }
-      else if(i.type ==="inventry"){
-        inventry.push(i);
+      else if(i.type ==="investigation"){
+        investigation.push(i);
       }
       else if(i.type ==="chatpalette"){
         chatpalette.push(i);
@@ -400,7 +400,7 @@ export class SatasupeActorSheet extends ActorSheet {
     }
     actorData.gear = gear;
     actorData.karma = karma; 
-    actorData.inventry = inventry;
+    actorData.investigation = investigation;
     actorData.chatpalette = chatpalette;
   }
 

@@ -111,3 +111,87 @@ SATASUPE.times ={
     consumable : 'SATASUPE.SONSUMABLE',
     unlimit : 'SATASUPE.UNLIMIT'
 }
+
+SATASUPE.hobby = {
+    abnormal:"HOBBY.Abnormal",
+    kawaii:"HOBBY.KAWAII",
+    outrageous:"HOBBY.OUTRAGEOUS",
+    fanatic:"HOBBY.FANATIC",
+    otaku:"HOBBY.OTAKU",
+    music:"HOBBY.MUSIC",
+    trend:"HOBBY.TREND",
+    reading:"HOBBY.READING",
+    perform:"HOBBY.PERFORM",
+    art:"HOBBY.ART",
+    cavil:"HOBBY.CAVIL",
+    meddling:"HOBBY.MEDDLING",
+    housework:"HOBBY.HOUSEWORK",
+    swot:"HOBBY.SWOT",
+    health:"HOBBY.HEALTH",
+    outdoor:"HOBBY.OUTDOOR",
+    craft:"HOBBY.CRAFT",
+    sport:"HOBBY.SPORT",
+    celebrity:"HOBBY.CELEBRITY",
+    travel:"HOBBY.TRAVEL",
+    nurture:"HOBBY.NURTURE",
+    lonely:"HOBBY.LONELY",
+    killtime:"HOBBY.KILLTIME",
+    creed:"HOBBY.CREED",
+    wabisabi:"HOBBY.WABISABI",
+    adult:"HOBBY.ADULT",
+    eat:"HOBBY.EAT",
+    gamble:"HOBBY.GAMBLE",
+    gossip:"HOBBY.GOSSIP",
+    fashion:"HOBBY.FASHION"
+}
+
+SATASUPE.cteghobby = {
+    1 :{
+        1:"event",
+        2:"abnormal",
+        3:"kawaii",
+        4:"outrageous",
+        5:"fanatic",
+        6:"otaku"
+    },
+    2 :{
+        1:"music",
+        2:"free",
+        3:"trend",
+        4:"reading",
+        5:"perform",
+        6:"art"
+    },
+    3 :{
+        1:"cavil",
+        2:"meddling",
+        3:"free",
+        4:"housework",
+        5:"swot",
+        6:"health"
+    },
+    4 :{
+        1:"outdoor",
+        2:"craft",
+        3:"sport",
+        4:"same",
+        5:"celebrity",
+        6:"travel"
+    },
+    5 :{
+        1:"nurture",
+        2:"lonely",
+        3:"killtime",
+        4:"creed",
+        5:"same",
+        6:"wabisabi"
+    },
+    6 :{
+        1:"adult",
+        2:"eat",
+        3:"gamble",
+        4:"gossip",
+        5:"fashion",
+        6:"accident"
+    }
+}
