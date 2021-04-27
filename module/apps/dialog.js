@@ -4,7 +4,7 @@ export class TagDialog {
         return new Promise((resolve) =>{
           let formData = null;
           const dlg = new Dialog({
-            title: "TAG ADD",
+            title: game.i18n.localize("SATASUPE.AddLink"),
             content:html,
             buttons:{
               send:{
