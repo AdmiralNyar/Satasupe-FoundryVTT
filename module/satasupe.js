@@ -77,6 +77,24 @@ Hooks.once("init", async function() {
     default: `https://bcdice.trpg.net/v2`
   });
 
+  game.settings.register("satasupe", "InvestigationTopicReuse", {
+    name: "SETTINGS.SatasupeInvestigationTopicReuseN",
+    hint: "SETTINGS.SatasupeInvestigationTopicReuseL",
+    scope: 'world',
+    type: Boolean,
+    config: true,
+    default: false
+  });
+
+  game.settings.register("satasupe", "InvestigationMusic", {
+    name: "SETTINGS.SatasupeInvestigationMusicN",
+    hint: "SETTINGS.SatasupeInvestigationMusicL",
+    scope: 'world',
+    type: Boolean,
+    config: true,
+    default: false
+  });  
+
   /**
    * Slugify a string.
    */
@@ -141,14 +159,11 @@ Hooks.once("init", async function() {
 
 Hooks.on("renderItemSheet", async (app, html, data) => {
   if(app.object.data.type == "investigation"){
-    if(app.object.data.permission.default != 3) ui.notifications.error("default permission is't owner!");
+    if(app.object.data.permission.default != 3) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.DefaultInvestigationPermission"));
     const maxsl = data.data.maxsl + 3;
     for(let i = 0; i < maxsl;i++){
       if(i==0){
         $(`.investigation-main .investigation-sl`).append(`<div class="sl${i}list" style="vertical-align: top;display: inline-block;width: 200px;"><div class="sllist" style="display: inline-block;width:50px;vertical-align: top;">SL ${i}</div><button class="start-topic-add" type="button" style="vertical-align: top;display:inline-block;width:120px;height:fit-content;margin: 0px 2px 0px 5px;line-height: 16px;">${ game.i18n.localize("SATASUPE.AddStartTopic")}</button></div>`);
-        var tagzone = "";
-        tagzone = SatasupeInvestigationSheet.tagzone_create(i, data, 0, -1);
-        $(`.investigation-main .investigation-property`).append(tagzone);
       }else{
         $(`.investigation-main .investigation-sl`).append(`<div class="sl${i}list" style="vertical-align: top;display: inline-block;width: 200px;"><div class="sllist" style="display: inline-block;width:50px;vertical-align: top;">SL ${i}</div></div>`);
       }
@@ -173,7 +188,7 @@ Hooks.on("renderItemSheet", async (app, html, data) => {
       }
     }
 
-    for(let j=1;j<data.data.dendrogram.length;j++){
+    for(let j=0;j<data.data.dendrogram.length;j++){
       if(Object.keys(data.data.dendrogram[j]).length){
         const parentindex = data.data.dendrogram[j].path[data.data.dendrogram[j].path.length - 2];
         const sl = data.data.dendrogram[j].sl;
@@ -217,9 +232,9 @@ Hooks.on("renderItemSheet", async (app, html, data) => {
         view = true;
       }
       for(let m=0; m < app.object.data.data.dendrogram[index].playerlist.length; m++){
-        if((app.object.data.data.dendrogram[index].playerlist[m].id != game.user._id) || (game.user.isGM)){
-        }else if((app.object.data.data.dendrogram[index].playerlist[m].id == game.user._id) && (!game.user.isGM)){ 
-          ui.notifications.error("once selected!");
+        if((app.object.data.data.dendrogram[index].playerlist[m].id != game.user._id) || (game.user.isGM) || (game.settings.get("satasupe", "InvestigationTopicReuse"))){
+        }else if((app.object.data.data.dendrogram[index].playerlist[m].id == game.user._id) && (!game.user.isGM) && ( !game.settings.get("satasupe", "InvestigationTopicReuse"))){ 
+          ui.notifications.error(game.i18n.localize("ALERTMESSAGE.SelectedTopic"));
           view = false;
         }
       }
@@ -227,7 +242,7 @@ Hooks.on("renderItemSheet", async (app, html, data) => {
         if(data.data.dendrogram[index].tag){
           SatasupeInvestigationSheet._createBranch(ev, app.object, index, data);
         }else{
-          ui.notifications.error("parent tag is not selected!");
+          ui.notifications.error(game.i18n.localize("ALERTMESSAGE.ParentTag"));
         }
       }
     });

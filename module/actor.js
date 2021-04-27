@@ -12,6 +12,8 @@ export class SatasupeActor extends Actor {
     this.data.data.groups = this.data.data.groups || {};
     this.data.data.attributes = this.data.data.attributes || {};
     const itemData = this.data.items || [];
+    const actorData = this.data;
+    const flags = actorData.flags;
 
     for(let i of itemData){
       if(i.type === 'karma') {

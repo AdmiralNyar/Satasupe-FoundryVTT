@@ -45,6 +45,7 @@ export class SatasupeInvestigationSheet extends ItemSheet {
       }
     })
     data.data.hobbylist = SATASUPE['hobby'];
+    data.data.playlistAllow = game.settings.get("satasupe", "InvestigationMusic");
     data.data.playlist = Array.from(game.playlists);
     return data;
   }
@@ -101,7 +102,22 @@ export class SatasupeInvestigationSheet extends ItemSheet {
   async _updatePlaylist(object, value, index){
     const play = duplicate(object.data.data.target);
     play[index].playlist = value;
+    this.PlaylistDefault();
+
     await this.item.update({'data.target': play});
+  }
+
+  async PlaylistDefault(){
+    const alllist = Array.from(game.playlists);
+    for(let i=0;i<alllist.length;i++){
+      async function def(){
+        let play = game.playlists.get(alllist[i].id);
+        const pl = duplicate(play);
+        pl.permission.default = 3;
+        await play.update(pl);
+      }
+      def();
+    }
   }
 
   async _updatesltag(object, value, index){
@@ -164,7 +180,6 @@ export class SatasupeInvestigationSheet extends ItemSheet {
       ChatMessage.create({speaker: ChatMessage.getSpeaker({alias : "DD"}),content:content});
     }
     if(playlistid){
-      console.log(playlistid);
       await this.playplayS(playlistid);
     }
   }
@@ -185,7 +200,6 @@ export class SatasupeInvestigationSheet extends ItemSheet {
     const asyncFunc = function(count) {
       return new Promise(function(resolve, reject){
         if(count == 1){
-          console.log("OK");
           for(let i = 0;i<alllist.length;i++){
             if(alllist[i].playing){
               playingid.push(alllist[i].id);
@@ -221,7 +235,6 @@ export class SatasupeInvestigationSheet extends ItemSheet {
     const asyncFunc = function(count) {
       return new Promise(function(resolve, reject){
         if(count == 1){
-          console.log("OK");
           for(let i = 0;i<alllist.length;i++){
             if(alllist[i].playing){
               playingid.push(alllist[i].id);
@@ -230,7 +243,7 @@ export class SatasupeInvestigationSheet extends ItemSheet {
           for(let j = 0;j<playingid.length;j++){
             let play = game.playlists.get(playingid[j]);
             async function stop(p){
-              await p.stopAll();
+                await p.stopAll();
             }
             stop(play);
           }
@@ -317,7 +330,7 @@ export class SatasupeInvestigationSheet extends ItemSheet {
       }
       if(num > 20){
         num = 20;
-        ui.notifications.error("max num is 20,so num changes 20");
+        ui.notifications.error(game.i18n.localize("ALERTMESSAGE.LinkNumError"));
       }
       var children = [];
       if(type=="all")num=30;
@@ -404,7 +417,7 @@ export class SatasupeInvestigationSheet extends ItemSheet {
       await object.update({'data': dat});
       return true;
     }else{
-      if(sl == object.data.data.dendrogram[index].sl)ui.notifications.error("same sl's tag cann't be created");
+      if(sl == object.data.data.dendrogram[index].sl)ui.notifications.error(game.i18n.localize("ALERTMESSAGE.SameSLError"));
     }
     return true;
   }
@@ -414,15 +427,15 @@ export class SatasupeInvestigationSheet extends ItemSheet {
     function deleteconfirm(){
       return new Promise((resolve) =>{
         const dlg = new Dialog({
-          title: "Delete Branch",
-          content: "Are you sure you want to permanently delete this Branch?",
+          title: game.i18n.localize("SATASUPE.DeleteBranch"),
+          content: game.i18n.localize("SATASUPE.DeleteBranchConfirm"),
           buttons:{
             yes:{
-              label: "yes, delete it",
+              label: game.i18n.localize("SATASUPE.DeleteBranchYes"),
               callback:() => {return resolve(true);}
             },
             no:{
-              label: "no, save it",
+              label: game.i18n.localize("SATASUPE.DeleteBranchNo"),
               callback:() => {console.log("canceling delete branch");}
             }
           },
@@ -434,23 +447,39 @@ export class SatasupeInvestigationSheet extends ItemSheet {
     }
     deleteconfirm().then(async function (result){
       const tag = duplicate(object.data.data.dendrogram);
-      if(index != 0){
-
-        for(let i = 0; i < tag.length; i++){
-          var targetindex =[];
-          if(Object.keys(tag[i]).length){
-            for(let str of object.data.data.dendrogram[index].path){
-              if( object.data.data.dendrogram[i].path.includes(str)){
-                targetindex.push(str);
-              }
+      for(let i = 0; i < tag.length; i++){
+        var targetindex =[];
+        if(Object.keys(tag[i]).length){
+          for(let str of object.data.data.dendrogram[index].path){
+            if( object.data.data.dendrogram[i].path.includes(str)){
+              targetindex.push(str);
             }
           }
-          if(targetindex.length == object.data.data.dendrogram[index].path.length){
-            tag[i]={};
+        }
+        if(targetindex.length == object.data.data.dendrogram[index].path.length){
+          tag[i]={};
+        }
+      }
+      if(object.data.data.dendrogram[index].sl == 0){
+        let non = true;
+        for(let j=0; j< tag.length;j++){
+          if(Object.keys(tag[j]).length != 0){
+            non = false;
           }
         }
-        await object.update({'data.dendrogram': tag});
+        if(non){
+          tag.push({
+            key: `${tag.length}`,
+            tag: null,
+            playerlist:[],
+            sl:0,
+            edit:true,
+            path:[`${tag.length}`],
+            children: [`${tag.length}`]
+          });
+        }
       }
+      await object.update({'data.dendrogram': tag});
     });
   }
 
@@ -491,13 +520,11 @@ export class SatasupeInvestigationSheet extends ItemSheet {
           }
           tagzone += `</select>`;
           tagzone += `
-          <a class="item-control add-branch" style="text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="Next" data-slindex="${index}"><i class="fas fa-code-branch"></i></a>
+          <a class="item-control add-branch" style="text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.AddLink')}" data-slindex="${index}"><i class="fas fa-code-branch"></i></a>
           <a class="item-control tag-delete" style="text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.Delete')}" data-slindex="${index}"><i class="fas fa-trash"></i></a></div>
           <div class="indexnum${index} tree" style="display: flex;flex-direction:column"></div></div>
           `;
-          if(data.data.dendrogram[index].children[data.data.dendrogram[index].children.length -1]!=data.data.dendrogram[index].key){
-            tagzone +=``;
-          }
+
       }else if(sl < parentsl){
         tagzone = `<div class="sl${sl}taglistzone taglistzone listindex${index} reverse" data-slindex="${index}" style="text-align:left;position: relative;text-indent: -200px;left:${-200*(parentsl-sl+1)}px;width:fit-content;display:flex">
         <div class="tagzone sl${sl}tagzone tagindex${index}" style="flex-direction:row-reverse;justify-content:flex-start;margin-bottom: 20px;display: flex;width:${200*(parentsl-sl+1)}px">
@@ -518,9 +545,7 @@ export class SatasupeInvestigationSheet extends ItemSheet {
           <a class="item-control tag-delete" style="text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.Delete')}" data-slindex="${index}"><i class="fas fa-trash"></i></a></div>
           <div class="indexnum${index} tree" style="display: flex;flex-direction:column"></div></div>
           `;
-          if(data.data.dendrogram[index].children[data.data.dendrogram[index].children.length -1]!=data.data.dendrogram[index].key){
-            tagzone +=``;
-          }
+
       }
     }else{
       if(sl > parentsl){
@@ -540,9 +565,7 @@ export class SatasupeInvestigationSheet extends ItemSheet {
         <a class="item-control tag-delete" style="text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.Delete')}" data-slindex="${index}"><i class="fas fa-trash"></i></a></div>
         <div class="indexnum${index} tree" style="display: flex;flex-direction:column"></div></div>
         `;
-        if(data.data.dendrogram[index].children[data.data.dendrogram[index].children.length -1]!=data.data.dendrogram[index].key){
-          tagzone +=``;
-        }
+
       }else if(sl < parentsl){
         tagzone = `<div class="sl${sl}taglistzone taglistzone listindex${index} reverse" data-slindex="${index}" style="text-align:left;position: relative;text-indent: -200px;left:${-200*(parentsl-sl+1)}px;width:fit-content;display:flex">
         <div class="tagzone sl${sl}tagzone tagindex${index}" style="flex-direction:row-reverse;justify-content:flex-start;margin-bottom: 20px;display: flex;width:${200*(parentsl-sl+1)}px">
@@ -560,9 +583,7 @@ export class SatasupeInvestigationSheet extends ItemSheet {
         <a class="item-control tag-delete" style="text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.Delete')}" data-slindex="${index}"><i class="fas fa-trash"></i></a></div>
         <div class="indexnum${index} tree" style="display: flex;flex-direction:column"></div></div>
         `;
-        if(data.data.dendrogram[index].children[data.data.dendrogram[index].children.length -1]!=data.data.dendrogram[index].key){
-          tagzone +=``;
-        }
+
       }
     }
     /*
@@ -683,6 +704,70 @@ export class SatasupeInvestigationSheet extends ItemSheet {
         }
       };
       request.send();
+
+      request.onerror=function(){
+        console.log("Server 1 connect error");
+        var request2 = new XMLHttpRequest();
+      var param2 = "command=" + text;
+      var server2 = game.settings.get("satasupe", "BCDice2");
+      var url2 = server2 + "/game_system/Satasupe/roll?" + param2;
+      request2.open("GET",url2,true);
+      request2.responseType = 'json';
+      request2.onload = function(){
+        if(request2.status == 200){
+          var data2 = this.response;
+          let rands = data2.rands;
+          if (data2.rands){
+              let dicedata = {throws:[{dice:[]}]};
+              for(let i = 0; i < rands.length ; i++){
+                  let typenum = rands[i].sides;
+                  let bcresult = rands[i].value;
+                  var addData = {result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}};
+                  dicedata.throws[0].dice[i]=addData;
+              }
+              var dicen = {};
+              data2.rands.forEach(elm => {
+                  if(dicen[elm.sides]){
+                      dicen[`${elm.sides}`].number += 1;
+                      dicen[`${elm.sides}`].value.push(elm.value);
+                  }else{
+                      dicen[`${elm.sides}`] = {};
+                      dicen[`${elm.sides}`]['number'] = 1;
+                      dicen[`${elm.sides}`]['value'] = [elm.value];
+                  }
+              })
+              if( game.modules.get('dice-so-nice')?.active){
+                game.dice3d.show(dicedata);
+              }
+          }else{
+              return null;
+          }
+          var belowtext = "<section class=\"tooltip-part\">";
+          for(let [k, v] of Object.entries(dicen)){
+              let sumv = v.value.reduce(function(sum,element){return sum+element},0); 
+              belowtext += "<div class=\"dice\"><span class=\"part-formula part-header flexrow\">"
+              belowtext += `${v.number}d${k}`
+              belowtext += "<div class=\"flex1\"></div><span class=\"part-total flex0\">"
+              belowtext +=  `${sumv}</span></span><ol class=\"dice-rolls\">`
+              for(let dice of v.value){
+                  belowtext += `<li class=\"roll die d${k}\">${dice}</li>`
+              }
+              belowtext += "</ol></div></section>"
+          }
+          var halftext = data2.text.replace(/[！-～]/g, function(s) {
+            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
+          var favoriteText = halftext.replace(/.*?\):/g,"")
+          var contenthtml = "<div><div>" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
+          ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+          for(let l=0;l < (tagnum*2); l++){
+              randtaglist.push(SATASUPE[`cteghobby`][`${data2.rands[l].value}`][`${data2.rands[l+1].value}`]);
+              l += 1;
+          }
+          resolve(randtaglist);
+        }
+      };
+        request2.send();
+      }      
     });
   }
 }
