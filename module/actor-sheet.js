@@ -48,19 +48,19 @@ export class SatasupeActorSheet extends ActorSheet {
 
     if(!data.data.circumstance){
       data.data.circumstance={
-        crime:{value:1,max:null,short:"CIRCUMSTANCE.CRIME",label:"CIRCUMSTANCE.CRIME",folmula:null,variable:null,substitution:false},
-        life:{value:1,max:null,short:"CIRCUMSTANCE.LIFE",label:"CIRCUMSTANCE.LIFE",folmula:null,variable:null,substitution:false},
-        love:{value:1,max:null,short:"CIRCUMSTANCE.LOVE",label:"CIRCUMSTANCE.LOVE",folmula:null,variable:null,substitution:false},
-        cluture:{value:1,max:null,short:"CIRCUMSTANCE.CULTURE",label:"CIRCUMSTANCE.CULTURE",folmula:null,variable:null,substitution:false},
-        combat:{value:1,max:null,short:"CIRCUMSTANCE.COMBAT",label:"CIRCUMSTANCE.COMBAT",folmula:null,variable:null,substitution:false}
+        crime:{value:1,max:null,short:"CIRCUMSTANCE.CRIME",label:"CIRCUMSTANCE.CRIME",folmula:null,variable:"CIRCUMSTANCE.CRIME",substitution:false},
+        life:{value:1,max:null,short:"CIRCUMSTANCE.LIFE",label:"CIRCUMSTANCE.LIFE",folmula:null,variable:"CIRCUMSTANCE.LIFE",substitution:false},
+        love:{value:1,max:null,short:"CIRCUMSTANCE.LOVE",label:"CIRCUMSTANCE.LOVE",folmula:null,variable:"CIRCUMSTANCE.LOVE",substitution:false},
+        cluture:{value:1,max:null,short:"CIRCUMSTANCE.CULTURE",label:"CIRCUMSTANCE.CULTURE",folmula:null,variable:"CIRCUMSTANCE.CULTURE",substitution:false},
+        combat:{value:1,max:null,short:"CIRCUMSTANCE.COMBAT",label:"CIRCUMSTANCE.COMBAT",folmula:null,variable:"CIRCUMSTANCE.COMBAT",substitution:false}
       }
     }
 
     if(!data.data.combat){
       data.data.combat ={
-        reflex:{value:1,max:9,short:"COMBAT.REFLEX",label:"COMBAT.REFLEX",folmula:null,variable:null,substitution:false},
-        arms:{value:1,max:9,short:"COMBAT.ARMS",label:"COMBAT.ARMS",folmula:null,variable:null,substitution:false},
-        damage:{value:1,max:9,short:"COMBAT.DAMAGE",label:"COMBAT.DAMAGE",folmula:null,variable:null,substitution:false}
+        reflex:{value:1,max:9,short:"COMBAT.REFLEX",label:"COMBAT.REFLEX",folmula:null,variable:"COMBAT.REFLEX",substitution:false},
+        arms:{value:1,max:9,short:"COMBAT.ARMS",label:"COMBAT.ARMS",folmula:null,variable:"COMBAT.ARMS",substitution:false},
+        damage:{value:1,max:9,short:"COMBAT.DAMAGE",label:"COMBAT.DAMAGE",folmula:null,variable:"COMBAT.DAMAGE",substitution:false}
       };
     }
 
@@ -68,25 +68,25 @@ export class SatasupeActorSheet extends ActorSheet {
       data.data.status ={
         bpmajorWounds:{type:"Boolean",value:false},
         mpmajorWounds:{type:"Boolean",value:false},
-        majorWoundsOffset:{value:0,max:2,short:"STATUS.MajorWoundesOffsetS", label:"STATUS.MajorWoundesOffsetL",folmula:null,auto:true,variable:null,substitution:false},
+        majorWoundsOffset:{value:0,max:2,short:"STATUS.MajorWoundesOffsetS", label:"STATUS.MajorWoundesOffsetL",folmula:null,auto:true,variable:"STATUS.MajorWoundesOffsetL",substitution:false},
         death:{type:"Boolean",value:false},
         uncoscious:{type:"Boolean",value:false},
-        sleep:{value:null,max:null,explain:"STATUS.SleepL",label:"STATUS.SleepS",auto:true},
-        fumble:{value:1,max:6,explain:"STATUS.FumbleL",label:"STATUS.FumbleS",auto:true,variable:null,substitution:false},
+        sleep:{value:null,max:null,explain:"STATUS.SleepL",label:"STATUS.SleepS",auto:true,variable:"STATUS.SleepL",substitution:false},
+        fumble:{value:1,max:6,explain:"STATUS.FumbleL",label:"STATUS.FumbleS",auto:true,variable:"STATUS.FumbleS",substitution:false},
         turn:{type:"Boolean",value:false},
         alert:{type:"Boolean",value:false},
-        trauma:{value:0,max:null,explain:"STATUS.TraumaL",label:"STATUS.TraumaS",auto:true,variable:null,substitution:false},
+        trauma:{value:0,max:null,explain:"STATUS.TraumaL",label:"STATUS.TraumaS",auto:true,variable:"STATUS.TraumaS",substitution:false},
         allonoff:{type:"Boolean",value:false}
       };
     }
 
     if(!data.data.attribs){
       data.data.attribs = {
-        alignment:{value: null, max:null,short: "ATTRIBS.ALIGNMENTS",label:"ATTRIBS.ALIGNMENTL",auto:true,variable:null,substitution:false},
-        bp:{value:null,max:null,short: "ATTRIBS.BPS",label:"ATTRIBS.BPL",auto:true,variable:null,substitution:false},
-        mp:{value:null,max:null,short: "ATTRIBS.MPS",label:"ATTRIBS.MPL",auto:true,variable:null,substitution:false},
-        wallet:{value:null,max:null,short: "ATTRIBS.WPS",label:"ATTRIBS.WPL",auto:true,variable:null,substitution:false},
-        drp:{value:null,max:null,short: "ATTRIBS.DRPS",label:"ATTRIBS.DRPL",auto:true,variable:null,substitution:false}
+        alignment:{value: null, max:null,short: "ATTRIBS.ALIGNMENTS",label:"ATTRIBS.ALIGNMENTL",auto:true,variable:"ATTRIBS.ALIGNMENTL",substitution:false},
+        bp:{value:null,max:null,short: "ATTRIBS.BPS",label:"ATTRIBS.BPL",auto:true,variable:"ATTRIBS.BPL",substitution:false},
+        mp:{value:null,max:null,short: "ATTRIBS.MPS",label:"ATTRIBS.MPL",auto:true,variable:"ATTRIBS.MPL",substitution:false},
+        wallet:{value:null,max:null,short: "ATTRIBS.WPS",label:"ATTRIBS.WPL",auto:true,variable:"ATTRIBS.WPL",substitution:false},
+        drp:{value:null,max:null,short: "ATTRIBS.DRPS",label:"ATTRIBS.DRPL",auto:true,variable:"ATTRIBS.DRPL",substitution:false}
       };
     }
     if(!data.data.exp){
@@ -651,7 +651,7 @@ export class SatasupeActorSheet extends ActorSheet {
       attribs.alignment.substitution = attribs.bp.substitution = attribs.mp.substitution = attribs.wallet.substitution = attribs.drp.substitution = true;
       combat.reflex.substitution = combat.arms.substitution = combat.damage.substitution = true;
       status.majorWoundsOffset.substitution = status.sleep.substitution = status.fumble.substitution = status.trauma.substitution = true;
-      for(let i=0 ; i < variable.length ; i++){
+      for(let i=0 ; i < variable?.length ; i++){
         variable[i].substitution = true;
       }
     }else{
@@ -660,7 +660,7 @@ export class SatasupeActorSheet extends ActorSheet {
       attribs.alignment.substitution = attribs.bp.substitution = attribs.mp.substitution = attribs.wallet.substitution = attribs.drp.substitution = false;
       combat.reflex.substitution = combat.arms.substitution = combat.damage.substitution = false;
       status.majorWoundsOffset.substitution = status.sleep.substitution = status.fumble.substitution = status.trauma.substitution = false;
-      for(let j=0 ; j < variable.length ; j++){
+      for(let j=0 ; j < variable?.length ; j++){
         variable[j].substitution = false;
       }
     }

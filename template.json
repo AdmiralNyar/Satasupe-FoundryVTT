@@ -10,7 +10,7 @@
             "short":"CIRCUMSTANCE.CRIME",
             "label":"CIRCUMSTANCE.CRIME",
             "folmula":null,
-            "variable":null,
+            "variable":"CIRCUMSTANCE.CRIME",
             "substitution":false
           },
           "life":{
@@ -19,7 +19,7 @@
             "short":"CIRCUMSTANCE.LIFE",
             "label":"CIRCUMSTANCE.LIFE",
             "folmula":null,
-            "variable":null,
+            "variable":"CIRCUMSTANCE.LIFE",
             "substitution":false
           },
           "love":{
@@ -28,7 +28,7 @@
             "short":"CIRCUMSTANCE.LOVE",
             "label":"CIRCUMSTANCE.LOVE",
             "folmula":null,
-            "variable":null,
+            "variable":"CIRCUMSTANCE.LOVE",
             "substitution":false
           },
           "cluture":{
@@ -37,7 +37,7 @@
             "short":"CIRCUMSTANCE.CULTURE",
             "label":"CIRCUMSTANCE.CULTURE",
             "folmula":null,
-            "variable":null,
+            "variable":"CIRCUMSTANCE.CULTURE",
             "substitution":false
           },
           "combat":{
@@ -46,7 +46,7 @@
             "short":"CIRCUMSTANCE.COMBAT",
             "label":"CIRCUMSTANCE.COMBAT",
             "folmula":null,
-            "variable":null,
+            "variable":"CIRCUMSTANCE.COMBAT",
             "substitution":false
           }
         }
@@ -58,7 +58,7 @@
             "short":"APTITUDE.BODY",
             "label":"APTITUDE.BODY",
             "folmula":null,
-            "variable":null,
+            "variable":"APTITUDE.BODY",
             "substitution":false
           },
           "mind":{
@@ -66,7 +66,7 @@
             "short":"APTITUDE.MIND",
             "label":"APTITUDE.MIND",
             "folmula":null,
-            "variable":null,
+            "variable":"APTITUDE.MIND",
             "substitution":false
           }
         }
@@ -79,7 +79,7 @@
             "short": "ATTRIBS.ALIGNMENTS",
             "label": "ATTRIBS.ALIGNMENTL",
             "auto": true,
-            "variable":null,
+            "variable":"ATTRIBS.ALIGNMENTL",
             "substitution":false
           },
           "bp":{
@@ -88,7 +88,7 @@
             "short": "ATTRIBS.BPS",
             "label": "ATTRIBS.BPL",
             "auto": true,
-            "variable":null,
+            "variable":"ATTRIBS.BPL",
             "substitution":false
           },
           "mp":{
@@ -97,7 +97,7 @@
             "short": "ATTRIBS.MPS",
             "label": "ATTRIBS.MPL",
             "auto": true,
-            "variable":null,
+            "variable":"ATTRIBS.MPL",
             "substitution":false
           },
           "wallet":{
@@ -106,7 +106,7 @@
             "short": "ATTRIBS.WPS",
             "label": "ATTRIBS.WPL",
             "auto": true,
-            "variable":null,
+            "variable":"ATTRIBS.WPL",
             "substitution":false
           },
           "drp":{
@@ -115,7 +115,7 @@
             "short": "ATTRIBS.DRPS",
             "label": "ATTRIBS.DRPL",
             "auto": true,
-            "variable":null,
+            "variable":"ATTRIBS.DRPS",
             "substitution":false
           }
         }
@@ -128,7 +128,7 @@
             "short": "COMBAT.REFLEX",
             "label": "COMBAT.REFLEX",
             "folmula": null,
-            "variable":null,
+            "variable":"COMBAT.REFLEX",
             "substitution":false
           },
           "arms": {
@@ -137,7 +137,7 @@
             "short": "COMBAT.ARMS",
             "label": "COMBAT.ARMS",
             "folmula": null,
-            "variable":null,
+            "variable":"COMBAT.ARMS",
             "substitution":false
           },
           "damage": {
@@ -146,7 +146,7 @@
             "short": "COMBAT.DAMAGE",
             "label": "COMBAT.DAMAGE",
             "folmula": null,
-            "variable":null,
+            "variable":"COMBAT.DAMAGE",
             "substitution":false
           }
         }
@@ -213,7 +213,7 @@
             "label": "STATUS.MajorWoundesOffsetL",
             "folmula": null,
             "auto":true,
-            "variable":null,
+            "variable":"STATUS.MajorWoundesOffsetS",
             "substitution":false
           },
           "death":{
@@ -230,7 +230,7 @@
             "explain": "STATUS.SleepL",
             "label": "STATUS.SleepS",
             "auto": true,
-            "variable":null,
+            "variable":"STATUS.SleepS",
             "substitution":false
           },
           "fumble":{
@@ -239,7 +239,7 @@
             "explain": "STATUS.FumbleL",
             "label": "STATUS.FumbleS",
             "auto": true,
-            "variable":null,
+            "variable":"STATUS.FumbleS",
             "substitution":false
           },
           "turn":{
@@ -256,7 +256,7 @@
             "explain": "STATUS.TraumaL",
             "label": "STATUS.TraumaS",
             "auto": true,
-            "variable":null,
+            "variable":"STATUS.TraumaS",
             "substitution":false
           },
           "allonoff":{
@@ -567,11 +567,6 @@
             "value": false,
             "label": "SPEC.STUN"
           },
-          "blast":{
-            "type": "Boolean",
-            "value": false,
-            "label": "SPEC.BLAST"
-          },
           "crash":{
             "type": "Boolean",
             "value": false,
@@ -619,6 +614,12 @@
             "value": false,
             "number":"",
             "label": "SPEC.KILL"
+          },
+          "blast":{
+            "type": "Boolean",
+            "value": false,
+            "number":"",
+            "label": "SPEC.BLAST"
           },
           "shock":{
             "type": "Boolean",

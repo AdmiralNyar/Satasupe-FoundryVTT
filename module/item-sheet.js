@@ -22,6 +22,9 @@ export class SatasupeItemSheet extends ItemSheet {
     /** @override */
   getData() {
     const data = super.getData();
+    if((data.data.weapon.special.blast) && (data.data.weapon.specialtext.blast)){
+      delete data.data.weapon.special.blast;
+    }
     return data;
   }
 
