@@ -164,9 +164,6 @@ Hooks.on("renderItemSheet", async (app, html, data) => {
     for(let i = 0; i < maxsl;i++){
       if(i==0){
         $(`.investigation-main .investigation-sl`).append(`<div class="sl${i}list" style="vertical-align: top;display: inline-block;width: 200px;"><div class="sllist" style="display: inline-block;width:50px;vertical-align: top;">SL ${i}</div><button class="start-topic-add" type="button" style="vertical-align: top;display:inline-block;width:120px;height:fit-content;margin: 0px 2px 0px 5px;line-height: 16px;">${ game.i18n.localize("SATASUPE.AddStartTopic")}</button></div>`);
-        /*var tagzone = "";
-        tagzone = SatasupeInvestigationSheet.tagzone_create(i, data, 0, -1);
-        $(`.investigation-main .investigation-property`).append(tagzone);*/
       }else{
         $(`.investigation-main .investigation-sl`).append(`<div class="sl${i}list" style="vertical-align: top;display: inline-block;width: 200px;"><div class="sllist" style="display: inline-block;width:50px;vertical-align: top;">SL ${i}</div></div>`);
       }
