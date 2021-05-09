@@ -11,7 +11,7 @@
         <tbody class="chatpalette-tbody">
             {{#each actor.chatpalette as |item index|}}
                 {{#each item.data.chatpalette.chat as |section ind|}}
-                    <tr class="item chatpalette-section" data-item-id='{{item._id}}' data-index='{{index}}' data-ind='{{ind}}'>
+                    <tr class="item chatpalette-section" data-item-id='{{item._id}}' data-index='{{index}}' data-ind='{{ind}}' draggable="false">
                         <td class="dice-folmula-text">
                             <div class="text-section section-key" data-sectionkey="text">
                                 <input class="text-input  chat-section-input" type="text" name="section.text" data-dtype="String" value="{{section.text}}" placeholder="{{localize 'SATASUPE.DiceFolmula'}}"/>
@@ -47,10 +47,10 @@
         </thead>
         <tbody class="variable-setting-tbody chatpalette-tbody">
             {{#each data.variable as |section index|}}
-                <tr class="item variable-section" data-index='{{index}}'>
+                <tr class="item variable-section" data-index='{{index}}' draggable="false">
                     <td>
                         <div class="characteristics-section variable-key section-key" data-sectionkey="title">
-                            <input class="variable-title variable-section-input" type="text" name="section.title" placeholder="Input value" data-dtype="String" value="{{section.title}}"/>
+                            <input class="variable-title variable-section-input" type="number" name="section.title" placeholder="Input value" data-dtype="String" value="{{section.title}}"/>
                         </div>
                     </td>
                     <td>
@@ -67,7 +67,7 @@
                 </tr>
             {{/each}}
             {{#each data.circumstance as |circumstance key|}}
-                <tr class="item variable-section" data-characteristic="{{key}}">
+                <tr class="item variable-section" data-characteristic="{{key}}" draggable="false">
                     <td>
                         <div class="characteristics-section variable-key">
                             <div class="characteristic-label">{{localize circumstance.label}}</div>
@@ -87,7 +87,7 @@
                 </tr>
             {{/each}}
             {{#each data.aptitude as |aptitude key|}}
-            <tr class="item variable-section" data-characteristic="{{key}}">
+            <tr class="item variable-section" data-characteristic="{{key}}" draggable="false">
                 <td>
                     <div class="characteristics-section variable-key">
                         <div class="characteristic-label">{{localize aptitude.label}}</div>
@@ -107,7 +107,7 @@
             </tr>
              {{/each}}
              {{#each data.combat as |combat key|}}
-             <tr class="item variable-section" data-characteristic="{{key}}">
+             <tr class="item variable-section" data-characteristic="{{key}}" draggable="false">
                  <td>
                      <div class="characteristics-section variable-key">
                          <div class="characteristic-label">{{localize combat.label}}</div>
@@ -126,7 +126,7 @@
                 </td>
              </tr>
               {{/each}}
-              <tr class="item variable-section" data-characteristic="majorWoundsOffset">
+              <tr class="item variable-section" data-characteristic="majorWoundsOffset" draggable="false">
                 <td>
                     <div class="characteristics-section variable-key">
                         <div class="characteristic-label">{{localize data.status.majorWoundsOffset.label}}</div>
@@ -144,7 +144,7 @@
                     <div class="space"> </div>
                 </td>
             </tr>
-            <tr class="item variable-section" data-characteristic="sleep">
+            <tr class="item variable-section" data-characteristic="sleep" draggable="false">
                 <td>
                     <div class="characteristics-section variable-key">
                         <div class="characteristic-label">{{localize data.status.sleep.explain}}</div>
@@ -162,7 +162,7 @@
                     <div class="space"> </div>
                 </td>
             </tr>
-            <tr class="item variable-section" data-characteristic="fumble">
+            <tr class="item variable-section" data-characteristic="fumble" draggable="false">
                 <td>
                     <div class="characteristics-section variable-key">
                         <div class="characteristic-label">{{localize data.status.fumble.label}}</div>
@@ -180,7 +180,7 @@
                     <div class="space"> </div>
                 </td>
             </tr>
-            <tr class="item variable-section" data-characteristic="trauma">
+            <tr class="item variable-section" data-characteristic="trauma" draggable="false">
                 <td>
                     <div class="characteristics-section variable-key">
                         <div class="characteristic-label">{{localize data.status.trauma.label}}</div>
@@ -199,7 +199,7 @@
                 </td>
             </tr>
               {{#each data.attribs as |attribs key|}}
-              <tr class="item variable-section" data-characteristic="{{key}}">
+              <tr class="item variable-section" data-characteristic="{{key}}" draggable="false">
                   <td>
                       <div class="characteristics-section variable-key">
                           <div class="characteristic-label">{{localize attribs.label}}</div>

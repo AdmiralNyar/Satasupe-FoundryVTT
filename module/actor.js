@@ -188,6 +188,9 @@ export class SatasupeActor extends Actor {
       newgainexp = newgainexp + deff;
       await this.update({'data.exp.expgain.value' : newgainexp});
     }
+    if(key =="note"){
+      value = value.replace(/\n/g, '\r');
+    }
     scena[index][key] = value;
     await this.update({'data.scenario' : scena});
   }

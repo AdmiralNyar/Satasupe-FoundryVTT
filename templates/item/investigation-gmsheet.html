@@ -13,22 +13,22 @@
         <div class="investigation-sl" style="white-space: nowrap;margin-bottom:15px">
 
         </div>
-        <div class="investigation-property" style="width: fit-content;white-space: nowrap;">
+        <div class="investigation-property" style="width: fit-content;width:-moz-fit-content;white-space: nowrap;">
                    
         </div>    
     </div>
 
     <div class="investigation-target" style="display: none;">
         <label style="display:inline-block">{{localize 'SATASUPE.TargetTopicSettings'}}</label>
-        <button class="target-add" type="button" style="display:inline-block;width:fit-content;height:fit-content;margin: 2px 5px;line-height: 18px;">{{localize 'SATASUPE.AddTarget'}}</button>
-        <button class="target-remove" type="button" style="display:inline-block;width:fit-content;height:fit-content;margin: 2px 5px;line-height: 18px;">{{localize 'SATASUPE.RemoveTarget'}}</button>
+        <button class="target-add" type="button" style="display:inline-block;width:fit-content;width:-moz-fit-content;height:fit-content;height:-moz-fit-content;margin: 2px 5px;line-height: 18px;">{{localize 'SATASUPE.AddTarget'}}</button>
+        <button class="target-remove" type="button" style="display:inline-block;width:fit-content;width:-moz-fit-content;height:-moz-fit-content;height:fit-content;margin: 2px 5px;line-height: 18px;">{{localize 'SATASUPE.RemoveTarget'}}</button>
         <div>
             {{#each data.target as |info index|}}
             <div style="display: block;border:1px solid black;margin:2px 2px 5px 2px;padding:2px 0px">
-                <div style="display: inline-block;"><label style="display: inline-block;width:30px">SL : </label><input class="targetsl" data-index="{{index}}" style="display: inline-block;width:fit-content" type="number" min="1" name="info.sl" value="{{info.sl}}" data-dtype="Number"/></div>
+                <div style="display: inline-block;"><label style="display: inline-block;width:30px">SL : </label><input class="targetsl" data-index="{{index}}" style="display: inline-block;width:fit-content;width:-moz-fit-content;" type="number" min="1" name="info.sl" value="{{info.sl}}" data-dtype="Number"/></div>
                 <div style="display: block;">
-                <button class="tag-add" type="button" data-targetn="{{index}}" style="display:inline-block;width:fit-content;height:fit-content;margin: 2px 5px;">{{localize 'SATASUPE.AddTargetTag'}}</button>
-                <button class="tag-remove" type="button" data-targetn="{{index}}" style="display:inline-block;width:fit-content;height:fit-content;margin: 2px 5px;">{{localize 'SATASUPE.RemoveTargetTag'}}</button>
+                <button class="tag-add" type="button" data-targetn="{{index}}" style="display:inline-block;width:fit-content;width:-moz-fit-content;height:fit-content;height:-moz-fit-content;margin: 2px 5px;">{{localize 'SATASUPE.AddTargetTag'}}</button>
+                <button class="tag-remove" type="button" data-targetn="{{index}}" style="display:inline-block;width:fit-content;width:-moz-fit-content;height:fit-content;height:-moz-fit-content;margin: 2px 5px;">{{localize 'SATASUPE.RemoveTargetTag'}}</button>
                 </div>
                 <div style="display: block;margin: 5px 5px;padding: 5px 0px;border:1px solid black">
                     {{#each info.tag as |hobby ind|}}
