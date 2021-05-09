@@ -22,11 +22,6 @@ If you wish to manually install the system, you must clone or extract it into th
 may do this by cloning the repository or downloading a zip archive from the
 [Releases Page](https://github.com/AdmiralNyar/Satasupe-FoundryVTT/releases).
 
-For a while I can't merge (and review) pull request.
-Only issues will be accepted (can be read).
-Sorry!!
-(09/03/2021)
-
 ## Licence
 The software component of this system is distributed under the GNUv3 license.
 This system is based on [Simple Worldbuilding System](https://gitlab.com/foundrynet/worldbuilding/-/tree/master).

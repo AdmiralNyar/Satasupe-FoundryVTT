@@ -29,10 +29,9 @@ export class SatasupeKarmaSheet extends ItemSheet {
     getData(){
         const data = super.getData();
         data._alignment = game.i18n.localize("ALIGNMENT.CALM");
-        data._propertiesValue =game.i18n.localize("CIRCUMSTANCE.CRIME");
 
         for( let [key, value] of Object.entries(SATASUPE['check'])){
-            if (key === data.data.check.checkValue){
+            if (key == data.data.check.checkValue.name){
                 data._propertiesValue = value;
             }
         }
@@ -41,6 +40,7 @@ export class SatasupeKarmaSheet extends ItemSheet {
                 data._alignment = value;
              }
         }
+        console.log(data);
         /*
         data.dtypes = ["String", "Number", "Boolean"];
 
@@ -54,6 +54,7 @@ export class SatasupeKarmaSheet extends ItemSheet {
     async _updateEffectArea(object, value){
         const kar = duplicate(object.data.data);
         kar.effect = value;
+        kar.effecthtml = value.replace(/\n|\r/g, '<br>');
         await this.item.update({'data': kar});
     }
 

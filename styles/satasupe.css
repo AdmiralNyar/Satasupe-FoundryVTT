@@ -680,7 +680,7 @@ div.container nav.tabs a,
   grid-area: image;
   object-fit: contain;
   border: 0;
-  height: auto;
+  height: 100%;
   width: 100%;
 }
 
@@ -1272,6 +1272,7 @@ div.container nav.tabs a,
   border:none;
   align-self: center;
   justify-self: center;
+  font-size: 11px;
 }
 
 .satasupe .other-panel .addiction-zone{
@@ -1279,7 +1280,7 @@ div.container nav.tabs a,
 }
 
 .satasupe .other-panel .hobby-zone div button{
-	width: 65px;
+	width: 70px;
 	height: 20px;
 	border: solid 1px #888;
 	color: black;
@@ -1287,7 +1288,7 @@ div.container nav.tabs a,
   padding:0 2px;
   margin: 2.5px 2.5px;
 	text-align: center;
-  font-size: 9.5px;
+  font-size: 9px;
 	line-height: 17px;
 	background-color: #f8f3df;
 	border-radius: 8px;
