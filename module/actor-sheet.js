@@ -637,8 +637,8 @@ export class SatasupeActorSheet extends ActorSheet {
     }
   }
 
-  _allonoffToggle(nowonoff){
-    const actor = this.actor.data;
+  async _allonoffToggle(nowonoff){
+    const actor = duplicate(this.object.data);
     const circumstance = actor.data.circumstance;
     const aptitude = actor.data.aptitude;
     const attribs = actor.data.attribs;
@@ -664,8 +664,7 @@ export class SatasupeActorSheet extends ActorSheet {
         variable[j].substitution = false;
       }
     }
-    const updated = {_id:actor.id, data:actor.data};
-    game.actors.get(actor._id).update(updated);
+    await this.object.update({'data':actor.data});
   }
 
   _onTableSort(event){
@@ -1036,26 +1035,26 @@ export class SatasupeActorSheet extends ActorSheet {
           for (let i = 0 ; i < repal.length ; i++){
             for(let[key, value] of Object.entries(SATASUPE['referenceable'])){
               if((actor.circumstance[key]?.variable == repal[i]) && actor.circumstance[key]?.substitution){
-                  text = text.replace(re,actor.circumstance[key].value);
+                  text = text.replace(re,Number(actor.circumstance[key].value));
                   break;
               }else if((actor.aptitude[key]?.variable == repal[i]) && actor.aptitude[key]?.substitution){
-                text = text.replace(re,actor.aptitude[key].value);
+                text = text.replace(re,Number(actor.aptitude[key].value));
                 break;
               }else if((actor.attribs[key]?.variable == repal[i]) && actor.attribs[key]?.substitution){
-                text = text.replace(re,actor.attribs[key].value);
+                text = text.replace(re,Number(actor.attribs[key].value));
                 break;
               }else if((actor.combat[key]?.variable == repal[i]) && actor.combat[key]?.substitution){
-                text = text.replace(re,actor.combat[key].value);
+                text = text.replace(re,Number(actor.combat[key].value));
                 break;
               }else if((actor.status[key]?.variable == repal[i]) && actor.status[key]?.substitution){
-                text = text.replace(re,actor.status[key].value);
+                text = text.replace(re,Number(actor.status[key].value));
                 break;
               }
             }
             if(!actor.variable) actor.variable = [];
             for(let j = 0; j < actor.variable.length ; j++){
               if((actor.variable[j].variable == repal[i]) && actor.variable[j].substitution){
-                text = text.replace(re,actor.variable[j].title);
+                text = text.replace(re,Number(actor.variable[j].title));
                 break;
               }
             }

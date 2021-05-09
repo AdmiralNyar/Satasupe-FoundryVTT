@@ -86,7 +86,20 @@
                         {{#if data.check.none}}
                             <div class="tytle-name">{{localize 'SATASUPE.None'}}</div>
                         {{else}}
-                            <div class="tytle-name">{{#if data.check.type}}〔{{localize 'ATTRIBS.ALIGNMENTS'}}〕/ {{localize _alignment}}{{else}}〔{{localize _propertiesValue}}〕/ {{data.check.difficulty}}{{/if}}</div>
+                            <div class="tytle-name">
+                                {{#if data.check.type}}
+                                    {{#unless data.check.checkText}}
+                                        〔{{localize 'ATTRIBS.ALIGNMENTS'}}〕/ {{localize _alignment}}
+                                    {{else}}
+                                        〔{{localize 'ATTRIBS.ALIGNMENTS'}}〕/ {{data.check.checkText}}
+                                    {{/unless}}
+                                {{else}}
+                                    {{#unless data.check.checkText}}
+                                        〔{{localize _propertiesValue}}〕/ {{data.check.difficulty}}
+                                    {{else}}
+                                        〔{{localize _propertiesValue}}〕/ {{data.check.checkText}}
+                                    {{/unless}}
+                                {{/if}}</div>
                         {{/if}}
                     </div>
                 </div>

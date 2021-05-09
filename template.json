@@ -225,7 +225,7 @@
             "value": false
           },
           "sleep":{
-            "value": null,
+            "value": 0,
             "max": null,
             "explain": "STATUS.SleepL",
             "label": "STATUS.SleepS",
@@ -876,7 +876,8 @@
         "checkText":""
       },
       "effect": "",
-      "flavor": ""
+      "flavor": "",
+      "effecthtml":""
     },
     "chatpalette":{
       "chatpalette":{

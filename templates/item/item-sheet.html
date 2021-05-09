@@ -70,7 +70,7 @@
                 </div>
                 <div class="weapon-price">
                     <label>{{localize 'SATASUPE.PRICE'}} :</label>
-                    <input name="data.weapon.price.value" type="text" value="{{data.weapon.price.value}}"/>
+                    <input name="data.weapon.price.value" type="number" value="{{data.weapon.price.value}}"/>
                 </div>
                 <div class="weapon-hit">
                     <label>{{localize 'SATASUPE.HIT'}} :</label>
@@ -167,19 +167,19 @@
                 </div>
                 <div class="vehicle-price">
                     <label>{{localize 'SATASUPE.PRICE'}} :</label>
-                    <input name="data.vehicle.price.value" type="text" value="{{data.vehicle.price.value}}"/>
+                    <input name="data.vehicle.price.value" type="number" value="{{data.vehicle.price.value}}"/>
                 </div>
                 <div class="vehicle-speed">
                     <label>{{localize 'SATASUPE.SPEED'}} :</label>
-                    <input name="data.vehicle.speed" type="text" value="{{data.vehicle.speed}}"/>
+                    <input name="data.vehicle.speed" type="number" value="{{data.vehicle.speed}}"/>
                 </div>
                 <div class="vehicle-drp">
                     <label>{{localize 'SATASUPE.CARBODY'}} :</label>
-                    <input name="data.vehicle.drp" type="text" value="{{data.vehicle.drp}}"/>
+                    <input name="data.vehicle.drp" type="number" value="{{data.vehicle.drp}}"/>
                 </div>
                 <div class="vehicle-capacity eftype" data-eftype="capacity">
                     <label>{{localize 'SATASUPE.CAPACITY'}} :</label>
-                    <input class="effect-data" name="data.vehicle.capacity" type="text" value="{{data.vehicle.capacity}}"/>
+                    <input class="effect-data" name="data.vehicle.capacity" type="number" value="{{data.vehicle.capacity}}"/>
                 </div>
                 <div class="upkeep">
                     <label>{{localize 'EXP.UPKEEPS'}} :</label>
@@ -229,11 +229,11 @@
                 </div>
                 <div class="props-price">
                     <label>{{localize 'SATASUPE.PRICE'}} :</label>
-                    <input name="data.props.price.value" type="text" value="{{data.props.price.value}}"/>
+                    <input name="data.props.price.value" type="number" value="{{data.props.price.value}}"/>
                 </div>
                 <div class="addcapacity">
                     <label>{{localize 'SATASUPE.ADDCAPACITY'}} :</label>
-                    <input type="text" name="data.props.addcapacity" value="{{data.props.addcapacity}}"/>
+                    <input type="number" min="0" name="data.props.addcapacity" value="{{data.props.addcapacity}}"/>
                 </div>
                 <div class="props-timing">
                     <label>{{localize 'SATASUPE.Timing'}} :</label>
@@ -317,11 +317,11 @@
                 </div>
                 <div class="gadjet-hobby">
                     <label>{{localize 'SATASUPE.HOBBY'}} :</label>
-                    <input name="data.gadjet.hobby" type="text" value="{{data.gadjet.hobby}}"/>
+                    <input name="data.gadjet.hobby" style="width:100px;" type="text" value="{{data.gadjet.hobby}}"/>
                 </div>
                 <div class="addcapacity">
                     <label>{{localize 'SATASUPE.ADDCAPACITY'}} :</label>
-                    <input type="text" name="data.gadjet.addcapacity" value="{{data.gadjet.addcapacity}}"/>
+                    <input type="number" min="0" name="data.gadjet.addcapacity" value="{{data.gadjet.addcapacity}}"/>
                 </div>
                 <div class="gadjet-timing">
                     <label>{{localize 'SATASUPE.Timing'}} :</label>
@@ -340,7 +340,7 @@
                 </div>
                 <div class="gadjet-times">
                     <label>{{localize 'SATASUPE.TIMES'}} :</label>
-                    {{#uniqueif data.gadjet.times.ttype "!==" "unlimit"}}<input name="data.gadjet.times.tnumber" type="text" value="{{data.gadjet.times.tnumber}}"/><label class="space">    /  </label>{{/uniqueif}}
+                    {{#uniqueif data.gadjet.times.ttype "!==" "unlimit"}}<input name="data.gadjet.times.tnumber" type="number" value="{{data.gadjet.times.tnumber}}"/><label class="space">    /  </label>{{/uniqueif}}
                     <select name="data.gadjet.times.ttype" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
                     {{#select data.gadjet.times.ttype}}

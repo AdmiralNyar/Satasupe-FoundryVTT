@@ -12,15 +12,15 @@
                     </div>
                     <div class="status-box">
                         <div class="status-name">{{localize 'STATUS.FumbleH'}}</div>
-                        <div class="status-score"><input name="data.status.fumble.value" title="{{localize 'STATUS.FumbleL'}}" type="text" value="{{data.status.fumble.value}}"/></div>
+                        <div class="status-score"><input name="data.status.fumble.value" title="{{localize 'STATUS.FumbleL'}}" type="number" min="0" value="{{data.status.fumble.value}}"/></div>
                     </div>
                     <div class="status-box">
                         <div class="status-name">{{localize 'STATUS.SleepS'}}</div>
-                        <div class="status-score"><input name="data.status.sleep.value" title="{{localize 'STATUS.SleepL'}}" type="text" value="{{data.status.sleep.value}}"/></div>
+                        <div class="status-score"><input name="data.status.sleep.value" title="{{localize 'STATUS.SleepL'}}" type="number" value="{{data.status.sleep.value}}"/></div>
                     </div>
                     <div class="status-box">
                         <div class="status-name">{{localize 'STATUS.TraumaH'}}</div>
-                        <div class="status-score"><input name="data.status.trauma.value" title="{{localize 'STATUS.TraumaL'}}" type="text" value="{{data.status.trauma.value}}"/></div>
+                        <div class="status-score"><input name="data.status.trauma.value" title="{{localize 'STATUS.TraumaL'}}" type="number" value="{{data.status.trauma.value}}"/></div>
                     </div>
                     <div class="status-box">
                         <div class="status-name">{{localize 'STATUS.MajorWoundesOffsetS'}}</div>
@@ -63,7 +63,7 @@
                 </div>
                 <div class="row flexrow">
                     <label>{{localize 'SATASUPE.Age'}} :</label>
-                    <input name="data.infos.age" type="text" value="{{data.infos.age}}"/>
+                    <input name="data.infos.age" type="number" min="0" value="{{data.infos.age}}"/>
                 </div>
                 <div class="row flexrow">
                     <label>{{localize 'SATASUPE.Style'}} :</label>
@@ -126,7 +126,7 @@
                         <div class="charac-name">{{localize circumstance.short}}</div>
                         <div class="charac-score">
                             <div class="main-score">
-                                <input class="characteristic-score" type="text" name="data.circumstance.{{key}}.value" value="{{circumstance.value}}" data-dtype="Number"/>
+                                <input class="characteristic-score" type="number" min="0" max="8" name="data.circumstance.{{key}}.value" value="{{circumstance.value}}" data-dtype="Number"/>
                             </div>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
                             <div class="charac-name">{{localize aptitude.short}}</div>
                             <div class="charac-score">
                                 <div class="main-score">
-                                    <input class="characteristic-score" type="text" name="data.aptitude.{{key}}.value" value="{{aptitude.value}}" data-dtype="Number"/>
+                                    <input class="characteristic-score" type="number" min="0" max="8" name="data.aptitude.{{key}}.value" value="{{aptitude.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
                             <div class="charac-name">{{localize combat.short}}</div>
                             <div class="charac-score">
                                 <div class="main-score">
-                                    <input class="characteristic-score" type="text" name="data.combat.{{key}}.value" value="{{combat.value}}" data-dtype="Number"/>
+                                    <input class="characteristic-score" type="number" min="0" name="data.combat.{{key}}.value" value="{{combat.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -170,7 +170,7 @@
                             <div class="others-name">{{localize 'ATTRIBS.BPS'}}</div>
                             <div class="others-score">
                                 <div class="main-score">
-                                    <input class="bp" name="data.attribs.bp.value" title="{{localize 'ATTRIBS.BPL'}}" type="text" value="{{data.attribs.bp.value}}" data-dtype="Number"/>
+                                    <input class="bp" name="data.attribs.bp.value" title="{{localize 'ATTRIBS.BPL'}}" type="number" value="{{data.attribs.bp.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -180,7 +180,7 @@
                             <div class="others-name">{{localize 'ATTRIBS.MPS'}}</div>
                             <div class="others-score">
                                 <div class="main-score">
-                                    <input class="mp" name="data.attribs.mp.value" title="{{localize 'ATTRIBS.MPL'}}" type="text" value="{{data.attribs.mp.value}}" data-dtype="Number"/>
+                                    <input class="mp" name="data.attribs.mp.value" title="{{localize 'ATTRIBS.MPL'}}" type="number" value="{{data.attribs.mp.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -190,7 +190,7 @@
                             <div class="others-name">{{localize 'ATTRIBS.WPS'}}</div>
                             <div class="others-score">
                                 <div class="main-score">
-                                    <input name="data.attribs.wallet.value" title="{{localize 'ATTRIBS.WPL'}}" type="text" value="{{data.attribs.wallet.value}}" data-dtype="Number"/>
+                                    <input name="data.attribs.wallet.value" title="{{localize 'ATTRIBS.WPL'}}" type="number" value="{{data.attribs.wallet.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -200,7 +200,7 @@
                             <div class="others-name alignmentroll"><a>{{localize 'ATTRIBS.ALIGNMENTS'}}</a></div>
                             <div class="others-score">
                                 <div class="main-score">
-                                    <input name="data.attribs.alignment.value" title="{{localize 'ATTRIBS.ALIGNMENTL'}}" type="text" value="{{data.attribs.alignment.value}}" data-dtype="Number"/>
+                                    <input name="data.attribs.alignment.value" title="{{localize 'ATTRIBS.ALIGNMENTL'}}" type="number" value="{{data.attribs.alignment.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -210,7 +210,7 @@
                             <div class="others-name">{{localize 'ATTRIBS.DRPS'}}</div>
                             <div class="others-score">
                                 <div class="main-score">
-                                    <input name="data.attribs.drp.value" title="{{localize 'ATTRIBS.DRPL'}}" type="text" value="{{data.attribs.drp.value}}" data-dtype="Number"/>
+                                    <input name="data.attribs.drp.value" title="{{localize 'ATTRIBS.DRPL'}}" type="number" value="{{data.attribs.drp.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -221,7 +221,7 @@
                         <div class="exp-box">
                             <div class="exp-name">{{localize 'EXP.UNUSEDEXPS'}}</div>
                             <div class="exp-score">
-                                <input name="data.usedexp.unused" title="{{localize 'EXP.UNUSEDEXPL'}}" type="text" value="{{data.usedexp.unused}}" data-dtype="Number"/>
+                                <input name="data.usedexp.unused" title="{{localize 'EXP.UNUSEDEXPL'}}" type="number" value="{{data.usedexp.unused}}" data-dtype="Number"/>
                             </div>
                         </div>
                     </div>
@@ -229,7 +229,7 @@
                         <div class="exp-box">
                             <div class="exp-name">{{localize 'EXP.EXPGAINS'}}</div>
                             <div class="exp-score">
-                                <input name="data.exp.expgain.value" title="{{localize 'EXP.EXPGAINL'}}" type="text" value="{{data.exp.expgain.value}}" data-dtype="Number"/>
+                                <input name="data.exp.expgain.value" title="{{localize 'EXP.EXPGAINL'}}" type="number" value="{{data.exp.expgain.value}}" data-dtype="Number"/>
                             </div>
                         </div>
                     </div>
@@ -237,7 +237,7 @@
                         <div class="exp-box">
                             <div class="exp-name">{{localize 'EXP.UPKEEPS'}}</div>
                             <div class="exp-score">
-                                <input name="data.exp.upkeep.value" title="{{localize 'EXP.UPKEEPS'}}" type="text" value="{{data.exp.upkeep.value}}" data-dtype="Number"/>
+                                <input name="data.exp.upkeep.value" title="{{localize 'EXP.UPKEEPS'}}" type="number" value="{{data.exp.upkeep.value}}" data-dtype="Number"/>
                             </div>
                         </div>
                     </div>
@@ -245,7 +245,7 @@
                         <div class="exp-box">
                             <div class="exp-name">{{localize 'EXP.MYTHOSS'}}</div>
                             <div class="exp-score">
-                                <input name="data.exp.mythos.value" title="{{localize 'EXP.MYTHOSL'}}" type="text" value="{{data.exp.mythos.value}}" data-dtype="Number"/>
+                                <input name="data.exp.mythos.value" title="{{localize 'EXP.MYTHOSL'}}" type="number" value="{{data.exp.mythos.value}}" data-dtype="Number"/>
                             </div>
                         </div>
                     </div>
@@ -253,7 +253,7 @@
                         <div class="exp-box">
                             <div class="exp-name">{{localize 'EXP.SANS'}}</div>
                             <div class="exp-score">
-                                <input name="data.exp.san.value" title="{{localize 'EXP.SANL'}}" type="text" value="{{data.exp.san.value}}" data-dtype="Number"/>
+                                <input name="data.exp.san.value" title="{{localize 'EXP.SANL'}}" type="number" value="{{data.exp.san.value}}" data-dtype="Number"/>
                             </div>
                         </div>
                     </div>
