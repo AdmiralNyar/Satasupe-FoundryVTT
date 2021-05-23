@@ -243,7 +243,7 @@
     </div>
     <div class="placement-zone">
         <div class="normal-place">
-            <label>{{localize 'SATASUPE.NORMALEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentcapacity.normal}} ]</label>
+            <label>{{localize 'SATASUPE.NORMALEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentplace.normal}}/{{data.equipmentcapacity.normal}}]</label>
             <div class="normal-placement drparea" data-placetype="normal" data-capacity="{{data.equipmentcapacity.normal}}" data-nowcontain="{{data.equipmentplace.normal}}">
                 {{#each actor.gear as |item id|}}
                     {{#uniqueif item.data.storage "==" "normal"}}
@@ -255,7 +255,7 @@
             </div>
         </div>
         <div class="haven-place">
-            <label>{{localize 'SATASUPE.HAVENEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentcapacity.haven}}, {{localize 'SATASUPE.COMFORT'}} : {{data.equipmentcapacity.comfort}}, {{localize 'SATASUPE.Security'}} : {{data.equipmentattribs.security}}]</label>
+            <label>{{localize 'SATASUPE.HAVENEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentplace.haven}}/{{data.equipmentcapacity.haven}}, {{localize 'SATASUPE.COMFORT'}} : {{data.equipmentcapacity.comfort}}, {{localize 'SATASUPE.Security'}} : {{data.equipmentattribs.security}}]</label>
             <label class="add-haven">  {{localize 'SATASUPE.ADDHAVEN'}} : <input class="checkbox second-haven-check" type="checkbox" name="data.status.secondhaven.value" {{checked data.status.secondhaven.value}}/></label>
             <div class="haven-placement drparea" data-placetype="haven" data-capacity="{{data.equipmentcapacity.haven}}" data-nowcontain="{{data.equipmentplace.haven}}">
                 {{#each actor.gear as |item id|}}
@@ -269,7 +269,7 @@
         </div>
         {{#if data.status.secondhaven.value}}
             <div class="haven2-place">
-                <label>{{localize 'SATASUPE.HAVEN2EQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentcapacity.haven2}}, {{localize 'SATASUPE.COMFORT'}} : {{data.equipmentcapacity.comfort2}}, {{localize 'SATASUPE.Security'}} : {{data.equipmentattribs.security2}}]</label>
+                <label>{{localize 'SATASUPE.HAVEN2EQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentplace.haven2}}/{{data.equipmentcapacity.haven2}}, {{localize 'SATASUPE.COMFORT'}} : {{data.equipmentcapacity.comfort2}}, {{localize 'SATASUPE.Security'}} : {{data.equipmentattribs.security2}}]</label>
                 <select class="second-haven-place" name="data.infos.haven2" data-dtype="String" value="{{data.infos.haven2}}" data-nowcontain="{{data.equipmentplace.haven2}}">
                     <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
                 {{#select data.infos.haven2}}
@@ -294,7 +294,7 @@
         {{/if}}
         {{#if data.equipmentattribs.vehiclehave}}
             <div class="vehicle-place">
-                <label>{{localize 'SATASUPE.VEHICLEEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentcapacity.vehicle}} ]</label>
+                <label>{{localize 'SATASUPE.VEHICLEEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentplace.vehicle}}/{{data.equipmentcapacity.vehicle}} ]</label>
                 <div class="vehicle-placement drparea" data-placetype="vehicle" data-habitable="{{data.equipmentattribs.habitable}}" data-capacity="{{data.equipmentcapacity.vehicle}}" data-nowcontain="{{data.equipmentplace.vehicle}}">
                     {{#each actor.gear as |item id|}}
                         {{#uniqueif item.data.storage "==" "vehicle"}}
@@ -309,7 +309,7 @@
         {{#each data.addcapacity as |addcapacity name|}}
             {{#uniqueif addcapacity.capacity "!=" "0"}}
                 <div class="addcapacity-place">
-                    <label>{{name}}({{localize 'SATASUPE.ADDCAPACITY'}}) [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{addcapacity.capacity}} ]</label>
+                    <label>{{name}}({{localize 'SATASUPE.ADDCAPACITY'}}) [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{addcapacity.equipmentplace}}/{{addcapacity.capacity}} ]</label>
                     <div class="add-placement drparea" data-placetype="{{name}}" data-storageplace="{{addcapacity.storage}}" data-capacity="{{addcapacity.capacity}}" data-nowcontain="{{addcapacity.equipmentplace}}">
                         {{#each ../actor.gear as |item id|}}
                             {{#uniqueif name "==" item.data.storage}}
@@ -323,7 +323,7 @@
             {{/uniqueif}}
         {{/each}}
         <div class="ground-place">
-            <label>{{localize 'SATASUPE.GROUNDEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentcapacity.other}} ]</label>
+            <label>{{localize 'SATASUPE.GROUNDEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentplace.other}}/{{data.equipmentcapacity.other}} ]</label>
             <button class="empty-ground" type="button" style="width:fit-content; width:-moz-fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">{{localize 'SATASUPE.EMPTY'}}</button>
             <button class="all-drop-ground" type="button" style="margin-left:5px; width:fit-content; width:-moz-fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">{{localize 'SATASUPE.ALLDROP'}}</button>
             <div class="ground-placement drparea" data-placetype="" data-capacity="{{data.equipmentcapacity.other}}" data-nowcontain="{{data.equipmentplace.other}}">

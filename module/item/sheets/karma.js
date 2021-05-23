@@ -40,7 +40,6 @@ export class SatasupeKarmaSheet extends ItemSheet {
                 data._alignment = value;
              }
         }
-        console.log(data);
         /*
         data.dtypes = ["String", "Number", "Boolean"];
 

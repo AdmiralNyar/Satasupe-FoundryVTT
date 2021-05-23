@@ -58,6 +58,7 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
           const index = parseInt(ev.currentTarget.closest('.chatpalette-section').dataset.index)
           this._sendMessage(ev, index);
         });
+      html.find('a.infomation').on("click", this._titleinfomation.bind(this));
       html.find('.add-new-chat').click( () => {this.item.createChatSection();});
       html.find('.delete-chatpalette-section').click( ev => {
         const index = parseInt(ev.currentTarget.closest('.chatpalette-section').dataset.index);
@@ -66,6 +67,74 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
     }
   
     /* -------------------------------------------- */
+
+    _titleinfomation(event){
+        event.preventDefault();
+        var request = new XMLHttpRequest();
+        var server = game.settings.get("satasupe", "BCDice");
+        var url = server + "/game_system/Satasupe";
+        request.open("GET",url,true);
+        request.responseType = 'json';
+        request.onload = function(){
+          if(request.status == 200){
+            console.log(request.status);
+            var data = this.response;
+            var text = data.help_message.replace(/\r?\n/g,"<br>");
+            const dlg = new Dialog({
+              title: game.i18n.localize("SATASUPE.CommandList"),
+              content: text,
+              buttons:{
+                ok: {
+                  icon: '<i class="fas fa-check"></i>',
+                  label: game.i18n.localize("SATASUPE.Close"),
+                }
+              },
+              default: "ok",
+              close: () => {return console.log("Command list Dialog closed");},
+            },{
+            template: "systems/satasupe/templates/apps/dialog.html",
+            classes: ["dialog"],
+            width: 600,
+            jQuery: true});
+            dlg.render(true);
+            return;
+          }
+        };
+        request.send();
+        request.onerror=function(){
+          console.log("Server 1 connect error");
+          var request2 = new XMLHttpRequest();
+          var server2 = game.settings.get("satasupe", "BCDice2");
+          var url2 = server2 + "/game_system/Satasupe";
+          request2.open("GET",url2,true);
+          request2.responseType = 'json';
+          request2.onload = function(){
+            if(request2.status == 200){
+              var data2 = this.response;
+              var text2 = data2.help_message.replace(/\r?\n/g,"<br>");
+              const dlg2 = new Dialog({
+                title: game.i18n.localize("SATASUPE.CommandList"),
+                content: text2,
+                buttons:{
+                  ok: {
+                    icon: '<i class="fas fa-check"></i>',
+                    label: game.i18n.localize("SATASUPE.Close"),
+                  }
+                },
+                default: "ok",
+                close: () => {return console.log("Command list Dialog closed");},
+              },{
+              template: "systems/satasupe/templates/apps/dialog.html",
+              classes: ["dialog"],
+              width: 600,
+              jQuery: true});
+              dlg2.render(true);
+              return;
+            }
+          };
+          request2.send();
+        }
+      }
 
     _sendMessage(event,index){
         event.preventDefault();
@@ -162,7 +231,7 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
                     }
                 }
                 var text_line = data.text.replace(/\r?\n/g,"<br>");
-                var contenthtml = "<div><div>" + "<br>"+ text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
+                var contenthtml = "<div><div style=\"word-break : break-all;\">" + "<br>"+ text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
                 ChatMessage.create({user:game.user._id,speaker:ChatMessage.getSpeaker(),content:contenthtml,flavor:message},{});
             }
         };
@@ -243,7 +312,7 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
                     }
                 }
                 var text_line2 = data2.text.replace(/\r?\n/g,"<br>");
-                var contenthtml = "<div><div>" + "<br>"+ text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
+                var contenthtml = "<div><div style=\"word-break : break-all;\">" + "<br>"+ text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
                 ChatMessage.create({user:game.user._id,speaker:ChatMessage.getSpeaker(),content:contenthtml,flavor:message},{});
             }
         };
