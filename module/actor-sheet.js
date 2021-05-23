@@ -766,7 +766,6 @@ export class SatasupeActorSheet extends ActorSheet {
         return sortNum;
       }
     });
-    console.log($(button).closest('table').find('.main-body'));
     $(button).closest('table').find('.main-body').append(arr);
   }
 
