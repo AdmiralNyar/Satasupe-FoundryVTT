@@ -222,45 +222,47 @@ export class SatasupeActorSheet extends ActorSheet {
         if((Number(data.items[i].data.props.addcapacity) && data.items[i].data.typep) || (Number(data.items[i].data.gadjet.addcapacity) && data.items[i].data.typep)){
           data.data.equipmentcapacity.add += Number(data.items[i].data.props.addcapacity) + Number(data.items[i].data.gadjet.addcapacity);
         }
-        if(data.items[i].data.storage == 'normal') {
-          if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
-            data.data.equipmentplace.normal += (data.items[i].data.props.minivalue / 10);
-          }else{
-            data.data.equipmentplace.normal +=1;
+        if(!data.items[i].data.count){
+          if(data.items[i].data.storage == 'normal') {
+            if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
+              data.data.equipmentplace.normal += (data.items[i].data.props.minivalue / 10);
+            }else{
+              data.data.equipmentplace.normal +=1;
+            }
           }
-        }
-        if(data.items[i].data.storage == 'haven') {
-          if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
-            data.data.equipmentplace.haven += (data.items[i].data.props.minivalue / 10);
-          }else{
-            data.data.equipmentplace.haven +=1;
+          if(data.items[i].data.storage == 'haven') {
+            if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
+              data.data.equipmentplace.haven += (data.items[i].data.props.minivalue / 10);
+            }else{
+              data.data.equipmentplace.haven +=1;
+            }
+            if(data.items[i].data.typep && data.items[i].data.props.specialtext.furniture.value && (Number(data.items[i].data.props.specialtext.furniture.number) <= Number(data.data.circumstance.life.value))){
+              data.data.equipmentplace.haven -=1;
+            }
           }
-          if(data.items[i].data.typep && data.items[i].data.props.specialtext.furniture.value && (Number(data.items[i].data.props.specialtext.furniture.number) <= Number(data.data.circumstance.life.value))){
-            data.data.equipmentplace.haven -=1;
+          if(data.items[i].data.storage == 'haven2') {
+            if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
+              data.data.equipmentplace.haven2 += (data.items[i].data.props.minivalue / 10);
+            }else{
+              data.data.equipmentplace.haven2 +=1;
+            }
+            if(data.items[i].data.typep && data.items[i].data.props.specialtext.furniture.value && (Number(data.items[i].data.props.specialtext.furniture.number) <= Number(data.data.circumstance.life.value))){
+              data.data.equipmentplace.haven2 -=1;
+            }
           }
-        }
-        if(data.items[i].data.storage == 'haven2') {
-          if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
-            data.data.equipmentplace.haven2 += (data.items[i].data.props.minivalue / 10);
-          }else{
-            data.data.equipmentplace.haven2 +=1;
+          if(data.items[i].data.storage == 'vehicle') {
+            if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
+              data.data.equipmentplace.vehicle += (data.items[i].data.props.minivalue / 10);
+            }else{
+              data.data.equipmentplace.vehicle +=1;
+            }
           }
-          if(data.items[i].data.typep && data.items[i].data.props.specialtext.furniture.value && (Number(data.items[i].data.props.specialtext.furniture.number) <= Number(data.data.circumstance.life.value))){
-            data.data.equipmentplace.haven2 -=1;
-          }
-        }
-        if(data.items[i].data.storage == 'vehicle') {
-          if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
-            data.data.equipmentplace.vehicle += (data.items[i].data.props.minivalue / 10);
-          }else{
-            data.data.equipmentplace.vehicle +=1;
-          }
-        }
-        if(!data.items[i].data.storage) {
-          if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
-            data.data.equipmentplace.other += (data.items[i].data.props.minivalue / 10);
-          }else{
-            data.data.equipmentplace.other +=1;
+          if(!data.items[i].data.storage) {
+            if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
+              data.data.equipmentplace.other += (data.items[i].data.props.minivalue / 10);
+            }else{
+              data.data.equipmentplace.other +=1;
+            }
           }
         }
 
@@ -297,21 +299,25 @@ export class SatasupeActorSheet extends ActorSheet {
         if(data.items[i].data.typew && data.items[i].data.weapon.specialtext.upkeepcost.value) data.data.equipmentattribs.upkeep += Number(data.items[i].data.weapon.specialtext.upkeepcost.number);
       }
     }
+    /*
     data.data.equipmentplace.normal = Math.ceil(data.data.equipmentplace.normal);
     data.data.equipmentplace.vehicle = Math.ceil(data.data.equipmentplace.vehicle);
     data.data.equipmentplace.haven = Math.ceil(data.data.equipmentplace.haven);
     data.data.equipmentplace.haven2 = Math.ceil(data.data.equipmentplace.haven2);
     data.data.equipmentplace.other = Math.ceil(data.data.equipmentplace.other);
+    */
 
     for(let i = 0; i < data.items.length ; i++){
       if(data.items[i].type == 'item'){
         for(let [key, value] of Object.entries(data.data.addcapacity)){
           if(value.capacity !==0){
             if(data.items[i].data.storage == key) {
-              if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
-                data.data.addcapacity[key]['equipmentplace'] += (data.items[i].data.props.minivalue / 10);
-              }else{
-                data.data.addcapacity[key]['equipmentplace'] +=1;
+              if(!data.items[i].data.count){
+                if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
+                  data.data.addcapacity[key]['equipmentplace'] += (data.items[i].data.props.minivalue / 10);
+                }else{
+                  data.data.addcapacity[key]['equipmentplace'] +=1;
+                }
               }
             }
           }
@@ -319,11 +325,11 @@ export class SatasupeActorSheet extends ActorSheet {
       }
     }
 
-    for(let [key, value] of Object.entries(data.data.addcapacity)){
+    /*for(let [key, value] of Object.entries(data.data.addcapacity)){
       if(value.capacity !==0){
         data.data.addcapacity[key]['equipmentplace'] = Math.ceil(data.data.addcapacity[key]['equipmentplace']);
       }
-    }
+    }*/
 
     data.data.equipmentcapacity.other = 99;
     if(data.data.equipmentplace.haven > Number(data.data.circumstance.life.value)){
@@ -451,6 +457,8 @@ export class SatasupeActorSheet extends ActorSheet {
     html.find('.favorite-button').click( ev => {this.createFavorite(ev);});
 
     html.find('.alignmentroll').on("click", this._createAlignment.bind(this));
+    html.find('.ageroll').on("click", this._createAge.bind(this));
+    html.find('.sexroll').on("click", this._createSex.bind(this));
 
     html.find('.add-new-variable').click( () => {this.actor.createVariableSection();});
     html.find('.delete-vatiable-section').click( ev => {
@@ -480,8 +488,10 @@ export class SatasupeActorSheet extends ActorSheet {
     html.find(".sort-table-down").on("click", this._onTableSort.bind(this));
     html.find(".sort-table-before").on("click", this._onTableSort.bind(this));
 
+    /*
     html.find(".show-detail").on("click", this._onItemSummary.bind(this));
     html.find(".close-detail").on("click", this._offItemSummary.bind(this));
+    */
     html.find(".hobby-button").click( this._onButtonToggle.bind(this));
 
     // Delete Inventory Item
@@ -552,9 +562,21 @@ export class SatasupeActorSheet extends ActorSheet {
     var id = JSON.parse(event.originalEvent.dataTransfer.getData('text/plain'));
     let dataset = event.currentTarget.dataset;
     let item = this.actor.data.items;
+    let value = 0;
     for(let i = 0 ; i < item.length ; i++){
       if(item[i]._id === id.key){
-        if(Number(dataset.nowcontain) < Number(dataset.capacity)){
+        if(!item[i].data.count){
+          if(item[i].data.typep){
+            if(item[i].data.props.minivalue > 0){
+              value = item[i].data.props.minivalue / 10;
+            }else{
+              value = 1;
+            }
+          }else{
+            value = 1;
+          }
+        }
+        if((Number(dataset.nowcontain) + value) < Number(dataset.capacity)){
           if((dataset.placetype == 'vehicle') && (item[i].data.typev||(item[i].data.typep&&(item[i].data.props.special.normalstorage.value||item[i].data.props.special.room.value&&(dataset.habitable == 'false'))))){
           }else{
             if((dataset.placetype == 'normal')&&(item[i].data.typep&&item[i].data.props.special.room.value)){}else{
@@ -607,11 +629,24 @@ export class SatasupeActorSheet extends ActorSheet {
         console.log(request.status);
         var data = this.response;
         var text = data.help_message.replace(/\r?\n/g,"<br>");
-        return Dialog.prompt({
+        const dlg = new Dialog({
           title: game.i18n.localize("SATASUPE.CommandList"),
-          content:text,
-          callback: () => console.log("Command list Dialog closed")
-        });
+          content: text,
+          buttons:{
+            ok: {
+              icon: '<i class="fas fa-check"></i>',
+              label: game.i18n.localize("SATASUPE.Close"),
+            }
+          },
+          default: "ok",
+          close: () => {return console.log("Command list Dialog closed");},
+        },{
+        template: "systems/satasupe/templates/apps/dialog.html",
+        classes: ["dialog"],
+        width: 600,
+        jQuery: true});
+        dlg.render(true);
+        return;
       }
     };
     request.send();
@@ -626,11 +661,24 @@ export class SatasupeActorSheet extends ActorSheet {
         if(request2.status == 200){
           var data2 = this.response;
           var text2 = data2.help_message.replace(/\r?\n/g,"<br>");
-          return Dialog.prompt({
-            title:"COMMAND LIST",
-            content:text2,
-            callback: () => console.log("Command list Dialog closed")
-          });
+          const dlg2 = new Dialog({
+            title: game.i18n.localize("SATASUPE.CommandList"),
+            content: text2,
+            buttons:{
+              ok: {
+                icon: '<i class="fas fa-check"></i>',
+                label: game.i18n.localize("SATASUPE.Close"),
+              }
+            },
+            default: "ok",
+            close: () => {return console.log("Command list Dialog closed");},
+          },{
+          template: "systems/satasupe/templates/apps/dialog.html",
+          classes: ["dialog"],
+          width: 600,
+          jQuery: true});
+          dlg2.render(true);
+          return;
         }
       };
       request2.send();
@@ -671,19 +719,22 @@ export class SatasupeActorSheet extends ActorSheet {
     let button = $(event.currentTarget);
     let sortItem = button.parent().attr('id');
     let sortFlag = button.parent().attr('sort-type');
-    $(button).hide();
+    $(button).parent().parent().find('.sort-table-before').css('display', "");
+    $(button).parent().parent().find('.sort-table-up').css('display', "none");
+    $(button).parent().parent().find('.sort-table-down').css('display', "none");
     if(sortFlag == "desc"){
+      $(button).prev().prev().hide();
+      $(button).hide();
       $(button).prev().show();
     }else if(sortFlag == "asc"){
+      $(button).prev().hide();
+      $(button).hide();
       $(button).next().show();
     }else{
-      $(button).parent().parent().find('.sort-table-before').css('display', "");
-      $(button).parent().parent().find('.sort-table-up').css('display', "none");
-      $(button).parent().parent().find('.sort-table-down').css('display', "none");
       $(button).hide();
       $(button).next().show();
     }
-    $('th').removeAttr('sort-type');
+    $(button).parent().parent().children('th').removeAttr('sort-type');
     if(sortFlag == "asc"){
       sortFlag = "desc";
       button.parent().attr('sort-type', "desc");
@@ -691,11 +742,11 @@ export class SatasupeActorSheet extends ActorSheet {
       sortFlag = "asc";
       button.parent().attr('sort-type', "asc");
     }
-    this._sortTable(sortItem, sortFlag);  
+    this._sortTable(sortItem, sortFlag, button);  
   }
 
-  _sortTable(sortItem, sortFlag){
-    let arr = $('table tbody .karma-row').sort(function(a, b){
+  _sortTable(sortItem, sortFlag, button){
+    let arr = $(button).parent().parent().parent().next('tbody').children('.karma-row').sort(function(a, b){
       if($.isNumeric($(a).find('.karma-list').find('td').eq(sortItem).text())){
         let aNum = Number($(a).find('.karma-list').find('td').eq(sortItem).text());
         let bNum = Number($(b).find('.karma-list').find('td').eq(sortItem).text());
@@ -715,7 +766,7 @@ export class SatasupeActorSheet extends ActorSheet {
         return sortNum;
       }
     });
-    $('.karma-table .main-body').append(arr);
+    $(button).closest('table').find('.main-body').append(arr);
   }
 
   _tableshowblind(event){
@@ -831,6 +882,78 @@ export class SatasupeActorSheet extends ActorSheet {
     $(button).prev().show();
   }
 
+  async _createSex(event){
+    event.preventDefault();
+    const actor = duplicate(this.object.data);
+    const roll = new Roll('1d2');
+    roll.roll();
+    let sex = null;
+    if(roll._total == 1){
+      sex = game.i18n.localize("SATASUPE.Male");
+    }else{
+      sex = game.i18n.localize("SATASUPE.Female");
+    }
+    const user = this.object.user ? this.object.user : game.user;
+    actor.data.infos.sex = sex;
+    if( game.modules.get('dice-so-nice')?.active){
+      await game.dice3d.showForRoll(roll,user);
+    }
+    let text = `<br>=>` + game.i18n.format('SATASUPE.SexRollresult',{sex: sex});
+    let chatData = {
+      content : await roll.render(),
+      user: user._id,
+      speaker: ChatMessage.getSpeaker({actor : this.object}),
+      flavor: game.i18n.localize("SATASUPE.SexRolltitle") + text,
+    };
+    ChatMessage.create(chatData);
+    const updated = {_id:actor.id, data:actor.data};
+    await this.object.update({'data.infos': actor.data.infos});
+  }
+
+  async _createAge(event){
+    event.preventDefault();
+    const actor = duplicate(this.object.data);
+    const roll1 = new Roll('1d6');
+    roll1.roll();
+    let age = 0;
+    let roll2 = null;
+    if(roll1._total == 1){
+      roll2 = new Roll('2d6+6');
+      roll2.roll();
+    }else if(roll1._total == 2){
+      roll2 = new Roll('2d6+10');
+      roll2.roll();
+    }else if(roll1._total == 3){
+      roll2 = new Roll('3d6+15');
+      roll2.roll();
+    }else if(roll1._total == 4){
+      roll2 = new Roll('4d6+25');
+      roll2.roll();
+    }else if(roll1._total == 5){
+      roll2 = new Roll('5d6+40');
+      roll2.roll();
+    }else if(roll1._total == 6){
+      roll2 = new Roll('6d6+60');
+      roll2.roll();
+    }
+    const user = this.object.user ? this.object.user : game.user;
+    actor.data.infos.age = roll2._total;
+    if( game.modules.get('dice-so-nice')?.active){
+      await game.dice3d.showForRoll(roll1,user);
+      game.dice3d.showForRoll(roll2,user);
+    }
+    let text = `<br>=>` + game.i18n.format('SATASUPE.AgeRollresult',{age: roll2._total});
+    let chatData = {
+      content : await roll2.render(),
+      user: user._id,
+      speaker: ChatMessage.getSpeaker({actor : this.object}),
+      flavor: game.i18n.localize("SATASUPE.AgeRolltitle") + text,
+    };
+    ChatMessage.create(chatData);
+    const updated = {_id:actor.id, data:actor.data};
+    await this.object.update({'data.infos': actor.data.infos});
+  }
+
   async _createAlignment(event){
     event.preventDefault();
     const actor = duplicate(this.object.data);
@@ -926,7 +1049,7 @@ export class SatasupeActorSheet extends ActorSheet {
         var halftext = data.text.replace(/[！-～]/g, function(s) {
           return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
         var favoriteText = halftext.replace(/.*?\):/g,"")
-        var contenthtml = "<div><div>" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
+        var contenthtml = "<div><div style=\"word-break : break-all;\">" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
         ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
         actor.data.infos.favorite = favoriteText;
         up.object.update({'data': actor.data});
@@ -986,7 +1109,7 @@ export class SatasupeActorSheet extends ActorSheet {
         var halftext = data2.text.replace(/[！-～]/g, function(s) {
           return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
         var favoriteText = halftext.replace(/.*?\):/g,"")
-        var contenthtml = "<div><div>" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
+        var contenthtml = "<div><div style=\"word-break : break-all;\">" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
         ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
         actor.data.infos.favorite = favoriteText;
         up.object.update({'data': actor.data});
@@ -1152,7 +1275,7 @@ export class SatasupeActorSheet extends ActorSheet {
               }
             }
             var text_line = data.text.replace(/\r?\n/g,"<br>");
-            var contenthtml = "<div><div>" + "<br>"+ text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
+            var contenthtml = "<div><div style=\"word-break : break-all;\">" + "<br>"+ text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
             ChatMessage.create({user:user._id,speaker:ChatMessage.getSpeaker({actor : speaker}),content:contenthtml,flavor:message},{});
           }
         };
@@ -1233,7 +1356,7 @@ export class SatasupeActorSheet extends ActorSheet {
                 }
             }
             var text_line2 = data2.text.replace(/\r?\n/g,"<br>");
-            var contenthtml = "<div><div>" + "<br>"+ text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
+            var contenthtml = "<div><div style=\"word-break : break-all;\">" + "<br>"+ text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
             ChatMessage.create({user:user._id,speaker:ChatMessage.getSpeaker({actor : speaker}),content:contenthtml,flavor:message},{});
           }
         };

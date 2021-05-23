@@ -5,6 +5,12 @@
                 <div class="header-names flexrow">
                     <h4 class="otherlangName"><input name="data.otherName" type="text" value="{{data.otherName}}" placeholder="{{localize 'SATASUPE.OtherLangName'}}"/></h4>
                     <h1 class="name"><input name="name" value="{{item.name}}" placeholder="Item Name"/></h1>
+                    <div class="header-settings">
+                        <div class="settings">
+                            <label>{{localize 'SATASUPE.CountSetting'}} :</label>
+                            <input type="checkbox" name="data.count" {{checked data.count}}/>
+                        </div>
+                    </div>
                 </div>
                 <div class="img">
                     <img class="photo" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>

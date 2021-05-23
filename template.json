@@ -525,6 +525,7 @@
       "typev":false,
       "typep":false,
       "typeg":false,
+      "count":false,
       "storage":"",
       "weapon":{
         "wtype":"",

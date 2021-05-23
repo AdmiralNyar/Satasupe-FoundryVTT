@@ -77,7 +77,6 @@ export class SatasupeInvestigationSheet extends ItemSheet {
           const index = Number(event.currentTarget.dataset.index);
           const inf = duplicate(this.object.data.data.target);
           inf[index].info = event.currentTarget.value;
-          console.log(event.currentTarget.value);
           this.object.update({"data.target": inf});
         }
         if(event.currentTarget.classList.contains('playlistselect')){
