@@ -85,6 +85,7 @@ export class SatasupeInvestigationSheet extends ItemSheet {
         }
       }
     }
+    return this.object.update(formData);
   }
 
   async _updateTargetsl(object, value, index){
