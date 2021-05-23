@@ -157,15 +157,32 @@ Hooks.once("init", async function() {
   preloadHandlebarsTemplates();
 });
 
+Hooks.on("renderActorSheet", async (app, html, data) => {
+  html.find(".show-detail").click( ev => {
+    let button = $(ev.currentTarget);
+    button.parent('.item-controls').parent().next('.item-detail').children('.item-hide').toggle();
+    $(button).hide();
+    $(button).next().show();
+  });
+  html.find(".close-detail").click( ev => {
+    let button = $(ev.currentTarget);
+    button.parent('.item-controls').parent('').next('.item-detail').children('.item-hide').toggle();
+    $(button).hide();
+    $(button).prev().show();
+  });
+});
+
 Hooks.on("renderItemSheet", async (app, html, data) => {
   if(app.object.data.type == "investigation"){
+    const itemid = app.object._id; 
     if(app.object.data.permission.default != 3) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.DefaultInvestigationPermission"));
     const maxsl = data.data.maxsl + 3;
+    console.log($(`.investigation-main#${itemid} .investigation-sl`));
     for(let i = 0; i < maxsl;i++){
       if(i==0){
-        $(`.investigation-main .investigation-sl`).append(`<div class="sl${i}list" style="vertical-align: top;display: inline-block;width: 200px;"><div class="sllist" style="display: inline-block;width:50px;vertical-align: top;">SL ${i}</div><button class="start-topic-add" type="button" style="vertical-align: top;display:inline-block;width:120px;height:fit-content;height:-moz-fit-content;margin: 0px 2px 0px 5px;line-height: 16px;">${ game.i18n.localize("SATASUPE.AddStartTopic")}</button></div>`);
+        $(`.investigation-main#${itemid} .investigation-sl`).append(`<div class="sl${i}list" style="vertical-align: top;display: inline-block;width: 200px;"><div class="sllist" style="display: inline-block;width:50px;vertical-align: top;">SL ${i}</div><button class="start-topic-add" type="button" style="vertical-align: top;display:inline-block;width:120px;height:fit-content;height:-moz-fit-content;margin: 0px 2px 0px 5px;line-height: 16px;">${ game.i18n.localize("SATASUPE.AddStartTopic")}</button></div>`);
       }else{
-        $(`.investigation-main .investigation-sl`).append(`<div class="sl${i}list" style="vertical-align: top;display: inline-block;width: 200px;"><div class="sllist" style="display: inline-block;width:50px;vertical-align: top;">SL ${i}</div></div>`);
+        $(`.investigation-main#${itemid} .investigation-sl`).append(`<div class="sl${i}list" style="vertical-align: top;display: inline-block;width: 200px;"><div class="sllist" style="display: inline-block;width:50px;vertical-align: top;">SL ${i}</div></div>`);
       }
     }
 
@@ -184,7 +201,7 @@ Hooks.on("renderItemSheet", async (app, html, data) => {
           }
         }
         if(data.data.target[k].checked) taglist += " ★";
-        $(`.investigation-main .investigation-sl .sl${place}list`).append(`<div class="target-sl" style="width:150px;display:block;white-space:normal;">TARGET : ${taglist}</div>`);
+        $(`.investigation-main#${itemid} .investigation-sl .sl${place}list`).append(`<div class="target-sl" style="width:150px;display:block;white-space:normal;">TARGET : ${taglist}</div>`);
       }
     }
 
@@ -193,16 +210,16 @@ Hooks.on("renderItemSheet", async (app, html, data) => {
         const parentindex = data.data.dendrogram[j].path[data.data.dendrogram[j].path.length - 2];
         const sl = data.data.dendrogram[j].sl;
         let tagaddzone ="";
-        var style = $(`<style>.tagindex${parentindex}::after{content: "";display: flex;position: relative;justify-content: flex-end;top: 12px;left: auto;width: 20px;height: 0px;border-top: 3px solid brown;}</style>`);
+        var style = `<style>.tagindex${parentindex}::after{content: "";display: flex;position: relative;justify-content: flex-end;top: 12px;left: auto;width: 20px;height: 0px;border-top: 3px solid brown;}</style>`;
         if(sl == 0){
           tagaddzone = SatasupeInvestigationSheet.tagzone_create(j, data, 0, -1);
-          $(`.investigation-main .investigation-property`).append(tagaddzone);
+          $(`.investigation-main#${itemid} .investigation-property`).append(tagaddzone);
         }else{
           tagaddzone = SatasupeInvestigationSheet.tagzone_create(j, data, sl, data.data.dendrogram[parentindex].sl);
-          $(`.investigation-main .investigation-property .indexnum${parentindex}`).append(tagaddzone);
-          $(`.investigation-main .investigation-property .listindex${parentindex}`).append(style);
+          $(`.investigation-main#${itemid} .investigation-property .indexnum${parentindex}`).append(tagaddzone);
+          $(`.investigation-main#${itemid} .investigation-property .listindex${parentindex}`).append(style);
           if(sl < data.data.dendrogram[parentindex].sl){
-            $(`.investigation-main .investigation-property .indexnum${parentindex}.tree`).css('padding-top','50px');
+            $(`.investigation-main#${itemid} .investigation-property .indexnum${parentindex}.tree`).css('padding-top','50px');
           }
         }
       }
@@ -211,19 +228,19 @@ Hooks.on("renderItemSheet", async (app, html, data) => {
     html.find('.target-set').click( ev => {
       app.object.update({'data.gmsetting': !data.data.gmsetting});
       if(data.data.gmsetting && game.user.isGM){
-        $(`.investigation-main`).css('display','none');
-        $(`.investigation-target`).css('display','');
+        $(`.investigation-main#${itemid}`).css('display','none');
+        $(`.investigation-target#${itemid}`).css('display','');
       }else{
-        $(`.investigation-main`).css('display','');
-        $(`.investigation-target`).css('display','none');
+        $(`.investigation-main#${itemid}`).css('display','');
+        $(`.investigation-target#${itemid}`).css('display','none');
       }
     });
     if(data.data.gmsetting && game.user.isGM){
-      $(`.investigation-main`).css('display','none');
-      $(`.investigation-target`).css('display','');
+      $(`.investigation-main#${itemid}`).css('display','none');
+      $(`.investigation-target#${itemid}`).css('display','');
     }else{
-      $(`.investigation-main`).css('display','');
-      $(`.investigation-target`).css('display','none');
+      $(`.investigation-main#${itemid}`).css('display','');
+      $(`.investigation-target#${itemid}`).css('display','none');
     }
     html.find('.add-branch').click( ev => {
       const index = parseInt(ev.currentTarget.dataset.slindex);
