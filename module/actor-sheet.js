@@ -299,13 +299,13 @@ export class SatasupeActorSheet extends ActorSheet {
         if(data.items[i].data.typew && data.items[i].data.weapon.specialtext.upkeepcost.value) data.data.equipmentattribs.upkeep += Number(data.items[i].data.weapon.specialtext.upkeepcost.number);
       }
     }
-    /*
-    data.data.equipmentplace.normal = Math.ceil(data.data.equipmentplace.normal);
-    data.data.equipmentplace.vehicle = Math.ceil(data.data.equipmentplace.vehicle);
-    data.data.equipmentplace.haven = Math.ceil(data.data.equipmentplace.haven);
-    data.data.equipmentplace.haven2 = Math.ceil(data.data.equipmentplace.haven2);
-    data.data.equipmentplace.other = Math.ceil(data.data.equipmentplace.other);
-    */
+    
+    data.data.equipmentplace.normal = Math.ceil(data.data.equipmentplace.normal*10)/10;
+    data.data.equipmentplace.vehicle = Math.ceil(data.data.equipmentplace.vehicle*10)/10;
+    data.data.equipmentplace.haven = Math.ceil(data.data.equipmentplace.haven*10)/10;
+    data.data.equipmentplace.haven2 = Math.ceil(data.data.equipmentplace.haven2*10)/10;
+    data.data.equipmentplace.other = Math.ceil(data.data.equipmentplace.other*10)/10;
+    
 
     for(let i = 0; i < data.items.length ; i++){
       if(data.items[i].type == 'item'){
