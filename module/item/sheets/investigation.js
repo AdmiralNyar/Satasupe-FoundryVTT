@@ -499,38 +499,37 @@ export class SatasupeInvestigationSheet extends ItemSheet {
     await object.update({'data.dendrogram': tag});
   }
 
-  static tagzone_create(index, data, sl,parentsl){
-    let space=18;
+  static tagzone_create(index, data, sl, parentsl, grandparentsl){
+    let space=0;
     let bord = "3px solid brown";
     if(sl == 0)bord="none";
     let tagzone = ``;
     if(data.data.dendrogram[index].edit){
       if(sl > parentsl){
-        tagzone = `<div class="sl${sl}taglistzone taglistzone listindex${index}" data-slindex="${index}" style="text-align:left;position: relative;text-indent: -200px;width:fit-content;width:-moz-fit-content;display:flex">
-        <div class="tagzone sl${sl}tagzone tagindex${index}" style="justify-content:flex-start;margin-bottom: 20px;display: flex;width:${200*(sl-parentsl)}px">
-        <div class="space" style="border-top: ${bord};width:${200*(sl-parentsl-1)+space}px;height:fit-content;height:-moz-fit-content;text-indent: 0px;padding-left:0px;display: flex;margin-top:12px"></div>
-        <select class="sl-input" style="justify-content:flex-start;text-indent: 0px;padding-left:0px;width:121px;display: inline-block" data-slindex="${index}" name="data.dendrogram[${index}].tag" data-dtype="String">
-            <option hidden value="">${ game.i18n.localize("SATASUPE.Select")}</option>`;
+          tagzone = `<div class="sl${sl}taglistzone taglistzone listindex${index}" data-slindex="${index}" style="margin-bottom:10px;height:auto;text-align:left;position: relative;text-indent: -200px;width:${150+200*(sl-parentsl)+space}px;display:flex;flex-direction:column;">
+          <div class="tagzone sl${sl}tagzone tagindex${index}" style="line-height:30px;justify-content:flex-start;display: flex;width:${150+200*(sl-parentsl)+space}px;flex-wrap:wrap">
+          <div class="space" style="border-top: ${bord};width:${150+200*(sl-parentsl-1)+space}px;height:fit-content;height:-moz-fit-content;text-indent: 0px;padding-left:0px;display: flex;margin-top:12px"></div>
+          <select class="sl-input" style="justify-content:flex-start;text-indent: 0px;padding-left:0px;width:148px;display: inline-block" data-slindex="${index}" name="data.dendrogram[${index}].tag" data-dtype="String">
+              <option hidden value="">${ game.i18n.localize("SATASUPE.Select")}</option>`;
 
-          for(let [k,v] of Object.entries(SATASUPE['hobby'])){
-            if(k == data.data.dendrogram[index].tag){
-              tagzone +=`<option value="${k}" selected>${ game.i18n.localize(v)}</option>`
-            }else{
-              tagzone +=`<option value="${k}">${ game.i18n.localize(v)}</option>`
+            for(let [k,v] of Object.entries(SATASUPE['hobby'])){
+              if(k == data.data.dendrogram[index].tag){
+                tagzone +=`<option value="${k}" selected>${ game.i18n.localize(v)}</option>`
+              }else{
+                tagzone +=`<option value="${k}">${ game.i18n.localize(v)}</option>`
+              }
             }
-          }
-          tagzone += `</select>`;
-          tagzone += `
-          <a class="item-control add-branch" style="text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.AddLink')}" data-slindex="${index}"><i class="fas fa-code-branch"></i></a>
-          <a class="item-control tag-delete" style="text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.Delete')}" data-slindex="${index}"><i class="fas fa-trash"></i></a></div>
-          <div class="indexnum${index} tree" style="display: flex;flex-direction:column"></div></div>
-          `;
-
+            tagzone += `</select>`;
+            tagzone += `
+            <a class="item-control add-branch" style="margin-left:5px;text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.AddLink')}" data-slindex="${index}"><i class="fas fa-code-branch"></i></a>
+            <a class="item-control tag-delete" style="margin-left:5px;text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.Delete')}" data-slindex="${index}"><i class="fas fa-trash"></i></a></div>
+            <div class="indexnum${index} tree" style="display: flex;flex-direction:column;position: relative;left:${200*(sl-parentsl)+space}px"></div></div>
+            `;
       }else if(sl < parentsl){
-        tagzone = `<div class="sl${sl}taglistzone taglistzone listindex${index} reverse" data-slindex="${index}" style="text-align:left;position: relative;text-indent: -200px;left:${-200*(parentsl-sl+1)}px;width:fit-content;width:-moz-fit-content;display:flex">
-        <div class="tagzone sl${sl}tagzone tagindex${index}" style="flex-direction:row-reverse;justify-content:flex-start;margin-bottom: 20px;display: flex;width:${200*(parentsl-sl+1)}px">
-        <div class="space" style="border-top: ${bord};width:${200*(parentsl-sl+1)+space}px;height:fit-content;height:-moz-fit-content;text-indent: 0px;padding-left:0px;display: flex;margin-top:12px"></div>
-        <select class="sl-input" style="justify-content:flex-start;text-indent: 0px;padding-left:0px;width:121px;display: inline-block" data-slindex="${index}" name="data.dendrogram[${index}].tag" data-dtype="String">
+        tagzone = `<div class="sl${sl}taglistzone taglistzone listindex${index} reverse" data-slindex="${index}" style="margin-bottom:10px;height:auto;text-align:left;position: relative;text-indent: -200px;left:${-200*(parentsl-sl+1)}px;width:${50+200*(parentsl-sl)+space}px;display:flex;flex-direction:column;">
+        <div class="tagzone sl${sl}tagzone tagindex${index}" style="line-height:30px;flex-direction:row-reverse;justify-content:flex-start;display: flex;width:${50+200*(parentsl-sl)}px;flex-wrap:wrap">
+        <div class="space" style="border-top: ${bord};width:${200*(parentsl-sl-1)+50+space}px;height:fit-content;height:-moz-fit-content;text-indent: 0px;padding-left:0px;display: flex;margin-top:12px"></div>
+        <select class="sl-input" style="justify-content:flex-start;text-indent: 0px;padding-left:0px;width:148px;display: inline-block" data-slindex="${index}" name="data.dendrogram[${index}].tag" data-dtype="String">
             <option hidden value="">${ game.i18n.localize("SATASUPE.Select")}</option>`;
 
           for(let [k,v] of Object.entries(SATASUPE['hobby'])){
@@ -542,18 +541,18 @@ export class SatasupeInvestigationSheet extends ItemSheet {
           }
           tagzone += `</select>`;
           tagzone += `
-          <a class="item-control add-branch" style="text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="Next" data-slindex="${index}"><i class="fas fa-code-branch"></i></a>
-          <a class="item-control tag-delete" style="text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.Delete')}" data-slindex="${index}"><i class="fas fa-trash"></i></a></div>
-          <div class="indexnum${index} tree" style="display: flex;flex-direction:column"></div></div>
+          <a class="item-control add-branch" style="margin-left:5px;text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="Next" data-slindex="${index}"><i class="fas fa-code-branch"></i></a>
+          <a class="item-control tag-delete" style="margin-left:5px;text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.Delete')}" data-slindex="${index}"><i class="fas fa-trash"></i></a></div>
+          <div class="indexnum${index} tree" style="display: flex;flex-direction:column;position: relative;left:${200*(parentsl-sl)+space}px"></div></div>
           `;
 
       }
     }else{
       if(sl > parentsl){
-        tagzone = `<div class="sl${sl}taglistzone taglistzone listindex${index}" data-slindex="${index}" style="text-align:left;position: relative;text-indent: -200px;width:fit-content;width:-moz-fit-content;display:flex">
-        <div class="tagzone sl${sl}tagzone tagindex${index}" style="justify-content:flex-start;margin-bottom: 20px;display: flex;width:${200*(sl-parentsl)}px">
-        <div class="space" style="border-top: ${bord};width:${200*(sl-parentsl-1)+space}px;height:fit-content;height:-moz-fit-content;text-indent: 0px;padding-left:0px;display: flex;margin-top:12px"></div>
-        <label style="justify-content:flex-start;text-indent: 0px;padding-left:0px;width:121px;display: flex" data-slindex="${index}" data-dtype="String">`
+        tagzone = `<div class="sl${sl}taglistzone taglistzone listindex${index}" data-slindex="${index}" style="margin-bottom:10px;height:auto;text-align:left;position: relative;text-indent: -200px;width:${150+200*(sl-parentsl)+space}px;display:flex;flex-direction:column;">
+        <div class="tagzone sl${sl}tagzone tagindex${index}" style="line-height:30px;justify-content:flex-start;display: flex;width:${150+200*(sl-parentsl)+space}px;flex-wrap:wrap">
+        <div class="space" style="border-top: ${bord};width:${150+200*(sl-parentsl-1)+space}px;height:fit-content;height:-moz-fit-content;text-indent: 0px;padding-left:0px;display: flex;margin-top:13.5px"></div>
+        <label style="justify-content:flex-start;text-indent: 0px;padding-left:0px;width:148px;display: flex" data-slindex="${index}" data-dtype="String">`
       
         for(let [k,v] of Object.entries(SATASUPE['hobby'])){
           if(k == data.data.dendrogram[index].tag){
@@ -562,16 +561,16 @@ export class SatasupeInvestigationSheet extends ItemSheet {
         }
         tagzone +=`</label>`;
         tagzone += `
-        <a class="item-control add-branch" style="text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="Next" data-slindex="${index}"><i class="fas fa-code-branch"></i></a>
-        <a class="item-control tag-delete" style="text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.Delete')}" data-slindex="${index}"><i class="fas fa-trash"></i></a></div>
-        <div class="indexnum${index} tree" style="display: flex;flex-direction:column"></div></div>
+        <a class="item-control add-branch" style="margin-left:5px;text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="Next" data-slindex="${index}"><i class="fas fa-code-branch"></i></a>
+        <a class="item-control tag-delete" style="margin-left:5px;text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.Delete')}" data-slindex="${index}"><i class="fas fa-trash"></i></a></div>
+        <div class="indexnum${index} tree" style="display: flex;flex-direction:column;position: relative;left:${200*(sl-parentsl)+space}px"></div></div>
         `;
 
       }else if(sl < parentsl){
-        tagzone = `<div class="sl${sl}taglistzone taglistzone listindex${index} reverse" data-slindex="${index}" style="text-align:left;position: relative;text-indent: -200px;left:${-200*(parentsl-sl+1)}px;width:fit-content;width:-moz-fit-content;display:flex">
-        <div class="tagzone sl${sl}tagzone tagindex${index}" style="flex-direction:row-reverse;justify-content:flex-start;margin-bottom: 20px;display: flex;width:${200*(parentsl-sl+1)}px">
-        <div class="space" style="border-top: ${bord};width:${200*(parentsl-sl+1)+space}px;height:fit-content;height:-moz-fit-content;text-indent: 0px;padding-left:0px;display: flex;margin-top:12px"></div>
-        <label style="justify-content:flex-start;text-indent: 0px;padding-left:0px;width:121px;display: flex" data-slindex="${index}" data-dtype="String">`
+        tagzone = `<div class="sl${sl}taglistzone taglistzone listindex${index} reverse" data-slindex="${index}" style="margin-bottom:10px;height:auto;text-align:left;position: relative;text-indent: -200px;left:${-200*(parentsl-sl+1)}px;width:${50+200*(parentsl-sl)+space}px;display:flex;flex-direction:column;">
+        <div class="tagzone sl${sl}tagzone tagindex${index}" style="line-height:30px;flex-direction:row-reverse;justify-content:flex-start;display: flex;width:${50+200*(parentsl-sl)}px;flex-wrap:wrap">
+        <div class="space" style="border-top: ${bord};width:${200*(parentsl-sl-1)+50+space}px;height:fit-content;height:-moz-fit-content;text-indent: 0px;padding-left:0px;display: flex;margin-top:13.5px"></div>
+        <label style="justify-content:flex-start;text-indent: 0px;padding-left:0px;width:148px;display: flex" data-slindex="${index}" data-dtype="String">`
       
         for(let [k,v] of Object.entries(SATASUPE['hobby'])){
           if(k == data.data.dendrogram[index].tag){
@@ -580,9 +579,9 @@ export class SatasupeInvestigationSheet extends ItemSheet {
         }
         tagzone +=`</label>`;
         tagzone += `
-        <a class="item-control add-branch" style="text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="Next" data-slindex="${index}"><i class="fas fa-code-branch"></i></a>
-        <a class="item-control tag-delete" style="text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.Delete')}" data-slindex="${index}"><i class="fas fa-trash"></i></a></div>
-        <div class="indexnum${index} tree" style="display: flex;flex-direction:column"></div></div>
+        <a class="item-control add-branch" style="margin-left:5px;text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="Next" data-slindex="${index}"><i class="fas fa-code-branch"></i></a>
+        <a class="item-control tag-delete" style="margin-left:5px;text-indent: 0px;padding-left:0px;width:20px;display: inline-block" title="${ game.i18n.localize('SATASUPE.Delete')}" data-slindex="${index}"><i class="fas fa-trash"></i></a></div>
+        <div class="indexnum${index} tree" style="display: flex;flex-direction:column;position: relative;left:${200*(parentsl-sl)+space}px"></div></div>
         `;
 
       }

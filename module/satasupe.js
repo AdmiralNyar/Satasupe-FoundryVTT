@@ -208,17 +208,37 @@ Hooks.on("renderItemSheet", async (app, html, data) => {
       if(Object.keys(data.data.dendrogram[j]).length){
         const parentindex = data.data.dendrogram[j].path[data.data.dendrogram[j].path.length - 2];
         const sl = data.data.dendrogram[j].sl;
+        let parentsl = -1;
+        const grandparentindex = data.data.dendrogram[j].path[data.data.dendrogram[j].path.length - 3];
+        let grandparentsl = -1;
+        if(sl != 0){
+          parentsl = data.data.dendrogram[parentindex].sl;
+        }
+        if(data.data.dendrogram[grandparentindex]){
+          grandparentsl = data.data.dendrogram[grandparentindex].sl;
+        }
         let tagaddzone ="";
-        var style = `<style>.tagindex${parentindex}::after{content: "";display: flex;position: relative;justify-content: flex-end;top: 12px;left: auto;width: 20px;height: 0px;border-top: 3px solid brown;}</style>`;
+        var style = ``;
+        if(parentsl > grandparentsl){
+          style = `<style>.tagindex${parentindex}::after{content: "";display: flex;position: relative;justify-content: flex-end;top:13px;left: 0px;width: 0px;height: 20px;border-left: 3px solid brown;margin-left:${200*(Math.abs(parentsl-grandparentsl))}px;}</style>`;
+        }else if(parentsl < grandparentsl){
+          style = `<style>.tagindex${parentindex}::after{content: "";display: flex;position: relative;justify-content: flex-end;top:13px;left: 0px;width: 0px;height: 20px;border-left: 3px solid brown;margin-right:${200*(grandparentsl-parentsl)}px;}</style>`;
+        }
         if(sl == 0){
-          tagaddzone = SatasupeInvestigationSheet.tagzone_create(j, data, 0, -1);
+          tagaddzone = SatasupeInvestigationSheet.tagzone_create(j, data, 0, -1, -1);
           $(`.investigation-main#${itemid} .investigation-property`).append(tagaddzone);
         }else{
-          tagaddzone = SatasupeInvestigationSheet.tagzone_create(j, data, sl, data.data.dendrogram[parentindex].sl);
+          tagaddzone = SatasupeInvestigationSheet.tagzone_create(j, data, sl, parentsl, grandparentsl);
           $(`.investigation-main#${itemid} .investigation-property .indexnum${parentindex}`).append(tagaddzone);
           $(`.investigation-main#${itemid} .investigation-property .listindex${parentindex}`).append(style);
-          if(sl < data.data.dendrogram[parentindex].sl){
-            $(`.investigation-main#${itemid} .investigation-property .indexnum${parentindex}.tree`).css('padding-top','50px');
+          if(sl > parentsl){
+            if(parentsl < grandparentsl){
+              $(`.investigation-main#${itemid} .investigation-property .indexnum${parentindex}.tree`).css('left','50px');
+            }
+          }else if(sl < parentsl){
+            if(parentsl > grandparentsl){
+              $(`.investigation-main#${itemid} .investigation-property .taglistzone.listindex${j}`).css('left',`${-50-200*(parentsl-sl)}px`);
+            }
           }
         }
       }

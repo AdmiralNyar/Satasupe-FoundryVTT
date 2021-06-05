@@ -139,9 +139,9 @@ div.container nav.tabs a,
   display: flex;
   position: absolute;  
   top: 12px;
-  left: -4px;
+  left: 0px;
   width: 0px;
-  height: calc(100% + 3px);
+  height: calc(100% + 15px);
   border-left: 3px solid brown;
 }
 
@@ -159,8 +159,8 @@ div.container nav.tabs a,
   content: "";
   display: flex;
   position: absolute;  
-  top: -36px;
-  right: -3px;
+  top: 12px;
+  right: 0px;
   width: 0px;
   height: calc(100% + 10px);
   border-right: 3px solid brown;
@@ -177,15 +177,15 @@ div.container nav.tabs a,
   border-left: none;
 }
 
-.investigation-main .investigation-property .taglistzone.reverse:first-child:after{
+.investigation-main .investigation-property .taglistzone.reverse:last-child:after{
   content: "";
   display: flex;
   position: absolute;  
   top: -38px;
-  right: -3px;
+  right: 0px;
   width: 0px;
-  height: calc(100% + 4px);
-  border-right: 3px solid brown;
+  height: 0px;
+  border-right: none;
 }
 
 .investigation-main .investigation-property .sl0taglistzone .sl0tagzone::before{
