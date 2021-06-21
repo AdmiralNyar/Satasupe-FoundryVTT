@@ -8,7 +8,7 @@ export class TagDialog {
             content:html,
             buttons:{
               send:{
-                label: "Send",
+                label: game.i18n.localize("SATASUPE.CreateTag"),
                 callback: html => {
                   formData = new FormData(html[0].querySelector('#tag-add-form'));
                   return resolve(formData);

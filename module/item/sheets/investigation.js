@@ -29,6 +29,8 @@ export class SatasupeInvestigationSheet extends ItemSheet {
     /** @override */
   getData() {
     const data = super.getData();
+    const itemData = data.data;
+    data.data = itemData.data;
     data.data.maxsl = 0;
 
     data.data.target.forEach(function(tar, ind){
@@ -313,7 +315,7 @@ export class SatasupeInvestigationSheet extends ItemSheet {
     const usage = await TagDialog._createBranchdialog();
     let sl = Number(usage.get('sl'));
     var tagzone = [];
-    if(usage && (sl != object.data.data.dendrogram[index].sl)){
+    if(usage && (sl != object.data.data.dendrogram[index].sl) && sl){
       const user = game.user;
       const dat = duplicate(object.data.data);
       const tag = dat.dendrogram;
