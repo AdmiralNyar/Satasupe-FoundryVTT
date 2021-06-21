@@ -1,4 +1,14 @@
-<form class="flexcol {{cssClass}}" autocomplete="off">
+<form class="chatpalette flexcol {{cssClass}}" autocomplete="off">
+    <div class="bcdicesystem">
+        <select name="data.selecttable.value" data-dtype="String" value="{{data.selecttable.value}}" class="bcdicetable">
+            {{#select data.selecttable.value}}
+                {{#each data.bcdicelist as |list key|}}
+                    <option value="{{list.id}}">{{list.name}}</option>
+                {{/each}}
+            {{/select}}
+        </select>
+        <a class="button item-control infomation" title="{{localize 'SATASUPE.BCDiceBotInfo'}}" data-type="chatpalette"><i class="fas fa-info-circle" style="font-size: 1.1rem;"></i></a>
+    </div>
     <div>
         <table id="chatpalette-table" class="chatpalette-table">
             <thead>
@@ -6,7 +16,7 @@
                     <th class="dice-folmula-text" title="{{localize 'SATASUPE.DicebotCommandExplanation'}}">{{localize 'SATASUPE.DiceFolmula'}}</th>
                     <th class="other-message">{{localize 'SATASUPE.DiceMessage'}}</th>
                     <th class="add-new-chat"><a class="button" title="{{localize 'SATASUPE.AddChatpalette'}}"><i class="fas fa-plus"></i></a></th>
-                    <th class="space" style="width:30px"><a class="button item-control infomation" title="{{localize 'SATASUPE.BCDiceBotInfo'}}" data-type="chatpalette"><i class="fas fa-info-circle"></i></a></th>
+                    <th class="setting" style="width:30px"><a class="button item-control table-show-hide" title="{{localize 'SATASUPE.VariableSetteings'}}" data-type="chatpalette"><i class="fas fa-cogs"></i></a></th>
                 </tr>
             </thead>
             <tbody>
@@ -29,6 +39,38 @@
                         </td>
                         <td class="item-controls" style="text-align:center">
                             <a class="delete-chatpalette-section" title="{{localize 'SATASUPE.Delete'}}"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <table id="variable-setting-table" class="variable-setting-table {{#unless data.status.allonoff.variableonoff}}hide-table{{/unless}}">
+            <thead>
+                <tr class="header">
+                    <th class="characteristics"><div>{{localize 'SATASUPE.CharacteristicName'}}</div></th>
+                    <th class="variable"><div title="{{localize 'SATASUPE.VariableExplanation'}}">{{localize 'SATASUPE.VaribleText'}}</div></th>
+                    <th class="all-on-off"><div class="on-off"><label class="checkbox all-on-off-button">{{localize 'SATASUPE.Activate'}}({{localize 'SATASUPE.AllOnOff'}}: <input type="checkbox" value="{{data.status.allonoff.value}}" name="data.status.allonoff.value" {{checked data.status.allonoff.value}}/>)</label></div></th>
+                    <th class="item-button item-controls"><a class="button item-control add-new-variable" title="Add new variable"><i class="fas fa-plus"></i></a></th>
+                </tr>
+            </thead>
+            <tbody class="variable-setting-tbody chatpalette-tbody">
+                {{#each data.chatpalette.variable as |section index|}}
+                    <tr class="item variable-section" data-index='{{index}}' draggable="false">
+                        <td>
+                            <div class="characteristics-section variable-key section-key" data-sectionkey="title">
+                                <input class="variable-title variable-section-input" type="number" name="section.title" placeholder="Input value" data-dtype="String" value="{{section.title}}"/>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text variable-key section-key" data-sectionkey="variable">
+                                <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text variable-section-input" type="text" name="section.variable" value="{{section.variable}}" data-dtype="String"/>
+                            </div>
+                        </td>
+                        <td class="item-controls">
+                            <div class="on-off section-key" data-sectionkey="substitution"><label class="checkbox"><input class="variable-section-input" type="checkbox" value="{{section.substitution}}" name="section.substitution" data-dtype="Boolean" {{checked section.substitution}}/></label></div>
+                        </td>
+                        <td  class="item-controls">
+                            <a class="item-control delete-vatiable-section" title="{{localize 'SATASUPE.Delete'}}"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
                 {{/each}}

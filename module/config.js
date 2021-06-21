@@ -23,6 +23,19 @@ SATASUPE.check = {
     mind : 'APTITUDE.MIND'
 };
 
+SATASUPE.rollbuttonType = {
+    crime : 'CIRCUMSTANCE.CRIME',
+    life  : 'CIRCUMSTANCE.LIFE',
+    love : 'CIRCUMSTANCE.LOVE',
+    culture :'CIRCUMSTANCE.CULTURE',
+    combat : 'CIRCUMSTANCE.COMBAT',
+    body : 'APTITUDE.BODY',
+    mind : 'APTITUDE.MIND',
+    arms : 'COMBAT.ARMS',
+    generic : 'SATASUPE.General',
+    alignment : 'ATTRIBS.ALIGNMENTS'
+}
+
 SATASUPE.abilityType = {
     talent : 'SATASUPE.Talent',
     compensation : 'SATASUPE.COMPENSATION',
@@ -50,9 +63,9 @@ SATASUPE.checkType = {
 };
 
 SATASUPE.alignment = {
-    calm : 'ALIGNMENT.CALM',
-    dither : 'ALIGNMENT.DITHER',
-    desire : 'ALIGNMENT.DESIRE'
+    calm : 'ALIGNMENTS.CALM',
+    dither : 'ALIGNMENTS.DITHER',
+    desire : 'ALIGNMENTS.DESIRE'
 }
 
 SATASUPE.target = {

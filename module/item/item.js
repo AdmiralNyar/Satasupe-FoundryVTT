@@ -59,16 +59,42 @@ export class SatasupeItem extends Item {
       await this.update( {'data.chatpalette.chat' : chat});
     }
 
+    async createVariableSection(){
+      const vari = this.data.data.chatpalette.variable ? duplicate(this.data.data.chatpalette.variable) : [];
+      vari.push({
+        title : null,
+        variable : null,
+        substitution: false
+      });
+      await this.update( {'data.chatpalette.variable' : vari});
+    }
+
     async deleteChatSection( index){
       const chat = duplicate(this.data.data.chatpalette.chat);
       chat.splice(index, 1);
       await this.update( {'data.chatpalette.chat' : chat});
     }
 
+    async deleteVariableSection( index){
+      const vari = duplicate(this.data.data.chatpalette.variable);
+      vari.splice(index, 1);
+      await this.update( {'data.chatpalette.variable' : vari});
+    }
+
     async updateChatSection( index, value, key){
       const chat = duplicate(this.data.data.chatpalette.chat);
       chat[index][key] = value;
       await this.update({'data.chatpalette.chat' : chat});
+    }
+
+    async updateVariableSection( index, value, key){
+      const vari = duplicate(this.data.data.chatpalette.variable);
+      if(key=='substitution'){
+        vari[index][key] = !vari[index][key];
+      }else{
+        vari[index][key] = value;
+      }
+      await this.update( {'data.chatpalette.variable' : vari});
     }
 
     async toggleSpecial(specialName, specialtextName, type){

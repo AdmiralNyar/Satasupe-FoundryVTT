@@ -1,0 +1,50 @@
+<form id="check-form">
+    <div class="number-zone">
+        <div class="check" style="padding: 4px 0;">
+            <label>{{localize 'SATASUPE.Difficulty'}} : </label>
+            <input name="difficulty" type="number" min="5" value="5"/>
+        </div>
+        <div class="check" style="padding: 4px 0;">
+            <label>{{localize 'SATASUPE.SUCCESSSTOP'}} : </label>
+            <input name="success" type="number" min="0" value="1"/>
+        </div>
+        <div class="check" style="padding: 4px 0;">
+            <label>{{localize 'SATASUPE.FUMBLEOFFSET'}} :</label>
+            <input name="fumble" type="number" min="0" max="5" value="0"/>
+        </div>
+        <div class="check" style="padding: 4px 0;">
+            <label>{{localize 'SATASUPE.ROLLNOFFSET'}} :</label>
+            <input name="roll" type="number" min="0" value="0"/>
+        </div>
+        <div class="check" style="padding: 4px 0;">
+            <label>{{localize 'SATASUPE.BOOSTMP'}} :</label>
+            <input name="boost" type="number" min="0" value="0"/>
+        </div>
+        <div class="check" style="padding: 4px 0;">
+            <label>{{localize 'SPEC.KILL'}} :</label>
+            <input name="kill" type="number" min="1" value=""/>
+        </div>
+    </div>
+    <div class="checkbox-zone">
+        <div class="checkbox" style="padding: 6px 0;">
+            <label>{{localize 'SATASUPE.NOBPWOUNDS'}} : </label>
+            <input name="bpwound" type="checkbox" value="1" {{#if nobpwound}}checked="checked"{{/if}}/>
+        </div>
+        <div class="checkbox" style="padding: 6px 0;">
+            <label>{{localize 'SATASUPE.NOMPWOUNDS'}} : </label>
+            <input name="mpwound" type="checkbox" value="1" {{#if nompwound}}checked="checked"{{/if}}/>
+        </div>
+        <div class="checkbox" style="padding: 6px 0;">
+            <label>{{localize 'SATASUPE.NOOVERWORK'}} : </label>
+            <input name="overwork" type="checkbox" value="1" {{#if nooverwork}}checked="checked"{{/if}}/>
+        </div>
+        <div class="checkbox" style="padding: 6px 0;">
+            <label>{{localize 'SATASUPE.KILLSTOP'}} : </label>
+            <input name="killstop" type="checkbox" value="1" {{#if killstop}}checked="checked"{{/if}}/>
+        </div>
+        <div class="checkbox" style="padding: 6px 0;">
+            <label>{{localize 'SATASUPE.NOMPCOST'}} : </label>
+            <input name="cost" type="checkbox" value="1" checked="checked" {{#if nompcost}}checked="checked"{{/if}}/>
+        </div>
+    </div>
+</form>

@@ -79,7 +79,7 @@
             "short": "ATTRIBS.ALIGNMENTS",
             "label": "ATTRIBS.ALIGNMENTL",
             "auto": true,
-            "variable":"ATTRIBS.ALIGNMENTL",
+            "variable":"ATTRIBS.ALIGNMENTS",
             "substitution":false
           },
           "bp":{
@@ -88,7 +88,7 @@
             "short": "ATTRIBS.BPS",
             "label": "ATTRIBS.BPL",
             "auto": true,
-            "variable":"ATTRIBS.BPL",
+            "variable":"ATTRIBS.BPS",
             "substitution":false
           },
           "mp":{
@@ -97,7 +97,7 @@
             "short": "ATTRIBS.MPS",
             "label": "ATTRIBS.MPL",
             "auto": true,
-            "variable":"ATTRIBS.MPL",
+            "variable":"ATTRIBS.MPS",
             "substitution":false
           },
           "wallet":{
@@ -106,7 +106,7 @@
             "short": "ATTRIBS.WPS",
             "label": "ATTRIBS.WPL",
             "auto": true,
-            "variable":"ATTRIBS.WPL",
+            "variable":"ATTRIBS.WPS",
             "substitution":false
           },
           "drp":{
@@ -267,6 +267,15 @@
           "secondhaven":{
             "type": "Boolean",
             "value": false
+          },
+          "reaction":{
+            "value": null
+          },
+          "size":{
+            "value": null
+          },
+          "drop":{
+            "value":null
           }
         }
       },
@@ -448,8 +457,15 @@
           "value": ""
         }
       },
-     "prisoner":{},
-     "variable":[]
+     "prisoner":[{"title":null,"keep":false,"exp":false,"lovers":false}],
+     "addiction":{
+       "addiction":[{"title":null, "use":false}]
+     },
+     "variable":{
+       "variable":[{"title": null, "variable": null, "substitution": false, "formla": "", "sum": 0}]},
+      "scenario":{
+        "scenario":[{"title":null,"dd":null,"day":null,"karma":null,"exp":null,"note":null}]
+      }
     },
     "character": {
       "templates":[
@@ -463,7 +479,8 @@
         "text",
         "bg",
         "prisoner",
-        "variable"
+        "variable",
+        "scenario"
       ],
       "infos":{
         "name": "",
@@ -481,6 +498,16 @@
         "favorite": "",
         "haven":"",
         "haven2":""
+      },
+      "selecttable":{
+        "value":""
+      },
+      "settings":{
+        "nobpwound": false,
+        "nompwound": false,
+        "nooverwork": false,
+        "killstop": false,
+        "nompcost": true
       }
     },
     "npc": {
@@ -513,6 +540,16 @@
         "favorite": "",
         "haven":"",
         "haven2":""
+      },
+      "selecttable":{
+        "value":""
+      },
+      "settings":{
+        "nobpwound": false,
+        "nompwound": false,
+        "nooverwork": false,
+        "killstop": false,
+        "nompcost": true
       }
     }
   },
@@ -884,6 +921,9 @@
       "chatpalette":{
         "chat":[
           {"text" : null, "message" : null}
+        ],
+        "variable":[
+          {"title": null, "variable": null, "substitution": false}
         ]
       },
       "description": []

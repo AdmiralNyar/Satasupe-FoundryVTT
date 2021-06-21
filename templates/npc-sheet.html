@@ -235,25 +235,25 @@
                     </div>
                     <div class="exp-boxes">
                         <div class="exp-box">
-                            <div class="exp-name">{{localize 'EXP.UPKEEPS'}}</div>
+                            <div class="exp-name">{{localize 'STATUS.REACTION'}}</div>
                             <div class="exp-score">
-                                <input name="data.exp.upkeep.value" title="{{localize 'EXP.UPKEEPS'}}" type="number" value="{{data.exp.upkeep.value}}" data-dtype="Number"/>
+                                <input name="data.status.reaction.value" title="{{localize 'STATUS.REACTION'}}" type="text" value="{{data.status.reaction.value}}" data-dtype="text"/>
                             </div>
                         </div>
                     </div>
                     <div class="exp-boxes">
                         <div class="exp-box">
-                            <div class="exp-name">{{localize 'EXP.MYTHOSS'}}</div>
+                            <div class="exp-name">{{localize 'STATUS.SIZE'}}</div>
                             <div class="exp-score">
-                                <input name="data.exp.mythos.value" title="{{localize 'EXP.MYTHOSL'}}" type="number" value="{{data.exp.mythos.value}}" data-dtype="Number"/>
+                                <input name="data.status.size.value" title="{{localize 'STATUS.SIZE'}}" type="text" value="{{data.status.size.value}}" data-dtype="text"/>
                             </div>
                         </div>
                     </div>
                     <div class="exp-boxes">
                         <div class="exp-box">
-                            <div class="exp-name">{{localize 'EXP.SANS'}}</div>
+                            <div class="exp-name">{{localize 'STATUS.Drop'}}</div>
                             <div class="exp-score">
-                                <input name="data.exp.san.value" title="{{localize 'EXP.SANL'}}" type="number" value="{{data.exp.san.value}}" data-dtype="Number"/>
+                                <input name="data.status.drop.value" title="{{localize 'STATUS.Drop'}}" type="text" value="{{data.status.drop.value}}" data-dtype="text"/>
                             </div>
                         </div>
                     </div>
@@ -267,7 +267,8 @@
             <a class="item" data-tab="karma">{{localize 'SATASUPE.Karma'}}</a>
             <a class="item" data-tab="equipment">{{localize 'SATASUPE.Equipment'}}</a>
             <a class="item" data-tab="history">{{localize 'SATASUPE.History'}}</a>
-            <a class="item" data-tab="chatpalette">{{localize 'SATASUPE.Chatpalette'}}</a>
+            {{#if data.showchatpalette}}<a class="item" data-tab="chatpalette">{{localize 'SATASUPE.Chatpalette'}}</a>{{/if}}
+            <a class="item" data-tab="buttons">Buttons</a>
         </nav>
 
         {{!-- Sheet Body --}}
@@ -284,8 +285,11 @@
             <div class="tab history" data-group="primary" data-tab="history">
                 {{> "systems/satasupe/templates/parts/npc-history.html"}}
             </div>
-            <div class="tab chatpalette" data-group="primary" data-tab="chatpalette">
+            {{#if data.showchatpalette}}<div class="tab chatpalette" data-group="primary" data-tab="chatpalette">
                 {{> "systems/satasupe/templates/parts/actor-chatpalette.html"}}
+            </div>{{/if}}
+            <div class="tab buttons" data-group="primary" data-tab="buttons">
+                {{> "systems/satasupe/templates/parts/actor-buttons.html"}}
             </div>
         </section>
     </div>

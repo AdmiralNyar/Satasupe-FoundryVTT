@@ -170,7 +170,7 @@
                             <div class="others-name">{{localize 'ATTRIBS.BPS'}}</div>
                             <div class="others-score">
                                 <div class="main-score">
-                                    <input name="data.attribs.bp.value" title="{{localize 'ATTRIBS.BPL'}}" type="number" value="{{data.attribs.bp.value}}" data-dtype="Number"/>
+                                    <input class="bp" name="data.attribs.bp.value" title="{{localize 'ATTRIBS.BPL'}}" type="number" value="{{data.attribs.bp.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -180,7 +180,7 @@
                             <div class="others-name">{{localize 'ATTRIBS.MPS'}}</div>
                             <div class="others-score">
                                 <div class="main-score">
-                                    <input name="data.attribs.mp.value" title="{{localize 'ATTRIBS.MPL'}}" type="number" value="{{data.attribs.mp.value}}" data-dtype="Number"/>
+                                    <input class="mp" name="data.attribs.mp.value" title="{{localize 'ATTRIBS.MPL'}}" type="number" value="{{data.attribs.mp.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -267,7 +267,8 @@
             <a class="item" data-tab="karma">{{localize 'SATASUPE.Karma'}}</a>
             <a class="item" data-tab="equipment">{{localize 'SATASUPE.Equipment'}}</a>
             <a class="item" data-tab="history">{{localize 'SATASUPE.History'}}</a>
-            <a class="item" data-tab="chatpalette">{{localize 'SATASUPE.Chatpalette'}}</a>
+            {{#if data.showchatpalette}}<a class="item" data-tab="chatpalette">{{localize 'SATASUPE.Chatpalette'}}</a>{{/if}}
+            <a class="item" data-tab="buttons">{{localize 'SATASUPE.BUTTON'}}</a>
         </nav>
 
         {{!-- Sheet Body --}}
@@ -284,8 +285,11 @@
             <div class="tab history" data-group="primary" data-tab="history">
                 {{> "systems/satasupe/templates/parts/actor-history.html"}}
             </div>
-            <div class="tab chatpalette" data-group="primary" data-tab="chatpalette">
+            {{#if data.showchatpalette}}<div class="tab chatpalette" data-group="primary" data-tab="chatpalette">
                 {{> "systems/satasupe/templates/parts/actor-chatpalette.html"}}
+            </div>{{/if}}
+            <div class="tab buttons" data-group="primary" data-tab="buttons">
+                {{> "systems/satasupe/templates/parts/actor-buttons.html"}}
             </div>
         </section>
     </div>

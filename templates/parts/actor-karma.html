@@ -1,5 +1,5 @@
 <div class="karma-panel" style="height: 100%">
-	{{#if actor.karmaSortable}}
+	{{#if data.karmaSortable}}
 		<table id="karma-table" class="karma-table">
 			<thead>
 				<tr class="karma-header">
@@ -13,7 +13,7 @@
 				</tr>
 			</thead>
 			<tbody class="main-body">
-				{{#each actor.karma as |item id|}}
+				{{#each data.karma as |item id|}}
 					<tr class="item karma-row" data-item-id="{{item._id}}" draggable="true">
 						<td colspan="7">
 							<table rules="none" class="inner-table">
@@ -71,7 +71,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{{#each actor.karma as |item id|}}
+				{{#each data.karma as |item id|}}
 					<tr class="item karma-row" data-item-id="{{item._id}}" draggable="true">
 						{{#if_odd @index}}
 						{{else}}

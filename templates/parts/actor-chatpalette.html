@@ -1,15 +1,29 @@
 <div class="chatpalette-panel" style="height:100%;">
+    <div class="bcdicesystem" style="display: flex;">
+        <select name="data.selecttable.value" data-dtype="String" value="{{data.selecttable.value}}" class="bcdicetable">
+            {{#select data.selecttable.value}}
+                {{#each data.bcdicelist as |list key|}}
+                    <option value="{{list.id}}">{{list.name}}</option>
+                {{/each}}
+            {{/select}}
+        </select>
+        <a class="button item-control infomation" title="{{localize 'SATASUPE.BCDiceBotInfo'}}" data-type="chatpalette" style="margin-left: 10px;padding-top: 3px;"><i class="fas fa-info-circle" style="font-size: 1.1rem;"></i></a>
+        <div style="margin-left: auto;">
+            <input type="button" class="loadclipbord" value="{{localize 'SATASUPE.LOADCLIPBOARD'}}"/>
+            {{#if data.fvttbcdiceuse}}<input type="button" class="loadfvttbcdice" value="{{localize 'SATASUPE.LOADFVTTBCDICE'}}"/>{{/if}}
+        </div>
+    </div>
     <table id="chatpalette-table" class="chatpalette-table">
         <thead>
             <tr class="header">
                 <th class="dice-folmula-text" title="{{localize 'SATASUPE.DicebotCommandExplanation'}}">{{localize 'SATASUPE.DiceFolmula'}}</th>
                 <th class="other-message">{{localize 'SATASUPE.DiceMessage'}}</th>
                 <th class="item-button item-controls"><a class="button item-control add-item" title="{{localize 'SATASUPE.AddChatpalette'}}" data-type="chatpalette"><i class="fas fa-plus"></i></a></th>
-                <th class="setting"><a class="button item-control infomation" title="{{localize 'SATASUPE.BCDiceBotInfo'}}" data-type="chatpalette"><i class="fas fa-info-circle"></i></a><a class="button item-control table-show-hide" title="{{localize 'SATASUPE.VariableSetteings'}}" data-type="chatpalette"><i class="fas fa-cogs"></i></a></th>
+                <th class="setting"><a class="button item-control table-show-hide" title="{{localize 'SATASUPE.VariableSetteings'}}" data-type="chatpalette"><i class="fas fa-cogs"></i></a></th>
             </tr>
         </thead>
         <tbody class="chatpalette-tbody">
-            {{#each actor.chatpalette as |item index|}}
+            {{#each data.chatpalette as |item index|}}
                 {{#each item.data.chatpalette.chat as |section ind|}}
                     <tr class="item chatpalette-section" data-item-id='{{item._id}}' data-index='{{index}}' data-ind='{{ind}}' draggable="false">
                         <td class="dice-folmula-text">
@@ -39,7 +53,7 @@
     <table id="variable-setting-table" class="variable-setting-table {{#unless data.status.allonoff.variableonoff}}hide-table{{/unless}}">
         <thead>
             <tr class="header">
-                <th class="characteristics"><div>{{localize 'SATASUPE.CharacteristicName'}}</div></th>
+                <th class="characteristics title change"><div>{{localize 'SATASUPE.CharacteristicName'}}</div></th>
                 <th class="variable"><div title="{{localize 'SATASUPE.VariableExplanation'}}">{{localize 'SATASUPE.VaribleText'}}</div></th>
                 <th class="all-on-off"><div class="on-off"><label class="checkbox all-on-off-button">{{localize 'SATASUPE.Activate'}}({{localize 'SATASUPE.AllOnOff'}}: <input type="checkbox" value="{{data.status.allonoff.value}}" name="data.status.allonoff.value" {{checked data.status.allonoff.value}}/>)</label></div></th>
                 <th class="item-button item-controls"><a class="button item-control add-new-variable" title="Add new variable"><i class="fas fa-plus"></i></a></th>
@@ -50,7 +64,7 @@
                 <tr class="item variable-section" data-index='{{index}}' draggable="false">
                     <td>
                         <div class="characteristics-section variable-key section-key" data-sectionkey="title">
-                            <input class="variable-title variable-section-input" type="number" name="section.title" placeholder="Input value" data-dtype="String" value="{{section.title}}"/>
+                            <input class="variable-title variable-section-input" type="text" name="section.title" placeholder="Input value" data-dtype="String" value="{{section.title}}"/>
                         </div>
                     </td>
                     <td>
@@ -67,7 +81,7 @@
                 </tr>
             {{/each}}
             {{#each data.circumstance as |circumstance key|}}
-                <tr class="item variable-section" data-characteristic="{{key}}" draggable="false">
+                <tr class="item variable-section" data-characteristic="{{key}}">
                     <td>
                         <div class="characteristics-section variable-key">
                             <div class="characteristic-label">{{localize circumstance.label}}</div>
@@ -75,7 +89,7 @@
                     </td>
                     <td>
                         <div class="text variable-key">
-                            <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.circumstance.{{key}}.variable" value="{{localize circumstance.variable}}" data-dtype="String"/>
+                            <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.circumstance.{{key}}.variable" value="{{{circumstance.variable}}}" data-dtype="String"/>
                         </div>
                     </td>
                     <td class="item-controls">
@@ -95,7 +109,7 @@
                 </td>
                 <td>
                     <div class="text variable-key">
-                        <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.aptitude.{{key}}.variable" value="{{localize aptitude.variable}}" data-dtype="String"/>
+                        <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.aptitude.{{key}}.variable" value="{{aptitude.variable}}" data-dtype="String"/>
                     </div>
                 </td>
                 <td class="item-controls">
@@ -115,7 +129,7 @@
                  </td>
                  <td>
                      <div class="text variable-key">
-                         <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.combat.{{key}}.variable" value="{{localize combat.variable}}" data-dtype="String"/>
+                         <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.combat.{{key}}.variable" value="{{combat.variable}}" data-dtype="String"/>
                      </div>
                  </td>
                 <td class="item-controls">
@@ -134,7 +148,7 @@
                 </td>
                 <td>
                     <div class="text variable-key">
-                        <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.status.majorWoundsOffset.variable" value="{{localize data.status.majorWoundsOffset.variable}}" data-dtype="String"/>
+                        <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.status.majorWoundsOffset.variable" value="{{data.status.majorWoundsOffset.variable}}" data-dtype="String"/>
                     </div>
                 </td>
                 <td class="item-controls">
@@ -152,7 +166,7 @@
                 </td>
                 <td>
                     <div class="text variable-key">
-                        <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.status.sleep.variable" value="{{localize data.status.sleep.variable}}" data-dtype="String"/>
+                        <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.status.sleep.variable" value="{{data.status.sleep.variable}}" data-dtype="String"/>
                     </div>
                 </td>
                 <td class="item-controls">
@@ -170,7 +184,7 @@
                 </td>
                 <td>
                     <div class="text variable-key">
-                        <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.status.fumble.variable" value="{{localize data.status.fumble.variable}}" data-dtype="String"/>
+                        <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.status.fumble.variable" value="{{data.status.fumble.variable}}" data-dtype="String"/>
                     </div>
                 </td>
                 <td class="item-controls">
@@ -188,7 +202,7 @@
                 </td>
                 <td>
                     <div class="text variable-key">
-                        <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.status.trauma.variable" value="{{localize data.status.trauma.variable}}" data-dtype="String"/>
+                        <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.status.trauma.variable" value="{{data.status.trauma.variable}}" data-dtype="String"/>
                     </div>
                 </td>
                 <td class="item-controls">
@@ -207,7 +221,7 @@
                   </td>
                   <td>
                       <div class="text variable-key">
-                          <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.attribs.{{key}}.variable" value="{{localize attribs.variable}}" data-dtype="String"/>
+                          <input placeholder="{{localize 'SATASUPE.VariableExplanationS'}}" class="variable-text" type="text" name="data.attribs.{{key}}.variable" value="{{attribs.variable}}" data-dtype="String"/>
                       </div>
                   </td>
                 <td class="item-controls">

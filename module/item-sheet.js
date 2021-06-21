@@ -22,6 +22,8 @@ export class SatasupeItemSheet extends ItemSheet {
     /** @override */
   getData() {
     const data = super.getData();
+    const itemData = data.data;
+    data.data = itemData.data;
     if((data.data.weapon.special.blast) && (data.data.weapon.specialtext.blast)){
       delete data.data.weapon.special.blast;
     }
@@ -53,10 +55,10 @@ export class SatasupeItemSheet extends ItemSheet {
     if( event.currentTarget){
       if(event.currentTarget.classList){
         if(this.object.data.type == 'item'){
-          if(this.object.options.actor){
+          if(this.object.parent.type == 'character'){
             if(event.currentTarget.classList.contains('item-upkeep')){
               const bool = event.currentTarget.checked;
-              this.object.options.actor.updateEquipmentUpkeep(bool);
+              this.object.parent.updateEquipmentUpkeep(bool);
             }
           }
           if(event.currentTarget.classList.contains('effect-area')){

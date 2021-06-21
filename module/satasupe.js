@@ -15,6 +15,7 @@ import { SatasupeKarmaSheet } from "./item/sheets/karma.js";
 import { SatasupeInvestigationSheet } from "./item/sheets/investigation.js";
 import { SatasupeChatpaletteSheet} from "./item/sheets/chatpalette.js";
 import { SATASUPE} from './config.js';
+import { SatasupeGiveItem} from './giveitem.js';
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -50,10 +51,28 @@ Hooks.once("init", async function() {
   Items.registerSheet("satasupe", SatasupeChatpaletteSheet, { types: ['chatpalette'], makeDefault: true});
   Items.registerSheet("satasupe", SatasupeItemSheet, { makeDefault: true });
 
+  game.settings.register("satasupe", "showchatpalette", {
+    name: "SETTINGS.SatasupeChatpaletteN",
+    hint: "SETTINGS.SatasupeChatpaletteL",
+    scope: 'client',
+    type: Boolean,
+    config: true,
+    default: true
+  });
+
   game.settings.register("satasupe", "karmaSortable", {
     name: "SETTINGS.SatasupekarmaSortN",
     hint: "SETTINGS.SatasupekarmaSortL",
-    scope: 'world',
+    scope: 'client',
+    type: Boolean,
+    config: true,
+    default: true
+  });
+
+  game.settings.register("satasupe", "originaltable", {
+    name: "SETTINGS.SatasupeOriginaltableN",
+    hint: "SETTINGS.SatasupeOriginaltableL",
+    scope: 'client',
     type: Boolean,
     config: true,
     default: true
@@ -151,13 +170,87 @@ Hooks.once("init", async function() {
         default:
             return options.inverse(this);
     }
-});
+  });
 
   // Preload template partials.
   preloadHandlebarsTemplates();
 });
 
+Hooks.once('diceSoNiceReady', (dice3d) => {
+  game.dice3d.addColorset({
+    name: 'unseen_black',
+    description: 'Secret roll',
+    category: 'secret',
+    foreground: '#000000',
+    background: "#000000",
+    outline: '#000000',
+    texture: 'paper',
+    edge: '#000000',
+    material: 'wood',
+  });
+});
+
+Hooks.on('createActor', async (document, options, userId) => {
+  const actor = document.data;
+  for(let [key, value] of Object.entries(actor.data.circumstance)){
+    actor.data.circumstance[key].variable = game.i18n.localize(actor.data.circumstance[key].variable);
+  }
+  for(let [key, value] of Object.entries(actor.data.aptitude)){
+    actor.data.aptitude[key].variable = game.i18n.localize(actor.data.aptitude[key].variable);
+  }
+  for(let [key, value] of Object.entries(actor.data.attribs)){
+    actor.data.attribs[key].variable = game.i18n.localize(actor.data.attribs[key].variable);
+  }
+  for(let [key, value] of Object.entries(actor.data.combat)){
+    actor.data.combat[key].variable = game.i18n.localize(actor.data.combat[key].variable);
+  }
+  actor.data.status.majorWoundsOffset.variable = game.i18n.localize(actor.data.status.majorWoundsOffset.variable);
+  actor.data.status.sleep.variable = game.i18n.localize(actor.data.status.sleep.variable);
+  actor.data.status.fumble.variable = game.i18n.localize(actor.data.status.fumble.variable);
+  actor.data.status.trauma.variable = game.i18n.localize(actor.data.status.trauma.variable);
+  await document.update({'data':actor.data});
+});
+
+Hooks.once('setup', async function () {
+  game.socket.on('module.give-item', packet => {
+      let data = packet.data;
+      let type = packet.type;
+      const receiveActorId = packet.receiveActorId;
+      const sendActorId = packet.sendActorId;
+      data.receiveActor = game.actors.get(receiveActorId);
+      data.sendActor = game.actors.get(sendActorId);
+      if (data.receiveActor.owner) {
+          if (type === 'request') {
+            SatasupeGiveItem.receiveTrade(data);
+          }
+          if (type === 'accepted') {
+            SatasupeGiveItem.completeTrade(data);
+          }
+          if (type === 'denied') {
+            SatasupeGiveItem.denyTrade(data);
+          }
+      }
+  });
+});
+
+Hooks.once("init", async () => {
+  await game.settings.register('satasupe', 'bcdicelist', {
+    name: 'My Setting',
+    hint: 'A description of the registered setting and its behavior.',
+    scope: 'client',     // "world" = sync to db, "client" = local storage
+    config: false,       // false if you dont want it to show in module config
+    onChange: value => { // value is the new value of the setting
+      console.log(value)
+    }
+  });
+  let tablelist = await SatasupeActorSheet._bcdiceback("/game_system", "", false);
+  game.settings.set("satasupe", "bcdicelist", tablelist);
+});
+
 Hooks.on("renderActorSheet", async (app, html, data) => {
+  html.find("tr.variable-section").attr('draggable','false');
+  html.find("tr.chatpalette-section").attr('draggable','false');
+
   html.find(".show-detail").click( ev => {
     let button = $(ev.currentTarget);
     button.parent('.item-controls').parent().next('.item-detail').children('.item-hide').toggle();
@@ -169,6 +262,21 @@ Hooks.on("renderActorSheet", async (app, html, data) => {
     button.parent('.item-controls').parent('').next('.item-detail').children('.item-hide').toggle();
     $(button).hide();
     $(button).prev().show();
+  });
+  html.find('div.drparea').on("drop",async function(ev){
+    let reciveactorid = ev.currentTarget.closest("div.placement-zone").dataset.actorid;
+    var id = JSON.parse(ev.originalEvent.dataTransfer.getData('text/plain'));
+    const sendActor=game.actors.get(id.actorid);
+    const receiveActor = game.actors.get(reciveactorid);
+    if(sendActor.id != receiveActor.id){
+      const currentItem = sendActor.items.find(item => item.id === id.key);
+      game.socket.emit('module.give-item', {
+        data: {sendActor, receiveActor, currentItem},
+        receiveActorId: receiveActor.id,
+        sendActorId: sendActor.id,
+        type: "request"
+      });
+    }
   });
 });
 
