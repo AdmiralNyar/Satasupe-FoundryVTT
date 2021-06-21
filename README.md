@@ -1,3 +1,9 @@
+## <span style="color: red; ">Note:Satasupe-FoundryVTT (on and after v0.4.x) isn't supported by FoundryVTT v0.7.x.</span>
+
+# Welcome to Satasupe for FounderyVTT system! (Unofficial)
+
+My (Unofficial) implementation of the Satasupe for FoundryVTT
+
 # Satasupe System
 
 This game system for [Foundry Virtual Tabletop](http://foundryvtt.com) 
@@ -7,7 +13,7 @@ provides character sheet support for Asian punk rpg Satasupe(The Rule book is on
 This system provides character sheet support for Actors and Items,
 mechanical support for automatic characteristics caliculate 
 to play games, and cooperate with [BCDice-api v2](https://github.com/bcdice/bcdice-api)
-(!!Only Satasupe dicebot!!).
+(~~!!Only Satasupe dicebot!!~~ All dicebot systems are supported(version 0.4.1)).
 To play with this system, it is recommended to install [Dice So Nice!](https://gitlab.com/riccisi/foundryvtt-dice-so-nice)
 and [Token Mold](https://github.com/Moerill/token-mold#token-mold) module.
 
@@ -26,5 +32,6 @@ may do this by cloning the repository or downloading a zip archive from the
 The software component of this system is distributed under the GNUv3 license.
 This system is based on [Simple Worldbuilding System](https://gitlab.com/foundrynet/worldbuilding/-/tree/master).
 I created this system referring to [CoC7-FoundryVTT](https://github.com/HavlockV/CoC7-FoundryVTT).
+And I created "item delivery function" referring to [FoundryVTT-GiveItem](https://github.com/Sepichat/FoundryVTT-GiveItem).
 
 Svg art source : https://icooon-mono.com

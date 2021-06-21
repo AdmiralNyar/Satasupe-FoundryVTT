@@ -60,6 +60,58 @@
   text-shadow: 1px black;
 }
 
+#check-form {
+  display:inline-flex;
+  width:100%;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: "numberzone checkboxzone";
+}
+
+#check-form .number-zone{
+  display:block;
+  grid-area:numberzone;
+  width:50%;
+  margin-right: 10px;
+}
+
+#check-form .align-zone{
+  display:block;
+  grid-area:numberzone;
+  width:95%;
+  margin-right: 10px;
+}
+
+#check-form .number-zone .check{
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+}
+
+#check-form .checkbox-zone .checkbox{
+  justify-content: space-between;
+  display: flex;
+  font-size: 16px;
+}
+
+#check-form .number-zone .check input {
+  width:50px;
+}
+
+#check-form .checkbox-zone{
+  display:block;
+  grid-area:checkboxzone;
+  width:50%;
+  margin-left: 10px;
+}
+
+#check-form .checkbox-zone input[type="checkbox"]{
+  width:15px;
+  height: 15px;
+}
+
 div.container nav.tabs a,
 .item-sheet nav.tabs a,
 .karma-sheet nav.tabs a{
@@ -291,6 +343,98 @@ div.container nav.tabs a,
   display: inline-grid;
   height: 66%;
   width:100%;
+}
+
+.buttons-panel {
+ display: grid;
+ width:100%;
+ height:100%;
+ grid-template-rows: 80px 1fr;
+ grid-template-columns: 1fr;
+ grid-template-areas: 
+ "charbutton"
+ "tablebutton";
+}
+
+.buttons-panel .check-zone {
+  grid-area: charbutton;
+  justify-self: center;
+  width:98%;
+}
+
+.buttons-panel .table-zone {
+  grid-area: tablebutton;
+  width:98%;
+  justify-self: center;
+  display: inline-grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas: 
+  "inftable comtable enctable othtable oritable";
+}
+
+.buttons-panel .check-zone input {
+  width:140px;
+  height: 25px;
+  margin-bottom: 10px;
+  line-height: 20px;
+  border-radius: 5px;
+}
+
+.buttons-panel fieldset.tablebutton-tytle{
+  border: 1px dashed #242320; 
+  padding:5px;
+  text-align: center;
+}
+
+.infomation-table-zone {
+ grid-area: inftable;
+ width:auto;
+ display: inline-grid;
+ justify-content: center;
+ height: 95%;
+}
+
+.combat-table-zone {
+ grid-area: comtable;
+ width:auto;
+ display: inline-grid;
+ justify-content: center;
+ height: 95%;
+}
+ 
+.encounter-table-zone {
+ grid-area: enctable;
+ width:auto;
+ display: inline-grid;
+ justify-content: center;
+ height: 95%;
+}
+ 
+.other-table-zone {
+ grid-area: othtable;
+ width:auto;
+ display: inline-grid;
+ justify-content: center;
+ height: 95%;
+}
+
+.original-table-zone {
+ grid-area: oritable;
+ width:auto;
+ display: inline-grid;
+ justify-content: center;
+ height: 95%;
+}
+
+.buttons-panel .table-zone input {
+  width:95%;
+  height: 25px;
+  margin:5px;
+  font-size: 0.8rem;
+  white-space: normal;
+  line-height: 20px;
+  border-radius: 5px;
 }
 
 .tab[data-tab]{
@@ -1041,6 +1185,10 @@ div.container nav.tabs a,
 
 .satasupe .chatpalette-panel{
   margin:5px;
+}
+
+.satasupe .chatpalette table.variable-setting-table.hide-table{
+  display: none;
 }
 
 .satasupe .chatpalette-panel table.variable-setting-table.hide-table{

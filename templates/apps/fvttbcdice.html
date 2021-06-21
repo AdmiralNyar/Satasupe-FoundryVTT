@@ -1,0 +1,16 @@
+<form id="fvttbcdice-form">
+    <div class="number-zone">
+        <div class="check" style="padding: 4px 0;">
+            <label>{{localize 'SATASUPE.SELECTBCDTAB'}}:</label>
+            <select name="select-tab" data-dtype="String">
+                <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                {{#select tabs}}
+                    {{#each tabs}}
+                        <option value="{{@index}}">{{this.name}}</option>
+                    {{/each}}
+                    <option value="all">{{localize 'SATASUPE.All'}}</option>
+                {{/select}}
+            </select>
+        </div>
+    </div>
+</form>

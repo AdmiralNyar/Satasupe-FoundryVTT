@@ -23,7 +23,8 @@ export class SatasupeActor extends Actor {
   }
 
   _prepareActorKarmaData(itemData){
-    const data = itemData.data;
+    const data = itemData.data.data;
+
     for (let [key, value] of Object.entries(SATASUPE['timing'])){
       if(key == data.timing.name){
         data.timing.label = value;
@@ -69,7 +70,7 @@ export class SatasupeActor extends Actor {
       type: 'karma',
       data: {}
     };
-    const created = await this.createEmbeddedEntity('OwnedItem', data, { renderSheet: showSheet});
+    const created = await this.createEmbeddedEntity('Item', data, { renderSheet: showSheet});
     return created;
   }
 
@@ -79,7 +80,7 @@ export class SatasupeActor extends Actor {
       type: 'chatpalette',
       data: {}
     };
-    const created = await this.createEmbeddedEntity('OwnedItem', data, { renderSheet: showSheet});
+    const created = await this.createEmbeddedEntity('Item', data, { renderSheet: showSheet});
     return created;
   }
 
@@ -89,7 +90,7 @@ export class SatasupeActor extends Actor {
       type: 'item',
       data:{}
     };
-    const created = await this.createEmbeddedEntity('OwnedItem', data, { renderSheet: showSheet});
+    const created = await this.createEmbeddedEntity('Item', data, { renderSheet: showSheet});
     return created;
   }
 
@@ -148,11 +149,11 @@ export class SatasupeActor extends Actor {
   async createEmbeddedEntity(embeddedName, data, options){
     switch( data.type){
       case 'karma':
-        return await super.createEmbeddedEntity(embeddedName, data, options);
+        return await super.createEmbeddedEntity(embeddedName, [data], options);
       case 'chatpalette':
-        return await super.createEmbeddedEntity(embeddedName, data, options);
+        return await super.createEmbeddedEntity(embeddedName, [data], options);
       case 'item':
-        return await super.createEmbeddedEntity(embeddedName, data, options);
+        return await super.createEmbeddedEntity(embeddedName, [data], options);
       }
   }
 
@@ -224,31 +225,33 @@ export class SatasupeActor extends Actor {
   }
 
   async deleteActorChatSection( index, ind, id){
-    let item = this.data.items;
-    for(let i = 0; i < item.length ; i++){
-      if(item[i]._id == id){
-        const chat = duplicate(this.data.items);
+    let items = duplicate(this.data.items);
+    let del = false;
+    for(let item of items){
+      if(item._id == id){
         console.log(`Foundry VTT | Deleted a part of  OwnedItem ${id} from parent Actor ${this.data._id}`);
-        chat[i].data.chatpalette.chat.splice(ind, 1);
-        item.splice(i, 1);
-        if(!chat[i].data.chatpalette.chat.length){
-          console.log(`Foundry VTT | Deleted OwnedItem ${id} from parent Actor ${this.data._id}`);
-          chat.splice(i, 1);
+        item.data.chatpalette.chat.splice(ind, 1);
+        if(!item.data.chatpalette.chat.length){
+          del = true;
         }
-        await this.update({'items' : chat});
       }
+    }
+    await this.update({'items' : items});
+    if(del){
+      console.log(`Foundry VTT | Deleted OwnedItem ${id} from parent Actor ${this.data._id}`);
+      let it = this.data.items.get(id,{strict:true});
+      await it.delete();
     }
   }
 
   async updateActorChatSection( index, value, key , id){
-    let item = this.data.items;
-    for(let i = 0; i < item.length ; i++){
-      if(item[i]._id == id){
-        const chat = duplicate(this.data.items);
-        chat[i].data.chatpalette.chat[index][key] = value;
-        await this.update({'items' : chat});
+    let items = duplicate(this.data.items);
+    for(let item of items){
+      if(item._id == id){
+        item.data.chatpalette.chat[index][key] = value;
       }
     }
+    await this.update({'items' : items});
   }
 
   async updateEquipmentUpkeep(bool){
@@ -261,7 +264,7 @@ export class SatasupeActor extends Actor {
     await this.update({'data.exp.upkeep.value' : newkeep});
   }
 
-  async updateEquipmentStorage( index, value){
+  /*async updateEquipmentStorage( index, value){
     let item = this.data.items;
     for(let i = 0; i < item.length ; i++){
       if(item[i]._id == index){
@@ -270,36 +273,34 @@ export class SatasupeActor extends Actor {
            await this.update({'items' : equip});
       }
     }
-  }
+  }*/
 
   async updateEquipmentSection( index, key){
-    let item = this.data.items;
-    for(let i = 0; i < item.length ; i++){
-      if(item[i]._id == index){
-        const equip = duplicate(this.data.items);
-        if(!(typeof equip[i].data[key].upkeep === "boolean")) equip[i].data[key].upkeep = equip[i].data[key].upkeep ==='false' ? true : false;
-        equip[i].data[key].upkeep = !equip[i].data[key].upkeep;
+    let items = duplicate(this.data.items);
+    for(let item of items){
+      if(item._id == index){
+        if(!(typeof item.data[key].upkeep === "boolean")) item.data[key].upkeep = item.data[key].upkeep ==='false' ? true : false;
+        item.data[key].upkeep = !item.data[key].upkeep;
         let newkeep = this.data.data.exp.upkeep.value == null ? 0 : this.data.data.exp.upkeep.value;
-        if(equip[i].data[key].upkeep){
+        if(item.data[key].upkeep){
           newkeep +=1;
         }else{
           newkeep -=1;
         }
         await this.update({'data.exp.upkeep.value' : newkeep});
-        await this.update({'items' : equip});
       }
-    }    
+    }
+    await this.update({'items' : items});   
   }
 
   async updateEquipmentMiniSection( index, key, value){
-    let item = this.data.items;
-    for(let i = 0; i < item.length ; i++){
-      if(item[i]._id == index){
-        const equip = duplicate(this.data.items);
-        equip[i].data[key].minivalue = value;
-        await this.update({'items' : equip});
+    let items = duplicate(this.data.items);
+    for(let item of items){
+      if(item._id == index){
+        item.data[key].minivalue = value;
       }
     }
+    await this.update({'items' : items});
   }
 
   async updateMajorWounds(formData){
@@ -328,15 +329,103 @@ export class SatasupeActor extends Actor {
     vari.push({
       title:title,
       variable : null,
-      substitution : false
+      substitution : false,
+      formla: "",
+      sum:0
     });
     await this.update( {'data.variable' : vari});
   }
 
   async updateVariableSection( index, value, key){
-    const vari = duplicate(this.data.data.variable);
+    var vari = duplicate(this.data.data.variable);
     if(key=='substitution'){
       vari[index][key] = !vari[index][key];
+    }else if(key == 'title'){
+      let num = value;
+      num = num.replace(/[！-～]/g, function(s) {
+        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
+      num = num.replace(/(　| )/g,"");
+      let mathsign = num.match(/[!-'|,|.|:-@|\[-\]|_-`|\||~]/g);
+        for(let l=0;l<mathsign?.length;l++){
+          ui.notifications.error(`${mathsign[l]} can't use! It is replaced by "".`);
+        }
+      num = num.replace(/[!-'|,|.|:-@|\[-\]|_-`|\||~]/g,"");
+      vari[index][key] = num;
+      let repal = num.match(/(?<=\{).*?(?=\})/g);
+      const re = /\{.*?\}/;
+      var actor = this.data.data;
+      let ok = false;
+      if(repal){
+        for (let i = 0 ; i < repal.length ; i++){
+          for(let j = 0; j < this.data.data.variable?.length ; j++){
+            if((this.data.data.variable[j].variable == repal[i]) && this.data.data.variable[j].substitution){
+              num = num.replace(re,`Number(vari[${j}].sum)`);
+              ok = true;
+              break;
+            }
+          }
+          if(!ok){
+            for(let[ky, value] of Object.entries(SATASUPE['referenceable'])){
+              if((actor.circumstance[ky]?.variable == repal[i]) && actor.circumstance[ky]?.substitution){
+                  num = num.replace(re,Number(actor.circumstance[ky].value));
+                  ok = true;
+                  break;
+              }else if((actor.aptitude[ky]?.variable == repal[i]) && actor.aptitude[ky]?.substitution){
+                num = num.replace(re,Number(actor.aptitude[ky].value));
+                ok = true;
+                break;
+              }else if((actor.attribs[ky]?.variable == repal[i]) && actor.attribs[ky]?.substitution){
+                num = num.replace(re,Number(actor.attribs[ky].value));
+                ok = true;
+                break;
+              }else if((actor.combat[ky]?.variable == repal[i]) && actor.combat[ky]?.substitution){
+                num = num.replace(re,Number(actor.combat[ky].value));
+                ok = true;
+                break;
+              }else if((actor.status[ky]?.variable == repal[i]) && actor.status[ky]?.substitution){
+                num = num.replace(re,Number(actor.status[ky].value));
+                ok = true;
+                break;
+              }
+            }
+          }
+          if(!ok){
+            num = num.replace(re, '0');
+            ui.notifications.error(game.i18n.localize("ALERTMESSAGE.ReplaceUnread"));
+          }
+          ok = false;
+        }
+      }
+      num = num.replace(/[{|}]/g,"");
+      num = num.replace(/\-\+/g,"-");
+      num = num.replace(/\+\-/g,"-");
+      num = num.replace(/\-\-/g,"+");
+      num = num.replace(/\+\+/g,"+");
+      num = num.replace(/\^/g,"**");
+      vari[index]["formla"] = num;
+      var mat = new Function('vari', `return ${num};`);
+      let result = mat(vari);
+      if(!result){
+        result = 0;
+      }
+      if(result == Infinity){
+        ui.notifications.error("sum is infinity! so change 1");
+        result = 1;
+      }
+      vari[index]["sum"] = Number(result);
+    }else if(key == 'variable'){
+      let num = value;
+      if(num.match(/[！-～]/g)){
+        ui.notifications.error("Zenkaku kigou wo hennkan");
+      }
+      if(num.match(/(　| )/g)){
+        ui.notifications.error("Zenkaku space wo hennkan");
+      }
+      num = num.replace(/[！-～]/g, function(s) {
+        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
+      num = num.replace(/　/g," ");
+      num = num.replace(/ /g,"");
+      vari[index][key] = num;
     }else{
       vari[index][key] = value;
     }

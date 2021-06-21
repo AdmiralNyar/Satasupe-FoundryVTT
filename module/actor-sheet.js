@@ -1,6 +1,8 @@
 import { SatasupeInvestigationSheet } from "./item/sheets/investigation.js";
 import { SatasupeChatpaletteSheet} from "./item/sheets/chatpalette.js";
 import { SATASUPE } from "./config.js";
+import { CheckDialog} from "./apps/checkdialog.js";
+import { LoadDialog} from "./apps/loaddialog.js";
 /**
  * Extend the basic ActorSheet with some very Satasupe modifications
  * @extends {ActorSheet}
@@ -33,19 +35,22 @@ export class SatasupeActorSheet extends ActorSheet {
   /* -------------------------------------------- */
 
   /** @override */
-  getData() {
-    const data = super.getData();
+  async getData() {
+    const data = await super.getData();
+    const actorData = this.actor.data.toObject(false);
+    data.data = actorData.data;
+    data.editable = this.isEditable;
     data.dtypes = ["String", "Number", "Boolean"];
+    /*
     for (let attr of Object.values(data.data.attributes)) {
       attr.isCheckbox = attr.dtype === "Boolean";
-    }
+    }*/
     if (this.actor.data.type == 'character') {
       this._prepareCharacterItems(data);
     }
     if (this.actor.data.type == 'npc') {
       this._prepareCharacterItems(data);
     }
-
     if(!data.data.circumstance){
       data.data.circumstance={
         crime:{value:1,max:null,short:"CIRCUMSTANCE.CRIME",label:"CIRCUMSTANCE.CRIME",folmula:null,variable:"CIRCUMSTANCE.CRIME",substitution:false},
@@ -76,17 +81,35 @@ export class SatasupeActorSheet extends ActorSheet {
         turn:{type:"Boolean",value:false},
         alert:{type:"Boolean",value:false},
         trauma:{value:0,max:null,explain:"STATUS.TraumaL",label:"STATUS.TraumaS",auto:true,variable:"STATUS.TraumaS",substitution:false},
-        allonoff:{type:"Boolean",value:false}
+        allonoff:{type:"Boolean",value:false},
+        secondhaven:{type:"Boolean",value:false},
+        reaction:{value:null},
+        size:{value:null},
+        drop:{value:null}
       };
+    }
+    if(!data.data.status.unconscious){
+      data.data.status.unconscious = {type:"Boolean",value:false};
+    }
+
+    if(!data.data.aptitude){
+      data.data.aptitude = {
+        body:{value: 3, short:"APTITUDE.BODY", label:"APTITUDE.BODY", folmula:null, variable:"APTITUDE.BODY", substitution:false},
+        mind:{value:3, short:"APTITUDE.MIND", label:"APTITUDE.MIND", folmula:null, variable:"APTITUDE.MIND", substitution:false}
+      }
+    }
+
+    if(!data.data.infos){
+      data.data.infos = {name: "",homeland:"",sex:"",age:"",style:"",likes:"",dislikes:"",team:"",alliance:"",hierarchy:"",surface:"",language:"",favorite:"",haven:"",haven2:""}
     }
 
     if(!data.data.attribs){
       data.data.attribs = {
-        alignment:{value: null, max:null,short: "ATTRIBS.ALIGNMENTS",label:"ATTRIBS.ALIGNMENTL",auto:true,variable:"ATTRIBS.ALIGNMENTL",substitution:false},
-        bp:{value:null,max:null,short: "ATTRIBS.BPS",label:"ATTRIBS.BPL",auto:true,variable:"ATTRIBS.BPL",substitution:false},
-        mp:{value:null,max:null,short: "ATTRIBS.MPS",label:"ATTRIBS.MPL",auto:true,variable:"ATTRIBS.MPL",substitution:false},
-        wallet:{value:null,max:null,short: "ATTRIBS.WPS",label:"ATTRIBS.WPL",auto:true,variable:"ATTRIBS.WPL",substitution:false},
-        drp:{value:null,max:null,short: "ATTRIBS.DRPS",label:"ATTRIBS.DRPL",auto:true,variable:"ATTRIBS.DRPL",substitution:false}
+        alignment:{value: null, max:null,short: "ATTRIBS.ALIGNMENTS",label:"ATTRIBS.ALIGNMENTL",auto:true,variable:"ATTRIBS.ALIGNMENTS",substitution:false},
+        bp:{value:null,max:null,short: "ATTRIBS.BPS",label:"ATTRIBS.BPL",auto:true,variable:"ATTRIBS.BPS",substitution:false},
+        mp:{value:null,max:null,short: "ATTRIBS.MPS",label:"ATTRIBS.MPL",auto:true,variable:"ATTRIBS.MPS",substitution:false},
+        wallet:{value:null,max:null,short: "ATTRIBS.WPS",label:"ATTRIBS.WPL",auto:true,variable:"ATTRIBS.WPS",substitution:false},
+        drp:{value:null,max:null,short: "ATTRIBS.DRPS",label:"ATTRIBS.DRPL",auto:true,variable:"ATTRIBS.DRPS",substitution:false}
       };
     }
     if(!data.data.exp){
@@ -97,6 +120,58 @@ export class SatasupeActorSheet extends ActorSheet {
         mythos:{value: null, max:null,short: "EXP.MYTHOSS",label:"EXP.MYTHOSL",folmula: null,auto:true},
         san:{value: null, max:null,short: "EXP.SANS",label:"EXP.SANL",folmula: null,auto:true}
       }
+    }
+
+    if(!data.data.hobby){
+      data.data.hobby = this.actor.data.data.hobby;
+      /*data.data.hobby = {
+        subcluture:{
+          abnormal:{type: "Boolean", value: false},
+          kawai:{type: "Boolean", value: false},
+          outrageous:{type: "Boolean", value: false},
+          fanatic:{type: "Boolean", value: false, label: ""},
+          otaku:{type: "Boolean", value: false, label: ""}
+        },
+        culture:{
+          music:{type: "Boolean", value: false, label: ""},
+          trend:{type: "Boolean", value: false, label: ""},
+          reading:{type: "Boolean", value: false, label: ""},
+          perform:{type: "Boolean", value: false, label: ""},
+          art:{type: "Boolean", value: false, label: ""}
+        },
+        earnest:{
+          cavil:{type: "Boolean", value: false, label: ""},
+          meddling:{type: "Boolean", value: false, label: ""},
+          housework:{type: "Boolean", value: false, label: ""},
+          swot:{type: "Boolean", value: false, label: ""},
+          health:{type: "Boolean", value: false, label: ""}
+        },
+        holiday:{
+          outdoor:{type: "Boolean", value: false, label: ""},
+          craft:{type: "Boolean", value: false, label: ""},
+          sport:{type: "Boolean", value: false, label: ""},
+          celebrity:{type: "Boolean", value: false, label: ""},
+          travel:{type: "Boolean", value: false, label: ""}
+        },
+        comfort:{
+          nurture:{type: "Boolean", value: false, label: ""},
+          lonely:{type: "Boolean", value: false, label: ""},
+          killtime:{type: "Boolean", value: false, label: ""},
+          creed:{type: "Boolean", value: false, label: ""},
+          wabisabi:{type: "Boolean", value: false, label: ""}
+        },
+        redLight:{
+          adult:{type: "Boolean", value: false, label: ""},
+          eat:{type: "Boolean", value: false, label: ""},
+          gamble:{type: "Boolean", value: false, label: ""},
+          gossip:{type: "Boolean", value: false, label: ""},
+          fashion:{type: "Boolean", value: false, label: ""}
+        }
+      }*/
+    }
+
+    if(!data.data.scenario){
+      data.data.scenario = [{title : null, dd : null, day : null, karma :null,exp:null,note:null}]
     }
 
     if(data.data.attribs.bp.value <= 5){
@@ -131,7 +206,7 @@ export class SatasupeActorSheet extends ActorSheet {
       data.data.attribs.mp.max = data.data.attribs.mp.max? (Number(data.data.attribs.mp.max) - Number(data.data.status.trauma.value)) : (10 -Number(data.data.status.trauma.value));
     }
 
-    data.actor.karmaSortable = game.settings.get("satasupe", "karmaSortable");
+    data.data.karmaSortable = game.settings.get("satasupe", "karmaSortable");
     if(data.data.attribs.wallet.value == null && data.data.circumstance.life.value != null) data.data.attribs.wallet.value=data.data.circumstance.life.value;
     data.data.exp.combatpower.value = (Number(data.data.circumstance.combat.value) * 2) + Number(data.data.aptitude.body.value);
     if(Number(data.data.exp.combatpower.value) < (Number(data.data.combat.reflex.value)+Number(data.data.combat.arms.value)+Number(data.data.combat.damage.value))){
@@ -334,6 +409,7 @@ export class SatasupeActorSheet extends ActorSheet {
     data.data.equipmentcapacity.other = 99;
     if(data.data.equipmentplace.haven > Number(data.data.circumstance.life.value)){
       data.data.equipmentcapacity.comfort = 10 - Number(data.data.equipmentplace.haven) + Number(data.data.circumstance.life.value);
+      data.data.equipmentcapacity.comfort = Math.ceil(data.data.equipmentcapacity.comfort);
     }
 
     if(data.data.infos.haven == 'minami') data.data.equipmentattribs.placeorder = 9;
@@ -362,6 +438,7 @@ export class SatasupeActorSheet extends ActorSheet {
       }
       if(data.data.equipmentplace.haven2 > Number(data.data.circumstance.life.value)){
         data.data.equipmentcapacity.comfort2 = 10 - Number(data.data.equipmentplace.haven2) + Number(data.data.circumstance.life.value);
+        data.data.equipmentcapacity.comfort2 = Math.ceil(data.data.equipmentcapacity.comfort2);
       }
     }
 
@@ -376,21 +453,38 @@ export class SatasupeActorSheet extends ActorSheet {
       data.data.hobbynumerror = true;
     }else{data.data.hobbynumerror = false;}
 
+    data.data.tablelist = Array.from(game.tables);
+    for(let u = 0; u < data.data.tablelist.length; u++){
+      if(data.data.tablelist[u].visible == false){
+        data.data.tablelist.splice(u, 1);
+      }
+    }
+
+    data.data.actorid = this.actor.id;
+
+    data.data.showchatpalette = game.settings.get("satasupe", "showchatpalette");
+
+    data.data.fvttbcdiceuse = false;
+    if(game.modules.get('fvtt-bcdice')?.active){
+      data.data.fvttbcdiceuse = true;
+    }
+
+    var list = game.settings.get("satasupe", "bcdicelist");
+    data.data.bcdicelist = list.game_system;
     return data;
   }
 
   /* -------------------------------------------- */
 
   _prepareCharacterItems(sheetData){
-
-    const actorData = sheetData.actor;
+    const actorData = sheetData.data;
     const karma = [];
     const gear = [];
     const investigation = [];
     const chatpalette = [];
     for(let i of sheetData.items){
       let item = i.data;
-      i.img = i.img || DEFAULT_TOKEN;
+      i.img = i.img || CONST.DEFAULT_ICON;
       if(i.type ==="item"){
         gear.push(i);
       }
@@ -446,6 +540,10 @@ export class SatasupeActorSheet extends ActorSheet {
     html.find('div.drparea').on("drop", this._geardrop.bind(this));
     html.find('.gear-name-button').on("dblclick", this._gearedit.bind(this));
 
+    html.find('th.characteristics.title.change').on("click", this._variablesum.bind(this));
+
+    html.on("drop", this._dropchat.bind(this));
+
     html.find('.all-on-off-button').click(ev =>{
       const nowonoff = this.actor.data.data.status.allonoff.value;
       this._allonoffToggle(nowonoff);
@@ -453,6 +551,11 @@ export class SatasupeActorSheet extends ActorSheet {
     html.find('a.table-show-hide').on("click", this._tableshowblind.bind(this));
 
     html.find('a.infomation').on("click", this._titleinfomation.bind(this));
+
+    html.find('.check-button').on("click", this._rollbutton.bind(this));
+    html.find('.table-button').on("click", this._tablebutton.bind(this));
+    html.find('.loadclipbord').on("click",this._loadclipbord.bind(this));
+    html.find('.loadfvttbcdice').on("click", this._loadfvttbcdice.bind(this));
 
     html.find('.favorite-button').click( ev => {this.createFavorite(ev);});
 
@@ -519,8 +622,546 @@ export class SatasupeActorSheet extends ActorSheet {
       const li = $(ev.currentTarget).parents(".item");
       const index = parseInt(ev.currentTarget.closest('.chatpalette-section').dataset.ind);
       const id = li.attr("data-item-id");
-      this._sendMessage(ev, index, id);
+      const system = $(ev.currentTarget).parent().parent().parent().parent().parent().prev('div.bcdicesystem').children('.bcdicetable').val();
+      this._sendMessage(ev, index, id, system);
     });
+  }
+
+  async _variablesum(event){
+    for(let n=0; n<this.actor.data.data.variable.length;n++){
+      if(n==10) break
+      if((this.actor.data.data.variable[n].title != "") && (this.actor.data.data.variable[n].title != null)){
+        await this.actor.updateVariableSection( n, this.actor.data.data.variable[n].title, 'title');
+      }
+    }
+  }
+
+  async _tablebutton(event){
+    event.preventDefault();
+    const tname = event.currentTarget.dataset.tname;
+    var id = "";
+    let change = false;
+    const rule = game.settings.get("satasupe", "originaltable");
+    if(tname!="origin"){
+      let tablelist = Array.from(game.tables);
+      for(let i=0; i < tablelist.length; i++){
+        if(tablelist[i].name == event.currentTarget.value){
+          id = tablelist[i]._id;
+          change = true;
+        }
+      }
+    }
+    if(tname=="origin"){
+      id = event.currentTarget.name;
+      const table = game.tables.get(id);
+      event.currentTarget.disabled = true;
+      let tableRoll = table.roll();
+      await table.draw(tableRoll);
+      event.currentTarget.disabled = false;
+    }else if(change && rule){
+      const table = game.tables.get(id);
+      event.currentTarget.disabled = true;
+      let tableRoll = table.roll();
+      await table.draw(tableRoll);
+      event.currentTarget.disabled = false;
+    }else{
+      this._bcdicesend(event, tname, 0);
+    }
+  }
+
+  async _loadfvttbcdice(event){
+    event.preventDefault();
+    const actor = this.object.data;
+    const copy = duplicate(this.object.data);
+    var data = game.users.get(game.userId).data.flags["fvtt-bcdice"];
+    var tab = data["macro-data"];
+    const send = await LoadDialog._createfvttbcdicedialog(tab);
+    var variable = [];
+    var formula = [];
+    var replace = tab.replacements.split(/\r\n|\n/);
+    for(let a=0;a<replace.length;a++){
+      if(replace[a].match(/=/g)){
+        let sp = replace[a].split(/(?<=^[^=]+?)=/);
+        if(sp[1].match(/\{.*?\}/g)){
+          sp[1] = sp[1].replace(/\{/g,"");
+          sp[1] = sp[1].replace(/\}/g,"");
+        }
+        let ok = false;
+        for(let l=0;l<actor.data.variable.length;l++){
+          if(actor.data.variable[l].variable == sp[0]){
+            ok = true;
+          }
+        }
+        if(!ok){
+          variable.push({title:sp[1], variable: sp[0], substitution: true});
+        }
+      }
+    }
+    for(let c=0;c<variable.length;c++){
+      let tar = variable[c].variable;
+      let regexp = new RegExp(tar, 'g');
+      let rep = "\{" + tar + "\}";
+      for(let d=0;d<variable.length;d++){
+        if(variable[d].title.match(regexp)){
+          variable[d].title = variable[d].title.replace(regexp,rep);
+        }
+      }
+    }
+    copy.data.variable = copy.data.variable.concat(variable);
+    await this.actor.update({'data.variable':copy.data.variable});
+    for(let n=0; n<this.actor.data.data.variable.length;n++){
+      if((this.actor.data.data.variable[n].title != "") && (this.actor.data.data.variable[n].title != null)){
+        await this.actor.updateVariableSection( n, this.actor.data.data.variable[n].title, 'title');
+      }
+    }
+    for(let n=0; n<this.actor.data.data.variable.length;n++){
+      if((this.actor.data.data.variable[n].title != "") && (this.actor.data.data.variable[n].title != null)){
+        await this.actor.updateVariableSection( n, this.actor.data.data.variable[n].title, 'title');
+      }
+    }
+    let choice = send.get('select-tab');
+    var alllist = [];
+    if(choice == "all"){
+      for(let b = 0;b<tab.tabs.length;b++){
+        var list = tab.tabs[b];
+        for(let i =0; i< list.headers.length;i++){
+          for(let j =0;j<list.headers[i].macros.length;j++){
+            alllist.push(list.headers[i].macros[j]);
+          }
+        }
+      }
+    }else{
+      var list = tab.tabs[choice];
+      for(let i =0; i< list.headers.length;i++){
+        for(let j =0;j<list.headers[i].macros.length;j++){
+          alllist.push(list.headers[i].macros[j]);
+        }
+      }
+    }
+    for(let k=0;k<alllist.length;k++){
+      if(alllist[k].macro.match(/^x\d|^rep\d|^repeat\d/)){
+        let str = alllist[k].macro.match(/ /g);
+        if(str.length > 1){
+          let re = alllist[k].macro.split(/(?<=^x\d )|(?<=^rep\d )|(?<=^repeat\d )/);
+          let sp = re[1].split(/(?<=^[^ ]+?) /);
+          formula.push({text:`${re[0]}${sp[0]}`,message:sp[1]})
+        }else{
+          formula.push({text:alllist[k].macro,message:""});
+        }
+      }else{
+        if(alllist[k].macro.match(/ /)){
+          let sp = alllist[k].macro.split(/(?<=^[^ ]+?) /);
+          formula.push({text:sp[0],message:sp[1]});
+        }else{
+          formula.push({text:alllist[k].macro,message:""});
+        }
+      }
+    }
+    if(formula.length > 0){
+      for(let e=0;e<variable.length;e++){
+        let tar = variable[e].variable;
+        let regexp = new RegExp(tar, 'g');
+        let rep = "\{" + tar + "\}";
+        for(let f=0;f<formula.length;f++){
+          if(formula[f].text.match(regexp)){
+            formula[f].text = formula[f].text.replace(regexp,rep);
+          }
+        }
+      }
+      this._createloadChatpalettetitle(event, formula);
+    }
+  }
+
+  async _loadclipbord(event){
+    event.preventDefault();
+    const actor = this.object.data;
+    const copy = duplicate(this.object.data);
+    const send = await LoadDialog._createclipborddialog();
+    let text = send.get('clipbord-data');
+    text = text.replace(/[！-～]/g, function(s) {
+      return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
+    text = text.replace(/　/g," ");
+    var data = text.split(/\r\n|\n/);
+    var variable = [];
+    var formula = [];
+    for(let i=0; i<data.length;i++){
+      if(data[i].match(/^\/\//)){
+        if(data[i].match(/=/g)){
+          let sp = data[i].split(/(?<=^[^=]+?)=/);
+          sp[0] = sp[0].replace(/^\/\//,"");
+          if(sp[1].match(/\{\{|\}\}/g)){
+            if(sp[1].match(/\{.*?\}/g)){
+              sp[1] = sp[1].replace(/\{\{/g,"{");
+              sp[1] = sp[1].replace(/\}\}/g,"}");
+            }
+          }
+          let ok = false
+          for(let k=0;k<actor.data.variable.length;k++){
+            if(actor.data.variable[k].variable == sp[0]){
+              ok = true;
+            }
+          }
+          if(!ok){
+            variable.push({title:sp[1], variable: sp[0], substitution: true});
+          }
+        }
+      }else if(data[i].match(/^x\d|^rep\d|^repeat\d/)){
+        let str = data[i].match(/ /g);
+        if(str.length > 1){
+          let re = data[i].split(/(?<=^x\d )|(?<=^rep\d )|(?<=^repeat\d )/);
+          let sp = re[1].split(/(?<=^[^ ]+?) /);
+          formula.push({text:`${re[0]}${sp[0]}`,message:sp[1]})
+        }else{
+          formula.push({text:data[i],message:""});
+        }
+      }else{
+        if(data[i].match(/ /)){
+          let sp = data[i].split(/(?<=^[^ ]+?) /);
+          formula.push({text:sp[0],message:sp[1]});
+        }else{
+          formula.push({text:data[i],message:""});
+        }
+      }
+    }
+    copy.data.variable = copy.data.variable.concat(variable);
+    await this.actor.update({'data.variable':copy.data.variable});
+    for(let n=0; n<this.actor.data.data.variable.length;n++){
+      if((this.actor.data.data.variable[n].title != "") && (this.actor.data.data.variable[n].title != null)){
+        await this.actor.updateVariableSection( n, this.actor.data.data.variable[n].title, 'title');
+      }
+    }
+    for(let n=0; n<this.actor.data.data.variable.length;n++){
+      if((this.actor.data.data.variable[n].title != "") && (this.actor.data.data.variable[n].title != null)){
+        await this.actor.updateVariableSection( n, this.actor.data.data.variable[n].title, 'title');
+      }
+    }
+    if(formula.length > 0){
+      this._createloadChatpalettetitle(event, formula);
+    }
+  }
+
+  async _createloadChatpalettetitle(event, formula){
+    if( !this.actor.getItemIdByName(game.i18n.localize(SATASUPE.newChatpaletteName))) return this.createloadChatpalette( event, game.i18n.localize(SATASUPE.newChatpaletteName), formula, false);
+    let index = 0;
+    let chatpaletteName = game.i18n.localize(SATASUPE.newChatpaletteName) + ' ' + index;
+    while( this.actor.getItemIdByName(chatpaletteName)){
+      index++;
+      chatpaletteName = game.i18n.localize(SATASUPE.newChatpaletteName) + ' ' + index;
+    }
+    return this.createloadChatpalette(event, chatpaletteName, formula,false);
+  }
+
+  async createloadChatpalette(event, chatpaletteName, formula, option){
+    const data= {
+      name:chatpaletteName,
+      type: 'chatpalette',
+      data:{
+        chatpalette:{
+          chat : formula,
+          variable : []
+        }
+      }
+    }
+    const created = await this.actor.createEmbeddedEntity('Item', data, { renderSheet: option});
+    return created;
+  }
+
+  async _rollbutton(event){
+    event.preventDefault();
+    console.log(this.object)
+    const char = event.currentTarget.dataset.char;
+    const actor = this.object.data;
+    const copy = duplicate(this.object.data.data);
+    let setting = {nobpwound:false,nompwound:false,nooverwork:false,killstop:false,nompcost:true};
+    if(actor.data.settings){
+      setting = actor.data.settings;
+    }
+
+    let value = "";
+    if(char == "crime"){
+      value = actor.data.circumstance.crime.value;
+    }else if(char == "life"){
+      value = actor.data.circumstance.life.value;
+    }else if(char == "love"){
+      value = actor.data.circumstance.love.value;
+    }else if(char == "culture"){
+      value = actor.data.circumstance.cluture.value;
+    }else if(char == "combat"){
+      value = actor.data.circumstance.combat.value;
+    }else if(char == "body"){
+      value = actor.data.aptitude.body.value;
+    }else if(char == "mind"){
+      value = actor.data.aptitude.mind.value;
+    }else if(char == "arms"){
+      value = actor.data.combat.arms.value;
+    }else if(char == "generic"){
+      value = 0;
+    }else if(char == "alignment"){
+      value = actor.data.attribs.alignment.value;
+    }
+    const indata = await CheckDialog._createCheckdialog(char, value, setting);
+
+    const fumble = actor.data.status.fumble.value;
+    var bpwounds = 0;
+    var mpwounds = 0;
+    var overwork = 0;
+    if(Number(indata.get('overwork')) == 1){
+      overwork = 0;
+      copy.settings.nooverwork = true;
+    }else{
+      overwork = Number(actor.data.status.sleep.value);
+      copy.settings.nooverwork = false;
+    }
+    if(Number(indata.get('bpwound')) == 1){
+      bpwounds = 0;
+      copy.settings.nobpwound = true;
+    }else if(actor.data.attribs.bp.value <= 5){
+      bpwounds = 1;
+      copy.settings.nobpwound = false;
+    }else{
+      bpwounds = 0;
+      copy.settings.nobpwound = false;
+    }
+    if(Number(indata.get('mpwound')) == 1){
+      bpwounds = 0;
+      copy.settings.nompwound = true;
+    }else if(actor.data.attribs.mp.value <= 5){
+      bpwounds = 1;
+      copy.settings.nompwound = false;
+    }else{
+      bpwounds = 0;
+      copy.settings.nompwound = false;
+    }
+    var text = ""
+    var kill = "";
+    if(Number(indata.get('kill'))!=0){
+      kill = Number(indata.get('kill'));
+    }
+    if(Number(indata.get('killstop')) == 1){
+      copy.settings.killstop = true;
+    }else{
+      copy.settings.killstop = false;
+    }
+
+    if(Number(indata.get('cost')) != 1){
+      copy.settings.nompcost = false;
+      copy.attribs.mp.value -= Number(indata.get('boost'));
+      await this.object.update({'data' : copy});
+    }else{
+      copy.settings.nompcost = true;
+      await this.object.update({'data' : copy});
+    }
+
+    if(char == "generic"){
+      if((Number(indata.get('killstop'))==1)&&(kill != "")){
+        text = `${value+Number(indata.get('roll'))+Number(indata.get('boost'))-bpwounds-mpwounds-overwork}R>=${Number(indata.get('difficulty'))}[${Number(indata.get('success'))},${Number(indata.get('fumble'))+fumble},${kill}S]`;
+      }else if(kill != ""){
+        text = `${value+Number(indata.get('roll'))+Number(indata.get('boost'))-bpwounds-mpwounds-overwork}R>=${Number(indata.get('difficulty'))}[${Number(indata.get('success'))},${Number(indata.get('fumble'))+fumble},${kill}]`;
+      }else{
+        text = `${value+Number(indata.get('roll'))+Number(indata.get('boost'))-bpwounds-mpwounds-overwork}R>=${Number(indata.get('difficulty'))}[${Number(indata.get('success'))},${Number(indata.get('fumble'))+fumble}]`;
+      }
+
+    }else if(char == "alignment"){
+      if(Number(indata.get('roll'))>0){
+        text = `SR${value}+${Number(indata.get('roll'))}`
+      }else if(Number(indata.get('roll'))<0){
+        text = `SR${value}${Number(indata.get('roll'))}`
+      }else{
+        text = `SR${value}`
+      }
+    }else if(char == "arms"){
+      if((Number(indata.get('killstop'))==1)&&(kill != "")){
+        text = `${value+Number(indata.get('roll'))+Number(indata.get('boost'))-bpwounds-mpwounds-overwork}R>=${Number(indata.get('difficulty'))}[${Number(indata.get('success'))},${Number(indata.get('fumble'))+fumble},${kill}S]`;
+      }else if(kill != ""){
+        text = `${value+Number(indata.get('roll'))+Number(indata.get('boost'))-bpwounds-mpwounds-overwork}R>=${Number(indata.get('difficulty'))}[${Number(indata.get('success'))},${Number(indata.get('fumble'))+fumble},${kill}]`;
+      }else{
+        text = `${value+Number(indata.get('roll'))+Number(indata.get('boost'))-bpwounds-mpwounds-overwork}R>=${Number(indata.get('difficulty'))}[${Number(indata.get('success'))},${Number(indata.get('fumble'))+fumble}]`;
+      }
+    }else{
+      text = `${value+Number(indata.get('roll'))+Number(indata.get('boost'))-bpwounds-mpwounds-overwork}R>=${Number(indata.get('difficulty'))}[${Number(indata.get('success'))},${Number(indata.get('fumble'))+fumble}]`;
+    }
+    this._bcdicesend(event, text, char);
+  }
+
+  static async _bcdiceback(text, system, option){
+    var server = game.settings.get("satasupe", "BCDice");
+    var url = "";
+    if(option){
+      var param = "command=" + text;
+      url = server + "/game_system/" + system + "/roll?" + param;
+    }else{
+      url = server + text;
+    }
+    return new Promise(function(resolve){   
+      var request = new XMLHttpRequest();
+      request.open("GET", url, true);
+      request.responseType = 'json';
+      request.onload = function(){
+        if(request.status == 200){
+          var data = this.response;
+          resolve(data);
+        }
+      };
+      request.send();
+
+      request.onerror=function(){
+        console.log("Server 1 connect error");
+        var request2 = new XMLHttpRequest();
+        var server2 = game.settings.get("satasupe", "BCDice2");
+        var url2 = "";
+      if(option){
+        var param2 = "command=" + text;
+        url2 = server2 + "/game_system/" + system + "/roll?" + param2;
+      }else{
+        url2 = server2 + text;
+      }
+      request2.open("GET",url2,true);
+      request2.responseType = 'json';
+      request2.onload = function(){
+        if(request2.status == 200){
+          var data2 = this.response;
+          resolve(data2);
+        }
+      };
+        request2.send();
+      };
+    });
+  }
+
+  async _bcdicesend(event, text, char){
+    event.preventDefault();
+    const up = this;
+    const actor = duplicate(this.object.data);
+    const speaker = this.object;
+    const user = this.object.user ? this.object.user : game.user;
+    var request = new XMLHttpRequest();
+    var param = "command=" + text;
+    var server = game.settings.get("satasupe", "BCDice");
+    var url = server + "/game_system/Satasupe/roll?" + param;
+    request.open("GET",url,true);
+    request.responseType = 'json';
+    request.onload = function(){
+      if(request.status == 200){
+        var data = this.response;
+        let rands = data.rands;
+        if (data.rands){
+            let dicedata = {throws:[{dice:[]}]};
+            for(let i = 0; i < rands.length ; i++){
+                let typenum = rands[i].sides;
+                let bcresult = rands[i].value;
+                var addData = {result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}};
+                dicedata.throws[0].dice[i]=addData;
+            }
+            var dicen = {};
+            data.rands.forEach(elm => {
+                if(dicen[elm.sides]){
+                    dicen[`${elm.sides}`].number += 1;
+                    dicen[`${elm.sides}`].value.push(elm.value);
+                }else{
+                    dicen[`${elm.sides}`] = {};
+                    dicen[`${elm.sides}`]['number'] = 1;
+                    dicen[`${elm.sides}`]['value'] = [elm.value];
+                }
+            })
+            if( game.modules.get('dice-so-nice')?.active){
+              game.dice3d.show(dicedata);
+            }
+        }else{
+            return null;
+        }
+        var belowtext = "<section class=\"tooltip-part\">";
+        for(let [k, v] of Object.entries(dicen)){
+            let sumv = v.value.reduce(function(sum,element){return sum+element},0); 
+            belowtext += "<div class=\"dice\"><span class=\"part-formula part-header flexrow\">"
+            belowtext += `${v.number}d${k}`
+            belowtext += "<div class=\"flex1\"></div><span class=\"part-total flex0\">"
+            belowtext +=  `${sumv}</span></span><ol class=\"dice-rolls\">`
+            for(let dice of v.value){
+                belowtext += `<li class=\"roll die d${k}\">${dice}</li>`
+            }
+            belowtext += "</ol></div></section>"
+        }
+        var text_line = data.text.replace(/\r?\n/g,"<br>");
+        var contenthtml = "<div><div style=\"word-break : break-all;\">" + text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
+        ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+        if(char = "alignment"){
+          if((data.rands[0].value == 6) && (data.rands[1].value == 6)){
+            actor.data.attribs.alignment.value -= 1;
+            up.object.update({'data': actor.data});
+          }else if((data.rands[0].value == 1) && (data.rands[1].value == 1)){
+            actor.data.attribs.alignment.value += 1;
+            up.object.update({'data': actor.data});
+          }
+        }
+      }
+    };
+    request.send();
+
+    request.onerror=function(){
+      console.log("Server 1 connect error");
+      var request2 = new XMLHttpRequest();
+    var param2 = "command=" + text;
+    var server2 = game.settings.get("satasupe", "BCDice2");
+    var url2 = server2 + "/game_system/Satasupe/roll?" + param2;
+    request2.open("GET",url2,true);
+    request2.responseType = 'json';
+    request2.onload = function(){
+      if(request2.status == 200){
+        var data2 = this.response;
+        let rands = data2.rands;
+        if (data2.rands){
+            let dicedata = {throws:[{dice:[]}]};
+            for(let i = 0; i < rands.length ; i++){
+                let typenum = rands[i].sides;
+                let bcresult = rands[i].value;
+                var addData = {result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}};
+                dicedata.throws[0].dice[i]=addData;
+            }
+            var dicen = {};
+            data2.rands.forEach(elm => {
+                if(dicen[elm.sides]){
+                    dicen[`${elm.sides}`].number += 1;
+                    dicen[`${elm.sides}`].value.push(elm.value);
+                }else{
+                    dicen[`${elm.sides}`] = {};
+                    dicen[`${elm.sides}`]['number'] = 1;
+                    dicen[`${elm.sides}`]['value'] = [elm.value];
+                }
+            })
+            if( game.modules.get('dice-so-nice')?.active){
+              game.dice3d.show(dicedata);
+            }
+        }else{
+            return null;
+        }
+        var belowtext = "<section class=\"tooltip-part\">";
+        for(let [k, v] of Object.entries(dicen)){
+            let sumv = v.value.reduce(function(sum,element){return sum+element},0); 
+            belowtext += "<div class=\"dice\"><span class=\"part-formula part-header flexrow\">"
+            belowtext += `${v.number}d${k}`
+            belowtext += "<div class=\"flex1\"></div><span class=\"part-total flex0\">"
+            belowtext +=  `${sumv}</span></span><ol class=\"dice-rolls\">`
+            for(let dice of v.value){
+                belowtext += `<li class=\"roll die d${k}\">${dice}</li>`
+            }
+            belowtext += "</ol></div></section>"
+        }
+        var text_line = data2.text.replace(/\r?\n/g,"<br>");
+        var contenthtml = "<div><div style=\"word-break : break-all;\">" + text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
+        ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+        if(char = "alignment"){
+          if((data2.rands[0].value == 6) && (data2.rands[1].value == 6)){
+            actor.data.attribs.alignment.value -= 1;
+            up.object.update({'data': actor.data});
+          }else if((data2.rands[0].value == 1) && (data2.rands[1].value == 1)){
+            actor.data.attribs.alignment.value += 1;
+            up.object.update({'data': actor.data});
+          }
+        }
+      }
+    };
+      request2.send();
+    };
   }
 
   _gearedit(event){
@@ -530,15 +1171,17 @@ export class SatasupeActorSheet extends ActorSheet {
 
   _geardragstart(event){
     let id = event.currentTarget.dataset;
+    id.actorid = this.actor.id;
     event.originalEvent.dataTransfer.setData('text/plain', JSON.stringify(id));
   }
 
   async _emptyGroundCreate(event){
-    let item = this.object.data.items;
-    for(let i = 0; i < item.length ; i++){
-      if(item[i].type == "item"){
-        if(item[i].data.storage == ""){
-          const id = item[i]._id;
+    let items = this.actor.data.items;
+    let id = "";
+    for(let item of items){
+      if(item.type == "item"){
+        if(item.data.data.storage == ""){
+          id = item._id;
           await this.object.deleteOwnedItem(id);
         }
       }
@@ -546,29 +1189,63 @@ export class SatasupeActorSheet extends ActorSheet {
   }
 
   async _allItemDrop(event){
-    let item = this.actor.data.items;
-    for(let i = 0; i < item.length ; i++){
-      if(item[i].type == "item"){
-        if(item[i].data.storage !== ""){
-          const gear = duplicate(this.actor.data.items);
-          gear[i].data.storage = "";
-          await this.actor.update({'items' : gear});
+    let items = duplicate(this.actor.data.items);
+    for(let item of items){
+      if(item.type == "item"){
+        if(item.data.storage != ""){
+          item.data.storage = "";
         }
       }
     }
+    await this.actor.update({'items' : items});
+  }
+
+  async _dropchat(event){
+    var actor = duplicate(this.object.data);
+    var data = JSON.parse(event.originalEvent.dataTransfer.getData('text/plain'));
+    if(data.type == "Item"){
+      let item;
+      if (data.pack) {
+        const pack = game.packs.get(data.pack);
+        if (pack.metadata.entity !== 'Item') return;
+        item = await pack.getEntity(data.id);
+      } else if (data.data) {
+        item = data;
+      } else {
+        item = game.items.get(data.id);
+      }
+      if(item.type == "chatpalette"){
+        var vari =  duplicate(item.data.data.chatpalette.variable);
+        for(let j=0 ; j <item.data.data.chatpalette.variable.length; j++){
+          for(let i = 0 ; i < actor.data.variable?.length;i++){
+            if(actor.data.variable[i]?.variable == item.data.data.chatpalette.variable[j].variable){
+              vari[j] = {};
+            }
+          }
+        }
+        for(let k = vari.length; k>0;k--){
+          const d = vari[k-1];
+          if(!Object.keys(vari[k-1]).length){
+            vari.splice(k-1,1);
+          }
+        }
+        actor.data.variable = actor.data.variable.concat(vari);
+        await this.actor.update({'data.variable':actor.data.variable});
+      }
+    }    
   }
 
   async _geardrop(event){
     var id = JSON.parse(event.originalEvent.dataTransfer.getData('text/plain'));
     let dataset = event.currentTarget.dataset;
-    let item = this.actor.data.items;
+    let items = duplicate(this.actor.data.items);
     let value = 0;
-    for(let i = 0 ; i < item.length ; i++){
-      if(item[i]._id === id.key){
-        if(!item[i].data.count){
-          if(item[i].data.typep){
-            if(item[i].data.props.minivalue > 0){
-              value = item[i].data.props.minivalue / 10;
+    for(let item of items){
+      if(item._id === id.key){
+        if(!item.data.count){
+          if(item.data.typep){
+            if(item.data.props.minivalue > 0){
+              value = item.data.props.minivalue / 10;
             }else{
               value = 1;
             }
@@ -576,15 +1253,13 @@ export class SatasupeActorSheet extends ActorSheet {
             value = 1;
           }
         }
-        if((Number(dataset.nowcontain) + value) < Number(dataset.capacity)){
-          if((dataset.placetype == 'vehicle') && (item[i].data.typev||(item[i].data.typep&&(item[i].data.props.special.normalstorage.value||item[i].data.props.special.room.value&&(dataset.habitable == 'false'))))){
+        if((Number(dataset.nowcontain) + value) <= Number(dataset.capacity)){
+          if((dataset.placetype == 'vehicle') && (item.data.typev||(item.data.typep&&(item.data.props.special.normalstorage.value||item.data.props.special.room.value&&(dataset.habitable == 'false'))))){
           }else{
-            if((dataset.placetype == 'normal')&&(item[i].data.typep&&item[i].data.props.special.room.value)){}else{
-              if(((dataset.placetype == 'haven')||(dataset.placetype == 'haven2'))&&(item[i].data.typep&&item[i].data.props.special.normalstorage.value)){}else{
-                if(((item[i].data.typep&&(item[i].data.props.addcapacity !== 0))||(item[i].data.typeg&&(item[i].data.gadjet.addcapacity !== 0)))&&(dataset.placetype == item[i].name)){}else{
-                  const gear = duplicate(this.actor.data.items);
-                  gear[i].data.storage = dataset.placetype;
-                  await this.actor.update({'items' : gear});
+            if((dataset.placetype == 'normal')&&(item.data.typep&&item.data.props.special.room.value)){}else{
+              if(((dataset.placetype == 'haven')||(dataset.placetype == 'haven2'))&&(item.data.typep&&item.data.props.special.normalstorage.value)){}else{
+                if(((item.data.typep&&(item.data.props.addcapacity !== 0))||(item.data.typeg&&(item.data.gadjet.addcapacity !== 0)))&&(dataset.placetype == item.name)){}else{
+                  item.data.storage = dataset.placetype;
                 }
               }
             }
@@ -592,6 +1267,7 @@ export class SatasupeActorSheet extends ActorSheet {
         }
       }
     }
+    await this.actor.update({'items' : items});
   }
 
   async _deleteItemSection(ev){
@@ -619,14 +1295,15 @@ export class SatasupeActorSheet extends ActorSheet {
   
   _titleinfomation(event){
     event.preventDefault();
+    const li = $(event.currentTarget);
+    let system = li.prev('.bcdicetable').val();
     var request = new XMLHttpRequest();
     var server = game.settings.get("satasupe", "BCDice");
-    var url = server + "/game_system/Satasupe";
+    var url = server + "/game_system/"+ system;
     request.open("GET",url,true);
     request.responseType = 'json';
     request.onload = function(){
       if(request.status == 200){
-        console.log(request.status);
         var data = this.response;
         var text = data.help_message.replace(/\r?\n/g,"<br>");
         const dlg = new Dialog({
@@ -1137,12 +1814,21 @@ export class SatasupeActorSheet extends ActorSheet {
 		li.toggleClass('expanded');
   }
 
-  _sendMessage(event,index, id){
+  _sendMessage(event,index, id, system){
     event.preventDefault();
     let actor = this.actor.data.data;
-    let item = this.actor.data.items;
+    let item = this.actor._data.items;
     const speaker = this.actor;
-    const user = this.actor.user ? this.actor.user : game.user;
+    const user = game.user;
+
+    /*let list = game.settings.get("satasupe", "bcdicelist");
+    var systemname;
+    let map = new Map();
+    list.game_system.forEach(obj=>{
+      map.set(obj.id,obj);
+    });
+    systemname = (map.get(system)).name;*/
+
     for(let i = 0; i < item.length ; i++){
       if(item[i]._id !== id){
       }else{
@@ -1151,77 +1837,156 @@ export class SatasupeActorSheet extends ActorSheet {
         text = text.replace(/[！-～]/g, function(s) {
             return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
         text = text.replace(/　/g," ");
-        text = text.replace(/\s+/g, ""); 
+        let originaltext = text;
         let repal = text.match(/(?<=\{).*?(?=\})/g);
         const re = /\{.*?\}/;
+        let ok = false;
+        let repd = "";
         if(repal){
           for (let i = 0 ; i < repal.length ; i++){
-            for(let[key, value] of Object.entries(SATASUPE['referenceable'])){
-              if((actor.circumstance[key]?.variable == repal[i]) && actor.circumstance[key]?.substitution){
-                  text = text.replace(re,Number(actor.circumstance[key].value));
-                  break;
-              }else if((actor.aptitude[key]?.variable == repal[i]) && actor.aptitude[key]?.substitution){
-                text = text.replace(re,Number(actor.aptitude[key].value));
-                break;
-              }else if((actor.attribs[key]?.variable == repal[i]) && actor.attribs[key]?.substitution){
-                text = text.replace(re,Number(actor.attribs[key].value));
-                break;
-              }else if((actor.combat[key]?.variable == repal[i]) && actor.combat[key]?.substitution){
-                text = text.replace(re,Number(actor.combat[key].value));
-                break;
-              }else if((actor.status[key]?.variable == repal[i]) && actor.status[key]?.substitution){
-                text = text.replace(re,Number(actor.status[key].value));
-                break;
-              }
+            if(i!=0){
+              repd += `, `;
             }
-            if(!actor.variable) actor.variable = [];
-            for(let j = 0; j < actor.variable.length ; j++){
+            for(let j = 0; j < actor.variable?.length ; j++){
               if((actor.variable[j].variable == repal[i]) && actor.variable[j].substitution){
-                text = text.replace(re,Number(actor.variable[j].title));
+                text = text.replace(re,Number(actor.variable[j].sum));
+                repd += `${repal[i]} : ${Number(actor.variable[j].sum)}`;
+                ok = true;
                 break;
               }
             }
+            if(!ok){
+              for(let[key, value] of Object.entries(SATASUPE['referenceable'])){
+                if((actor.circumstance[key]?.variable == repal[i]) && actor.circumstance[key]?.substitution){
+                    text = text.replace(re,Number(actor.circumstance[key].value));
+                    repd += `${repal[i]} : ${Number(actor.circumstance[key].value)}`;
+                    ok = true;
+                    break;
+                }else if((actor.aptitude[key]?.variable == repal[i]) && actor.aptitude[key]?.substitution){
+                  text = text.replace(re,Number(actor.aptitude[key].value));
+                  repd += `${repal[i]} : ${Number(actor.aptitude[key].value)}`;
+                  ok = true;
+                  break;
+                }else if((actor.attribs[key]?.variable == repal[i]) && actor.attribs[key]?.substitution){
+                  text = text.replace(re,Number(actor.attribs[key].value));
+                  repd += `${repal[i]} : ${Number(actor.attribs[key].value)}`;
+                  ok = true;
+                  break;
+                }else if((actor.combat[key]?.variable == repal[i]) && actor.combat[key]?.substitution){
+                  text = text.replace(re,Number(actor.combat[key].value));
+                  repd += `${repal[i]} : ${Number(actor.combat[key].value)}`;
+                  ok = true;
+                  break;
+                }else if((actor.status[key]?.variable == repal[i]) && actor.status[key]?.substitution){
+                  text = text.replace(re,Number(actor.status[key].value));
+                  repd += `${repal[i]} : ${Number(actor.status[key].value)}`;
+                  ok = true;
+                  break;
+                }
+              }
+            }
+            if(!ok){
+              text = text.replace(re, '0');
+              repd += `${repal[i]} : ${0}`;
+              ui.notifications.error(game.i18n.localize("ALERTMESSAGE.ReplaceUnread"));
+            }
+            ok = false;
           }
-          if(text.match(/\{.*?\}/g)){
-            text = text.replace(/\{.*?\}/g, '0');
-            ui.notifications.error(game.i18n.localize("ALERTMESSAGE.ReplaceUnread"));
-          }
+          repd += `<br>`;
         }
-        let add = text.match(/(?<=\().*?(?=\))/g);
+        let add = text.match(/\((?:[^\(\)]|\([^\)]*\))*\)/g);
         if(add){
           for(let j = 0; j < add.length; j++){
-            let dev = add[j].match(/(\/|\*|\(|\)|\,)/g);
+            let dev = add[j].match(/[^\+|\-|\*|\/|\^|\(|\)|0-9]+/g);
             if(!dev){
+              /*
+              console.log(dev);
               var small = add[j].match(/(?:(?:[\+\-]+)?\d+)/g);
+              console.log(small);
               let math =  0;
               for(let k=0; k < small.length; k++){
-                math += parseInt(small[k], 10);
+                if(small[k].match(/\-\-\d+/gi)){
+                  math += parseInt(small[k].match(/\d+/gi),10);
+                }else if(small[k].match(/\-\+\d+|\+\-\d+/gi)){
+                  math -= parseInt(small[k].match(/\d+/gi),10);
+                }else{
+                  math += parseInt(small[k], 10);
+                }
+              }*/
+              let num = add[j];
+              num = num.replace(/\-\+/g,"-");
+              num = num.replace(/\+\-/g,"-");
+              num = num.replace(/\-\-/g,"+");
+              num = num.replace(/\+\+/g,"+");
+              num = num.replace(/\^/g,"**");
+              var mat = new Function(`return ${num};`);
+              let result = mat();
+              if(!result){
+                result = 0;
               }
-              text=text.replace(new RegExp('\\(' + add[j].replace(/(\+|\-)/g,'\\$&') + '\\)', 'g'),math);
+              if(result == Infinity){
+                ui.notifications.error("sum is infinity! so change 1");
+                result = 1;
+              }
+              result = Math.round(result);
+              text=text.replace(new RegExp(add[j].replace(/(\+|\-|\^|\*|\/|\(|\))/g,'\\$&'), 'g'),result);
             }
           }
         }
-        console.log(`your send text is ${text}.`);
+        console.log(`your send text is ${text}`);
+        let sendtext = encodeURIComponent(text);
         var request = new XMLHttpRequest();
-        var param = "command=" + text;
+        var param = "command=" + sendtext;
         var server = game.settings.get("satasupe", "BCDice");
-        var url = server + "/game_system/Satasupe/roll?" + param;
+        var url = server + "/game_system/"+system+"/roll?" + param;
         request.open("GET",url,true);
         request.responseType = 'json';
         request.onload = function(){
           if(request.status==200){
             var data = this.response;
-            if(!data.ok){
-                ui.notifications.error(game.i18n.localize("ALERTMESSAGE.DiceFormulaUnread"));
-            }
+
             let rands = data.rands;
+            const secret = data.secret;
+            let whisper = null;
+            let blind = false;
+            if(secret){
+              whisper = [game.user._id];
+            }else{
+              let rollMode = game.settings.get("core", "rollMode");
+              if (["gmroll", "blindroll"].includes(rollMode)) whisper = ChatMessage.getWhisperRecipients("GM");
+              if (rollMode === "selfroll") whisper = [game.user._id];
+              if (rollMode === "blindroll") blind = true;
+            }
+            let dicetotal =0;
             if (data.rands){
                 let dicedata = {throws:[{dice:[]}]};
                 for(let i = 0; i < rands.length ; i++){
-                    let typenum = rands[i].sides;
-                    let bcresult = rands[i].value;
-                    var addData = {result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}};
-                    dicedata.throws[0].dice[i]=addData;
+                    let typenum ="";
+                    let bcresult = "";
+                    var addData = "";
+                    var addData2 = "";
+                    if(rands[i].sides == "100"){
+                      let d100resu = rands[i].value;
+                      dicetotal += rands[i].value;
+                      bcresult =Math.floor(rands[i].value / 10);
+                      let bcresult2 = rands[i].value % 10;
+                      addData = {result:bcresult,resultLabel:bcresult*10,d100Result:d100resu,type: `d100`,vecors:[],options:{}};
+                      addData2 = {result:bcresult2,resultLabel:bcresult2,d100Result:d100resu,type: `d10`,vecors:[],options:{}};
+                      dicedata.throws[0].dice[i]=addData;
+                      dicedata.throws[0].dice[rands.length+i]=addData2;
+                    }else if(rands[i].kind == "tens_d10"){
+                      typenum = rands[i].sides;
+                      bcresult = rands[i].value;
+                      dicetotal += rands[i].value;
+                      addData =  {result:Math.floor(bcresult/10),resultLabel:bcresult,d100Result:bcresult,type: `d100`,vecors:[],options:{}};
+                      dicedata.throws[0].dice[i]=addData;
+                    }else{
+                      typenum = rands[i].sides;
+                      bcresult = rands[i].value;
+                      dicetotal += rands[i].value;
+                      addData = {result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}};
+                      dicedata.throws[0].dice[i]=addData;
+                    }
                 }
                 var dicen = {};
                 data.rands.forEach(elm => {
@@ -1235,48 +2000,83 @@ export class SatasupeActorSheet extends ActorSheet {
                     }
                 })
                 if( game.modules.get('dice-so-nice')?.active){
-                   game.dice3d.show(dicedata);
+                   game.dice3d.show(dicedata, game.user, true, whisper, blind);
                 }
             }else{
                 return null;
             }
             var belowtext = "";
+            if(repd !== ""){
+              belowtext += `<section class="tooltip-part"><div class="dice"><header class="part-header flexrow"><span class="part-header part-formula">${"Variable"}</span></header><div>${"Original Text"} : ${originaltext}<br>${repd}</div></div></section>`
+            }
             for(let [k, v] of Object.entries(dicen)){
                 let sumv = v.value.reduce(function(sum,element){return sum+element},0); 
-                belowtext += "<section class=\"tooltip-part\"><div class=\"dice\"><span class=\"part-formula part-header flexrow\">"
-                belowtext += `${v.number}d${k}`
-                belowtext += "<div class=\"flex1\"></div><span class=\"part-total flex0\">"
-                belowtext +=  `${sumv}</span></span><ol class=\"dice-rolls\">`
+                belowtext += "<section class=\"tooltip-part\"><div class=\"dice\"><header class=\"part-header flexrow\"><span class=\"part-formula part-header flexrow\">"
+                belowtext += `${v.number}d${k}</span>`
+                belowtext += "<span class=\"part-total flex0\">"
+                belowtext +=  `${sumv}</span></header><ol class=\"dice-rolls\">`
                 for(let dice of v.value){
                     belowtext += `<li class=\"roll die d${k}\">${dice}</li>`
                 }
-                belowtext += "</ol></div></section></div>"
+                belowtext += "</ol></div></section>"
             }
-            var successtext = ""
+            var successtext = "</div>"
             if(data.success || data.failure || data.critical || data.fumble){
               if(data.success){
                 if(data.critical){
-                    successtext = "<div class=\"dice-total success critical\">";
+                    successtext += "<div class=\"dice-total success critical\">";
                     successtext += game.i18n.localize("SATASUPE.CRITICAL");
                     successtext += "</div>";
                 }else{
-                    successtext = "<div class=\"dice-total success\">";
+                    successtext += "<div class=\"dice-total success\">";
                     successtext += game.i18n.localize("SATASUPE.SUCCESS");
                     successtext += "</div>";
                 }
             　}else if(!data.fumble){
-                successtext = "<div class=\"dice-total failure\">";
+                successtext += "<div class=\"dice-total failure\">";
                 successtext += game.i18n.localize("SATASUPE.FAILURE");
                 successtext += "</div>";
               }else{
-                successtext = "<div class=\"dice-total failure fumble\">";
+                successtext += "<div class=\"dice-total failure fumble\">";
                 successtext += game.i18n.localize("SATASUPE.FUMBLE");
                 successtext += "</div>";
               }
+            }else{
+              if(!dicetotal){
+                dicetotal = "";
+              }
+              successtext += `<h4 class="dice-total">${dicetotal}</h4>`;
             }
             var text_line = data.text.replace(/\r?\n/g,"<br>");
-            var contenthtml = "<div><div style=\"word-break : break-all;\">" + "<br>"+ text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
-            ChatMessage.create({user:user._id,speaker:ChatMessage.getSpeaker({actor : speaker}),content:contenthtml,flavor:message},{});
+            var contenthtml = "<div><div style=\"word-break : break-all;\">" + "<br>"+ system + " : " +  text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
+            ChatMessage.create({user:user.id,speaker:ChatMessage.getSpeaker({actor : speaker}),whisper:whisper,blind:blind,content:contenthtml,flavor:message});
+            if(secret){
+              let count = 0;
+              for(let [o, l]of Object.entries(dicen)){
+                count += l.number;
+              }
+              if(count == 0) count = 1;
+              let roll = new Roll(`${count}d20`);
+              roll.roll();
+              roll.dice[0].options.hidden = true;
+              roll.dice[0].options.colorset = "unseen_black";
+              if(game.modules.get('dice-so-nice')?.active){
+                game.dice3d.showForRoll(roll, game.user, true, null, false);
+              }
+              ChatMessage.create({roll:roll,user:user._id,speaker:ChatMessage.getSpeaker({actor:speaker}),blind:true,whisper:null,content:`Secret Dice are cast by ${game.user.name}!`})
+            }
+          }else if((request.status==400)&&message){
+            if(text){
+              ui.notifications.error(game.i18n.format("ALERTMESSAGE.DiceFormulaUnread",{text:text}));
+            }
+            let chatMessage ={
+              user:user.id,
+              speaker:ChatMessage.getSpeaker({actor:speaker}),
+              blind:false,
+              whisper:null,
+              content:`<p>${message}</p>`
+            }
+            ChatMessage.create(chatMessage);
           }
         };
         request.send();
@@ -1284,25 +2084,56 @@ export class SatasupeActorSheet extends ActorSheet {
         request.onerror=function(){
           console.log("Server 1 connect error");
           var request2 = new XMLHttpRequest();
-        var param2 = "command=" + text;
+        var param2 = "command=" + sendtext;
         var server2 = game.settings.get("satasupe", "BCDice2");
-        var url2 = server2 + "/game_system/Satasupe/roll?" + param2;
+        var url2 = server2 + "/game_system/"+system+"/roll?" + param2;
         request2.open("GET",url2,true);
         request2.responseType = 'json';
         request2.onload = function(){
           if(request2.status==200){
             var data2 = this.response;
-            if(!data2.ok){
-                ui.notifications.error(game.i18n.localize("ALERTMESSAGE.DiceFormulaUnread"));
-            }
             let rands = data2.rands;
+            const secret = data2.secret;
+            let whisper = null;
+            let blind = false;
+            if(secret){
+              whisper = [game.user._id];
+            }else{
+              let rollMode = game.settings.get("core", "rollMode");
+              if (["gmroll", "blindroll"].includes(rollMode)) whisper = ChatMessage.getWhisperRecipients("GM");
+              if (rollMode === "selfroll") whisper = [game.user._id];
+              if (rollMode === "blindroll") blind = true;
+            }
+            let dicetotal =0;
             if (data2.rands){
                 let dicedata = {throws:[{dice:[]}]};
                 for(let i = 0; i < rands.length ; i++){
-                    let typenum = rands[i].sides;
-                    let bcresult = rands[i].value;
-                    var addData = {result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}};
+                  let typenum ="";
+                  let bcresult = "";
+                  var addData = "";
+                  var addData2 = "";
+                  if(rands[i].sides == "100"){
+                    let d100resu = rands[i].value;
+                    dicetotal += rands[i].value;
+                    bcresult =Math.floor(rands[i].value / 10);
+                    let bcresult2 = rands[i].value % 10;
+                    addData = {result:bcresult,resultLabel:bcresult*10,d100Result:d100resu,type: `d100`,vecors:[],options:{}};
+                    addData2 = {result:bcresult2,resultLabel:bcresult2,d100Result:d100resu,type: `d10`,vecors:[],options:{}};
                     dicedata.throws[0].dice[i]=addData;
+                    dicedata.throws[0].dice[rands.length+i]=addData2;
+                  }else if(rands[i].kind == "tens_d10"){
+                    typenum = rands[i].sides;
+                    bcresult = rands[i].value;
+                    dicetotal += rands[i].value;
+                    addData =  {result:Math.floor(bcresult/10),resultLabel:bcresult,d100Result:bcresult,type: `d100`,vecors:[],options:{}};
+                    dicedata.throws[0].dice[i]=addData;
+                  }else{
+                    typenum = rands[i].sides;
+                    bcresult = rands[i].value;
+                    dicetotal += rands[i].value;
+                    addData = {result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}};
+                    dicedata.throws[0].dice[i]=addData;
+                  }
                 }
                 var dicen = {};
                 data2.rands.forEach(elm => {
@@ -1316,48 +2147,83 @@ export class SatasupeActorSheet extends ActorSheet {
                     }
                 })
                 if( game.modules.get('dice-so-nice')?.active){
-                   game.dice3d.show(dicedata);
+                   game.dice3d.show(dicedata, game.user, true, whisper, blind);
                 }
             }else{
                 return null;
             }
             var belowtext = "";
-            for(let [k, v] of Object.entries(dicen)){
-                let sumv = v.value.reduce(function(sum,element){return sum+element},0); 
-                belowtext += "<section class=\"tooltip-part\"><div class=\"dice\"><span class=\"part-formula part-header flexrow\">"
-                belowtext += `${v.number}d${k}`
-                belowtext += "<div class=\"flex1\"></div><span class=\"part-total flex0\">"
-                belowtext +=  `${sumv}</span></span><ol class=\"dice-rolls\">`
-                for(let dice of v.value){
-                    belowtext += `<li class=\"roll die d${k}\">${dice}</li>`
-                }
-                belowtext += "</ol></div></section></div>"
+            if(repd !== ""){
+              belowtext += `<section class="tooltip-part"><div class="dice"><header class="part-header flexrow"><span class="part-header part-formula">${"Variable"}</span></header><div>${"Original Text"} : ${originaltext}<br>${repd}</div></div></section>`
             }
-            var successtext = ""
+            for(let [k, v] of Object.entries(dicen)){
+              let sumv = v.value.reduce(function(sum,element){return sum+element},0); 
+              belowtext += "<section class=\"tooltip-part\"><div class=\"dice\"><header class=\"part-header flexrow\"><span class=\"part-formula part-header flexrow\">";
+              belowtext += `${v.number}d${k}</span>`;
+              belowtext += "<span class=\"part-total flex0\">";
+              belowtext +=  `${sumv}</span></header><ol class=\"dice-rolls\">`;
+              for(let dice of v.value){
+                  belowtext += `<li class=\"roll die d${k}\">${dice}</li>`;
+              }
+              belowtext += "</ol></div></section>";
+            }
+            var successtext = "</div><div class=\"test\"></div>";
             if(data2.success || data2.failure || data2.critical || data2.fumble){
                 if(data2.success){
                     if(data2.critical){
-                        successtext = "<div class=\"dice-total success critical\">";
+                        successtext += "<div class=\"dice-total success critical\">";
                         successtext += game.i18n.localize("SATASUPE.CRITICAL");
                         successtext += "</div>";
                     }else{
-                        successtext = "<div class=\"dice-total success\">";
+                        successtext += "<div class=\"dice-total success\">";
                         successtext += game.i18n.localize("SATASUPE.SUCCESS");
                         successtext += "</div>";
                     }
                 }else if(!data2.fumble){
-                    successtext = "<div class=\"dice-total failure\">";
+                    successtext += "<div class=\"dice-total failure\">";
                     successtext += game.i18n.localize("SATASUPE.FAILURE");
                     successtext += "</div>";
                 }else{
-                    successtext = "<div class=\"dice-total failure fumble\">";
+                    successtext += "<div class=\"dice-total failure fumble\">";
                     successtext += game.i18n.localize("SATASUPE.FUMBLE");
                     successtext += "</div>";
                 }
+            }else{
+              if(!dicetotal){
+                dicetotal = "";
+              }
+              successtext += `<h4 class="dice-total">${dicetotal}</h4>`;
             }
             var text_line2 = data2.text.replace(/\r?\n/g,"<br>");
-            var contenthtml = "<div><div style=\"word-break : break-all;\">" + "<br>"+ text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
-            ChatMessage.create({user:user._id,speaker:ChatMessage.getSpeaker({actor : speaker}),content:contenthtml,flavor:message},{});
+            var contenthtml = "<div><div style=\"word-break : break-all;\">" + "<br>" + system + " : " + text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
+            ChatMessage.create({user:user._id,speaker:ChatMessage.getSpeaker({actor : speaker}),whisper:whisper,blind:blind,content:contenthtml,flavor:message},{});
+            if(secret){
+              let count = 0;
+              for(let [o, l]of Object.entries(dicen)){
+                count += l.number;
+              }
+              if(count == 0) count = 1;
+              let roll = new Roll(`${count}d20`);
+              roll.roll();
+              roll.dice[0].options.hidden = true;
+              roll.dice[0].options.colorset = "unseen_black";
+              if(game.modules.get('dice-so-nice')?.active){
+                game.dice3d.showForRoll(roll, game.user, true, null, false);
+              }
+              ChatMessage.create({roll:roll,user:user._id,speaker:ChatMessage.getSpeaker(),blind:true,whisper:null,content:`Secret Dice are cast by ${game.user.name}!`})
+            }
+          }else if((request.status==400)&&message){
+            if(text){
+              ui.notifications.error(game.i18n.format("ALERTMESSAGE.DiceFormulaUnread",{text:text}));
+            }
+            let chatMessage ={
+              user:user.id,
+              speaker:ChatMessage.getSpeaker({actor:speaker}),
+              blind:false,
+              whisper:null,
+              content:`<p>${message}</p>`
+            }
+            ChatMessage.create(chatMessage);
           }
         };
         request2.send();
