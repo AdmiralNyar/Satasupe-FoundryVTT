@@ -211,8 +211,8 @@ Hooks.on('createActor', async (document, options, userId) => {
   await document.update({'data':actor.data});
 });
 
-Hooks.once('setup', async function () {
-  game.socket.on('module.give-item', packet => {
+Hooks.on('ready', async function () {
+  game.socket.on('system.satasupe', packet => {
       let data = packet.data;
       let type = packet.type;
       const receiveActorId = packet.receiveActorId;
@@ -270,7 +270,7 @@ Hooks.on("renderActorSheet", async (app, html, data) => {
     const receiveActor = game.actors.get(reciveactorid);
     if(sendActor.id != receiveActor.id){
       const currentItem = sendActor.items.find(item => item.id === id.key);
-      game.socket.emit('module.give-item', {
+      game.socket.emit('system.satasupe', {
         data: {sendActor, receiveActor, currentItem},
         receiveActorId: receiveActor.id,
         sendActorId: sendActor.id,
