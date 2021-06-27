@@ -23,6 +23,7 @@
     }
   ],
   "initiative": "@combat.reflex.value",
+  "socket": true,
   "gridDistance": 5,
   "gridUnits": "m",
   "primaryTokenAttribute": "attribs.bp",
