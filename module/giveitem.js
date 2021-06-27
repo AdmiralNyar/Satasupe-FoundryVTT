@@ -25,7 +25,7 @@ export class SatasupeGiveItem{
     }
 
     static tradeDenied(tradeData) {
-        game.socket.emit('module.give-item', {
+        game.socket.emit('system.satasupe', {
             data: tradeData,
             receiveActorId: tradeData.sendActor.id,
             sendActorId: tradeData.receiveActor.id,
@@ -36,7 +36,7 @@ export class SatasupeGiveItem{
     static tradeConfirmed(tradeData){
         this.receiveItem(tradeData);
         this.sendMessageToGM(tradeData);
-        game.socket.emit('module.give-item', {
+        game.socket.emit('system.satasupe', {
             data: tradeData,
             receiveActorId: tradeData.sendActor.id,
             sendActorId: tradeData.receiveActor.id,
