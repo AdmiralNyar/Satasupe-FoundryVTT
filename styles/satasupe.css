@@ -700,8 +700,7 @@ div.container nav.tabs a,
 .karma-sheet-body .description.active .photo .sheet-portrait img{
   object-fit: contain;
   border: 0;
-  height: 15%;
-  width: 50%;
+  height: 150px;
 }
 
 .karma-sheet-body .description.active .effect{
