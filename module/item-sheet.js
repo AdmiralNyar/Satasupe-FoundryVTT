@@ -55,7 +55,7 @@ export class SatasupeItemSheet extends ItemSheet {
     if( event.currentTarget){
       if(event.currentTarget.classList){
         if(this.object.data.type == 'item'){
-          if(this.object.parent.type == 'character'){
+          if(this.object.parent?.type == 'character'){
             if(event.currentTarget.classList.contains('item-upkeep')){
               const bool = event.currentTarget.checked;
               this.object.parent.updateEquipmentUpkeep(bool);
