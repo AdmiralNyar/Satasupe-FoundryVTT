@@ -393,6 +393,7 @@ export class SatasupeActorSheet extends ActorSheet {
                 }else{
                   data.data.addcapacity[key]['equipmentplace'] +=1;
                 }
+		data.data.addcapacity[key]['equipmentplace'] = Math.ceil(data.data.addcapacity[key]['equipmentplace']*10)/10;
               }
             }
           }
