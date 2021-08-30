@@ -119,6 +119,7 @@
             <thead>
                 <tr class="header">
                     <th class="addiction-name">{{localize 'SATASUPE.Name'}}</th>
+                    {{#if data.addictionrule}}<th class="usenum">{{localize 'SATASUPE.TIMES'}}</th>{{/if}}
                     <th class="addiction-use">{{localize 'SATASUPE.Use'}}</th>
                     <th class="space"> </th>
                 </tr>
@@ -128,9 +129,16 @@
                 <tr class='addiction-section' data-index='{{index}}' draggable="true">
                     <td class="addiction-name">
                         <div class="name-section">
-                            <input class="addiction-name-input" type="text" name="section.title" placeholder="{{localize 'SATASUPE.Name'}}" data-dtype="String" value="{{section.title}}"/>
+                            <input class="addiction-input" data-adic="title" type="text" name="section.title" placeholder="{{localize 'SATASUPE.Name'}}" data-dtype="String" value="{{section.title}}"/>
                         </div>
                     </td>
+                    {{#if ../data.addictionrule}}
+                    <td class="usenum">
+                        <div class="">
+                            <input class="addiction-input" data-adic="times" type="number" name="section.times" data-dtype="number" value="{{section.times}}"/>
+                        </div>
+                    </td>
+                    {{/if}}
                     <td class="checkbox addiction-use-check">
                         <label class="checkbox boolkey" data-boolkey="use">
                             <input class="addiction-bool"  type="checkbox" value="{{section.use}}" name="section.use" data-dtype="Boolean" {{checked section.use}}/>

@@ -205,9 +205,9 @@ export class SatasupeActor extends Actor {
     await this.update( {'data.addiction' : addic});
   }
 
-  async updateAddictionName( index, name){
+  async updateAddictionName( index, name, addictype){
     const addic = duplicate(this.data.data.addiction);
-    addic[index].title = name;
+    addic[index][`${addictype}`] = name;
     await this.update({'data.addiction' : addic});
   }
 

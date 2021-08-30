@@ -104,6 +104,7 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
 
   async _tableshowblind(event){
     let data = duplicate(this.object.data.data);
+    console.log(data);
     data.status.allonoff.variableonoff = !data.status.allonoff.variableonoff;
     await this.object.update({'data': data});
   }

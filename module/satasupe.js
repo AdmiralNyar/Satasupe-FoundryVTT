@@ -16,6 +16,7 @@ import { SatasupeInvestigationSheet } from "./item/sheets/investigation.js";
 import { SatasupeChatpaletteSheet} from "./item/sheets/chatpalette.js";
 import { SATASUPE} from './config.js';
 import { SatasupeGiveItem} from './giveitem.js';
+import { SatasupeMenu} from './menu.js';
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -76,6 +77,24 @@ Hooks.once("init", async function() {
     type: Boolean,
     config: true,
     default: true
+  });
+
+  game.settings.register("satasupe", "addiction", {
+    name: "SETTINGS.SatasupeAddictionN",
+    hint: "SETTINGS.SatasupeAddictionL",
+    scope: 'world',
+    type: Boolean,
+    config: true,
+    default: false
+  });
+
+  game.settings.register("satasupe", "favmovie", {
+    name: "SETTINGS.SatasupeFavMovieN",
+    hint: "SETTINGS.SatasupeFavMovieL",
+    scope: 'world',
+    type: Boolean,
+    config: true,
+    default: false
   });
 
   game.settings.register("satasupe", "BCDice", {
@@ -175,6 +194,8 @@ Hooks.once("init", async function() {
   // Preload template partials.
   preloadHandlebarsTemplates();
 });
+
+Hooks.on('renderSceneControls', SatasupeMenu.renderMenu);
 
 Hooks.once('diceSoNiceReady', (dice3d) => {
   game.dice3d.addColorset({
