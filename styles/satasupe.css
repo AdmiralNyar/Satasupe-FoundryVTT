@@ -789,14 +789,14 @@ div.container nav.tabs a,
   margin: -1px;
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: 300px 40px auto;
+  grid-template-rows: 320px 40px auto;
   width: 100%;
   height: 100%;
 }
 
 .satasupe form .container .sheet-header {
   width: 100%;
-  height: 290px;
+  height: 320px;
   border: 0;
   display: grid;
   align-items: center;
@@ -1211,7 +1211,7 @@ div.container nav.tabs a,
   margin: 5px auto;
   justify-self: center;
   display:grid;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: auto 1fr;
   grid-template-areas: 
   "scenario"
   "background";
@@ -1373,6 +1373,16 @@ div.container nav.tabs a,
 .satasupe .other-panel .addiction-zone td.item-controls{
   min-width: 20px;
   text-align: center;
+}
+
+.satasupe .other-panel .addiction-zone th.usenum,
+.satasupe .other-panel .addiction-zone td.usenum{
+  max-width: 40px;
+  text-align: center;
+}
+
+.satasupe .other-panel .addiction-zone td.usenum input[type="number"]{
+  height:20px
 }
 
 .satasupe .other-panel .addiction-zone td.checkbox{

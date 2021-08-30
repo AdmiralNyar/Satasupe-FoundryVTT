@@ -7,8 +7,8 @@
                 <img class="photo" src="{{actor.img}}" title="{{actor.name}}" data-edit="img"/>
                 <div class="status">
                     <div class="status-box">
-                        <div class="status-name">{{localize 'STATUS.Turn'}}</div>
-                        <div class="status-score"><label class="checkbox"><input type="checkbox" title="{{localize 'STATUS.TurnL'}}" name="data.status.turn.value" {{checked data.status.turn.value}}/></label></div>
+                        <div class="status-name">{{localize 'STATUS.Info'}}</div>
+                        <div class="status-score"><input type="number" title="{{localize 'STATUS.InfoL'}}" min="0" max="{{data.circumstance.crime.value}}" name="data.status.investigation.value" value="{{data.status.investigation.value}}"/></div>
                     </div>
                     <div class="status-box">
                         <div class="status-name">{{localize 'STATUS.FumbleH'}}</div>
@@ -101,6 +101,12 @@
                     <label><a class="favorite-button" title="{{localize 'SATASUPE.FavoriteRoll'}}">{{localize 'SATASUPE.Favorite'}} :</a></label>
                     <input name="data.infos.favorite" type="text" value="{{data.infos.favorite}}"/>
                 </div>
+                {{#if data.favmovie}}
+                <div class="row flexrow">
+                    <label>{{localize 'SATASUPE.FavMovie'}} :</label>
+                    <input name="data.infos.movie" type="text" value="{{data.infos.movie}}"/>
+                </div>
+                {{/if}}
                 <div class="row flexrow">
                     <label>{{localize 'SATASUPE.Haven'}} :</label>
                     <select class="haven-place" name="data.infos.haven" data-dtype="String" value="{{data.infos.haven}}">

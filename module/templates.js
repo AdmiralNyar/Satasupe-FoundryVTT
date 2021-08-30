@@ -22,7 +22,9 @@ export const preloadHandlebarsTemplates = async function() {
     'systems/satasupe/templates/apps/checkarm.html',
     'systems/satasupe/templates/apps/check.html',
     'systems/satasupe/templates/apps/clipload.html',
-    'systems/satasupe/templates/apps/fvttbcdice.html'
+    'systems/satasupe/templates/apps/fvttbcdice.html',
+    'systems/satasupe/templates/apps/importActor.html',
+    'systems/satasupe/templates/apps/selectItem.html'
   ];
 
   // Load the template parts

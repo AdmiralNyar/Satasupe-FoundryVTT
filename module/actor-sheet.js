@@ -464,6 +464,8 @@ export class SatasupeActorSheet extends ActorSheet {
     data.data.actorid = this.actor.id;
 
     data.data.showchatpalette = game.settings.get("satasupe", "showchatpalette");
+    data.data.addictionrule = game.settings.get("satasupe", "addiction");
+    data.data.favmovie = game.settings.get("satasupe", "favmovie");
 
     data.data.fvttbcdiceuse = false;
     if(game.modules.get('fvtt-bcdice')?.active){
@@ -869,7 +871,6 @@ export class SatasupeActorSheet extends ActorSheet {
 
   async _rollbutton(event){
     event.preventDefault();
-    console.log(this.object)
     const char = event.currentTarget.dataset.char;
     const actor = this.object.data;
     const copy = duplicate(this.object.data.data);
@@ -1494,9 +1495,10 @@ export class SatasupeActorSheet extends ActorSheet {
           const key = event.currentTarget.closest('.boolkey').dataset.boolkey;
           this.actor.updatePrisonerBool( index, key);
         }
-        if(event.currentTarget.classList.contains('addiction-name-input')){
+        if(event.currentTarget.classList.contains('addiction-input')){
           const index = parseInt(event.currentTarget.closest('.addiction-section').dataset.index);
-          this.actor.updateAddictionName( index, event.currentTarget.value);
+          const addictype = event.currentTarget.dataset.adic;
+          this.actor.updateAddictionName( index, event.currentTarget.value, addictype);
         }
         if(event.currentTarget.classList.contains('addiction-bool')){
           const index = parseInt(event.currentTarget.closest('.addiction-section').dataset.index);

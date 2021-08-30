@@ -246,6 +246,9 @@
             "type": "Boolean",
             "value": false
           },
+          "investigation":{
+            "value" : 0
+          },
           "alert":{
             "type": "Boolean",
             "value": false
@@ -459,7 +462,7 @@
       },
      "prisoner":[{"title":null,"keep":false,"exp":false,"lovers":false}],
      "addiction":{
-       "addiction":[{"title":null, "use":false}]
+       "addiction":[{"title":null, "use":false, "times" : 0}]
      },
      "variable":{
        "variable":[{"title": null, "variable": null, "substitution": false, "formla": "", "sum": 0}]},
@@ -496,6 +499,7 @@
         "surface": "",
         "language": "",
         "favorite": "",
+        "movie": "",
         "haven":"",
         "haven2":""
       },
@@ -926,7 +930,13 @@
           {"title": null, "variable": null, "substitution": false}
         ]
       },
-      "description": []
+      "description": [],
+      "status" : {
+        "allonoff" : {
+          "value" : false,
+          "variableonoff" : false
+        }
+      } 
     },
     "investigation":{
       "target":[
