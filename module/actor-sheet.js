@@ -11,13 +11,16 @@ export class SatasupeActorSheet extends ActorSheet {
 
   /** @override */
   static get defaultOptions() {
+    let rule = game.settings.get("satasupe", "showchatpalette");
+    let initial = 'buttons'
+    if(rule) initial = 'chatpalette';
     return mergeObject(super.defaultOptions, {
       classes: ["satasupe", "sheet", "actor", "character"],
       template: "systems/satasupe/templates/actor-sheet.html",
       width: 820,
       height: 660,
       dragDrop: [{dragSelector: '.item', dropSelector: null}],
-			tabs: [{navSelector: '.sheet-tabs', contentSelector: '.sheet-body', initial: 'chatpalette'}]
+			tabs: [{navSelector: '.sheet-tabs', contentSelector: '.sheet-body', initial: initial}]
     });
   }
 
@@ -464,6 +467,8 @@ export class SatasupeActorSheet extends ActorSheet {
     data.data.actorid = this.actor.id;
 
     data.data.showchatpalette = game.settings.get("satasupe", "showchatpalette");
+    data.data.addictionrule = game.settings.get("satasupe", "addiction");
+    data.data.favmovie = game.settings.get("satasupe", "favmovie");
 
     data.data.fvttbcdiceuse = false;
     if(game.modules.get('fvtt-bcdice')?.active){
@@ -472,6 +477,7 @@ export class SatasupeActorSheet extends ActorSheet {
 
     var list = game.settings.get("satasupe", "bcdicelist");
     data.data.bcdicelist = list.game_system;
+    console.log(data)
     return data;
   }
 
@@ -520,6 +526,9 @@ export class SatasupeActorSheet extends ActorSheet {
       item.sheet.render(true);
     });
 
+    html.find('tr.karma-row').on("contextmenu", this.usekarma.bind(this));
+    html.find('div.equipment-panel div.element-zone tr.equipment-row').on("contextmenu", this.useitem.bind(this));
+
     html.find('.add-item').click(ev => {
       switch(ev.currentTarget.dataset.type){
         case 'karma':
@@ -557,6 +566,9 @@ export class SatasupeActorSheet extends ActorSheet {
     html.find('.table-button').on("click", this._tablebutton.bind(this));
     html.find('.loadclipbord').on("click",this._loadclipbord.bind(this));
     html.find('.loadfvttbcdice').on("click", this._loadfvttbcdice.bind(this));
+
+    html.find('.gear-name-button').on({"mouseenter" : this._itemhover.bind(this,true),"mouseleave": this._itemhover.bind(this,false)});
+    html.find('tr.equipment-row').on({"mouseenter" : this._itemRhover.bind(this,true),"mouseleave": this._itemRhover.bind(this,false)});
 
     html.find('.favorite-button').click( ev => {this.createFavorite(ev);});
 
@@ -625,6 +637,162 @@ export class SatasupeActorSheet extends ActorSheet {
       const id = li.attr("data-item-id");
       const system = $(ev.currentTarget).parent().parent().parent().parent().parent().prev('div.bcdicesystem').children('.bcdicetable').val();
       this._sendMessage(ev, index, id, system);
+    });
+  }
+
+  async usekarma(event){
+    event.preventDefault();
+    let itemid = $(event.currentTarget).attr("data-item-id");
+    const item = this.actor.getOwnedItem(itemid);
+    let text = item.data.data.effecthtml;
+    let timing = game.i18n.localize(item.data.data.timing.label);
+    let target = game.i18n.localize(item.data.data.target.label);
+    let check;
+    let type;
+    let diff;
+    if(item.data.data.check.none){
+      check = game.i18n.localize("SATASUPE.NoCheck");
+    }else if(item.data.data.check.type){
+      type = "alignment";
+      if(!!item.data.data.check.checkText){
+        check = item.data.data.check.checkText;
+      }else{
+        check = `〔`+ game.i18n.localize("ATTRIBS.ALIGNMENTS") +`〕/` + game.i18n.localize(item.data.data.check.alignment.label);
+      }
+    }else{
+      type = item.data.data.check.checkValue.name;
+      if(!!item.data.data.check.checkText){
+        check = item.data.data.check.checkText;
+      }else{
+        check = `〔`+ game.i18n.localize(item.data.data.check.checkValue.label) +`〕/` + item.data.data.check.difficulty ;
+        diff = Number(item.data.data.check.difficulty);
+      }
+    }
+    if(!item.data.data.check.none && !item.data.data.check.checkText) check = `<a class="bcroll" data-type="${type}" data-actor="${this.actor.id}" data-diff="${diff}">`+ `<i class="fas fa-dice-d20"></i>` + check + `</a>`;
+    let message = await renderTemplate(`systems/satasupe/templates/cards/karmausecard.html`,{pic:item.img,name:item.name,ruby:item.data.data.description.otherName,timing:timing,target:target,check:check,text:text});
+    let chatMessage = {
+      user: game.user.id,
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      blind:false,
+      content:message
+    }
+    let card = await ChatMessage.create(chatMessage);
+  }
+
+  async useitem(event){
+    event.preventDefault();
+    let itemid = $(event.currentTarget).attr("data-item-id");
+    const item = this.actor.getOwnedItem(itemid);
+    let itemtype = event.currentTarget.dataset.itemtype;
+    let timing = false;
+    let speciallist=[];
+    let type=[];
+    let addic = false;
+    let mini = false;
+    let sp = false;
+    let dispt = false;
+    let text = [];
+    if(item.data.data.typeg) type.push("gadjet");
+    if(item.data.data.typep) type.push("props");
+    if(item.data.data.typev) type.push("vehicle");
+    if(item.data.data.typew) type.push("weapon");
+    if(itemtype == "weapon" || itemtype == "vehicle"){
+      if(type.indexOf("weapon") >= 0){
+        let special = Object.entries(item.data.data.weapon.special).map(([key, value]) => ({'key': key, 'value': value}));
+        let specialtext = Object.entries(item.data.data.weapon.specialtext).map(([key, value]) => ({'key': key, 'value': value}));
+        let list1 = special.filter((i) => i.value.value == true);
+        let list2 = specialtext.filter((j) => j.value.value == true);
+        if(list1.length > 0){
+          for(let k=0;k<list1.length;k++){
+            speciallist.push({label:list1[k].value.label,num:false})
+          }
+        }
+        if(list2.length > 0){
+          for(let l=0;l<list2.length;l++){
+            speciallist.push({label:list2[l].value.label,num:list2[l].value.number})
+          }
+        }
+      }
+      if(type.indexOf("vehicle") >= 0){
+        let special = Object.entries(item.data.data.vehicle.special).map(([key, value]) => ({'key': key, 'value': value}));
+        let specialtext = Object.entries(item.data.data.vehicle.specialtext).map(([key, value]) => ({'key': key, 'value': value}));
+        let list1 = special.filter((i) => i.value.value == true);
+        let list2 = specialtext.filter((j) => j.value.value == true);
+        if(list1.length > 0){
+          for(let k=0;k<list1.length;k++){
+            speciallist.push({label:list1[k].value.label,num:false})
+          }
+        }
+        if(list2.length > 0){
+          for(let l=0;l<list2.length;l++){
+            speciallist.push({label:list2[l].value.label,num:list2[l].value.number})
+          }
+        }
+      }
+    }
+    if(itemtype == "props" || itemtype == "gadjet"){
+      timing = game.i18n.localize(item.data.data[itemtype].timing);
+      if(timing == game.i18n.localize("SATASUPE.Passive")) timing = game.i18n.localize("SATASUPE.Equipping");
+      if(type.indexOf("gadjet") >= 0){
+        if(item.data.data.gadjet.effect) text.push(item.data.data.gadjet.effect);
+      }
+      if(type.indexOf("props") >= 0){
+        if(item.data.data.props.effect) text.push(item.data.data.props.effect);
+        let special = Object.entries(item.data.data.props.special).map(([key, value]) => ({'key': key, 'value': value}));
+        let specialtext = Object.entries(item.data.data.props.specialtext).map(([key, value]) => ({'key': key, 'value': value}));
+        let list1 = special.filter((i) => i.value.value == true);
+        let list2 = specialtext.filter((j) => j.value.value == true);
+        if(list1.length > 0){
+          for(let k=0;k<list1.length;k++){
+            if(list1[k].key == "mini") mini = Number(item.data.data.props.minivalue);
+            speciallist.push({label:list1[k].value.label,num:false})
+          }
+        }
+        if(list2.length > 0){
+          for(let l=0;l<list2.length;l++){
+            if(list2[l].key == "addiction") addic = Number(list2[l].value.number);
+            speciallist.push({label:list2[l].value.label,num:list2[l].value.number});
+          }
+        }
+      }
+    }
+    if(speciallist.length > 0) sp = true;
+    if(text.length > 0) dispt = true;
+    let message = await renderTemplate(`systems/satasupe/templates/cards/itemausecard.html`,{pic:item.img,name:item.name,ruby:item.data.data.otherName,timing:timing,actor:this.actor.id,text:text,dispt:dispt,mini:mini,addic:addic,sp:sp,speciallist:speciallist});
+    let chatMessage = {
+      user: game.user.id,
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      blind:false,
+      content:message
+    }
+    let card = await ChatMessage.create(chatMessage);
+  }
+
+  async _itemRhover(option,event){
+    const id = event.currentTarget.dataset.id;
+    const li = $(event.currentTarget).parents("div.element-zone").next("div.placement-zone");
+    li.children().each(async function(i, e){
+      $(e).children("div.drparea").children("button.gear-name-button").each(async function(index, element){
+        if(option){
+          if(element.dataset.id == id) $(element).css("box-shadow","0 0 5px 0px blue")
+        }else{
+          if(element.dataset.id == id) $(element).css("box-shadow","")
+        }
+      });
+    });
+  }
+
+  async _itemhover(option,event){
+    const id = event.currentTarget.dataset.id;
+    const li = $(event.currentTarget).parents("div.placement-zone").prev("div.element-zone");
+    li.children().each(async function(i, e){
+      $(e).children().children("tbody").children().each(async function(index, element){
+        if(option){
+          if(element.dataset.id == id) $(element).css("box-shadow","0 0 10px 0px blue, inset 0 0 10px 0 blue")
+        }else{
+          if(element.dataset.id == id) $(element).css("box-shadow","")
+        }
+      });
     });
   }
 
@@ -869,7 +1037,6 @@ export class SatasupeActorSheet extends ActorSheet {
 
   async _rollbutton(event){
     event.preventDefault();
-    console.log(this.object)
     const char = event.currentTarget.dataset.char;
     const actor = this.object.data;
     const copy = duplicate(this.object.data.data);
@@ -981,7 +1148,8 @@ export class SatasupeActorSheet extends ActorSheet {
     }else{
       text = `${value+Number(indata.get('roll'))+Number(indata.get('boost'))-bpwounds-mpwounds-overwork}R>=${Number(indata.get('difficulty'))}[${Number(indata.get('success'))},${Number(indata.get('fumble'))+fumble}]`;
     }
-    this._bcdicesend(event, text, char);
+    let result = await this._bcdicesend(event, text, char);
+    return result;
   }
 
   static async _bcdiceback(text, system, option){
@@ -1035,134 +1203,145 @@ export class SatasupeActorSheet extends ActorSheet {
     const actor = duplicate(this.object.data);
     const speaker = this.object;
     const user = this.object.user ? this.object.user : game.user;
-    var request = new XMLHttpRequest();
-    var param = "command=" + text;
-    var server = game.settings.get("satasupe", "BCDice");
-    var url = server + "/game_system/Satasupe/roll?" + param;
-    request.open("GET",url,true);
-    request.responseType = 'json';
-    request.onload = function(){
-      if(request.status == 200){
-        var data = this.response;
-        let rands = data.rands;
-        if (data.rands){
-            let dicedata = {throws:[{dice:[]}]};
-            for(let i = 0; i < rands.length ; i++){
-                let typenum = rands[i].sides;
-                let bcresult = rands[i].value;
-                var addData = {result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}};
-                dicedata.throws[0].dice[i]=addData;
-            }
-            var dicen = {};
-            data.rands.forEach(elm => {
-                if(dicen[elm.sides]){
-                    dicen[`${elm.sides}`].number += 1;
-                    dicen[`${elm.sides}`].value.push(elm.value);
-                }else{
-                    dicen[`${elm.sides}`] = {};
-                    dicen[`${elm.sides}`]['number'] = 1;
-                    dicen[`${elm.sides}`]['value'] = [elm.value];
+    const asyncFunc = function(){
+      return new Promise(function(resolve, reject){
+        var request = new XMLHttpRequest();
+        var param = "command=" + text;
+        var server = game.settings.get("satasupe", "BCDice");
+        var url = server + "/game_system/Satasupe/roll?" + param;
+        request.open("GET",url,true);
+        request.responseType = 'json';
+        request.onload = function(){
+          if(request.status == 200){
+            var data = this.response;
+            let rands = data.rands;
+            if (data.rands){
+                let dicedata = {throws:[{dice:[]}]};
+                for(let i = 0; i < rands.length ; i++){
+                    let typenum = rands[i].sides;
+                    let bcresult = rands[i].value;
+                    var addData = {result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}};
+                    dicedata.throws[0].dice[i]=addData;
                 }
-            })
-            if( game.modules.get('dice-so-nice')?.active){
-              game.dice3d.show(dicedata);
-            }
-        }else{
-            return null;
-        }
-        var belowtext = "<section class=\"tooltip-part\">";
-        for(let [k, v] of Object.entries(dicen)){
-            let sumv = v.value.reduce(function(sum,element){return sum+element},0); 
-            belowtext += "<div class=\"dice\"><span class=\"part-formula part-header flexrow\">"
-            belowtext += `${v.number}d${k}`
-            belowtext += "<div class=\"flex1\"></div><span class=\"part-total flex0\">"
-            belowtext +=  `${sumv}</span></span><ol class=\"dice-rolls\">`
-            for(let dice of v.value){
-                belowtext += `<li class=\"roll die d${k}\">${dice}</li>`
-            }
-            belowtext += "</ol></div></section>"
-        }
-        var text_line = data.text.replace(/\r?\n/g,"<br>");
-        var contenthtml = "<div><div style=\"word-break : break-all;\">" + text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
-        ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
-        if(char = "alignment"){
-          if((data.rands[0].value == 6) && (data.rands[1].value == 6)){
-            actor.data.attribs.alignment.value -= 1;
-            up.object.update({'data': actor.data});
-          }else if((data.rands[0].value == 1) && (data.rands[1].value == 1)){
-            actor.data.attribs.alignment.value += 1;
-            up.object.update({'data': actor.data});
-          }
-        }
-      }
-    };
-    request.send();
-
-    request.onerror=function(){
-      console.log("Server 1 connect error");
-      var request2 = new XMLHttpRequest();
-    var param2 = "command=" + text;
-    var server2 = game.settings.get("satasupe", "BCDice2");
-    var url2 = server2 + "/game_system/Satasupe/roll?" + param2;
-    request2.open("GET",url2,true);
-    request2.responseType = 'json';
-    request2.onload = function(){
-      if(request2.status == 200){
-        var data2 = this.response;
-        let rands = data2.rands;
-        if (data2.rands){
-            let dicedata = {throws:[{dice:[]}]};
-            for(let i = 0; i < rands.length ; i++){
-                let typenum = rands[i].sides;
-                let bcresult = rands[i].value;
-                var addData = {result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}};
-                dicedata.throws[0].dice[i]=addData;
-            }
-            var dicen = {};
-            data2.rands.forEach(elm => {
-                if(dicen[elm.sides]){
-                    dicen[`${elm.sides}`].number += 1;
-                    dicen[`${elm.sides}`].value.push(elm.value);
-                }else{
-                    dicen[`${elm.sides}`] = {};
-                    dicen[`${elm.sides}`]['number'] = 1;
-                    dicen[`${elm.sides}`]['value'] = [elm.value];
+                var dicen = {};
+                data.rands.forEach(elm => {
+                    if(dicen[elm.sides]){
+                        dicen[`${elm.sides}`].number += 1;
+                        dicen[`${elm.sides}`].value.push(elm.value);
+                    }else{
+                        dicen[`${elm.sides}`] = {};
+                        dicen[`${elm.sides}`]['number'] = 1;
+                        dicen[`${elm.sides}`]['value'] = [elm.value];
+                    }
+                })
+                if( game.modules.get('dice-so-nice')?.active){
+                  game.dice3d.show(dicedata);
                 }
-            })
-            if( game.modules.get('dice-so-nice')?.active){
-              game.dice3d.show(dicedata);
+            }else{
+                return null;
             }
-        }else{
-            return null;
-        }
-        var belowtext = "<section class=\"tooltip-part\">";
-        for(let [k, v] of Object.entries(dicen)){
-            let sumv = v.value.reduce(function(sum,element){return sum+element},0); 
-            belowtext += "<div class=\"dice\"><span class=\"part-formula part-header flexrow\">"
-            belowtext += `${v.number}d${k}`
-            belowtext += "<div class=\"flex1\"></div><span class=\"part-total flex0\">"
-            belowtext +=  `${sumv}</span></span><ol class=\"dice-rolls\">`
-            for(let dice of v.value){
-                belowtext += `<li class=\"roll die d${k}\">${dice}</li>`
+            var belowtext = "<section class=\"tooltip-part\">";
+            for(let [k, v] of Object.entries(dicen)){
+                let sumv = v.value.reduce(function(sum,element){return sum+element},0); 
+                belowtext += "<div class=\"dice\"><span class=\"part-formula part-header flexrow\">"
+                belowtext += `${v.number}d${k}`
+                belowtext += "<div class=\"flex1\"></div><span class=\"part-total flex0\">"
+                belowtext +=  `${sumv}</span></span><ol class=\"dice-rolls\">`
+                for(let dice of v.value){
+                    belowtext += `<li class=\"roll die d${k}\">${dice}</li>`
+                }
+                belowtext += "</ol></div></section>"
             }
-            belowtext += "</ol></div></section>"
-        }
-        var text_line = data2.text.replace(/\r?\n/g,"<br>");
-        var contenthtml = "<div><div style=\"word-break : break-all;\">" + text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
-        ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
-        if(char = "alignment"){
-          if((data2.rands[0].value == 6) && (data2.rands[1].value == 6)){
-            actor.data.attribs.alignment.value -= 1;
-            up.object.update({'data': actor.data});
-          }else if((data2.rands[0].value == 1) && (data2.rands[1].value == 1)){
-            actor.data.attribs.alignment.value += 1;
-            up.object.update({'data': actor.data});
+            var text_line = data.text.replace(/\r?\n/g,"<br>");
+            var contenthtml = "<div><div style=\"word-break : break-all;\">" + text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
+            ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+            if(char = "alignment"){
+              if((data.rands[0].value == 6) && (data.rands[1].value == 6)){
+                actor.data.attribs.alignment.value -= 1;
+                up.object.update({'data': actor.data});
+              }else if((data.rands[0].value == 1) && (data.rands[1].value == 1)){
+                actor.data.attribs.alignment.value += 1;
+                up.object.update({'data': actor.data});
+              }
+            }
+            resolve(data);
           }
-        }
-      }
-    };
-      request2.send();
-    };
+        };
+        request.send();
+    
+        request.onerror=function(){
+          console.log("Server 1 connect error");
+          var request2 = new XMLHttpRequest();
+        var param2 = "command=" + text;
+        var server2 = game.settings.get("satasupe", "BCDice2");
+        var url2 = server2 + "/game_system/Satasupe/roll?" + param2;
+        request2.open("GET",url2,true);
+        request2.responseType = 'json';
+        request2.onload = function(){
+          if(request2.status == 200){
+            var data2 = this.response;
+            let rands = data2.rands;
+            if (data2.rands){
+                let dicedata = {throws:[{dice:[]}]};
+                for(let i = 0; i < rands.length ; i++){
+                    let typenum = rands[i].sides;
+                    let bcresult = rands[i].value;
+                    var addData = {result:bcresult,resultLabel:bcresult,type: `d${typenum}`,vecors:[],options:{}};
+                    dicedata.throws[0].dice[i]=addData;
+                }
+                var dicen = {};
+                data2.rands.forEach(elm => {
+                    if(dicen[elm.sides]){
+                        dicen[`${elm.sides}`].number += 1;
+                        dicen[`${elm.sides}`].value.push(elm.value);
+                    }else{
+                        dicen[`${elm.sides}`] = {};
+                        dicen[`${elm.sides}`]['number'] = 1;
+                        dicen[`${elm.sides}`]['value'] = [elm.value];
+                    }
+                })
+                if( game.modules.get('dice-so-nice')?.active){
+                  game.dice3d.show(dicedata);
+                }
+            }else{
+                return null;
+            }
+            var belowtext = "<section class=\"tooltip-part\">";
+            for(let [k, v] of Object.entries(dicen)){
+                let sumv = v.value.reduce(function(sum,element){return sum+element},0); 
+                belowtext += "<div class=\"dice\"><span class=\"part-formula part-header flexrow\">"
+                belowtext += `${v.number}d${k}`
+                belowtext += "<div class=\"flex1\"></div><span class=\"part-total flex0\">"
+                belowtext +=  `${sumv}</span></span><ol class=\"dice-rolls\">`
+                for(let dice of v.value){
+                    belowtext += `<li class=\"roll die d${k}\">${dice}</li>`
+                }
+                belowtext += "</ol></div></section>"
+            }
+            var text_line = data2.text.replace(/\r?\n/g,"<br>");
+            var contenthtml = "<div><div style=\"word-break : break-all;\">" + text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
+            ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+            if(char = "alignment"){
+              if((data2.rands[0].value == 6) && (data2.rands[1].value == 6)){
+                actor.data.attribs.alignment.value -= 1;
+                up.object.update({'data': actor.data});
+              }else if((data2.rands[0].value == 1) && (data2.rands[1].value == 1)){
+                actor.data.attribs.alignment.value += 1;
+                up.object.update({'data': actor.data});
+              }
+            }
+            resoleve(data2);
+          }
+        };
+          request2.onerror=function(){
+            reject(false);
+          }
+          request2.send();
+        };
+      })
+    }
+    let reData = await asyncFunc()
+    return reData;
   }
 
   _gearedit(event){
@@ -1494,9 +1673,10 @@ export class SatasupeActorSheet extends ActorSheet {
           const key = event.currentTarget.closest('.boolkey').dataset.boolkey;
           this.actor.updatePrisonerBool( index, key);
         }
-        if(event.currentTarget.classList.contains('addiction-name-input')){
+        if(event.currentTarget.classList.contains('addiction-input')){
           const index = parseInt(event.currentTarget.closest('.addiction-section').dataset.index);
-          this.actor.updateAddictionName( index, event.currentTarget.value);
+          const addictype = event.currentTarget.dataset.adic;
+          this.actor.updateAddictionName( index, event.currentTarget.value, addictype);
         }
         if(event.currentTarget.classList.contains('addiction-bool')){
           const index = parseInt(event.currentTarget.closest('.addiction-section').dataset.index);

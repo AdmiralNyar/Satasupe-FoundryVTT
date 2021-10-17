@@ -1,0 +1,22 @@
+<form id="memo-form" class="memo">
+    <nav class="sheet-tabs tabs memo" data-group="primary">
+        {{#each data.tabs}}
+            <div class="tab-list"><a class="data item tabname input" data-id="{{this.id}}" data-tab="tab{{this.id}}">{{this.name}}</a><a class="data item delete-tab" data-id="{{this.id}}" title="{{localize 'SATASUPE.Delete'}}"><i class="fas fa-times"></i></a></div>
+        {{/each}}
+    </nav>
+    <section class="sheet-body memo">
+        {{#each data.tabs}}
+            {{#uniqueif this.type "==" "plain"}}
+                <div class="tab{{this.id}} tab plain" data-group="primary" data-tab="tab{{this.id}}">
+                    {{> "systems/satasupe/templates/apps/memo-plain.html"}}
+                </div>
+            {{else}}
+                {{#uniqueif this.type "==" "check"}}
+                    <div class="tab{{this.id}} tab check" data-group="primary" data-tab="tab{{this.id}}">
+                        {{> "systems/satasupe/templates/apps/memo-check.html"}}
+                    </div>
+                {{/uniqueif}}
+            {{/uniqueif}}
+        {{/each}}
+    </section>
+</form>

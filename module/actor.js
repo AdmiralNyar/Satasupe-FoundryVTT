@@ -200,14 +200,17 @@ export class SatasupeActor extends Actor {
     const addic = this.data.data.addiction ? duplicate(this.data.data.addiction) : [];
     addic.push({
       title : title,
-      use : false
+      value: false,
+      times: 0,
+      use : false,
+      addic: false
     });
     await this.update( {'data.addiction' : addic});
   }
 
-  async updateAddictionName( index, name){
+  async updateAddictionName( index, name, addictype){
     const addic = duplicate(this.data.data.addiction);
-    addic[index].title = name;
+    addic[index][`${addictype}`] = name;
     await this.update({'data.addiction' : addic});
   }
 
@@ -416,10 +419,10 @@ export class SatasupeActor extends Actor {
     }else if(key == 'variable'){
       let num = value;
       if(num.match(/[！-～]/g)){
-        ui.notifications.error("Zenkaku kigou wo hennkan");
+        ui.notifications.error(game.i18n.localize("ALERTMESSAGE.DoubleByteSymbol"));
       }
       if(num.match(/(　| )/g)){
-        ui.notifications.error("Zenkaku space wo hennkan");
+        ui.notifications.error(game.i18n.localize("ALERTMESSAGE.DoubleByteSpace"));
       }
       num = num.replace(/[！-～]/g, function(s) {
         return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});

@@ -119,7 +119,10 @@
             <thead>
                 <tr class="header">
                     <th class="addiction-name">{{localize 'SATASUPE.Name'}}</th>
-                    <th class="addiction-use">{{localize 'SATASUPE.Use'}}</th>
+                    <th class="usenum" title="{{localize 'SPEC.ADDICTIONv'}}">{{localize 'SATASUPE.Value'}}</th>
+                    {{#if data.addictionrule}}<th class="usenum">{{localize 'SATASUPE.TIMES'}}</th>{{/if}}
+                    <th class="addiction-addic" title="{{localize 'SPEC.ADDICTION'}}" style="width: 35px;">{{localize 'SPEC.ADDICTIONs'}}</th>
+                    <th class="addiction-use" style="width: 35px;">{{localize 'SATASUPE.Use'}}</th>
                     <th class="space"> </th>
                 </tr>
             </thead>
@@ -128,8 +131,25 @@
                 <tr class='addiction-section' data-index='{{index}}' draggable="true">
                     <td class="addiction-name">
                         <div class="name-section">
-                            <input class="addiction-name-input" type="text" name="section.title" placeholder="{{localize 'SATASUPE.Name'}}" data-dtype="String" value="{{section.title}}"/>
+                            <input class="addiction-input" data-adic="title" type="text" name="section.title" placeholder="{{localize 'SATASUPE.Name'}}" data-dtype="String" value="{{section.title}}"/>
                         </div>
+                    </td>
+                    <td class="usenum">
+                        <div title="{{localize 'SPEC.ADDICTIONv'}}">
+                            <input class="addiction-input" data-adic="value" type="number" name="section.value" data-dtype="number" value="{{section.value}}">
+                        </div>
+                    </td>
+                    {{#if ../data.addictionrule}}
+                    <td class="usenum">
+                        <div class="">
+                            <input class="addiction-input" data-adic="times" type="number" name="section.times" data-dtype="number" value="{{section.times}}"/>
+                        </div>
+                    </td>
+                    {{/if}}
+                    <td class="checkbox">
+                        <label class="checkbox boolkey" data-boolkey="addic" title="{{localize 'SPEC.ADDICTION'}}">
+                            <input class="addiction-bool"  type="checkbox" value="{{section.addic}}" name="section.addic" data-dtype="Boolean" {{checked section.addic}}/>
+                        </label>
                     </td>
                     <td class="checkbox addiction-use-check">
                         <label class="checkbox boolkey" data-boolkey="use">

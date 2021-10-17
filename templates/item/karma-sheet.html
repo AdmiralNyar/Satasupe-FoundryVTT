@@ -75,9 +75,15 @@
                             {{#select data.target.name}}
                                 <option value="own">{{localize 'SATASUPE.Own'}}</option>
                                 <option value="other">{{localize 'SATASUPE.Other'}}</option>
+                                <option value="ownother">{{localize 'SATASUPE.OwnOther'}}</option>
                                 <option value="team">{{localize 'SATASUPE.Team'}}</option>
                                 <option value="area">{{localize 'SATASUPE.Area'}}</option>
+                                <option value="square">{{localize 'SATASUPE.Square'}}</option>
+                                <option value="diorama">{{localize 'SATASUPE.Diorama'}}</option>
                                 <option value="item">{{localize 'SATASUPE.Item'}}</option>
+                                <option value="vehicle">{{localize 'SATASUPE.Vehicle'}}</option>
+                                <option value="sp">{{localize 'SATASUPE.Sp'}}</option>
+                                <option value="text">{{localize 'SATASUPE.SeeText'}}</option>
                             {{/select}} 
                         </select>
                     </div>
@@ -91,13 +97,13 @@
                                     {{#unless data.check.checkText}}
                                         〔{{localize 'ATTRIBS.ALIGNMENTS'}}〕/ {{localize _alignment}}
                                     {{else}}
-                                        〔{{localize 'ATTRIBS.ALIGNMENTS'}}〕/ {{data.check.checkText}}
+                                        {{data.check.checkText}}
                                     {{/unless}}
                                 {{else}}
                                     {{#unless data.check.checkText}}
                                         〔{{localize _propertiesValue}}〕/ {{data.check.difficulty}}
                                     {{else}}
-                                        〔{{localize _propertiesValue}}〕/ {{data.check.checkText}}
+                                        {{data.check.checkText}}
                                     {{/unless}}
                                 {{/if}}</div>
                         {{/if}}

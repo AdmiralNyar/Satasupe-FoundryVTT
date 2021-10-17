@@ -1,0 +1,27 @@
+<form id="select-item-form">
+    <div class= "flexcol">
+        <div>
+            {{localize 'SATASUPE.SelectReason'}}
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th id="0">{{localize 'SATASUPE.RadioButton'}}</th>
+                    <th id="1">{{localize 'SATASUPE.Image'}}</th>
+                    <th id="2">{{localize 'SATASUPE.ItemName'}}</th>
+                    <th id="3">{{localize 'SATASUPE.OpenItem'}}</th>
+                </tr>
+            </thead>
+            <tbody id="selectItemTable">
+                {{#each data}}
+                    <tr>
+                        <td style="text-align: center;" class="checkon radioboxin"><input class="radioboxin" type="radio" name="item" value="{{this.data._id}}"/></td>
+                        <td style="text-align: center;" class="checkon"><img src="{{this.data.img}}" width="40" height="40"></td>
+                        <td style="text-align: center;" class="checkon">{{this.data.name}}</td>
+                        <td style="text-align: center;"><input type="button" value="OPEN" class="open-itemsheet" data-key="{{this.data._id}}"/></td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</form>

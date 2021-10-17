@@ -55,7 +55,7 @@ export class SatasupeKarmaSheet extends ItemSheet {
     async _updateEffectArea(object, value){
         const kar = duplicate(object.data.data);
         kar.effect = value;
-        kar.effecthtml = value.replace(/\n|\r/g, '<br>');
+        kar.effecthtml = value.replace(/\r?\n/g, '<br>');
         await this.item.update({'data': kar});
     }
 

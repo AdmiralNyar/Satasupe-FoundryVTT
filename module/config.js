@@ -23,6 +23,25 @@ SATASUPE.check = {
     mind : 'APTITUDE.MIND'
 };
 
+SATASUPE.checkSelection = {
+    crime : 'CIRCUMSTANCE.CRIME',
+    life  : 'CIRCUMSTANCE.LIFE',
+    love : 'CIRCUMSTANCE.LOVE',
+    cluture :'CIRCUMSTANCE.CULTURE',
+    combat : 'CIRCUMSTANCE.COMBAT',
+    body : 'APTITUDE.BODY',
+    mind : 'APTITUDE.MIND',
+    alignment : 'ATTRIBS.ALIGNMENTS'
+};
+
+SATASUPE.turncount = {
+    5 : 'SATASUPE.EarlyMorning',
+    1 : 'SATASUPE.Morning',
+    2 : 'SATASUPE.Daytime',
+    3 : 'SATASUPE.Night',
+    4 : 'SATASUPE.Midnight',
+}
+
 SATASUPE.rollbuttonType = {
     crime : 'CIRCUMSTANCE.CRIME',
     life  : 'CIRCUMSTANCE.LIFE',
@@ -71,9 +90,15 @@ SATASUPE.alignment = {
 SATASUPE.target = {
     own :'SATASUPE.Own',
     other:'SATASUPE.Other',
+    ownother: 'SATASUPE.OwnOther',
     team:'SATASUPE.Team',
     area:'SATASUPE.Area',
-    item:'SATASUPE.Item'
+    square:'SATASUPE.Square',
+    diorama:'SATASUPE.Diorama',
+    item:'SATASUPE.Item',
+    vehicle:'SATASUPE.Vehicle',
+    sp:'SATASUPE.Sp',
+    text:'SATASUPE.SeeText'
 }
 
 SATASUPE.timing = {
@@ -114,6 +139,30 @@ SATASUPE.referenceable = {
     wallet : 'this.actor.data.data.attribs.wallet.value',
 }
 
+SATASUPE.advancedKarma ={
+    boss : 'ADVANCED.BOSS',
+    spiv : 'ADVANCED.SPIV',
+    torpedo : 'ADVANCED.TORPEDO',
+    bodyguard : 'ADVANCED.BODYGUARD',
+    masher : 'ADVANCED.MASHER',
+    goddamnliar : 'ADVANCED.GODDAMNLIAR',
+    fivefingers : 'ADVANCED.FIVEFINGERS',
+    hotrod : 'ADVANCED.HOTROD',
+    batcarrier : 'ADVANCED.BATCARRIER',
+    illegalmeister : 'ADVANCED.ILLEGALMEISTER',
+    psycho : 'ADVANCED.PSYCHO',
+    hopelesscase : 'ADVANCED.HOPELESSCASE'
+}
+
+SATASUPE.city ={
+    minami : 'SATASUPE.MINAMI',
+    chinatown : 'SATASUPE.CHINATOWN',
+    warship : 'SATASUPE.WARSHIP',
+    civic : 'SATASUPE.CIVIC',
+    downtown :'SATASUPE.DOWNTOWN',
+    shaokin : 'SATASUPE.SHAOKIN'
+}
+
 SATASUPE.range = {
     melee : 'SATASUPE.MELEE',
     shot : 'SATASUPE.SHOT'
@@ -123,6 +172,83 @@ SATASUPE.times ={
     normal : 'SATASUPE.TIME',
     consumable : 'SATASUPE.SONSUMABLE',
     unlimit : 'SATASUPE.UNLIMIT'
+}
+
+SATASUPE.timingG = {
+    passive:'SATASUPE.Passive',
+    planning : 'SATASUPE.Planning',
+    support : 'SATASUPE.Support',
+    auxiliary : 'SATASUPE.Auxiliary',
+    interrupt : 'SATASUPE.Interrupt',
+    prologue : 'SATASUPE.Prologue',
+    epilogue : 'SATASUPE.Epilogue',
+    passive: 'SATASUPE.Equipping'
+}
+
+SATASUPE.specialV ={
+    flesh : "SPEC.FLESH",
+    vcombat : "SPEC.VEHICLECOMBAT",
+    portable : "SPEC.PORTABLE",
+    unbalance : "SPEC.UNBALANCE",
+    seduction : "SPEC.SEDUCTION",
+    habitable : "SPEC.HABITABLE",
+    safety : "SPEC.SAFETY",
+    sky : "SPEC.SKY",
+    light : "SPEC.LIGHT",
+    onwater : "SPEC.ONWATER",
+    crunch : "SPEC.CRUNCH"
+}
+
+SATASUPE.specialtextV = {
+    upkeepcost : "SPEC.UPKEEPCOST"
+}
+
+SATASUPE.specialW={
+    satasupe : "SPEC.SATASUPE",
+    revolver : "SPEC.REVOLVER",
+    shotgun : "SPEC.SHOTGUN",
+    longrange : "SPEC.LONGRANGE",
+    murdrum : "SPEC.MURDRUM",
+    full : "SPEC.FULL",
+    stun : "SPEC.STUN",
+    crash : "SPEC.CRASH",
+    twohand : "SPEC.TWOHAND",
+    breakable : "SPEC.FULLBREAKABLE",
+    dram : "SPEC.FULLDRAM",
+    stability : "SPEC.STABILITY",
+    poison : "SPEC.POISON",
+    mystery : "SPEC.MYSTERY",
+    reach : "SPEC.REACH"
+}
+
+SATASUPE.specialtextW = {
+    kill : "SPEC.KILL",
+    blast : "SPEC.BLAST",
+    shock : "SPEC.SHOCK",
+    target : "SPEC.TARGET",
+    barrage : "SPEC.BARRAGE",
+    limit1 : "SPEC.LIMIT1",
+    limit2 : "SPEC.LIMIT2",
+    exterminate : "SPEC.EXTERMINATE",
+    upkeepcost : "SPEC.UPKEEPCOST"
+}
+
+SATASUPE.specialP = {
+    mini : "SPEC.MINI",
+    consumable : "SPEC.CONSUMABLE",
+    multiple : "SPEC.MULTIPLE",
+    normalstorage : "SPEC.NORMALSTORAGE",
+    room : "SPEC.ROOM",
+    noncumulative : "SPEC.NONCUMULATIVE"
+}
+
+SATASUPE.specialtextP = {
+    addiction : "SPEC.ADDICTION",
+    furniture : "SPEC.FURNITURE",
+    limit1 : "SPEC.LIMIT1",
+    limit2 : "SPEC.LIMIT2",
+    upkeepcost : "SPEC.UPKEEPCOST",
+    securityadd : "SPEC.SECURITY"
 }
 
 SATASUPE.hobby = {
@@ -156,6 +282,15 @@ SATASUPE.hobby = {
     gamble:"HOBBY.GAMBLE",
     gossip:"HOBBY.GOSSIP",
     fashion:"HOBBY.FASHION"
+}
+
+SATASUPE.hobbyctegnum = {
+    1:"subculture",
+    2:"culture",
+    3:"earnest",
+    4:"holiday",
+    5:"comfort",
+    6:"redLight"
 }
 
 SATASUPE.cteghobby = {

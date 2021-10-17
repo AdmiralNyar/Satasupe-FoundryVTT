@@ -16,6 +16,9 @@ import { SatasupeInvestigationSheet } from "./item/sheets/investigation.js";
 import { SatasupeChatpaletteSheet} from "./item/sheets/chatpalette.js";
 import { SATASUPE} from './config.js';
 import { SatasupeGiveItem} from './giveitem.js';
+import { SatasupeMenu} from './menu.js';
+import { SatasupeChatCard} from "./chat-card.js";
+import { memoApplication} from "./apps/memo.js"
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -51,6 +54,68 @@ Hooks.once("init", async function() {
   Items.registerSheet("satasupe", SatasupeChatpaletteSheet, { types: ['chatpalette'], makeDefault: true});
   Items.registerSheet("satasupe", SatasupeItemSheet, { makeDefault: true });
 
+  game.settings.register("satasupe", 'turnCount', {
+    name: 'Turn Count',
+    scope: 'world',
+    config: false,
+    type: Number,
+    default: 0,
+    range:{
+      min:0
+    }
+  });
+
+  game.settings.register("satasupe", 'worktimeValue', {
+    name: 'Work Time value',
+    scope: 'world',
+    config: false,
+    type: Number,
+    default: 5,
+    range:{
+      min:0
+    }
+  });
+
+  game.settings.register("satasupe", 'worklimit', {
+    name: 'Work Limit value',
+    scope: 'world',
+    config: false,
+    type: Object,
+    default: {limit: 10,secret:true},
+  })
+
+  game.settings.register("satasupe", 'playerlist',{
+    name: 'Player list',
+    scope: 'world',
+    config: false,
+    type: Object,
+    default: null,
+  })
+
+  game.settings.register("satasupe", 'vote',{
+    name: 'Vote',
+    scope: 'world',
+    config: false,
+    type: Object,
+    default: []
+  })
+
+  game.settings.register("satasupe", "afterplayprogress",{
+    name: 'Afterplay Progress',
+    scope: 'world',
+    config: false,
+    type:Object,
+    default: []
+  })
+
+  game.settings.register("satasupe", 'chatcardlog',{
+    name: 'Chat Card Log',
+    scope: 'world',
+    config: false,
+    type: Object,
+    default: []
+  })
+
   game.settings.register("satasupe", "showchatpalette", {
     name: "SETTINGS.SatasupeChatpaletteN",
     hint: "SETTINGS.SatasupeChatpaletteL",
@@ -73,6 +138,57 @@ Hooks.once("init", async function() {
     name: "SETTINGS.SatasupeOriginaltableN",
     hint: "SETTINGS.SatasupeOriginaltableL",
     scope: 'client',
+    type: Boolean,
+    config: true,
+    default: true
+  });
+
+  game.settings.register("satasupe", "turndisplay",{
+    name: "SETTINGS.SatasupeTurnCountN",
+    hint: "SETTINGS.SatasupeTurnCountL",
+    scope: 'world',
+    type: String,
+    choices: {
+      "0" : game.i18n.localize("SATASUPE.ChatOnly"),
+      "1" : game.i18n.localize("SATASUPE.UiOnly"),
+      "2" : game.i18n.localize("SATASUPE.ChatAndUi"),
+      "3" : game.i18n.localize("SATASUPE.NoDisplay")
+    },
+    config: true,
+    default: "0"
+  });
+
+  game.settings.register("satasupe", "turnskip", {
+    name: "SETTINGS.SatasupeUnactedCharacterN",
+    hint: "SETTINGS.SatasupeUnactedCharacterL",
+    scope: 'world',
+    type: Boolean,
+    config: true,
+    default: false
+  });
+
+  game.settings.register("satasupe", "addiction", {
+    name: "SETTINGS.SatasupeAddictionN",
+    hint: "SETTINGS.SatasupeAddictionL",
+    scope: 'world',
+    type: Boolean,
+    config: true,
+    default: false
+  });
+
+  game.settings.register("satasupe", "favmovie", {
+    name: "SETTINGS.SatasupeFavMovieN",
+    hint: "SETTINGS.SatasupeFavMovieL",
+    scope: 'world',
+    type: Boolean,
+    config: true,
+    default: false
+  });
+
+  game.settings.register("satasupe", "worktime", {
+    name: "SETTINGS.SatasupeWorkTimeChangeN",
+    hint: "SETTINGS.SatasupeWorkTimeChangeL",
+    scope: 'world',
     type: Boolean,
     config: true,
     default: true
@@ -112,6 +228,15 @@ Hooks.once("init", async function() {
     type: Boolean,
     config: true,
     default: false
+  });  
+
+  game.settings.register("satasupe", "uploadCharacterSetting", {
+    name: "SETTINGS.SatasupeTokenAutoSettingN",
+    hint: "SETTINGS.SatasupeTokenAutoSettingL",
+    scope: 'world',
+    type: Boolean,
+    config: true,
+    default: true
   });  
 
   /**
@@ -176,6 +301,8 @@ Hooks.once("init", async function() {
   preloadHandlebarsTemplates();
 });
 
+Hooks.on('renderSceneControls', SatasupeMenu.renderMenu);
+
 Hooks.once('diceSoNiceReady', (dice3d) => {
   game.dice3d.addColorset({
     name: 'unseen_black',
@@ -211,24 +338,71 @@ Hooks.on('createActor', async (document, options, userId) => {
   await document.update({'data':actor.data});
 });
 
+Hooks.on('renderChatLog', (app, html, data) => SatasupeChatCard.chatListeners(app, html, data));
+Hooks.on('renderChatMessage', (app,html,data) => SatasupeChatCard.renderChatMessageHook(app,html,data));
+Hooks.on('updateChatMessage', (chatMessage) => SatasupeChatCard.onUpdateChatMessage( chatMessage));
+Hooks.on('renderApplication', async (app, html, data) => {
+  if(game.user.isGM){
+    if(html.hasClass('afterplayListDialog')){
+      await SatasupeChatCard._progressupdate();
+    }
+  }
+});
+Hooks.once('ready',async function(){
+  const ig = game.i18n.localize("SATASUPE.Ignore");
+  const de = game.i18n.localize("SATASUPE.DeleteItemCss");
+  window.document.documentElement.style.setProperty("--ignore", ig);
+  window.document.documentElement.style.setProperty("--delete", de);
+});
+
 Hooks.on('ready', async function () {
-  game.socket.on('system.satasupe', packet => {
+  game.socket.on('system.satasupe', async (packet) => {
       let data = packet.data;
       let type = packet.type;
-      const receiveActorId = packet.receiveActorId;
-      const sendActorId = packet.sendActorId;
-      data.receiveActor = game.actors.get(receiveActorId);
-      data.sendActor = game.actors.get(sendActorId);
-      if (data.receiveActor.owner) {
-          if (type === 'request') {
-            SatasupeGiveItem.receiveTrade(data);
+      if(type!="selected"){
+        const receiveActorId = packet.receiveActorId;
+        const sendActorId = packet.sendActorId;
+        data.receiveActor = game.actors.get(receiveActorId);
+        data.sendActor = game.actors.get(sendActorId);
+        if (data.receiveActor.owner) {
+            if (type === 'request') {
+              SatasupeGiveItem.receiveTrade(data);
+            }
+            if (type === 'accepted') {
+              SatasupeGiveItem.completeTrade(data);
+            }
+            if (type === 'denied') {
+              SatasupeGiveItem.denyTrade(data);
+            }
+        }
+      }else{
+        let result = packet.result;
+        const isGM = game.user.isGM;
+        if(isGM){
+          if(packet.voteT=="karma"){
+            SatasupeChatCard._onChatCardSwitchK(result)
+          }else if(packet.voteT=="mvp"){
+            SatasupeChatCard._onChatCardSwitchM(result)
+          }else if(packet.voteT == "button"){
+            await SatasupeChatCard._onChatCardAction(result)
+            await SatasupeChatCard._progressupdate();
+          }else if(packet.voteT == "gene"){
+            SatasupeChatCard._onChatCardSwitchG(result)
           }
-          if (type === 'accepted') {
-            SatasupeGiveItem.completeTrade(data);
+        }else{
+          if(packet.voteT == "notact"){
+            if(game.user.character){
+              await SatasupeMenu.actedintheTurn(null, true)
+            }
           }
-          if (type === 'denied') {
-            SatasupeGiveItem.denyTrade(data);
+        }
+        if(packet.voteT == "sharememo"){
+          if(game.user.id == result || result == -1){
+            await memoApplication._sharememo(packet.data)
           }
+        }else if(packet.voteT == "info"){
+          ui.notifications.info(result)
+        }
       }
   });
 });
@@ -263,8 +437,8 @@ Hooks.on("renderActorSheet", async (app, html, data) => {
     $(button).hide();
     $(button).prev().show();
   });
-  html.find('div.drparea').on("drop",async function(ev){
-    let reciveactorid = ev.currentTarget.closest("div.placement-zone").dataset.actorid;
+  html.find('div.passdrparea').on("drop",async function(ev){
+    let reciveactorid = ev.currentTarget.dataset.actorid;
     var id = JSON.parse(ev.originalEvent.dataTransfer.getData('text/plain'));
     const sendActor=game.actors.get(id.actorid);
     const receiveActor = game.actors.get(reciveactorid);

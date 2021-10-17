@@ -1,0 +1,18 @@
+<div class="message-content">
+    {{#if check}}<div style="display: flex;justify-content: center;height:0px">
+        <div class="rotateR" style="position: relative; width: 170px;top: 10px;padding:28px 10px;height: 80px;text-align: center;">
+            <label class="specialelite" style="font-size: xx-large;color:#880000;">
+                {{localize "SATASUPE.Admitted"}}
+    </label></div></div>{{/if}}
+    {{#if skip}}<div style="display: flex;justify-content: center;height:0px">
+        <div class="rotateG" style="position: relative; width: 170px;top: 10px;padding:28px 10px;height: 80px;text-align: center;">
+            <label class="specialelite" style="font-size: xx-large;color:#008000;">
+                {{localize "SATASUPE.Skipped"}}
+    </label></div></div>{{/if}}
+    <div style="display: flex;align-items: center;height: 40px;margin-top:20px;"><label>{{karma}} {{localize "SATASUPE.Check"}}</label></div>
+    <div class="card-buttons">
+        {{#if button}}<button data-buttontype="check" data-karma="{{karma}}" data-userid="{{userid}}" data-actor="{{actor}}" data-id="{{id}}" data-type="{{type}}">{{localize "SATASUPE.Check"}}</button>{{else}}
+        <button data-buttontype="admit" data-karma="{{karma}}" data-userid="{{userid}}" data-actor="{{actor}}" data-id="{{id}}" data-type="{{type}}">{{localize "SATASUPE.Admit"}}</button>{{/if}}
+        <button data-buttontype="skip" data-karma="{{karma}}"  data-userid="{{userid}}" data-actor="{{actor}}" data-id="{{id}}" data-type="{{type}}">{{localize "SATASUPE.Skip"}}</button>
+    </div>
+</div>

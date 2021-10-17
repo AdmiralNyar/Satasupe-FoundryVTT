@@ -2,7 +2,7 @@
     <div class="number-zone">
         <div class="check" style="padding: 4px 0;">
             <label>{{localize 'SATASUPE.Difficulty'}} : </label>
-            <input name="difficulty" type="number" min="5" value="5"/>
+            {{#if defdifficult}}<input name="difficulty" type="number" value="{{defdifficult}}" readonly/>{{else}}<input name="difficulty" type="number" min="5" value="5"/>{{/if}}
         </div>
         <div class="check" style="padding: 4px 0;">
             <label>{{localize 'SATASUPE.SUCCESSSTOP'}} : </label>

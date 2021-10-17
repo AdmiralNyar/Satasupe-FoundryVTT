@@ -1,0 +1,6 @@
+<form>
+    <label>{{localize "SATASUPE.ChooseSharePlayer"}}</label>
+    {{#each list}}
+        <button class="playershare" data-playerid="{{this.id}}">{{this.name}}</button>
+    {{/each}}
+</form>

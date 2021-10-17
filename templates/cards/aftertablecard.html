@@ -1,0 +1,11 @@
+<div class="message-content">
+    {{#if roll}}<div style="display: flex;justify-content: center;height:0px">
+        <div class="rotateA" style="position: relative; width: 170px;top: -5px;padding:28px 10px;height: 80px;text-align: center;">
+            <label class="specialelite" style="font-size: xx-large;color:#880000;">
+                {{localize "SATASUPE.Rolled"}}
+    </label></div></div>{{/if}}
+    <div style="display: flex;align-items: center;height: 45px;margin-top:20px;"><label>{{localize "SATASUPE.AfterTable"}}</label></div>
+    <div class="card-buttons">
+        <button data-buttontype="roll"  data-userid="{{userid}}" data-id="{{id}}" data-actor="{{actor}}" data-type="{{type}}">{{localize "SATASUPE.Roll"}}</button>
+    </div>
+</div>
