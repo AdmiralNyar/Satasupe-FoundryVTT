@@ -366,6 +366,9 @@ export class SatasupeChatCard{
                             }
                         }
                     }
+                    let progr = game.settings.get("satasupe", "afterplayprogress");
+                    progr.addiction.created = true;
+                    await game.settings.set("satasupe", "afterplayprogress", progr);
                     break;
                 case "karma":
                     if(actor.data.items?._source){
@@ -395,6 +398,9 @@ export class SatasupeChatCard{
                             game.settings.set("satasupe", 'chatcardlog',data);
                         }
                     }
+                    let progrk = game.settings.get("satasupe", "afterplayprogress");
+                    progrk.karma.created = true;
+                    await game.settings.set("satasupe", "afterplayprogress", progrk);
                     break;
                 case "afterTable":
                     message = await renderTemplate(`systems/satasupe/templates/cards/aftertablecard.html`,{id:0,userid:list[i].id,type:type,actor:actor.id,roll:false});
@@ -417,6 +423,7 @@ export class SatasupeChatCard{
                     let progid = progresslist.aftertable.list.findIndex((u) => u.id ==list[i].id);
                     progresslist.aftertable.list[progid].cardlist = [];
                     progresslist.aftertable.list[progid].cardlist.push({cardid:card.id,logid:datalength});
+                    progresslist.aftertable.created = true;
                     await game.settings.set("satasupe", "afterplayprogress", progresslist);
                     game.settings.set("satasupe", 'chatcardlog',data);
                     break;
@@ -453,6 +460,9 @@ export class SatasupeChatCard{
                             }
                         }
                     }
+                    let progrp = game.settings.get("satasupe", "afterplayprogress");
+                    progrp.prisoner.created = true;
+                    await game.settings.set("satasupe", "afterplayprogress", progrp);
                     break;
                 case "itemUpkeep":
                     let upkeep = [];
@@ -533,11 +543,16 @@ export class SatasupeChatCard{
                         await game.settings.set("satasupe", "afterplayprogress", progresslist2);
                         game.settings.set("satasupe", 'chatcardlog',data2);
                     }
+                    let progru = game.settings.get("satasupe", "afterplayprogress");
+                    progru.upkeep.ricreated = true;
+                    progru.upkeep.upcreated = true;
+                    await game.settings.set("satasupe", "afterplayprogress", progru);
                     break;
                 case "vote":
                     break;
             }
         }
+        await SatasupeChatCard._progressupdate();
     }
 
     static async _onChatCardSwitchG(result){
@@ -952,10 +967,12 @@ export class SatasupeChatCard{
             progid = progresslist.discussionK.list.findIndex((u) => u.id ==id);
             progresslist.discussionK.list[progid].cardlist = [];
             progresslist.discussionK.list[progid].cardlist.push({cardid:card.id,logid:datalength});
+            progresslist.discussionK.created = true;
         }else if(type=="discussionMVP"){
             progresslist.discussionM.voteid = datalength;
             progresslist.discussionM.cardid = card.id;
             if(progresslist.discussionM.select == true) progresslist.discussionM.select = false;
+            progresslist.discussionM.created = true;
         }
         await game.settings.set("satasupe", "afterplayprogress", progresslist);
         game.settings.set("satasupe", 'vote', data);
@@ -1326,6 +1343,8 @@ export class SatasupeChatCard{
                                 }
                                 let percent = Math.round((total_s/total_n)*100);
                                 SatasupeChatCard._progressrender(percent, key, $content)
+                            }else if(value.created){
+                                SatasupeChatCard._progressrender(100, key, $content)
                             }else{
                                 SatasupeChatCard._progressrender(0, key, $content)
                             }
@@ -1343,6 +1362,8 @@ export class SatasupeChatCard{
                                 }
                                 let percent = Math.round((total_s/total_n)*100);
                                 SatasupeChatCard._progressrender(percent, key, $content)
+                            }else if(value.created){
+                                SatasupeChatCard._progressrender(100, key, $content)
                             }else{
                                 SatasupeChatCard._progressrender(0, key, $content)
                             }
@@ -1360,6 +1381,8 @@ export class SatasupeChatCard{
                                 }
                                 let percent = Math.round((total_s/total_n)*100);
                                 SatasupeChatCard._progressrender(percent, key, $content)
+                            }else if(value.created){
+                                SatasupeChatCard._progressrender(100, key, $content)
                             }else{
                                 SatasupeChatCard._progressrender(0, key, $content)
                             }
@@ -1377,6 +1400,8 @@ export class SatasupeChatCard{
                                 }
                                 let percent = Math.round((total_s/total_n)*100);
                                 SatasupeChatCard._progressrender(percent, key, $content)
+                            }else if(value.created){
+                                SatasupeChatCard._progressrender(100, key, $content)
                             }else{
                                 SatasupeChatCard._progressrender(0, key, $content)
                             }
@@ -1394,6 +1419,8 @@ export class SatasupeChatCard{
                                 }
                                 let percent = Math.round((total_s/total_n)*100);
                                 SatasupeChatCard._progressrender(percent, key, $content)
+                            }else if(value.created){
+                                SatasupeChatCard._progressrender(100, key, $content)
                             }else{
                                 SatasupeChatCard._progressrender(0, key, $content)
                             }
@@ -1427,8 +1454,15 @@ export class SatasupeChatCard{
                                 }
                             }
                             let percent = 0;
-                            if((total_n+total_n2)>0) percent = Math.round(((total_s+total_s2)/(total_n+total_n2))*100);
-                            SatasupeChatCard._progressrender(percent, key, $content)
+
+                            if((total_s+total_s2)>0){ 
+                                percent = Math.round(((total_s+total_s2)/(total_n+total_n2))*100);
+                                SatasupeChatCard._progressrender(percent, key, $content)
+                            }else if(value.ricreated && value.upcreated){
+                                SatasupeChatCard._progressrender(100, key, $content)
+                            }else{
+                                SatasupeChatCard._progressrender(percent, key, $content)
+                            }
                             break;
                         }
                     }
