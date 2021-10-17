@@ -246,8 +246,10 @@ export class SatasupeMenu {
                 let turn = false;
                 for(let k = 0;k<list.length;k++){
                     let actor = game.users.get(list[k].id).character;
-                    if(!actor.data.data.status.turn.value){
-                        turn = true;
+                    if(actor) {
+                        if(!actor.data.data.status.turn.value){
+                            turn = true;
+                        }
                     }
                 }
                 if(game.settings.get("satasupe", "turnskip")) turn = false;
