@@ -1,0 +1,14 @@
+<form id="change-limit">
+    <div style="display: grid;">
+        <label>{{localize "SATASUPE.CurrentTurn"}}{{#if option}}{{localize "SATASUPE.BeforeStart"}}{{else}}{{#if turn}}{{defturn}}{{else}}{{dayturn}}{{/if}}{{/if}}</label>
+        <label>{{localize "SATASUPE.CurrentLimit"}}{{#if limit}}{{deflimitturn}}{{else}}{{limitturn}}{{/if}}</label>
+        <div style="display: flex;"><label>{{localize "SATASUPE.ChooseLimit"}}</label>
+            <select name="newlimit">
+                {{#each limitlist}}
+                    <option name="newlimit" value="{{this.value}}">{{this.text}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div style="display: flex;"><label>{{localize "SATASUPE.SecretLimit"}}</label><input type="checkbox" name="secret" value="true" {{#if secret}}checked="checked"{{/if}}></div>
+    </div>
+</form>

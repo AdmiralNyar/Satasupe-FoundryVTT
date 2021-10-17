@@ -1,0 +1,19 @@
+<div class="message-content">
+    <div class="flexrow">
+        <div style="flex:5;display: flex;flex-direction: column;justify-content: center;">
+            <img src="{{pic}}" style="border:none">
+        </div>
+        <div style="flex:8">
+            <h2><ruby>{{name}}<rt>{{ruby}}</rt></ruby></h2>
+            <ul>
+                <li>{{localize "SATASUPE.Timing"}}: {{timing}}</li>
+                <li>{{localize "SATASUPE.Target"}}: {{target}}</li>
+                <li>{{localize "SATASUPE.Check"}}: {{{check}}}</li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <div style="display: flex;justify-content: space-between;"><label>{{localize "SATASUPE.KarmaEffect"}}:</label><a class="effect-op"><i class="fas fa-caret-down"></i></a><a class="effect-cl" style="display: none;"><i class="fas fa-caret-up"></i></a></div>
+        <p style="display: none;">{{{text}}}</p>
+    </div>
+</div>

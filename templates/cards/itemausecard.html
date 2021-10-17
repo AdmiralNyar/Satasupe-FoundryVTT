@@ -1,0 +1,30 @@
+<div class="message-content">
+    <div class="flexrow">
+        <div style="flex:5;display: flex;flex-direction: column;justify-content: center;">
+            <img src="{{pic}}" style="border:none">
+        </div>
+        <div style="flex:8">
+            <h2><ruby>{{name}}<rt>{{ruby}}</rt></ruby></h2>
+            <ul>
+                {{#if timing}}<li>{{localize "SATASUPE.Timing"}}: {{timing}}</li>{{/if}}
+                {{#if mini}}<li>{{localize "SATASUPE.STOCK"}}: {{mini}}</li>{{/if}}
+                <li>{{localize "SATASUPE.Check"}}: {{#if addic}}
+                        <a class="bcroll" data-actor={{actor}} data-type="body" data-diff="{{addic}}"><i class="fas fa-dice-d20"></i>{{localize "SATASUPE.BADTRIP"}}</a>
+                        <a class="bctable" data-actor={{actor}} data-tname="budtt"><i class="fas fa-th-list"></i>{{localize "SATASUPE.BUDTT"}}</a>
+                    {{else}}
+                        <a class="bcroll" data-actor={{actor}} data-type="generic" data-diff="5"><i class="fas fa-dice-d20"></i>{{localize "SATASUPE.GENECHECK"}}</a><a class="bcroll" data-actor={{actor}} data-type="alignment" data-diff=""><i class="fas fa-dice-d20"></i>{{localize "SATASUPE.ALIGNCHECK"}}</a>
+                    {{/if}}</li>
+                {{#if sp}}<li>{{localize "SATASUPE.SPECIAL"}}: <div style="display: unset;">{{#each speciallist}}<div class="splist">{{#uniqueif this.num "==" false}}{{localize this.label}}{{else}}{{localize this.label}}:{{this.num}}{{/uniqueif}}</div>{{/each}}</div></li>{{/if}}
+            </ul>
+        </div>
+    </div>
+    {{#if dispt}}<div>
+        <div style="display: flex;justify-content: space-between;"><label>{{localize "SATASUPE.KarmaEffect"}}:</label><a class="effect-op"><i class="fas fa-caret-down"></i></a><a class="effect-cl" style="display: none;"><i class="fas fa-caret-up"></i></a></div>
+        <p style="display: none;">
+            {{#each text}}
+                ・{{{this}}}
+                <br>
+            {{/each}}
+        </p>
+    </div>{{/if}}
+</div>

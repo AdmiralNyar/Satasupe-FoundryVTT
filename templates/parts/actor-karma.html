@@ -31,13 +31,13 @@
 												{{#unless item.data.check.checkText}}
 													〔{{localize 'SATASUPE.ALIGNMENT'}}〕 / {{localize item.data.check.alignment.label}}
 												{{else}}
-													〔{{localize 'SATASUPE.ALIGNMENT'}}〕 / {{item.data.check.checkText}}
+													{{item.data.check.checkText}}
 												{{/unless}}
 											{{else}}
 												{{#unless item.data.check.checkText}}
 													〔{{localize item.data.check.checkValue.label}}〕/ {{item.data.check.difficulty}}
 												{{else}}
-													〔{{localize item.data.check.checkValue.label}}〕/ {{item.data.check.checkText}}
+													{{item.data.check.checkText}}
 												{{/unless}}
 											{{/if}}
 										{{/if}}

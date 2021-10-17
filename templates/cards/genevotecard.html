@@ -1,0 +1,14 @@
+<div class="message-content" style="display: flex; flex-direction: column;">
+    <label>{{question}}</label>
+    {{#each list}}
+        <div style="display: flex;align-items: baseline;">
+            <label>{{this.name}} :</label>
+            <select style="display: none;width:150px" class="select-switch-gene vote" data-userid="{{this.id}}">
+                <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                {{#each ../choice}}
+                    <option value="{{this.id}}">{{this.text}}</option>
+                {{/each}}
+            </select>
+        </div>
+    {{/each}}
+</div>

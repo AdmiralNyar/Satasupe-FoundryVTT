@@ -1,0 +1,7 @@
+<form id="select-tab-form">
+    <div class="flexcol">
+        {{#each tabs}}
+            <div class="flexrow"><input type="checkbox" id="{{this.id}}" name="memotab" value="{{this.id}}"/><label for="{{this.id}}">{{this.name}}</label></div>
+        {{/each}}
+    </div>
+</form>

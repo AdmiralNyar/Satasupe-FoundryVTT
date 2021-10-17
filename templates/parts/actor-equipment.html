@@ -17,7 +17,7 @@
                 <tbody class="main-body">
                     {{#each data.gear as |item id|}}
                         {{#if item.data.typew}}
-                            <tr class="item weapon-row equipment-row" data-item-id="{{item._id}}" data-itemtype="weapon" draggable="true">
+                            <tr class="item weapon-row equipment-row" data-id={{id}} data-item-id="{{item._id}}" data-itemtype="weapon" draggable="true">
                                 <td colspan="8">
                                     <table rules="none" class="inner-table">
                                         <tr class="weapon-list equipment-list">
@@ -77,7 +77,7 @@
                 <tbody class="main-body">
                     {{#each data.gear as |item id|}}
                         {{#if item.data.typev}}
-                            <tr class="item vehicle-row equipment-row" data-item-id="{{item._id}}" data-itemtype="vehicle" draggable="true">
+                            <tr class="item vehicle-row equipment-row" data-id={{id}} data-item-id="{{item._id}}" data-itemtype="vehicle" draggable="true">
                                 <td colspan="8">
                                     <table rules="none" class="inner-table">
                                         <tr class="vehicle-list equipment-list">
@@ -137,7 +137,7 @@
                 <tbody class="main-body">
                     {{#each data.gear as |item id|}}
                         {{#if item.data.typep}}
-                            <tr class="item props-row equipment-row" data-item-id="{{item._id}}" data-itemtype="props" draggable="true">
+                            <tr class="item props-row equipment-row" data-id={{id}} data-item-id="{{item._id}}" data-itemtype="props" draggable="true">
                                 <td colspan="8">
                                     <table rules="none" class="inner-table">
                                         <tr class="props-list equipment-list">
@@ -218,7 +218,7 @@
                 <tbody class="main-body">
                     {{#each data.gear as |item id|}}
                         {{#if item.data.typeg}}
-                            <tr class="item gadjet-row equipment-row" data-item-id="{{item._id}}" data-itemtype="gadjet" draggable="true">
+                            <tr class="item gadjet-row equipment-row" data-id={{id}} data-item-id="{{item._id}}" data-itemtype="gadjet" draggable="true">
                                 <td colspan="6">
                                     <table rules="none" class="inner-table">
                                         <tr class="gadjet-list equipment-list">
@@ -241,7 +241,7 @@
             </table>
         </div>
     </div>
-    <div class="placement-zone" data-actorid="{{data.actorid}}">
+    <div class="placement-zone passdrparea" data-actorid="{{data.actorid}}">
         <div class="normal-place">
             <label>{{localize 'SATASUPE.NORMALEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentplace.normal}}/{{data.equipmentcapacity.normal}}]</label>
             <div class="normal-placement drparea" data-placetype="normal" data-capacity="{{data.equipmentcapacity.normal}}" data-nowcontain="{{data.equipmentplace.normal}}">

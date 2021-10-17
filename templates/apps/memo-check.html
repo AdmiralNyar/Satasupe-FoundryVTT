@@ -1,0 +1,29 @@
+<button class="memo-addtable" style="width:max-content;height: 30px;margin-top: 4px;" data-id="{{this.id}}">{{localize "SATASUPE.AddTable"}}</button>
+{{#each this.data}}
+
+    <div style="display: flex;justify-content: space-between;width:100%;margin-bottom: 2px;">
+        <label style="display: flex;align-items: center;font-weight: bold;padding-left: 5px;" data-id="{{../this.id}}" data-dataid="{{this.dataid}}" class="check input name">{{#if this.name}}{{this.name}}{{else}}{{localize "SATASUPE.TableName"}}{{/if}}</label>
+        <button style="width:100px;margin-top: 2px;height:30px;" class="memo-addlist" data-id="{{../this.id}}" data-dataid="{{this.dataid}}">{{localize "SATASUPE.AddList"}}</button>
+        <a class="memo-delete-table" style="width:20px;display: flex;align-items: center;" data-id="{{../this.id}}" data-dataid="{{this.dataid}}" title="{{localize 'SATASUPE.Delete'}}"><i class="fas fa-trash"></i></a>
+    </div>
+    <table style="margin:0 0 5px 0">
+        <thead>
+            <tr>
+                <th style="width:35px;">{{localize "SATASUPE.ToDoCheck"}}</th>
+                <th style="width:70px;">{{localize "SATASUPE.Limit"}}</th>
+                <th style="width:auto">{{localize "SATASUPE.MEMO"}}</th>
+                <th style="width:40px;">{{localize "SATASUPE.Delete"}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each this.list}}
+                <tr>
+                    <td style="text-align: center;"><input class="check checkbox" type="checkbox" name="this.check" data-id="{{../../this.id}}" data-dataid="{{../this.dataid}}" data-listid="{{this.listid}}" {{#if this.check}}checked = "checked"{{/if}}/></td>
+                    <td style="text-align: center;"><label class="check input limit" data-id="{{../../this.id}}" data-dataid="{{../this.dataid}}" data-listid="{{this.listid}}">{{#if this.limit}}{{this.limit}}{{else}}{{localize "SATASUPE.Limit"}}{{/if}}<label></td>
+                    <td style="text-align: center;"><label class="check input memo" data-id="{{../../this.id}}" data-dataid="{{../this.dataid}}" data-listid="{{this.listid}}">{{#if this.memo}}{{this.memo}}{{else}}{{localize "SATASUPE.MEMO"}}{{/if}}</label></td>
+                    <td style="text-align: center;"><a class="memo-delete-list" data-id="{{../../this.id}}" data-dataid="{{../this.dataid}}" data-listid="{{this.listid}}" title="{{localize 'SATASUPE.Delete'}}"><i class="fas fa-trash"></i></a></td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+{{/each}}

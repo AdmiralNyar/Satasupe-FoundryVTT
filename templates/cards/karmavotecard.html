@@ -1,0 +1,14 @@
+<div class="message-content" data-name="{{name}}" style="display: flex; flex-direction: column;">
+    <label class="tar-name">{{titlename}}</label>
+    {{#each list}}
+        <div style="display: flex;align-items: baseline;">
+            <label>{{this.name}} :</label>
+            <select style="display: none;width:150px" class="select-switch vote" data-targetid="{{../id}}" data-userid="{{this.id}}">
+                <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                {{#each ../karmalist as |karma key|}}
+                    <option value="{{key}}">{{localize karma}}</option>
+                {{/each}}
+            </select>
+        </div>
+    {{/each}}
+</div>
