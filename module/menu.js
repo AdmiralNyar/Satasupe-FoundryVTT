@@ -1,6 +1,8 @@
 import { SATASUPE } from "./config.js";
 import {SelectItemDialog} from "./apps/select-item-dialog.js";
 import { LoadDialog} from "./apps/loaddialog.js";
+import { SatasupeChatCard} from "./chat-card.js";
+import { memoApplication} from "./apps/memo.js"
 
 export class SatasupeMenu {
     constructor(options){
@@ -12,16 +14,16 @@ export class SatasupeMenu {
         if(!game.satasupe.menus){
             game.satasupe.menus = new SatasupeMenu();
         }
-
         const menu = await renderTemplate( 'systems/satasupe/templates/satasupe-menu.html', game.satasupe.menus.getData());
         const buttons = $(menu);
 
         buttons.find('.scene-control').click(game.satasupe.menus._onClickMenu.bind(game.satasupe.menus));
         buttons.find('.control-tool').click(game.satasupe.menus._onClickTool.bind(game.satasupe.menus));
 
-        if( game.satasupe.menus.activeControl) html.find('.scene-control').removeClass('active');
-
-        html.find('.sene-control').click(game.satasupe.menus._clearActive.bind(game.satasupe.menus));
+        if( game.satasupe.menus.activeControl) {
+            html.find('.scene-control').removeClass('active');
+        }
+        html.find('.scene-control').click(game.satasupe.menus._clearActive.bind(game.satasupe.menus));
 
         html.append( buttons);
         game.satasupe.menus.html = html;
@@ -68,12 +70,15 @@ export class SatasupeMenu {
     _onClickMenu(event){
         event.preventDefault();
         if( !canvas?.ready) return;
+
         const li = event.currentTarget;
         const controlName = li.dataset.control;
         const control = this.controls.find(t => t.name === controlName);
-
         if( control.button){
             if(control.onClick instanceof Function) control.onClick( event);
+        }else if(control.toggle){
+            control.active = !control.active;
+            if(control.onClick instanceof Function) control.onClick( control.active);
         }else{
             this.activeControl = controlName;
             ui.controls.render();
@@ -82,7 +87,6 @@ export class SatasupeMenu {
 
     getData(){
         const isActive = !!canvas?.scene;
-
         let controls = this.controls.filter(s => s.visible !== false).map(s => {
             s = duplicate(s);
 
@@ -93,6 +97,15 @@ export class SatasupeMenu {
             ].filter(t => !!t).join(' ');
 
             if(s.button) return s;
+
+            s.css=[
+                'custom-control',
+                s.toggle ? 'toggle' : null,
+                isActive && ((this.activeControl === s.name)||(s.toggle && s.active)) ? 'active' : '',
+                s.class ? s.class : null
+            ].filter(t=> !!t).join(' ');
+
+            if(s.toggle) return s;
 
             s.tools = s.tools.filter(t => t.visible !== false).map(t => {
                 let active = isActive && ((s.activeTool === t.name) || (t.toggle && t.active));
@@ -115,9 +128,15 @@ export class SatasupeMenu {
 
     _getControls(document){
         const isGM = game.user.isGM;
+        const notGM = !isGM;
         const controls = [];
         const canCreateActor = game.user.can("ACTOR_CREATE");
         const canCreateItem = game.user.can("ITEM_CREATE");
+        const hasActor = !!game.user.character;
+        let acticon = false;
+        if(hasActor){
+            acticon = game.user.character.data.data.status.turn.value;
+        }
         const display = canCreateActor && canCreateItem;
         controls.push({
             icon: 'fas fa-file-download',
@@ -126,8 +145,426 @@ export class SatasupeMenu {
             visible: display,
             button: true,
             onClick : async (event) => await SatasupeMenu.charaloaddialog(event)
+        },{
+            icon:'fas fa-toolbox',
+            name:'gmtools',
+            title:'SATASUPE.DDTools',
+            visible: isGM,
+            tools:[
+                {
+                    button:true,
+                    icon: 'fas fa-arrow-alt-circle-right',
+                    name:'nextturn',
+                    title: "SATASUPE.NextTurn",
+                    onClick : async (event)=> await SatasupeMenu.turnskip(event,1)
+                },{
+                    button:true,
+                    icon: 'fas fa-arrow-alt-circle-left',
+                    name:'prevturn',
+                    title: 'SATASUPE.PrevTurn',
+                    onClick: async (event)=> await SatasupeMenu.turnskip(event,-1)
+                },{
+                    button:true,
+                    icon: 'fas fa-clock',
+                    name:'worktime',
+                    title:'SATASUPE.ChangeWorkTime',
+                    onClick: async(event) => await SatasupeMenu.worktime(event)
+                },{
+                    button:true,
+                    icon: 'fas fa-calendar-check',
+                    name:'limit',
+                    title:'SATASUPE.ChangeLimit',
+                    onClick: async (event) => await SatasupeMenu.changeLimit(event)
+                },{
+                    button:true,
+                    icon: 'fas fa-glass-cheers',
+                    name: 'afterplay',
+                    title:'SATASUPE.AfterPlay',
+                    onClick: async (event) => await SatasupeMenu.afterPlay(event)
+                },{
+                    button:true,
+                    icon: 'fas fa-address-book',
+                    name:'choiceplayer',
+                    title: 'SATASUPE.ChoosePlayer',
+                    onClick: async (event) => await SatasupeMenu.choicePlayer(event)
+                },{
+                    button:true,
+                    icon: 'fas fa-poll',
+                    name: 'vote',
+                    title: 'SATASUPE.VOTE',
+                    onClick: async (event) => {
+                        let data = await SelectItemDialog.originalVote(event);
+                        if(data) await SatasupeChatCard.votecard(data);
+                    }
+                },{
+                    button:true,
+                    icon: 'fas fa-fist-raised',
+                    name:'combat check',
+                    title: 'SATASUPE.CombatCheck',
+                    onClick: async (event) => await SatasupeMenu.combatchecked(event)
+                },{
+                    button:true,
+                    icon: 'fas fa-trash',
+                    name:'reset',
+                    title: 'SATASUPE.Refresh',
+                    onClick: async (event) => await SatasupeMenu.menuReset(event)
+                }
+            ]
+        },{
+            toggle: true,
+            icon: 'fas fa-user-check',
+            name: 'acted',
+            active: acticon,
+            title: 'SATASUPE.Acted',
+            visible: (hasActor && !game.settings.get("satasupe", "turnskip")),
+            onClick: async toggled => await SatasupeMenu.actedintheTurn(event, false)
+        },{
+            icon:'fas fa-sticky-note',
+            name:'memo',
+            title: 'SATASUPE.MEMO',
+            button:true,
+            onClick: async (event) => await memoApplication.memorender(event)
         });
         return controls;
+    }
+
+    static async turnskip(event, option){
+        let value = game.settings.get("satasupe", "turnCount");
+        if(game.settings.get("satasupe", 'playerlist')){
+            let playerlist = game.settings.get("satasupe", 'playerlist');
+            let list=[];
+            if(!playerlist[0]){
+                let players = game.users.filter((i) => true == !!i.character);
+                playerlist=[];
+                for(let i=0;i<players.length;i++){
+                    playerlist.push({id:players[i].id,key:i,name:players[i].name,check:true})
+                }
+                await game.settings.set("satasupe", 'playerlist', playerlist);
+            }  
+            list = playerlist.filter((i) => true == i.check);
+            if(list){
+                let turn = false;
+                for(let k = 0;k<list.length;k++){
+                    let actor = game.users.get(list[k].id).character;
+                    if(!actor.data.data.status.turn.value){
+                        turn = true;
+                    }
+                }
+                if(game.settings.get("satasupe", "turnskip")) turn = false;
+                if(!turn){
+                    if(option < 0){
+                        if(value>0){
+                            value -=1;
+                        }else{
+                            ui.notifications.error(game.i18n.localize("SATASUPE.Turn0"));
+                        }
+                    }else if(option > 0){
+                        value =1+value;
+                    }
+                    await game.settings.set("satasupe", "turnCount", value);
+                    if(!game.settings.get("satasupe", "turnskip")) await game.socket.emit('system.satasupe', {result:null,type:"selected",data:null,voteT:"notact"});
+                    if(value>0){
+                        let worktime = game.settings.get("satasupe", 'worktimeValue');
+                        let dayturn = value%worktime;
+                        if(dayturn == 0) dayturn = worktime;
+                        let day = Math.floor(value/(worktime+0.1))+1;
+                        let defturn = false;
+                        if(worktime == 5){
+                            for(let [key, value] of Object.entries(SATASUPE.turncount)){
+                                if(key == dayturn){
+                                    defturn = value;
+                                }
+                            }
+                        };
+                        let lastturn=false;
+                        if(game.settings.get("satasupe", 'worklimit').limit == value)lastturn =true;
+                        let rule = await game.settings.get("satasupe", "turndisplay");
+                        if(defturn) defturn = game.i18n.localize(defturn)
+                        let disp = game.i18n.format('SATASUPE.TurnCount',{turn:dayturn,day:day});
+                        if(defturn) disp = game.i18n.format('SATASUPE.TurnCount',{turn:defturn,day:day});
+                        if(rule == "0" || rule == "2"){
+                            var message = await renderTemplate('systems/satasupe/templates/cards/turnskipcard.html',{disp:disp,lastturn:lastturn});
+                            let chatMessage = {
+                                user: game.user.id,
+                                speaker: ChatMessage.getSpeaker({alias : "System"}),
+                                blind: false,
+                                whisper: null,
+                                content: message
+                            }
+                            let card = await ChatMessage.create(chatMessage);
+                        }
+                        if(rule=="1"||rule=="2"){
+                            await game.socket.emit('system.satasupe', {result:disp,type:"selected",data:null,voteT:"info"});
+                            ui.notifications.info(disp);
+                            if(game.settings.get("satasupe", 'worklimit')){
+                                if(lastturn){
+                                    await game.socket.emit('system.satasupe', {result:game.i18n.localize("SATASUPE.LastTurn"),type:"selected",data:null,voteT:"info"});
+                                    ui.notifications.info(game.i18n.localize("SATASUPE.LastTurn"));
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    ui.notifications.warn(game.i18n.localize("SATASUPE.Unacted"))
+                }
+            }
+        }
+    }
+
+    static async worktime(event){
+        let value = game.settings.get("satasupe", 'worktimeValue');
+        let formValue = await SatasupeMenu._changeWorktimeDialog(value);
+        let rule = game.settings.get("satasupe", "worktime");
+        let totaldailyturn;
+        if(formValue){
+            if(rule){
+                totaldailyturn = formValue;
+                if(formValue<2) totaldailyturn=5;
+            }else{
+                if(formValue>4){
+                    totaldailyturn = Math.ceil(3*formValue/2) - 1;
+                }else{
+                    if(formValue==3)totaldailyturn = 5;
+                    if(formValue==2)totaldailyturn = 3;
+                    if(formValue==1)totaldailyturn = 2;
+                    if(formValue<1)totaldailyturn = 5;
+                }
+
+            }
+            await game.settings.set('satasupe', 'worktimeValue', totaldailyturn);
+        }
+    }
+
+    static async changeLimit(event){
+        let value = game.settings.get("satasupe", 'worklimit');
+        let worktime = game.settings.get("satasupe", 'worktimeValue');
+        let turn = game.settings.get("satasupe", "turnCount");
+        let newlimit, secret, data;
+        data = await SatasupeMenu._changeLimitDialog(turn,worktime,value);
+        newlimit = data.newturn;
+        secret = false;
+        if(data){
+            if(data.secret == "true")secret = true;
+            await game.settings.set('satasupe', 'worklimit', {limit: newlimit,secret:secret});
+        }
+    }
+
+    static async afterPlay(event){
+        let progress = game.settings.get("satasupe", "afterplayprogress");
+        if(!Object.keys(progress).length){
+            let player = game.settings.get("satasupe", "playerlist");
+            if(!player[0]){
+                let players = game.users.filter((i) => true == !!i.character);
+                for(let i=0;i<players.length;i++){
+                    player.push({id:players[i].id,key:i,name:players[i].name,check:true})
+                }
+                await game.settings.set("satasupe", 'playerlist', player); 
+            }
+            let list=[];
+            for(let j=0;j<player.length;j++){
+                list.push({id:player[j].id,name:player[j].name,cardlist:[]})
+            }
+            let progresslist = {addiction:{list:list},karma:{list:list},aftertable:{list:list},discussionK:{list:list},discussionM:{cardid:null,voteid:null},prisoner:{list:list},upkeep:{rich:list,upkeep:list}}
+            game.settings.set("satasupe", "afterplayprogress", progresslist);
+        }
+        await SelectItemDialog._afterplaylistDialog();
+    }
+
+    static async choicePlayer(event){
+        var playerlist = await SelectItemDialog._makeplayerlist()
+        await game.settings.set("satasupe", 'playerlist',playerlist);
+    }
+
+    static async combatchecked(event){
+        if(game.settings.get("satasupe", 'playerlist')){
+            let playerlist = game.settings.get("satasupe", 'playerlist');
+            let list=[];
+            if(!playerlist[0]){
+                let players = game.users.filter((i) => true == !!i.character);
+                playerlist=[];
+                for(let i=0;i<players.length;i++){
+                    playerlist.push({id:players[i].id,key:i,name:players[i].name,check:true})
+                }
+                await game.settings.set("satasupe", 'playerlist', playerlist);
+            }  
+            list = playerlist.filter((i) => true == i.check);
+            for(let i = 0; i<list?.length;i++){
+                let actor = game.users.get(list[i].id).character;
+                if(actor){
+                    let token = actor.getActiveTokens(true,false);
+                    await token[0]?.toggleCombat();
+                }
+            }
+        }
+    }
+
+    static async actedintheTurn(event, force){
+        if(game.user.character){
+            if(!force){
+                const Actor = game.user.character;
+                const ownActor = duplicate(game.user.character.data);
+                ownActor.data.status.turn.value = !Actor.data.data.status.turn.value;
+                if(ownActor.data.status.turn.value){
+                    ui.notifications.info(game.i18n.localize("SATASUPE.Actedinfo"))
+                }else{
+                    ui.notifications.info(game.i18n.localize("SATASUPE.UnActedinfo"))
+                }
+                await Actor.update({'data.status' : ownActor.data.status})
+            }else{
+                if($(window.document.children[0].children[1]).find("ol.app.control-tools").children("div").children("li.custom-control.toggle").hasClass("active")) $(window.document.children[0].children[1]).find("ol.app.control-tools").children("div").children("li.custom-control.toggle").click();
+            }
+        }else{
+            ui.notifications.warn(game.i18n.localize("SATASUPE.DontHaveActor"))
+        }
+        ui.controls.render();
+    }
+
+    static async _changeWorktimeDialog(worktime){
+        let rule = game.settings.get("satasupe", "worktime");
+        let time = worktime;
+        let title;
+        let mean;
+        let formula;
+        let caption;
+        if(rule){
+            title = game.i18n.localize("SATASUPE.ChangeTotalDailyTurns");
+            mean =  game.i18n.localize("SATASUPE.ChangeTotalDailyTurnsMean");
+            formula = game.i18n.localize("SATASUPE.ChangeTotalDailyTurnsFolmula");
+            caption = game.i18n.localize("SATASUPE.ChangeTotalDailyTurnsCaption");
+        }else{
+            title = game.i18n.localize("SATASUPE.ChangeWorkTimeTitle");
+            mean = game.i18n.localize("SATASUPE.ChangeWorkTimeMean");
+            formula = game.i18n.localize("SATASUPE.ChangeWorkTimeFolmula");
+            caption = game.i18n.localize("SATASUPE.ChangeWorkTimeCaption");
+            time = Math.floor(2*(worktime+1)/3);
+            if(worktime==5)time=3;
+            if(worktime==2)time=1;
+            if(worktime<2)time=3;
+        }
+        var html = await renderTemplate('systems/satasupe/templates/apps/worktimeDialog.html',{worktime:game.i18n.format("SATASUPE.TurnOnlyCount",{turn:time}),text:{title:title, mean:mean,formula:formula}});
+        return new Promise(resolve => {
+            let formData;
+            const dlg = new Dialog({
+                title: caption,
+                content:html,
+                buttons:{
+                    send:{
+                        label:game.i18n.localize("SATASUPE.Save"),
+                        icon: `<i class="fas fa-save"></i>`,
+                        callback: html => {
+                            formData = new FormData(html[0].querySelector("#change-worktime"));
+                            let newturn = formData.get("newworktime");
+                            return resolve(newturn);
+                        }
+                    }
+                },
+                default: 'send',
+                close:() => {return resolve(false)}
+            });
+            dlg.render(true);
+        });
+    }
+
+    static async menuReset(event){
+        event.preventDefault();
+        await game.settings.set("satasupe", 'turnCount', 0);
+        await game.settings.set("satasupe", 'worktimeValue', 5);
+        await game.settings.set("satasupe", 'worklimit', {limit: 10,secret:true});
+        await game.settings.set("satasupe", 'playerlist', []);
+        let player = game.settings.get("satasupe", "playerlist");
+        if(!player[0]){
+            let players = game.users.filter((i) => true == !!i.character);
+            for(let i=0;i<players.length;i++){
+                player.push({id:players[i].id,key:i,name:players[i].name,check:true})
+            }
+            await game.settings.set("satasupe", 'playerlist', player); 
+        }
+        let list=[];
+        for(let j=0;j<player.length;j++){
+            list.push({id:player[j].id,name:player[j].name,cardlist:[]})
+        }
+        let progresslist = {addiction:{list:list},karma:{list:list},aftertable:{list:list},discussionK:{list:list},discussionM:{cardid:null,voteid:null},prisoner:{list:list},upkeep:{rich:list,upkeep:list}}
+        await game.settings.set("satasupe", "afterplayprogress", progresslist);
+        let vote = await game.settings.get("satasupe", 'vote')
+        for(let i=0;i<=vote.length;i++){
+            if(vote.length != i){
+                try{await game.messages.get(vote[i].id)?.setFlag('satasupe', 'activate', true)}
+                catch{}
+            }else{
+                await game.settings.set("satasupe", 'vote', []);
+            }
+        }
+        let chatcard = await game.settings.get("satasupe", 'chatcardlog')
+        for(let j=0;j<=chatcard.length;j++){
+            if(chatcard.length != j){
+                try{await game.messages.get(chatcard[j].id)?.setFlag('satasupe', 'activate', true)}
+                catch{}
+            }else{
+                await game.settings.set("satasupe", 'chatcardlog', []);
+            }
+        }
+        await ui.notifications.info(game.i18n.localize("SATASUPE.RefreshFinished"));
+    }
+
+    static async _changeLimitDialog(turn,worktime,limit){
+        let option = false;
+        if(turn <= 0) option = true;
+        let dayturn = turn%worktime;
+        if(dayturn ==0)dayturn = worktime;
+        let day = Math.floor(turn/(worktime+0.1))+1;
+        let limitturn = limit.limit%worktime;
+        if(limitturn == 0) limitturn = worktime;
+        let limitday = Math.floor(limit.limit/(worktime+0.1))+1;
+        let defturn = false;
+        let deflimitturn = false;
+        if(worktime == 5){
+            for(let [key, value] of Object.entries(SATASUPE.turncount)){
+                if(key == dayturn){
+                    defturn = game.i18n.localize(value);
+                }
+                if(key == limitturn){
+                    deflimitturn = game.i18n.localize(value);
+                }
+            }
+        };
+        var limitlist=[];
+        for(let j = 1; j < 51;j++){
+            let a = j%worktime;
+            if(a==0)a=worktime;
+            if(worktime == 5){
+                for(let [k, v] of Object.entries(SATASUPE.turncount)){
+                    if(k == a){
+                        a = game.i18n.localize(v);
+                    }
+                }
+            }
+            let b = Math.ceil(j/(worktime));
+            let text= game.i18n.format('SATASUPE.TurnCountMethod',{turn:a,day:b,total:j})
+            limitlist.push({text:text,value:j})
+        }
+        var html = await renderTemplate('systems/satasupe/templates/apps/changelimitDialog.html',{dayturn:game.i18n.format("SATASUPE.TurnCount",{day:day,turn:dayturn}),turn:defturn,limit:deflimitturn,limitturn:game.i18n.format("SATASUPE.TurnCount",{day:limitday,turn:limitturn}),limitday:limitday,option:option,defturn:game.i18n.format("SATASUPE.TurnCount",{day:day,turn:defturn}),deflimitturn:game.i18n.format("SATASUPE.TurnCount",{day:limitday,turn:deflimitturn}),limitlist:limitlist,secret:limit.secret});
+        return new Promise(resolve => {
+            let formData;
+            const dlg = new Dialog({
+                title: game.i18n.localize("SATASUPE.ChangeLimit"),
+                content : html,
+                buttons:{
+                    send:{
+                        label:game.i18n.localize("SATASUPE.Save"),
+                        icon: `<i class="fas fa-save"></i>`,
+                        callback: html => {
+                            formData = new FormData(html[0].querySelector("#change-limit"));
+                            let newturn = formData.get("newlimit");
+                            let secret = formData.get("secret");
+                            return resolve({newturn:newturn, secret:secret});
+                        }
+                    }
+                },
+                default: 'send',
+                close:()=>{return resolve(false)}
+            });
+            dlg.render(true);
+        });
     }
 
     static async charaloaddialog(event){
@@ -170,7 +607,7 @@ export class SatasupeMenu {
             type: 'Actor',
             parent: null
           })
-          ui.notifications.info("Created Imported Characters folder")
+          ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedFolder"))
         }
         return importedCharactersFolder;
     }
@@ -184,7 +621,7 @@ export class SatasupeMenu {
             type: 'Item',
             parent: null
           });
-          ui.notifications.info("Created Imported Items folder")
+          ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedItemsFolder"))
         }
         let karmaItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedKarmas") && entry.data.type === 'Item')
         if(karmaItemsFolder === null || karmaItemsFolder === undefined){
@@ -193,7 +630,7 @@ export class SatasupeMenu {
             type: 'Item',
             parent: importedItemsFolder.id
         });
-        ui.notifications.info("Created Imported Items folder")
+        ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedKarmasFolder"))
         }
         let itemItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedEquipments") && entry.data.type === 'Item')
         if(itemItemsFolder === null || itemItemsFolder === undefined){
@@ -202,7 +639,7 @@ export class SatasupeMenu {
             type: 'Item',
             parent: importedItemsFolder.id
         });
-        ui.notifications.info("Created Imported Items folder")
+        ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedEquipmentsFolder"))
         }
         let weaponItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedWeapons") && entry.data.type === 'Item')
         if(weaponItemsFolder === null || weaponItemsFolder === undefined){
@@ -211,7 +648,7 @@ export class SatasupeMenu {
             type: 'Item',
             parent: itemItemsFolder.id
         });
-        ui.notifications.info("Created Imported Items folder")
+        ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedWeaponsFolder"))
         }
         let vehicleItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedVehicles") && entry.data.type === 'Item')
         if(vehicleItemsFolder === null || vehicleItemsFolder === undefined){
@@ -220,7 +657,7 @@ export class SatasupeMenu {
             type: 'Item',
             parent: itemItemsFolder.id
         });
-        ui.notifications.info("Created Imported Items folder")
+        ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedVehiclesFolder"))
         }
         let gadjetItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedGadjets") && entry.data.type === 'Item')
         if(gadjetItemsFolder === null || gadjetItemsFolder === undefined){
@@ -229,7 +666,7 @@ export class SatasupeMenu {
             type: 'Item',
             parent: itemItemsFolder.id
         });
-        ui.notifications.info("Created Imported Items folder")
+        ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedGadjetsFolder"))
         }
         let propsItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedProps") && entry.data.type === 'Item')
         if(propsItemsFolder === null || propsItemsFolder === undefined){
@@ -238,7 +675,7 @@ export class SatasupeMenu {
             type: 'Item',
             parent: itemItemsFolder.id
         });
-        ui.notifications.info("Created Imported Items folder")
+        ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedPropsFolder"))
         }
         let palleteItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedPalette") && entry.data.type === 'Item')
         if(palleteItemsFolder === null || palleteItemsFolder === undefined){
@@ -247,16 +684,32 @@ export class SatasupeMenu {
             type: 'Item',
             parent: importedItemsFolder.id
         });
-        ui.notifications.info("Created Imported Items folder")
+        ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedPaletteFolder"))
         }
         let otherFolders = [karmaItemsFolder,itemItemsFolder,weaponItemsFolder,vehicleItemsFolder,gadjetItemsFolder,propsItemsFolder,palleteItemsFolder]
         return importedItemsFolder, otherFolders;
     }
 
+    static async createImortImageFolderIfNotExists(){
+        let source = "data";
+        if (typeof ForgeVTT != "undefined" && ForgeVTT.usingTheForge) {
+            source = "forgevtt";
+        }
+        try{
+            await FilePicker.browse(source, "uploadedCharacterImage");
+        }
+        catch (error){
+            await FilePicker.createDirectory(source, "uploadedCharacterImage");
+        }
+    }
+
     static async importActor(formData, event){
         let importedCharactersFolder = await SatasupeMenu.createImportCharactersFolderIfNotExists();
+        await SatasupeMenu.createImortImageFolderIfNotExists();
         let url = formData.get('adress');
         let key;
+        let file;
+        let response;
         if(url.match(/^https:\/\/character\-sheets\.appspot\.com\/satasupe|^http:\/\/character\-sheets\.appspot\.com\/satasupe/g)){
             if(url.match(/key=/g)){
                 key = url.match(/(?<=key=).+/g)[0];
@@ -279,10 +732,22 @@ export class SatasupeMenu {
             if(!data.base.name){
                 name = game.i18n.localize("SATASUPE.NewCharacter");
             }
+            let source = "data";
+            if (typeof ForgeVTT != "undefined" && ForgeVTT.usingTheForge) {
+                source = "forgevtt";
+            }
+            const type= data.images.uploadImage.match(/image\/.+?(?=;)/)[0];
+            const extension = type.match(/(?<=image\/)(.*)/)[0];
+            const bin = atob(data.images.uploadImage.replace(/^.*,/, ''));
+            const buffer = new Uint8Array(bin.length).map((_,x)=>bin.charCodeAt(x));
+            let file = new File([buffer.buffer], (name + '.' + extension), {type: type});
+            response = await FilePicker.upload(source, "uploadedCharacterImage", file, {});
+            let img = response.path;
+            if(!response) img = data.images.uploadImage;
             const pc = await Actor.create({
                 name: name,
                 type:'character',
-                img: data.images.uploadImage,
+                img: img,
                 folder: importedCharactersFolder.id,
                 data: {}
             })
@@ -290,7 +755,10 @@ export class SatasupeMenu {
             await SatasupeMenu.editdata(pc, data);
             await SatasupeMenu.editItem(pc, data);
             await SatasupeMenu.editKarma(pc, data);
-            await SatasupeMenu.editPalette(pc);
+            let chatdisp = await game.settings.get("satasupe", "showchatpalette")
+            if(chatdisp) await SatasupeMenu.editPalette(pc);
+            let set = await game.settings.get("satasupe", "uploadCharacterSetting")
+            if(set) await SatasupeMenu.editProtoToken(pc);
             pc.sheet.render(true);
         }
         )
@@ -303,6 +771,17 @@ export class SatasupeMenu {
         }else{
             return false;
         }
+    }
+
+    static async editProtoToken(pc){
+        let token = pc.data.token;
+        let updatesettings = {
+            actorLink: true,
+            disposition: 0,
+            displayBars: 50,
+            displayName: 50
+        }
+        await token.update(updatesettings);
     }
 
     static async _loadclipbord(pc){
@@ -367,8 +846,6 @@ export class SatasupeMenu {
             await pc.updateVariableSection( n, pc.data.data.variable[n].title, 'title');
           }
         }
-        console.log(formula)
-        console.log(variable)
         if(formula.length > 0 || variable.length > 0){
           await SatasupeMenu._createloadChatpalettetitle(formula, variable, pc);
         }
@@ -376,14 +853,11 @@ export class SatasupeMenu {
     }
 
     static async _createloadChatpalettetitle(formula, variable, pc){
-        console.log(formula)
-        console.log(variable)
         let name = game.items.find((i) => i.name == game.i18n.localize(SATASUPE.newChatpaletteName));
         if( !name) return SatasupeMenu.createloadChatpalette(pc, game.i18n.localize(SATASUPE.newChatpaletteName), formula, variable, false);
         let index = 0;
         let chatpaletteName = game.i18n.localize(SATASUPE.newChatpaletteName) + ' ' + index;
         let existname = game.items.find((i) => i.name == chatpaletteName);
-        console.log(existname);
         while( existname){
           index++;
           chatpaletteName = game.i18n.localize(SATASUPE.newChatpaletteName) + ' ' + index;
@@ -396,7 +870,6 @@ export class SatasupeMenu {
     }
 
     static async createloadChatpalette(pc, chatpaletteName, formula,variable , option){
-        console.log(variable)
         let importedItemsFolder, otherFolders = await SatasupeMenu.createImportItemsFolderIfNotExists();
         const data= {
           name:chatpaletteName,
@@ -469,7 +942,7 @@ export class SatasupeMenu {
         }
         result[`data.scenario`] = his;
 
-        result[`data.bg.bg.value`] = `<p>${data.base.memo.replace(/\r?\n/g,"<br>")}</p>`
+        result[`data.bg.bg.value`] = `<p>${data.base.memo?.replace(/\r?\n/g,"<br>")}</p>`
 
         let place;
         for(let [k, v] of Object.entries(SATASUPE.city)){

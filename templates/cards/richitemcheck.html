@@ -1,0 +1,23 @@
+<div class="message-content" style="display: flex; flex-direction: column;">
+    <label style="margin-top: 10px;margin-bottom: 10px;">{{localize "SATASUPE.RichItemDelete"}}</label>
+    {{#if admitted}}<div style="display: flex;justify-content: center;height:0px">
+        <div class="rotateR" style="position: relative; width: 170px;z-index:10;top: -60px;transform:rotate(10deg);padding:28px 10px;height: 80px;text-align: center;">
+            <label class="specialelite" style="font-size: xx-large;color:#880000;">
+                {{localize "SATASUPE.Admitted"}}
+    </label></div></div>{{/if}}
+    {{#each richitemlist}}
+        <div class="card-buttons" style="display: flex;width:100%;justify-content: space-between;margin-bottom: 5px;">
+            <label style="align-self: center;">{{this.name}}</label><label style="width: 70px;align-self: center;">| {{localize "SATASUPE.PRICE"}}: {{this.price}}</label>
+            <div class="switchArea" data-id="{{@index}}" id="switch{{@index}}" data-type="{{../type}}" data-buttontype="toggle" data-userid="{{../userid}}" data-actor="{{../actorid}}" data-itemid="{{this.id}}">
+                <button type="button" class="switch {{#if this.on}}{{else}}button-on{{/if}}"></button>
+                <label for="switch{{@index}}"><span></span></label>
+                <div id="swImg"></div>
+            </div>
+
+        </div>
+    {{/each}}
+    {{#if admitted}}
+    {{else}}
+        <div class="card-buttons"><button class="upkeep-admit" data-type="{{type}}" data-buttontype="admit" data-userid="{{userid}}" data-actor="{{actorid}}">{{localize "SATASUPE.Admit"}}</button></div>
+    {{/if}}
+</div>

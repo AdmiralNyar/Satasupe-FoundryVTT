@@ -1,0 +1,25 @@
+<div class="message-content">
+    {{#if keep}}<div style="display: flex;justify-content: center;height:0px">
+        <div class="rotateR" style="position: relative; width: 170px;top: 20px;padding:28px 10px;height: 80px;text-align: center;">
+            <label class="specialelite" style="font-size: xx-large;color:#880000;">
+                {{localize "SATASUPE.Kept"}}
+    </label></div></div>{{/if}}
+    {{#if discrad}}<div style="display: flex;justify-content: center;height:0px">
+        <div class="rotateR" style="position: relative; width: 170px;top: 20px;padding:28px 10px;height: 80px;text-align: center;">
+            <label class="specialelite" style="font-size: xx-large;color:#880000;">
+                {{localize "SATASUPE.Discarded"}}
+    </label></div></div>{{/if}}
+    {{#if skip}}<div style="display: flex;justify-content: center;height:0px">
+        <div class="rotateG" style="position: relative; width: 170px;top: 20px;padding:28px 10px;height: 80px;text-align: center;">
+            <label class="specialelite" style="font-size: xx-large;color:#008000;">
+                {{localize "SATASUPE.Skipped"}}
+    </label></div></div>{{/if}}
+    <div  style="margin-top:20px;"><label>
+        {{prisonercheck}}
+    </label></div>
+    <div class="card-buttons">
+        <button data-buttontype="keep" data-prisoner="{{prisoner}}" data-userid="{{userid}}" data-actor="{{actor}}" data-id="{{id}}" data-type="{{type}}">{{localize "SATASUPE.Keep"}}</button>
+        <button data-buttontype="discard" data-prisoner="{{prisoner}}" data-userid="{{userid}}" data-actor="{{actor}}" data-id="{{id}}" data-type="{{type}}">{{localize "SATASUPE.Discard"}}</button>
+        <button data-buttontype="skip" data-prisoner="{{prisoner}}" data-userid="{{userid}}" data-actor="{{actor}}" data-id="{{id}}" data-type="{{type}}">{{localize "SATASUPE.Skip"}}</button>
+    </div>
+</div>

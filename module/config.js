@@ -34,6 +34,14 @@ SATASUPE.checkSelection = {
     alignment : 'ATTRIBS.ALIGNMENTS'
 };
 
+SATASUPE.turncount = {
+    5 : 'SATASUPE.EarlyMorning',
+    1 : 'SATASUPE.Morning',
+    2 : 'SATASUPE.Daytime',
+    3 : 'SATASUPE.Night',
+    4 : 'SATASUPE.Midnight',
+}
+
 SATASUPE.rollbuttonType = {
     crime : 'CIRCUMSTANCE.CRIME',
     life  : 'CIRCUMSTANCE.LIFE',
@@ -82,9 +90,15 @@ SATASUPE.alignment = {
 SATASUPE.target = {
     own :'SATASUPE.Own',
     other:'SATASUPE.Other',
+    ownother: 'SATASUPE.OwnOther',
     team:'SATASUPE.Team',
     area:'SATASUPE.Area',
-    item:'SATASUPE.Item'
+    square:'SATASUPE.Square',
+    diorama:'SATASUPE.Diorama',
+    item:'SATASUPE.Item',
+    vehicle:'SATASUPE.Vehicle',
+    sp:'SATASUPE.Sp',
+    text:'SATASUPE.SeeText'
 }
 
 SATASUPE.timing = {

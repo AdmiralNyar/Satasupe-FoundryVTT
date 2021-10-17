@@ -1,0 +1,14 @@
+<div class="message-content" style="display: flex; flex-direction: column;">
+    <label>{{localize "SATASUPE.MVPSelectTitle"}}</label>
+    {{#each list}}
+        <div style="display: flex;align-items: baseline;">
+            <label>{{this.name}} :</label>
+            <select style="display: none;width:150px" class="select-switch-mvp vote" data-userid="{{this.id}}">
+                <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
+                {{#each ../charlist}}
+                    <option value="{{this.id}}">{{this.name}}</option>
+                {{/each}}
+            </select>
+        </div>
+    {{/each}}
+</div>

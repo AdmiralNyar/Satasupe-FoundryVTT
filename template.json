@@ -462,7 +462,7 @@
       },
      "prisoner":[{"title":null,"keep":false,"exp":false,"lovers":false}],
      "addiction":{
-       "addiction":[{"title":null, "use":false, "times" : 0}]
+       "addiction":[{"title":null,"value":false, "use":false, "times" : 0, "addic" : false}]
      },
      "variable":{
        "variable":[{"title": null, "variable": null, "substitution": false, "formla": "", "sum": 0}]},

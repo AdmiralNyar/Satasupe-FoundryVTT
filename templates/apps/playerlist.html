@@ -1,0 +1,13 @@
+<form id="select-player">
+    <div>
+        <label>{{localize 'SATASUPE.ChoosePlayersfrom'}}</label>
+    </div>
+    <div style="display: flex;">
+        <ol id="playersortable">
+            {{#each list}}
+                <li class="order" id="{{@index}}" data-id="{{@index}}" draggable="true" style="display: flex;height: 30px;" data-playerid="{{this.id}}" data-name="{{this.name}}"><div style="width:200px;">{{this.name}}</div><div><input value="true" name="{{this.id}}" type="checkbox" {{#if this.uuid}}checked="checked"{{else}}{{#if this.check}}checked="checked"{{/if}}{{/if}}></div></li>
+            {{/each}}
+        </ol>
+        <input type="hidden" name="list_order" id="last_order">
+    </div>
+</form>
