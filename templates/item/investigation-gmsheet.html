@@ -1,4 +1,4 @@
-<form class="{{cssClass}} flexcol" autocomplete="off" data-itemid="{{item._id}}" style="overflow-y: scroll;overflow-x: scroll;">
+<form class="{{cssClass}} flexcol" autocomplete="off" data-itemid="{{item.id}}" style="overflow-y: scroll;overflow-x: scroll;">
     <div class="investigation-header" style="white-space: nowrap">
         <div class="investigation-name" style="display: inline-block;width:70%; min-width: 300px;">
             <label class="investigation-namelabel" style="display: inline-block;">{{localize 'SATASUPE.InvestigationName'}} :</label>
@@ -9,7 +9,7 @@
         </div>
     </div>
 
-    <div class="investigation-main" id="{{item._id}}">
+    <div class="investigation-main" id="{{item.id}}">
         <div class="investigation-sl" style="white-space: nowrap;margin-bottom:15px">
 
         </div>
@@ -18,7 +18,7 @@
         </div>    
     </div>
 
-    <div class="investigation-target" id="{{item._id}}" style="display: none;">
+    <div class="investigation-target" id="{{item.id}}" style="display: none;">
         <label style="display:inline-block">{{localize 'SATASUPE.TargetTopicSettings'}}</label>
         <button class="target-add" type="button" style="display:inline-block;width:fit-content;width:-moz-fit-content;height:fit-content;height:-moz-fit-content;margin: 2px 5px;line-height: 18px;">{{localize 'SATASUPE.AddTarget'}}</button>
         <button class="target-remove" type="button" style="display:inline-block;width:fit-content;width:-moz-fit-content;height:-moz-fit-content;height:fit-content;margin: 2px 5px;line-height: 18px;">{{localize 'SATASUPE.RemoveTarget'}}</button>
@@ -54,7 +54,7 @@
                             <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
                             {{#select info.playlist}}
                                 {{#each ../data.playlist as |list key|}}
-                                        <option value="{{list._id}}">{{list.name}}</option>
+                                        <option value="{{list.id}}">{{list.name}}</option>
                                 {{/each}}
                             {{/select}}
                         </select>

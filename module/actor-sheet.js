@@ -3,6 +3,7 @@ import { SatasupeChatpaletteSheet} from "./item/sheets/chatpalette.js";
 import { SATASUPE } from "./config.js";
 import { CheckDialog} from "./apps/checkdialog.js";
 import { LoadDialog} from "./apps/loaddialog.js";
+import { SatasupeActor } from "./actor.js";
 /**
  * Extend the basic ActorSheet with some very Satasupe modifications
  * @extends {ActorSheet}
@@ -38,8 +39,8 @@ export class SatasupeActorSheet extends ActorSheet {
   /* -------------------------------------------- */
 
   /** @override */
-  async getData() {
-    const data = await super.getData();
+  async getData(options) {
+    const data = await super.getData(options);
     const actorData = this.actor.data.toObject(false);
     data.data = actorData.data;
     data.editable = this.isEditable;
@@ -463,7 +464,6 @@ export class SatasupeActorSheet extends ActorSheet {
         data.data.tablelist.splice(u, 1);
       }
     }
-
     data.data.actorid = this.actor.id;
 
     data.data.showchatpalette = game.settings.get("satasupe", "showchatpalette");
@@ -477,7 +477,6 @@ export class SatasupeActorSheet extends ActorSheet {
 
     var list = game.settings.get("satasupe", "bcdicelist");
     data.data.bcdicelist = list.game_system;
-    console.log(data)
     return data;
   }
 
@@ -515,14 +514,13 @@ export class SatasupeActorSheet extends ActorSheet {
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
-
     // Everything below here is only needed if the sheet is editable
     if ( !this.options.editable ) return;
 
     // Update Inventory Item
     html.find('.item-edit').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
-      const item = this.actor.getOwnedItem(li.attr("data-item-id"));
+      const item = this.actor.items.get(li.attr("data-item-id"));
       item.sheet.render(true);
     });
 
@@ -617,7 +615,7 @@ export class SatasupeActorSheet extends ActorSheet {
 
     html.find('.karma-delete').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
-      this.actor.deleteOwnedItem(li.attr("data-item-id"));
+      this.actor.deleteEmbeddedDocuments("Item", [li.attr("data-item-id")]);
       li.slideUp(200, () => this.render(false));
     });
 
@@ -643,7 +641,7 @@ export class SatasupeActorSheet extends ActorSheet {
   async usekarma(event){
     event.preventDefault();
     let itemid = $(event.currentTarget).attr("data-item-id");
-    const item = this.actor.getOwnedItem(itemid);
+    const item = this.actor.items.get(itemid);
     let text = item.data.data.effecthtml;
     let timing = game.i18n.localize(item.data.data.timing.label);
     let target = game.i18n.localize(item.data.data.target.label);
@@ -682,7 +680,7 @@ export class SatasupeActorSheet extends ActorSheet {
   async useitem(event){
     event.preventDefault();
     let itemid = $(event.currentTarget).attr("data-item-id");
-    const item = this.actor.getOwnedItem(itemid);
+    const item = this.actor.items.get(itemid);
     let itemtype = event.currentTarget.dataset.itemtype;
     let timing = false;
     let speciallist=[];
@@ -842,12 +840,104 @@ export class SatasupeActorSheet extends ActorSheet {
     event.preventDefault();
     const actor = this.object.data;
     const copy = duplicate(this.object.data);
-    var data = game.users.get(game.userId).data.flags["fvtt-bcdice"];
-    var tab = data["macro-data"];
+    var tab, tab1, tab2, tab3;
+    if(game.users.get(game.userId).data.flags["fvtt-bcdice"]){
+      var data = game.users.get(game.userId).data.flags["fvtt-bcdice"];
+      tab1 = data["macro-data"];
+      for(let tab of tab1.tabs){
+        tab.source = "user";
+      }
+    }
+    if(game.user.character.data.flags["fvtt-bcdice"]){
+      var data = game.user.character.data.flags["fvtt-bcdice"];
+      tab2 = data["macro-data"];
+      for(let tab of tab2.tabs){
+        tab.source = "actor";
+      }
+    }
+    if(game.canvas.tokens.controlled[0]){
+      for(let i = 0; i < game.canvas.tokens.controlled.length; i++){
+        if(game.canvas.tokens.controlled[i].data.flags["fvtt-bcdice"]){
+          var data = game.canvas.tokens.controlled[i].data.flags["fvtt-bcdice"];
+          tab3 = data["macro-data"];
+          for(let tab of tab3.tabs){
+            tab.source = "token";
+          }
+        }
+      }
+    }
+    tab = {tabs:null, replacements:{user:null,actor:null,token:null}}
+    if(!!tab1?.tabs[0]){
+      if(!!tab2?.tabs[0]){
+        if(!!tab3?.tabs[0]){
+          tab["tabs"] = tab1.tabs.concat(tab2?.tabs).concat(tab3?.tabs);
+          tab["replacements"].user = tab1.replacements;
+          tab["replacements"].actor = tab2.replacements;
+          tab["replacements"].token = tab3.replacements;
+        }else{
+          tab["tabs"] = tab1.tabs.concat(tab2?.tabs);
+          tab["replacements"].user = tab1.replacements;
+          tab["replacements"].actor = tab2.replacements;
+        }        
+      }else if(!!tab3?.tabs[0]){
+        tab["tabs"] = tab1.tabs.concat(tab3?.tabs);
+        tab["replacements"].user = tab1.replacements;
+        tab["replacements"].token = tab3.replacements;
+      }else{
+        tab["tabs"] = tab1.tabs;
+        tab["replacements"].user = tab1.replacements;
+      }
+    }else if(!!tab2?.tabs[0]){
+      if(!!tab3?.tabs[0]){
+        tab["tabs"] = tab2.tabs.concat(tab3?.tabs);
+        tab["replacements"].actor = tab2.replacements;
+        tab["replacements"].token = tab3.replacements;
+      }else{
+        tab["tabs"] = tab2.tabs;
+        tab["replacements"].actor = tab2.replacements;
+      }      
+    }else if(!!tab3?.tabs[0]){
+      tab["tabs"] = tab3.tabs;
+      tab["replacements"].token = tab3.replacements;
+    }
+
     const send = await LoadDialog._createfvttbcdicedialog(tab);
+    let choice = send.get('select-tab');
     var variable = [];
     var formula = [];
-    var replace = tab.replacements.split(/\r\n|\n/);
+    var replace = "";
+    if(choice == "all"){
+      if(tab.replacements["user"]){
+        if(tab.replacements["actor"]){
+          if(tab.replacements["token"]){
+            replace = tab.replacements["user"] + "\n" + tab.replacements["actor"] + "\n" + tab.replacements["token"];
+          }else{
+            replace = tab.replacements["user"] + "\n" + tab.replacements["actor"];
+          }
+        }else{
+          if(tab.replacements["token"]){
+            replace = tab.replacements["user"] + "\n" + tab.replacements["token"];
+          }else{
+            replace = tab.replacements["user"];
+          }
+        }
+      }else{
+        if(tab.replacements["actor"]){
+          if(tab.replacements["token"]){
+            replace = tab.replacements["actor"] + "\n" + tab.replacements["token"];
+          }else{
+            replace = tab.replacements["actor"];
+          }
+        }else{
+          if(tab.replacements["token"]){
+            replace = tab.replacements["token"];
+          }
+        }
+      }      
+    }else{
+      replace = tab.replacements[tab.tabs[choice].source];
+    }
+    replace = replace.split(/\r\n|\n/);
     for(let a=0;a<replace.length;a++){
       if(replace[a].match(/=/g)){
         let sp = replace[a].split(/(?<=^[^=]+?)=/);
@@ -888,7 +978,7 @@ export class SatasupeActorSheet extends ActorSheet {
         await this.actor.updateVariableSection( n, this.actor.data.data.variable[n].title, 'title');
       }
     }
-    let choice = send.get('select-tab');
+
     var alllist = [];
     if(choice == "all"){
       for(let b = 0;b<tab.tabs.length;b++){
@@ -1031,7 +1121,7 @@ export class SatasupeActorSheet extends ActorSheet {
         }
       }
     }
-    const created = await this.actor.createEmbeddedEntity('Item', data, { renderSheet: option});
+    const created = await this.actor.createEmbeddedDocuments('Item', [data], { renderSheet: option});
     return created;
   }
 
@@ -1148,6 +1238,7 @@ export class SatasupeActorSheet extends ActorSheet {
     }else{
       text = `${value+Number(indata.get('roll'))+Number(indata.get('boost'))-bpwounds-mpwounds-overwork}R>=${Number(indata.get('difficulty'))}[${Number(indata.get('success'))},${Number(indata.get('fumble'))+fumble}]`;
     }
+
     let result = await this._bcdicesend(event, text, char);
     return result;
   }
@@ -1254,8 +1345,9 @@ export class SatasupeActorSheet extends ActorSheet {
             }
             var text_line = data.text.replace(/\r?\n/g,"<br>");
             var contenthtml = "<div><div style=\"word-break : break-all;\">" + text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
-            ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
-            if(char = "alignment"){
+            ChatMessage.create({user:user.id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+
+            if(char == "alignment"){
               if((data.rands[0].value == 6) && (data.rands[1].value == 6)){
                 actor.data.attribs.alignment.value -= 1;
                 up.object.update({'data': actor.data});
@@ -1320,8 +1412,8 @@ export class SatasupeActorSheet extends ActorSheet {
             }
             var text_line = data2.text.replace(/\r?\n/g,"<br>");
             var contenthtml = "<div><div style=\"word-break : break-all;\">" + text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
-            ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
-            if(char = "alignment"){
+            ChatMessage.create({user:user.id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+            if(char == "alignment"){
               if((data2.rands[0].value == 6) && (data2.rands[1].value == 6)){
                 actor.data.attribs.alignment.value -= 1;
                 up.object.update({'data': actor.data});
@@ -1345,7 +1437,7 @@ export class SatasupeActorSheet extends ActorSheet {
   }
 
   _gearedit(event){
-    const item = this.actor.getOwnedItem(event.currentTarget.dataset.key);
+    const item = this.actor.items.get(event.currentTarget.dataset.key);
     item.sheet.render(true);
   }
 
@@ -1358,11 +1450,11 @@ export class SatasupeActorSheet extends ActorSheet {
   async _emptyGroundCreate(event){
     let items = this.actor.data.items;
     let id = "";
-    for(let item of items){
+    for(let item of items.contents){
       if(item.type == "item"){
         if(item.data.data.storage == ""){
-          id = item._id;
-          await this.object.deleteOwnedItem(id);
+          id = item.id;
+          await this.object.deleteEmbeddedDocuments("Item", [id]);
         }
       }
     }
@@ -1418,7 +1510,7 @@ export class SatasupeActorSheet extends ActorSheet {
   async _geardrop(event){
     var id = JSON.parse(event.originalEvent.dataTransfer.getData('text/plain'));
     let dataset = event.currentTarget.dataset;
-    let items = duplicate(this.actor.data.items);
+    let items = duplicate(this.actor.data.items.contents);
     let value = 0;
     for(let item of items){
       if(item._id === id.key){
@@ -1453,23 +1545,23 @@ export class SatasupeActorSheet extends ActorSheet {
   async _deleteItemSection(ev){
     const li = $(ev.currentTarget).parents(".item");
     const id = li.attr("data-item-id");
-    let item = this.object.data.items;
+    /*let item = this.object.data.items.contents;
     let newkeep = this.object.data.data.exp.upkeep.value == null ? 0 : this.object.data.data.exp.upkeep.value;
     for(let i = 0 ; i < item.length ; i++){
-      if(item[i]._id == id){
-        if(item[i].data.typew){
-          if(item[i].data.weapon.upkeep) newkeep = newkeep - 1;
+      if(item[i].id == id){
+        if(item[i].data.data.typew){
+          if(item[i].data.data.weapon.upkeep) newkeep = newkeep - 1;
         }
-        if(item[i].data.typev){
-          if(item[i].data.vehicle.upkeep) newkeep = newkeep - 1;
+        if(item[i].data.data.typev){
+          if(item[i].data.data.vehicle.upkeep) newkeep = newkeep - 1;
         }
-        if(item[i].data.typep){
-          if(item[i].data.props.upkeep) newkeep = newkeep - 1;
+        if(item[i].data.data.typep){
+          if(item[i].data.data.props.upkeep) newkeep = newkeep - 1;
         }
       }
     }
-    await this.actor.update({'data.exp.upkeep.value' : newkeep});
-    this.actor.deleteOwnedItem(id);
+    await this.actor.update({'data.exp.upkeep.value' : newkeep});*/
+    this.actor.deleteEmbeddedDocuments('Item', [id]);
     li.slideUp(200, () => this.render(false));
   }
   
@@ -1629,7 +1721,7 @@ export class SatasupeActorSheet extends ActorSheet {
   _tableshowblind(event){
     const actor = this.actor.data;
     actor.data.status.allonoff.variableonoff = !actor.data.status.allonoff.variableonoff;
-    const updated = {_id:actor.id, data:actor.data};
+    const updated = {id:actor._id, data:actor.data};
     game.actors.get(actor._id).update(updated);
   }
 
@@ -1639,26 +1731,6 @@ export class SatasupeActorSheet extends ActorSheet {
       await this.actor.toggleHobby( event.currentTarget.dataset.hobby, event.currentTarget.dataset.family);
     }
   }
-
-  /* -------------------------------------------- */
-
-  /**
-   * Listen for roll buttons on items.
-   * @param {MouseEvent} event    The originating left click event
-   */
-  _onItemRoll(event) {
-    let button = $(event.currentTarget);
-    let r = new Roll(button.data('roll'), this.actor.getRollData());
-    const li = button.parents(".item");
-    const item = this.actor.getOwnedItem(li.data("itemId"));
-    r.roll().toMessage({
-      user: game.user._id,
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: `<h2>${item.name}</h2><h3>${button.text()}</h3>`
-    });
-  }
-
-  /* -------------------------------------------- */
 
   /** @override */
   async _updateObject(event, formData) {
@@ -1721,6 +1793,9 @@ export class SatasupeActorSheet extends ActorSheet {
         if(event.currentTarget.classList.contains('bp') || event.currentTarget.classList.contains('mp')){
           this.actor.updateMajorWounds(formData);
         }
+        if(event.currentTarget.classList.contains('life-characteristic')){
+          this.actor.checkupkeep(event.currentTarget.value);
+        }
       }
     }
     return this.object.update(formData);
@@ -1744,7 +1819,7 @@ export class SatasupeActorSheet extends ActorSheet {
     event.preventDefault();
     const actor = duplicate(this.object.data);
     const roll = new Roll('1d2');
-    roll.roll();
+    await roll.roll();
     let sex = null;
     if(roll._total == 1){
       sex = game.i18n.localize("SATASUPE.Male");
@@ -1759,12 +1834,12 @@ export class SatasupeActorSheet extends ActorSheet {
     let text = `<br>=>` + game.i18n.format('SATASUPE.SexRollresult',{sex: sex});
     let chatData = {
       content : await roll.render(),
-      user: user._id,
+      user: user.id,
       speaker: ChatMessage.getSpeaker({actor : this.object}),
       flavor: game.i18n.localize("SATASUPE.SexRolltitle") + text,
     };
     ChatMessage.create(chatData);
-    const updated = {_id:actor.id, data:actor.data};
+    const updated = {id:actor.id, data:actor.data};
     await this.object.update({'data.infos': actor.data.infos});
   }
 
@@ -1772,27 +1847,27 @@ export class SatasupeActorSheet extends ActorSheet {
     event.preventDefault();
     const actor = duplicate(this.object.data);
     const roll1 = new Roll('1d6');
-    roll1.roll();
+    await roll1.roll();
     let age = 0;
     let roll2 = null;
     if(roll1._total == 1){
       roll2 = new Roll('2d6+6');
-      roll2.roll();
+      await roll2.roll();
     }else if(roll1._total == 2){
       roll2 = new Roll('2d6+10');
-      roll2.roll();
+      await roll2.roll();
     }else if(roll1._total == 3){
       roll2 = new Roll('3d6+15');
-      roll2.roll();
+      await roll2.roll();
     }else if(roll1._total == 4){
       roll2 = new Roll('4d6+25');
-      roll2.roll();
+      await roll2.roll();
     }else if(roll1._total == 5){
       roll2 = new Roll('5d6+40');
-      roll2.roll();
+      await roll2.roll();
     }else if(roll1._total == 6){
       roll2 = new Roll('6d6+60');
-      roll2.roll();
+      await roll2.roll();
     }
     const user = this.object.user ? this.object.user : game.user;
     actor.data.infos.age = roll2._total;
@@ -1803,20 +1878,20 @@ export class SatasupeActorSheet extends ActorSheet {
     let text = `<br>=>` + game.i18n.format('SATASUPE.AgeRollresult',{age: roll2._total});
     let chatData = {
       content : await roll2.render(),
-      user: user._id,
+      user: user.id,
       speaker: ChatMessage.getSpeaker({actor : this.object}),
       flavor: game.i18n.localize("SATASUPE.AgeRolltitle") + text,
     };
     ChatMessage.create(chatData);
-    const updated = {_id:actor.id, data:actor.data};
+    const updated = {id:actor.id, data:actor.data};
     await this.object.update({'data.infos': actor.data.infos});
   }
 
   async _createAlignment(event){
     event.preventDefault();
     const actor = duplicate(this.object.data);
-    const roll = new Roll('2d6');
-    roll.roll();
+    let roll = new Roll('2d6');
+    await roll.roll();
     let align = 0;
     if(roll._total == 6 ||roll._total == 7 || roll._total == 8){
       align = 7;
@@ -1833,6 +1908,7 @@ export class SatasupeActorSheet extends ActorSheet {
     }else if(roll._total == 2){
       align = 4;
     }
+
     const user = this.object.user ? this.object.user : game.user;
     actor.data.attribs.alignment.value = align;
     if( game.modules.get('dice-so-nice')?.active){
@@ -1841,12 +1917,13 @@ export class SatasupeActorSheet extends ActorSheet {
     let text = `<br>=>` + game.i18n.format('SATASUPE.AlignmentRollresult',{align: align});
     let chatData = {
       content : await roll.render(),
-      user: user._id,
+      user: user.id,
       speaker: ChatMessage.getSpeaker({actor : this.object}),
       flavor: game.i18n.localize("SATASUPE.AlignmentRolltitle") + text,
     };
+
     ChatMessage.create(chatData);
-    const updated = {_id:actor.id, data:actor.data};
+    const updated = {id:actor.id, data:actor.data};
     await this.object.update({'data.attribs': actor.data.attribs});
   }
 
@@ -1908,7 +1985,7 @@ export class SatasupeActorSheet extends ActorSheet {
           return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
         var favoriteText = halftext.replace(/.*?\):/g,"")
         var contenthtml = "<div><div style=\"word-break : break-all;\">" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
-        ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+        ChatMessage.create({user:user.id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
         actor.data.infos.favorite = favoriteText;
         up.object.update({'data': actor.data});
       }
@@ -1968,7 +2045,7 @@ export class SatasupeActorSheet extends ActorSheet {
           return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
         var favoriteText = halftext.replace(/.*?\):/g,"")
         var contenthtml = "<div><div style=\"word-break : break-all;\">" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
-        ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+        ChatMessage.create({user:user.id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
         actor.data.infos.favorite = favoriteText;
         up.object.update({'data': actor.data});
       }
@@ -1980,7 +2057,7 @@ export class SatasupeActorSheet extends ActorSheet {
   _Item(event){
     event.preventDefault();
     let li = $(event.currentTarget).parents('.item'),
-        item = this.actor.getOwnedItem(li.data('item-id')),
+        item = this.actor.items.get(li.data('item-id')),
         chatData = item.data;
     if(li.hasClass('expanded')){
       let summary = li.children('.item-summary');
@@ -1998,7 +2075,8 @@ export class SatasupeActorSheet extends ActorSheet {
   _sendMessage(event,index, id, system){
     event.preventDefault();
     let actor = this.actor.data.data;
-    let item = this.actor._data.items;
+    //let item = this.actor._data.items;
+    let item = this.actor.items.contents;
     const speaker = this.actor;
     const user = game.user;
 
@@ -2011,10 +2089,10 @@ export class SatasupeActorSheet extends ActorSheet {
     systemname = (map.get(system)).name;*/
 
     for(let i = 0; i < item.length ; i++){
-      if(item[i]._id !== id){
+      if(item[i].id != id){
       }else{
-        let text = item[i].data.chatpalette.chat[index].text ? item[i].data.chatpalette.chat[index].text : "";
-        let message = item[i].data.chatpalette.chat[index].message ? item[i].data.chatpalette.chat[index].message : "";
+        let text = item[i].data.data.chatpalette.chat[index].text ? item[i].data.data.chatpalette.chat[index].text : "";
+        let message = item[i].data.data.chatpalette.chat[index].message ? item[i].data.data.chatpalette.chat[index].message : "";
         text = text.replace(/[！-～]/g, function(s) {
             return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
         text = text.replace(/　/g," ");
@@ -2122,7 +2200,7 @@ export class SatasupeActorSheet extends ActorSheet {
         var url = server + "/game_system/"+system+"/roll?" + param;
         request.open("GET",url,true);
         request.responseType = 'json';
-        request.onload = function(){
+        request.onload = async function(){
           if(request.status==200){
             var data = this.response;
 
@@ -2131,11 +2209,11 @@ export class SatasupeActorSheet extends ActorSheet {
             let whisper = null;
             let blind = false;
             if(secret){
-              whisper = [game.user._id];
+              whisper = [game.user.id];
             }else{
               let rollMode = game.settings.get("core", "rollMode");
               if (["gmroll", "blindroll"].includes(rollMode)) whisper = ChatMessage.getWhisperRecipients("GM");
-              if (rollMode === "selfroll") whisper = [game.user._id];
+              if (rollMode === "selfroll") whisper = [game.user.id];
               if (rollMode === "blindroll") blind = true;
             }
             let dicetotal =0;
@@ -2238,13 +2316,13 @@ export class SatasupeActorSheet extends ActorSheet {
               }
               if(count == 0) count = 1;
               let roll = new Roll(`${count}d20`);
-              roll.roll();
+              await roll.roll();
               roll.dice[0].options.hidden = true;
               roll.dice[0].options.colorset = "unseen_black";
               if(game.modules.get('dice-so-nice')?.active){
                 game.dice3d.showForRoll(roll, game.user, true, null, false);
               }
-              ChatMessage.create({roll:roll,user:user._id,speaker:ChatMessage.getSpeaker({actor:speaker}),blind:true,whisper:null,content:`Secret Dice are cast by ${game.user.name}!`})
+              ChatMessage.create({roll:roll,user:user.id,speaker:ChatMessage.getSpeaker({actor:speaker}),blind:true,whisper:null,content:`Secret Dice are cast by ${game.user.name}!`})
             }
           }else if((request.status==400)&&message){
             if(text){
@@ -2270,7 +2348,7 @@ export class SatasupeActorSheet extends ActorSheet {
         var url2 = server2 + "/game_system/"+system+"/roll?" + param2;
         request2.open("GET",url2,true);
         request2.responseType = 'json';
-        request2.onload = function(){
+        request2.onload = async function(){
           if(request2.status==200){
             var data2 = this.response;
             let rands = data2.rands;
@@ -2278,11 +2356,11 @@ export class SatasupeActorSheet extends ActorSheet {
             let whisper = null;
             let blind = false;
             if(secret){
-              whisper = [game.user._id];
+              whisper = [game.user.id];
             }else{
               let rollMode = game.settings.get("core", "rollMode");
               if (["gmroll", "blindroll"].includes(rollMode)) whisper = ChatMessage.getWhisperRecipients("GM");
-              if (rollMode === "selfroll") whisper = [game.user._id];
+              if (rollMode === "selfroll") whisper = [game.user.id];
               if (rollMode === "blindroll") blind = true;
             }
             let dicetotal =0;
@@ -2377,7 +2455,7 @@ export class SatasupeActorSheet extends ActorSheet {
             }
             var text_line2 = data2.text.replace(/\r?\n/g,"<br>");
             var contenthtml = "<div><div style=\"word-break : break-all;\">" + "<br>" + system + " : " + text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
-            ChatMessage.create({user:user._id,speaker:ChatMessage.getSpeaker({actor : speaker}),whisper:whisper,blind:blind,content:contenthtml,flavor:message},{});
+            ChatMessage.create({user:user.id,speaker:ChatMessage.getSpeaker({actor : speaker}),whisper:whisper,blind:blind,content:contenthtml,flavor:message},{});
             if(secret){
               let count = 0;
               for(let [o, l]of Object.entries(dicen)){
@@ -2385,13 +2463,13 @@ export class SatasupeActorSheet extends ActorSheet {
               }
               if(count == 0) count = 1;
               let roll = new Roll(`${count}d20`);
-              roll.roll();
+              await roll.roll();
               roll.dice[0].options.hidden = true;
               roll.dice[0].options.colorset = "unseen_black";
               if(game.modules.get('dice-so-nice')?.active){
                 game.dice3d.showForRoll(roll, game.user, true, null, false);
               }
-              ChatMessage.create({roll:roll,user:user._id,speaker:ChatMessage.getSpeaker(),blind:true,whisper:null,content:`Secret Dice are cast by ${game.user.name}!`})
+              ChatMessage.create({roll:roll,user:user.id,speaker:ChatMessage.getSpeaker(),blind:true,whisper:null,content:`Secret Dice are cast by ${game.user.name}!`})
             }
           }else if((request.status==400)&&message){
             if(text){

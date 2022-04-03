@@ -1853,6 +1853,11 @@ grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
   width: 65px;
 }
 
+.satasupe .karma-table .karma-list td.item-button,
+.satasupe .karma-table .karma-header th.item-button{
+  width: 65px;
+}
+
 .satasupe .karma-table .karma-header .sort-table-up{
   display: none;
 }
@@ -2014,11 +2019,11 @@ grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
    width: 65px;
  }
  
- .satasupe .equipment-table tr.item-detail .item-hide {
+ .satasupe .equipment-table tr.item-detail {
    text-align: left;
  }
 
- .satasupe .equipment-table tr.item-detail .item-hide button.special-button{
+ .satasupe .equipment-table tr.item-detail button.special-button{
   width:fit-content;
   width:-moz-fit-content;
   margin: 2px;
@@ -2105,7 +2110,7 @@ grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
 .satasupe .tabs.memo {
   height: 32px;
   flex:0 0 32px;
-  margin: 4px 0 0 0;
+  margin: -4px 0 0 0;
   line-height: 32px;
   border-top: none;
   border-bottom: none;
@@ -2113,7 +2118,6 @@ grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
 .satasupe .tabs .item {
-  line-height: 40px;
   font-weight: bold;
 }
 
@@ -2149,6 +2153,7 @@ grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
 .satasupe .tabs .item.data.active {
   line-height: 40px;
   font-weight: bold;
+  height:27px;
 }
 
 .satasupe .tabs .item.active {

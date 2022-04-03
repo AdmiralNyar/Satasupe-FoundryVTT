@@ -44,19 +44,24 @@ export class SatasupeGiveItem{
         });
     }
 
-    static receiveItem({sendActor,receiveActor,currentItem}){
+    static async receiveItem({sendActor,receiveActor,currentItem}){
         const duplicatedItem = duplicate(currentItem);
         duplicatedItem.data.storage = "";
-        receiveActor.createEmbeddedEntity("Item", duplicatedItem);
+        //if(duplicatedItem.data.props.upkeep) duplicatedItem.data.props.upkeep = false
+        //if(duplicatedItem.data.weapon.upkeep) duplicatedItem.data.weapon.upkeep = false
+        //if(duplicatedItem.data.vehicle.upkeep) duplicatedItem.data.vehicle.upkeep = false
+        receiveActor.createEmbeddedDocuments("Item", [duplicatedItem]);
     }
 
-    static completeTrade(tradeData) {
+    static async completeTrade(tradeData) {
         this.giveItem(tradeData);
         ui.notifications.notify(game.i18n.format('NOTIFYMESSAFE.ACCEPTITEM',{Actor: tradeData.sendActor.name}));
     }
 
     static giveItem({sendActor,receiveActor,currentItem}) {
-        receiveActor.deleteOwnedItem(currentItem._id);
+        let id;
+        if(currentItem._id) {id = currentItem._id;}else{id=currentItem.id}
+        receiveActor.deleteEmbeddedDocuments("Item", [id]);
     }
     
 
@@ -65,11 +70,26 @@ export class SatasupeGiveItem{
             user: game.userId,
             speaker: ChatMessage.getSpeaker(),
             content: game.i18n.format('SATASUPEMESSAGE.ITEMTRADEFGM',{sendActor: tradeData.sendActor.name,receiveActor:tradeData.receiveActor.name,Item:tradeData.currentItem.name}),
-            whisper: game.users.entities.filter(u => u.isGM).map(u => u._id)
+            whisper: game.users.contents.filter(u => u.isGM).map(u => u.id)
         };
     
         chatMessage.whisper.push(tradeData.sendActor.id);
     
         ChatMessage.create(chatMessage);
     }
+
+    static async sendMessageToPL(tradeData) {
+        let chatMessage = {
+            user: game.userId,
+            speaker: ChatMessage.getSpeaker(),
+            content: game.i18n.format('SATASUPEMESSAGE.ITEMTRADEFGM',{sendActor: tradeData.sendActor.name,receiveActor:tradeData.receiveActor.name,Item:tradeData.currentItem.name}),
+            whisper: game.users.contents.filter(u => u.isGM).map(u => u.id).concat(game.users.contents.filter(u => u.character.id == tradeData.sendActor.id).map(u => u.id)).concat(game.users.contents.filter(u => u.character.id == tradeData.receiveActor.id).map(u => u.id))
+        };
+    
+        chatMessage.whisper = Array.from(new Set(chatMessage.whisper));
+
+        ChatMessage.create(chatMessage);
+    }
 }
+
+

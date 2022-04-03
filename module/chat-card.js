@@ -14,10 +14,12 @@ export class SatasupeChatCard{
                     let id = html[0].dataset.messageId;
                     let data = game.settings.get("satasupe", 'vote');
                     let index = data.findIndex((i) => i.id == id);
-                    for(let i=0;i<data[index].list.length;i++){
-                        if(data[index].list[i].userid!=game.user.id){
-                            if(data[index].list[i].select){
-                                $(`<label style="margin-left: 5px;">  ${game.i18n.localize("SATASUPE.Selected")}</label>`).insertBefore(html.find(`select[data-userid="${data[index].list[i].userid}"]`));
+                    if(index >= 0){
+                        for(let i=0;i<data[index].list.length;i++){
+                            if(data[index].list[i].userid!=game.user.id){
+                                if(data[index].list[i].select){
+                                    $(`<label style="margin-left: 5px;">  ${game.i18n.localize("SATASUPE.Selected")}</label>`).insertBefore(html.find(`select[data-userid="${data[index].list[i].userid}"]`));
+                                }
                             }
                         }
                     }
@@ -1211,14 +1213,14 @@ export class SatasupeChatCard{
                             const rule = game.settings.get("satasupe", "originaltable");
                             for(let i=0; i < tablelist.length; i++){
                                 if(tablelist[i].name == game.i18n.localize("SATASUPE.AFTERT")){
-                                id = tablelist[i]._id;
-                                change = true;
+                                    id = tablelist[i].id;
+                                    change = true;
                                 }
                             }
                             let reData 
                             const table = game.tables.get(id);
                             if(change&&rule){
-                                let tableRoll = table.roll();
+                                let tableRoll = await table.roll();
                                 reData = await table.draw(tableRoll);
                             }else{
                                 reData = await SatasupeChatCard._bcdicesend(event, "aftert", 0, actor);
@@ -1473,7 +1475,7 @@ export class SatasupeChatCard{
 
     static async _deleteItem(itemid,actorid){
         const actor = game.actors.get(actorid);
-        let newkeep = actor.data.data.exp.upkeep.value == null ? 0 : actor.data.data.exp.upkeep.value;
+        /*let newkeep = actor.data.data.exp.upkeep.value == null ? 0 : actor.data.data.exp.upkeep.value;
         let item = actor.data.items.find((i) => i.id == itemid);
         if(item.data.typew){
             if(item.data.weapon.upkeep) newkeep = newkeep - 1;
@@ -1484,8 +1486,8 @@ export class SatasupeChatCard{
         if(item.data.typep){
             if(item.data.props.upkeep) newkeep = newkeep - 1;
         }
-        await actor.update({'data.exp.upkeep.value' : newkeep});
-        await actor.deleteOwnedItem(itemid);
+        await actor.update({'data.exp.upkeep.value' : newkeep});*/
+        await actor.deleteEmbeddedDocuments("Item", [itemid]);
     }
 
     static async _tablebutton(event){
@@ -1510,13 +1512,13 @@ export class SatasupeChatCard{
           id = event.currentTarget.name;
           const table = game.tables.get(id);
           event.currentTarget.disabled = true;
-          let tableRoll = table.roll();
+          let tableRoll = await table.roll();
           await table.draw(tableRoll);
           event.currentTarget.disabled = false;
         }else if(change && rule){
           const table = game.tables.get(id);
           event.currentTarget.disabled = true;
-          let tableRoll = table.roll();
+          let tableRoll = await table.roll();
           await table.draw(tableRoll);
           event.currentTarget.disabled = false;
         }else{
@@ -1699,7 +1701,7 @@ export class SatasupeChatCard{
                 }
                 var text_line = data.text.replace(/\r?\n/g,"<br>");
                 var contenthtml = "<div><div style=\"word-break : break-all;\">" + text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
-                ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+                ChatMessage.create({user:user.id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
                 if(char = "alignment"){
                   if((data.rands[0].value == 6) && (data.rands[1].value == 6)){
                     actor.data.attribs.alignment.value -= 1;
@@ -1765,7 +1767,7 @@ export class SatasupeChatCard{
                 }
                 var text_line = data2.text.replace(/\r?\n/g,"<br>");
                 var contenthtml = "<div><div style=\"word-break : break-all;\">" + text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
-                ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+                ChatMessage.create({user:user.id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
                 if(char = "alignment"){
                   if((data2.rands[0].value == 6) && (data2.rands[1].value == 6)){
                     actor.data.attribs.alignment.value -= 1;

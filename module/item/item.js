@@ -1,13 +1,11 @@
 import {SATASUPE} from '../config.js';
 
 export class SatasupeItem extends Item {
-    prepareData() {
+  prepareData() {
       super.prepareData();
-  
       // Get the Item's data
       const itemData = this.data;
       const data = itemData.data;
-
       if(itemData.type === 'karma') this._prepareItemData(itemData);
     }
 
@@ -59,7 +57,7 @@ export class SatasupeItem extends Item {
       await this.update( {'data.chatpalette.chat' : chat});
     }
 
-    async createVariableSection(){
+    async createVariableItemSection(){
       const vari = this.data.data.chatpalette.variable ? duplicate(this.data.data.chatpalette.variable) : [];
       vari.push({
         title : null,
@@ -75,7 +73,7 @@ export class SatasupeItem extends Item {
       await this.update( {'data.chatpalette.chat' : chat});
     }
 
-    async deleteVariableSection( index){
+    async deleteVariableItemSection( index){
       const vari = duplicate(this.data.data.chatpalette.variable);
       vari.splice(index, 1);
       await this.update( {'data.chatpalette.variable' : vari});
@@ -87,7 +85,7 @@ export class SatasupeItem extends Item {
       await this.update({'data.chatpalette.chat' : chat});
     }
 
-    async updateVariableSection( index, value, key){
+    async updateVariableItemSection( index, value, key){
       const vari = duplicate(this.data.data.chatpalette.variable);
       if(key=='substitution'){
         vari[index][key] = !vari[index][key];
@@ -104,7 +102,7 @@ export class SatasupeItem extends Item {
           const specialValue = data.weapon.special.blast.value;
           data.weapon.specialtext.blast = {type:"Boolean",value:!specialValue,number:"",label:"SPEC.BLAST"};
           delete data.weapon.special['blast']
-          await this.update({_id:this._id, 'data': data});
+          await this.update({id:this.id, 'data': data});
         }else{
         let specialValue = this.data.data[type]?.special[specialName]?.value;
         if(!(typeof specialValue === "boolean")) specialValue = specialValue === 'false' ? true : false;
