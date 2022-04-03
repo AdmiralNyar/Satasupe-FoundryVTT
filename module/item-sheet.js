@@ -24,8 +24,8 @@ export class SatasupeItemSheet extends ItemSheet {
     const data = super.getData();
     const itemData = data.data;
     data.data = itemData.data;
-    if((data.data.weapon.special.blast) && (data.data.weapon.specialtext.blast)){
-      delete data.data.weapon.special.blast;
+    if((data.data.weapon?.special?.blast) && (data.data.weapon?.specialtext?.blast)){
+      delete data.data.weapon?.special?.blast;
     }
     return data;
   }
@@ -42,7 +42,7 @@ export class SatasupeItemSheet extends ItemSheet {
   /** @override */
 	activateListeners(html) {
     super.activateListeners(html);
-
+    html.find("input.item-upkeep").click( this.upkeeperreset.bind(this))
     html.find("button.special-button").click( this._onSpecialButtonToggle.bind(this));
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
@@ -58,7 +58,8 @@ export class SatasupeItemSheet extends ItemSheet {
           if(this.object.parent?.type == 'character'){
             if(event.currentTarget.classList.contains('item-upkeep')){
               const bool = event.currentTarget.checked;
-              this.object.parent.updateEquipmentUpkeep(bool);
+              let name = $(event.currentTarget).parent(".upkeep").parent(".detail").parent(".tab.active")[0].dataset.tab;
+              this.object.parent.updateEquipmentUpkeep(bool, this.object.data.data[name].upkeeper);
             }
           }
           if(event.currentTarget.classList.contains('effect-area')){
@@ -76,6 +77,15 @@ export class SatasupeItemSheet extends ItemSheet {
 
     // Update the Actor with the new form values.
     return this.object.update(formData);
+  }
+
+  async upkeeperreset(event){
+    let name = $(event.currentTarget).parent(".upkeep").parent(".detail").parent(".tab.active")[0].dataset.tab;
+    if(!this.object.data.data[name].upkeep){
+      let up = duplicate(this.object.data.data);
+      up[name].upkeeper = this.object.parent?.id;
+      await this.object.update({'data': up});
+    }
   }
   
   async _updateEffectArea(object, value, key){

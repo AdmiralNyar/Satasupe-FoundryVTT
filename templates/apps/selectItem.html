@@ -15,10 +15,10 @@
             <tbody id="selectItemTable">
                 {{#each data}}
                     <tr>
-                        <td style="text-align: center;" class="checkon radioboxin"><input class="radioboxin" type="radio" name="item" value="{{this.data._id}}"/></td>
+                        <td style="text-align: center;" class="checkon radioboxin"><input class="radioboxin" type="radio" name="item" value="{{this.data.id}}"/></td>
                         <td style="text-align: center;" class="checkon"><img src="{{this.data.img}}" width="40" height="40"></td>
                         <td style="text-align: center;" class="checkon">{{this.data.name}}</td>
-                        <td style="text-align: center;"><input type="button" value="OPEN" class="open-itemsheet" data-key="{{this.data._id}}"/></td>
+                        <td style="text-align: center;"><input type="button" value="OPEN" class="open-itemsheet" data-key="{{this.data.id}}"/></td>
                     </tr>
                 {{/each}}
             </tbody>

@@ -18,12 +18,11 @@ import { SATASUPE} from './config.js';
 import { SatasupeGiveItem} from './giveitem.js';
 import { SatasupeMenu} from './menu.js';
 import { SatasupeChatCard} from "./chat-card.js";
-import { memoApplication} from "./apps/memo.js"
+import { memoApplication} from "./apps/memo.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
 /* -------------------------------------------- */
-
 /**
  * Init hook.
  */
@@ -40,10 +39,9 @@ Hooks.once("init", async function() {
     SatasupeItem
   };
 
-
   // Define custom Entity classes
-  CONFIG.Actor.entityClass = SatasupeActor;
-  CONFIG.Item.entityClass = SatasupeItem;
+  CONFIG.Actor.documentClass = SatasupeActor;
+  CONFIG.Item.documentClass = SatasupeItem;
 
   // Register sheet application classes
   Actors.unregisterSheet("core", ActorSheet);
@@ -52,7 +50,7 @@ Hooks.once("init", async function() {
   Items.registerSheet("satasupe", SatasupeKarmaSheet, { types: ['karma'], makeDefault: true });
   Items.registerSheet("satasupe", SatasupeInvestigationSheet, { types: ['investigation'], makeDefault: true});
   Items.registerSheet("satasupe", SatasupeChatpaletteSheet, { types: ['chatpalette'], makeDefault: true});
-  Items.registerSheet("satasupe", SatasupeItemSheet, { makeDefault: true });
+  Items.registerSheet("satasupe", SatasupeItemSheet, { types: ['item'], makeDefault: true });
 
   game.settings.register("satasupe", 'turnCount', {
     name: 'Turn Count',
@@ -301,7 +299,8 @@ Hooks.once("init", async function() {
   preloadHandlebarsTemplates();
 });
 
-Hooks.on('renderSceneControls', SatasupeMenu.renderMenu);
+Hooks.on('getSceneControlButtons', SatasupeMenu.getButtons);
+Hooks.on('renderSceneControls', SatasupeMenu.renderControls);
 
 Hooks.once('diceSoNiceReady', (dice3d) => {
   game.dice3d.addColorset({
@@ -364,7 +363,7 @@ Hooks.on('ready', async function () {
         const sendActorId = packet.sendActorId;
         data.receiveActor = game.actors.get(receiveActorId);
         data.sendActor = game.actors.get(sendActorId);
-        if (data.receiveActor.owner) {
+        if (data.receiveActor.isOwner) {
             if (type === 'request') {
               SatasupeGiveItem.receiveTrade(data);
             }
@@ -392,7 +391,7 @@ Hooks.on('ready', async function () {
         }else{
           if(packet.voteT == "notact"){
             if(game.user.character){
-              await SatasupeMenu.actedintheTurn(null, true)
+              await SatasupeMenu.actedintheTurn(data, true)
             }
           }
         }
@@ -414,7 +413,6 @@ Hooks.once("init", async () => {
     scope: 'client',     // "world" = sync to db, "client" = local storage
     config: false,       // false if you dont want it to show in module config
     onChange: value => { // value is the new value of the setting
-      console.log(value)
     }
   });
   let tablelist = await SatasupeActorSheet._bcdiceback("/game_system", "", false);
@@ -427,36 +425,42 @@ Hooks.on("renderActorSheet", async (app, html, data) => {
 
   html.find(".show-detail").click( ev => {
     let button = $(ev.currentTarget);
-    button.parent('.item-controls').parent().next('.item-detail').children('.item-hide').toggle();
+    button.parent('.item-controls').parent().next('.item-detail').children('td').removeClass("item-hide");
     $(button).hide();
-    $(button).next().show();
+    $(button).next().css("display", "contents");
   });
   html.find(".close-detail").click( ev => {
     let button = $(ev.currentTarget);
-    button.parent('.item-controls').parent('').next('.item-detail').children('.item-hide').toggle();
+    button.parent('.item-controls').parent().next('.item-detail').children('td').addClass("item-hide");
     $(button).hide();
     $(button).prev().show();
   });
-  html.find('div.passdrparea').on("drop",async function(ev){
+  html.find('div.passdrparea').on("drop", async function(ev){
     let reciveactorid = ev.currentTarget.dataset.actorid;
     var id = JSON.parse(ev.originalEvent.dataTransfer.getData('text/plain'));
     const sendActor=game.actors.get(id.actorid);
     const receiveActor = game.actors.get(reciveactorid);
     if(sendActor.id != receiveActor.id){
       const currentItem = sendActor.items.find(item => item.id === id.key);
-      game.socket.emit('system.satasupe', {
-        data: {sendActor, receiveActor, currentItem},
-        receiveActorId: receiveActor.id,
-        sendActorId: sendActor.id,
-        type: "request"
-      });
+      if(game.user.isGM) {
+        await SatasupeGiveItem.receiveItem({sendActor, receiveActor, currentItem});
+        await SatasupeGiveItem.sendMessageToPL({sendActor, receiveActor, currentItem});
+        await SatasupeGiveItem.completeTrade({sendActor:receiveActor, receiveActor:sendActor, currentItem:currentItem});
+      }else{
+        game.socket.emit('system.satasupe', {
+          data: {sendActor, receiveActor, currentItem},
+          receiveActorId: receiveActor.id,
+          sendActorId: sendActor.id,
+          type: "request"
+        });
+      }
     }
   });
 });
 
 Hooks.on("renderItemSheet", async (app, html, data) => {
   if(app.object.data.type == "investigation"){
-    const itemid = app.object._id; 
+    const itemid = app.object.id; 
     if(app.object.data.permission.default != 3) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.DefaultInvestigationPermission"));
     const maxsl = data.data.maxsl + 3;
     for(let i = 0; i < maxsl;i++){
@@ -550,8 +554,8 @@ Hooks.on("renderItemSheet", async (app, html, data) => {
         view = true;
       }
       for(let m=0; m < app.object.data.data.dendrogram[index].playerlist.length; m++){
-        if((app.object.data.data.dendrogram[index].playerlist[m].id != game.user._id) || (game.user.isGM) || (game.settings.get("satasupe", "InvestigationTopicReuse"))){
-        }else if((app.object.data.data.dendrogram[index].playerlist[m].id == game.user._id) && (!game.user.isGM) && ( !game.settings.get("satasupe", "InvestigationTopicReuse"))){ 
+        if((app.object.data.data.dendrogram[index].playerlist[m].id != game.user.id) || (game.user.isGM) || (game.settings.get("satasupe", "InvestigationTopicReuse"))){
+        }else if((app.object.data.data.dendrogram[index].playerlist[m].id == game.user.id) && (!game.user.isGM) && ( !game.settings.get("satasupe", "InvestigationTopicReuse"))){ 
           ui.notifications.error(game.i18n.localize("ALERTMESSAGE.SelectedTopic"));
           view = false;
         }

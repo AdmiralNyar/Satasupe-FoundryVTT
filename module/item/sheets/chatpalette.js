@@ -1,3 +1,4 @@
+import {SatasupeItem} from '../item.js'
 /**
  * Satasupe system cooperation with BCDice.
  * @extends {ItemSheet}
@@ -25,7 +26,7 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
         if(event.currentTarget.classList.contains('variable-section-input')){
           const index = parseInt(event.currentTarget.closest('.variable-section').dataset.index);
           const key = event.currentTarget.closest('.section-key').dataset.sectionkey;
-          this.item.updateVariableSection( index, event.currentTarget.value, key);
+          this.item.updateVariableItemSection( index, event.currentTarget.value, key);
         }
       }
     }
@@ -75,14 +76,14 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
     html.find('a.table-show-hide').on("click", this._tableshowblind.bind(this));
     html.find('a.infomation').on("click", this._titleinfomation.bind(this));
     html.find('.add-new-chat').click( () => {this.item.createChatSection();});
-    html.find('.add-new-variable').click( () => {this.item.createVariableSection();});
+    html.find('.add-new-variable').click( () => {this.item.createVariableItemSection();});
     html.find('.delete-chatpalette-section').click( ev => {
       const index = parseInt(ev.currentTarget.closest('.chatpalette-section').dataset.index);
       this.item.deleteChatSection( index);
     });
     html.find('.delete-vatiable-section').click( ev => {
       const index = parseInt(ev.currentTarget.closest('.variable-section').dataset.index);
-      this.item.deleteVariableSection( index);
+      this.item.deleteVariableItemSection( index);
     });
   }
   
@@ -231,7 +232,7 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
     var url = server + "/game_system/"+system+"/roll?" + param;
     request.open("GET",url,true);
     request.responseType = 'json';
-    request.onload = function(){
+    request.onload = async function(){
         if(request.status==200){
             var data = this.response;
             let rands = data.rands;
@@ -239,11 +240,11 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
             let whisper = null;
             let blind = false;
             if(secret){
-              whisper = [game.user._id];
+              whisper = [game.user.id];
             }else{
               let rollMode = game.settings.get("core", "rollMode");
               if (["gmroll", "blindroll"].includes(rollMode)) whisper = ChatMessage.getWhisperRecipients("GM");
-              if (rollMode === "selfroll") whisper = [game.user._id];
+              if (rollMode === "selfroll") whisper = [game.user.id];
               if (rollMode === "blindroll") blind = true;
             }
             if (data.rands){
@@ -326,7 +327,7 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
             }
             var text_line = data.text.replace(/\r?\n/g,"<br>");
             var contenthtml = "<div><div style=\"word-break : break-all;\">" + "<br>"+ text_line + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
-            ChatMessage.create({user:user._id,speaker:ChatMessage.getSpeaker(),whisper:whisper,blind:blind,content:contenthtml,flavor:message},{});
+            ChatMessage.create({user:user.id,speaker:ChatMessage.getSpeaker(),whisper:whisper,blind:blind,content:contenthtml,flavor:message},{});
             if(secret){
               let count = 0;
               for(let [o, l]of Object.entries(dicen)){
@@ -334,13 +335,13 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
               }
               if(count == 0) count = 1;
               let roll = new Roll(`${count}d20`);
-              roll.roll();
+              await roll.roll();
               roll.dice[0].options.hidden = true;
               roll.dice[0].options.colorset = "unseen_black";
               if(game.modules.get('dice-so-nice')?.active){
                 game.dice3d.showForRoll(roll, game.user, true, null, false);
               }
-              ChatMessage.create({roll:roll,user:user._id,speaker:ChatMessage.getSpeaker(),blind:true,whisper:null,content:`Secret Dice are cast by ${game.user.name}!`})
+              ChatMessage.create({roll:roll,user:user.id,speaker:ChatMessage.getSpeaker(),blind:true,whisper:null,content:`Secret Dice are cast by ${game.user.name}!`})
             }
         }else if((request.status==400)&&message){
           if(text){
@@ -348,7 +349,7 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
           }
           let chatMessage ={
             user:user.id,
-            speaker:ChatMessage.getSpeaker({actor:speaker}),
+            speaker:ChatMessage.getSpeaker(),
             blind:false,
             whisper:null,
             content:`<p>${message}</p>`
@@ -366,7 +367,7 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
     var url2 = server2 + "/game_system/"+system+"/roll?" + param2;
     request2.open("GET",url2,true);
     request2.responseType = 'json';
-    request2.onload = function(){
+    request2.onload = async function(){
         if(request2.status==200){
           var data2 = this.response;
           if(!data2.ok){
@@ -377,11 +378,11 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
           let whisper = null;
           let blind = false;
           if(secret){
-            whisper = [game.user._id];
+            whisper = [game.user.id];
           }else{
             let rollMode = game.settings.get("core", "rollMode");
             if (["gmroll", "blindroll"].includes(rollMode)) whisper = ChatMessage.getWhisperRecipients("GM");
-            if (rollMode === "selfroll") whisper = [game.user._id];
+            if (rollMode === "selfroll") whisper = [game.user.id];
             if (rollMode === "blindroll") blind = true;
           }
           if (data2.rands){
@@ -464,7 +465,7 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
           }
           var text_line2 = data2.text.replace(/\r?\n/g,"<br>");
           var contenthtml = "<div><div style=\"word-break : break-all;\">" + "<br>"+ text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + successtext + "</div></div></div>"; 
-          ChatMessage.create({user:user._id,speaker:ChatMessage.getSpeaker(),whisper:whisper,blind:blind,content:contenthtml,flavor:message},{});
+          ChatMessage.create({user:user.id,speaker:ChatMessage.getSpeaker(),whisper:whisper,blind:blind,content:contenthtml,flavor:message},{});
           if(secret){
             let count = 0;
             for(let [o, l]of Object.entries(dicen)){
@@ -472,13 +473,13 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
             }
             if(count == 0) count = 1;
             let roll = new Roll(`${count}d20`);
-            roll.roll();
+            await roll.roll();
             roll.dice[0].options.hidden = true;
             roll.dice[0].options.colorset = "unseen_black";
             if(game.modules.get('dice-so-nice')?.active){
               game.dice3d.showForRoll(roll, game.user, true, null, false);
             }
-            ChatMessage.create({roll:roll,user:user._id,speaker:ChatMessage.getSpeaker(),blind:true,whisper:null,content:`Secret Dice are cast by ${game.user.name}!`})
+            ChatMessage.create({roll:roll,user:user.id,speaker:ChatMessage.getSpeaker(),blind:true,whisper:null,content:`Secret Dice are cast by ${game.user.name}!`})
           }
         }else if((request.status==400)&&message){
           if(text){

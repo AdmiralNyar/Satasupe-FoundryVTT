@@ -258,6 +258,7 @@
   "NOTIFYMESSAFE.ACCEPTITEM":"${Actor} accepted your trade request.",
   "ALERTMESSAGE.DoubleByteSymbol":"Double-byte symbol detected, so it converted into half-width symbol",
   "ALERTMESSAGE.DoubleByteSpace":"Double-byte space detected, so it converted into half-width space",
+  "ALERTMESSAGE.FolderPermissionError":"The specified folder {folder} for upload does not exist and the user does not have permission to create a folder. Once the GM uploads a character, the specified folder is automatically created.",
 
   "SATASUPEMESSAGE.ITEMTRADEFGM":"{sendActor} has sent {receiveActor} {Item}",
   "SATASUPEMESSAGE.TRADETITLE":"Incoming Trade Request",

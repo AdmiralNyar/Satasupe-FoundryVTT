@@ -322,7 +322,7 @@ export class SatasupeInvestigationSheet extends ItemSheet {
       const parent = tag[index];
       const tar = dat.target;
       tag[index].playerlist.push({
-        id : user._id,
+        id : user.id,
         color : user.data.color,
         GM : user.isGM 
       });
@@ -651,7 +651,7 @@ export class SatasupeInvestigationSheet extends ItemSheet {
             return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
           favoriteText = halftext.replace(/.*?\):/g,"");
           var contenthtml = "<div><div>" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
-          ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+          ChatMessage.create({user:user.id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
           for(let l=0;l < (tagnum*2); l++){
               randtaglist.push(SATASUPE[`cteghobby`][`${data.rands[l].value}`][`${data.rands[l+1].value}`]);
               l += 1;
@@ -714,7 +714,7 @@ export class SatasupeInvestigationSheet extends ItemSheet {
             return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
           var favoriteText = halftext.replace(/.*?\):/g,"")
           var contenthtml = "<div><div>" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
-          ChatMessage.create({user:user._id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
+          ChatMessage.create({user:user.id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
           for(let l=0;l < (tagnum*2); l++){
               randtaglist.push(SATASUPE[`cteghobby`][`${data2.rands[l].value}`][`${data2.rands[l+1].value}`]);
               l += 1;

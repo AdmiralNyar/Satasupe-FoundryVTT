@@ -258,6 +258,7 @@
     "NOTIFYMESSAFE.ACCEPTITEM":"{Actor}がアイテムを受け取りました",
     "ALERTMESSAGE.DoubleByteSymbol":"全角記号が検出されたので、半角記号に変換しました",
     "ALERTMESSAGE.DoubleByteSpace":"全角スペースが検出されたので、半角スペースに変換しました",
+    "ALERTMESSAGE.FolderPermissionError":"アップロード用の規定のフォルダ『{folder}』が存在していなく、ユーザーにフォルダ作成の権限がありません。一度GMがキャラクターをアップロードすれば、規定のフォルダが自動作成されます。",
 
     "SATASUPEMESSAGE.ITEMTRADEFGM":"{sendActor}が{receiveActor}に{Item}を渡した",
     "SATASUPEMESSAGE.TRADETITLE":"アイテムの受け渡し要求",
