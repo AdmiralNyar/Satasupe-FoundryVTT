@@ -5,6 +5,9 @@ import { SATASUPE } from "./config.js";
  * @extends {Actor}
  */
 export class SatasupeActor extends Actor {
+  async initialize () {
+    super.initialize()
+  }
 
   /** @override */
   prepareData() {
@@ -70,7 +73,7 @@ export class SatasupeActor extends Actor {
       type: 'karma',
       data: {}
     };
-    const created = await this.createEmbeddedEntity('Item', data, { renderSheet: showSheet});
+    const created = await this.createEmbeddedDocuments('Item', [data], { renderSheet: showSheet});
     return created;
   }
 
@@ -80,7 +83,7 @@ export class SatasupeActor extends Actor {
       type: 'chatpalette',
       data: {}
     };
-    const created = await this.createEmbeddedEntity('Item', data, { renderSheet: showSheet});
+    const created = await this.createEmbeddedDocuments('Item', [data], { renderSheet: showSheet});
     return created;
   }
 
@@ -90,7 +93,7 @@ export class SatasupeActor extends Actor {
       type: 'item',
       data:{}
     };
-    const created = await this.createEmbeddedEntity('Item', data, { renderSheet: showSheet});
+    const created = await this.createEmbeddedDocuments('Item', [data], { renderSheet: showSheet});
     return created;
   }
 
@@ -146,14 +149,14 @@ export class SatasupeActor extends Actor {
     await this.update( {[`data.hobby.${familyName}.${hobbyName}.value`]: !hobbyValue});
   }
 
-  async createEmbeddedEntity(embeddedName, data, options){
+  async createEmbeddedDocuments(embeddedName, [data], options){
     switch( data.type){
       case 'karma':
-        return await super.createEmbeddedEntity(embeddedName, [data], options);
+        return await super.createEmbeddedDocuments(embeddedName, [data], options);
       case 'chatpalette':
-        return await super.createEmbeddedEntity(embeddedName, [data], options);
+        return await super.createEmbeddedDocuments(embeddedName, [data], options);
       case 'item':
-        return await super.createEmbeddedEntity(embeddedName, [data], options);
+        return await super.createEmbeddedDocuments(embeddedName, [data], options);
       }
   }
 
@@ -257,12 +260,12 @@ export class SatasupeActor extends Actor {
     await this.update({'items' : items});
   }
 
-  async updateEquipmentUpkeep(bool){
+  async updateEquipmentUpkeep(bool, acid){
     let newkeep = this.data.data.exp.upkeep.value == null ? 0 : this.data.data.exp.upkeep.value;
     if(bool){
       newkeep +=1;
     }else{
-      newkeep -=1;
+      if(this.id == acid) newkeep -=1;
     }
     await this.update({'data.exp.upkeep.value' : newkeep});
   }
@@ -286,9 +289,10 @@ export class SatasupeActor extends Actor {
         item.data[key].upkeep = !item.data[key].upkeep;
         let newkeep = this.data.data.exp.upkeep.value == null ? 0 : this.data.data.exp.upkeep.value;
         if(item.data[key].upkeep){
+          item.data[key].upkeeper = this.id;
           newkeep +=1;
         }else{
-          newkeep -=1;
+          if(item.data[key].upkeeper == this.id) newkeep -=1;
         }
         await this.update({'data.exp.upkeep.value' : newkeep});
       }
@@ -323,6 +327,97 @@ export class SatasupeActor extends Actor {
       }else{
         mw.majorWoundsOffset.value = 0;
         await this.update({ 'data.status' : mw});
+      }
+    }
+  }
+
+  async checkupkeep(life){
+    let up = duplicate(this.items);
+    let ex = duplicate(this.data.data.exp);
+    let change = 0
+    for(let item of up){
+      if(item.type == "item"){
+        if(item.data.typep){
+          if(item.data.props.upkeep){
+            if(item.data.props.price.value != ""){
+              if(item.data.props.price.value <= Number(life)){
+                if(item.data.props.upkeeper == this.id){
+                  item.data.props.upkeep = false;
+                  change += 1;
+                }
+              }
+            }
+          }
+        }
+        if(item.data.typew){
+          if(item.data.weapon.upkeep){
+            if(item.data.weapon.price.value != ""){
+              if(item.data.weapon.price.value <= Number(life)){
+                if(item.data.weapon.upkeeper == this.id){
+                  item.data.weapon.upkeep = false;
+                  change += 1;
+                }
+              }
+            }
+          }
+        }
+        if(item.data.typev){
+          if(item.data.vehicle.upkeep){
+            if(item.data.vehicle.price.value != ""){
+              if(item.data.vehicle.price.value <= Number(life)){
+                if(item.data.vehicle.upkeeper == this.id){
+                  item.data.vehicle.upkeep = false;
+                  change += 1;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    let usedexp = 0;
+    if(change > 0){
+      for (let [key, circumstance]of Object.entries(this.data.data.circumstance)){
+        let v = circumstance.value;
+        if(key == "life" && life != v) v = life
+        if(v == 1 || v== null){
+        }else if(v == 2){
+          usedexp += 1;
+        }else if(v == 3){
+          usedexp += 2;
+        }else if(v == 4){
+          usedexp += 4;
+        }else if(v ==5){
+          usedexp += 6;
+        }else if(v == 6){
+          usedexp += 9;
+        }else if(v == 7){
+          usedexp += 13;
+        }else if(v == 8){
+          usedexp += 18;
+        }else{}
+      }
+
+      for (let [key, aptitude]of Object.entries(this.data.data.aptitude)){
+        if(aptitude.value <= 3 || aptitude.value == null){
+        }else if(aptitude.value == 4){
+          usedexp += 1;
+        }else if(aptitude.value == 5){
+          usedexp += 2;
+        }else if(aptitude.value == 6){
+          usedexp += 4;
+        }else if(aptitude.value ==7){
+          usedexp += 10;
+        }else if(aptitude.value == 8){
+          usedexp += 18;
+        }else{}
+      }
+
+      if((13 - usedexp - Number(ex.upkeep.value) + Number(ex.expgain.value)) > 0){
+        ex.upkeep.value -= change;
+        await this.update({'items' : up});
+        await this.update({'data.exp' : ex});
       }
     }
   }

@@ -6,7 +6,7 @@
                 <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
                 {{#select tabs}}
                     {{#each tabs}}
-                        <option value="{{@index}}">{{this.name}}</option>
+                        <option value="{{@index}}">{{this.name}}({{this.source}})</option>
                     {{/each}}
                     <option value="all">{{localize 'SATASUPE.All'}}</option>
                 {{/select}}

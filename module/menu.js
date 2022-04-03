@@ -4,150 +4,36 @@ import { LoadDialog} from "./apps/loaddialog.js";
 import { SatasupeChatCard} from "./chat-card.js";
 import { memoApplication} from "./apps/memo.js"
 
+class SatasupeMenuLayer extends PlaceablesLayer {
+    constructor () {
+        super()
+        this.objects = {}
+      }
+    
+      static get layerOptions () {
+        return foundry.utils.mergeObject(super.layerOptions, {
+          name: 'ddtools',
+          zIndex: 60
+        })
+      }
+    
+      static get documentName () {
+        return 'Token'
+      }
+    
+      get placeables () {
+        return []
+    }
+}
+
 export class SatasupeMenu {
-    constructor(options){
-        this.options = options;
-        this.controls = this._getControls();
-    }
-
-    static async renderMenu( controls, html){
-        if(!game.satasupe.menus){
-            game.satasupe.menus = new SatasupeMenu();
-        }
-        const menu = await renderTemplate( 'systems/satasupe/templates/satasupe-menu.html', game.satasupe.menus.getData());
-        const buttons = $(menu);
-
-        buttons.find('.scene-control').click(game.satasupe.menus._onClickMenu.bind(game.satasupe.menus));
-        buttons.find('.control-tool').click(game.satasupe.menus._onClickTool.bind(game.satasupe.menus));
-
-        if( game.satasupe.menus.activeControl) {
-            html.find('.scene-control').removeClass('active');
-        }
-        html.find('.scene-control').click(game.satasupe.menus._clearActive.bind(game.satasupe.menus));
-
-        html.append( buttons);
-        game.satasupe.menus.html = html;
-    }
-
-    get control(){
-        if(!this.controls) return null;
-        return this.controls.find(c => c.name === this.activeControl) || null;
-    }
-
-    _clearActive(event){
-        event.preventDefault();
-        const customMenuActive = !!this.activeControl;
-        this.activeControl = '';
-        const li = event.currentTarget;
-        const controlName = li.dataset?.control;
-        if(ui.controls.activeControl == controlName && customMenuActive){
-            ui.controls.render();
-        }
-    }
-
-    _onClickTool(event){
-        event.preventDefault();
-        if( !canvas?.ready) return;
-        const li = event.currentTarget;
-        const toolName = li.dataset.tool;
-        const tool = this.control.tools.find(t => t.name === toolName);
-
-        if( tool.toggle){
-            tool.active = !tool.active;
-            if( tool.onClick instanceof Function) tool.onClick(tool.active);
-        }
-
-        else if ( tool.button){
-            if( tool.onClick instanceof Function) tool.onClick(event);
-        }
-
-        else{
-            tool.activeTool = toolName;
-            if( tool.onClick instanceof Function) tool.onClick();
-        }
-    }
-
-    _onClickMenu(event){
-        event.preventDefault();
-        if( !canvas?.ready) return;
-
-        const li = event.currentTarget;
-        const controlName = li.dataset.control;
-        const control = this.controls.find(t => t.name === controlName);
-        if( control.button){
-            if(control.onClick instanceof Function) control.onClick( event);
-        }else if(control.toggle){
-            control.active = !control.active;
-            if(control.onClick instanceof Function) control.onClick( control.active);
-        }else{
-            this.activeControl = controlName;
-            ui.controls.render();
-        }
-    }
-
-    getData(){
-        const isActive = !!canvas?.scene;
-        let controls = this.controls.filter(s => s.visible !== false).map(s => {
-            s = duplicate(s);
-
-            s.css= [
-                'custom-control',
-                s.button ? 'button' : null,
-                isActive && (this.activeControl === s.name) ? 'active' : ''
-            ].filter(t => !!t).join(' ');
-
-            if(s.button) return s;
-
-            s.css=[
-                'custom-control',
-                s.toggle ? 'toggle' : null,
-                isActive && ((this.activeControl === s.name)||(s.toggle && s.active)) ? 'active' : '',
-                s.class ? s.class : null
-            ].filter(t=> !!t).join(' ');
-
-            if(s.toggle) return s;
-
-            s.tools = s.tools.filter(t => t.visible !== false).map(t => {
-                let active = isActive && ((s.activeTool === t.name) || (t.toggle && t.active));
-                t.css = [
-                    t.toggle ? 'toggle' : null,
-                    active ? 'active' : null,
-                    t.class ? t.class : null
-                ].filter(t => !!t).join(' ');
-                return t;
-            });
-            return s;
-        });
-
-        return {
-            active: isActive,
-            cssClass: isActive ? '' : 'disabled',
-            controls: controls
-        };
-    }
-
-    _getControls(document){
+    static getButtons(controls){
+        canvas.satasupeddtools = new SatasupeMenuLayer();
         const isGM = game.user.isGM;
-        const notGM = !isGM;
-        const controls = [];
-        const canCreateActor = game.user.can("ACTOR_CREATE");
-        const canCreateItem = game.user.can("ITEM_CREATE");
-        const hasActor = !!game.user.character;
-        let acticon = false;
-        if(hasActor){
-            acticon = game.user.character.data.data.status.turn.value;
-        }
-        const display = canCreateActor && canCreateItem;
         controls.push({
-            icon: 'fas fa-file-download',
-            name: 'load',
-            title: 'SATASUPE.MenuLoad',
-            visible: display,
-            button: true,
-            onClick : async (event) => await SatasupeMenu.charaloaddialog(event)
-        },{
             icon:'fas fa-toolbox',
-            name:'gmtools',
+            name:'ddtools',
+            layer: 'satasupeddtools',
             title:'SATASUPE.DDTools',
             visible: isGM,
             tools:[
@@ -210,22 +96,47 @@ export class SatasupeMenu {
                     onClick: async (event) => await SatasupeMenu.menuReset(event)
                 }
             ]
-        },{
-            toggle: true,
-            icon: 'fas fa-user-check',
-            name: 'acted',
-            active: acticon,
-            title: 'SATASUPE.Acted',
-            visible: (hasActor && !game.settings.get("satasupe", "turnskip")),
-            onClick: async toggled => await SatasupeMenu.actedintheTurn(event, false)
-        },{
-            icon:'fas fa-sticky-note',
-            name:'memo',
-            title: 'SATASUPE.MEMO',
-            button:true,
-            onClick: async (event) => await memoApplication.memorender(event)
         });
-        return controls;
+    }
+
+    static async renderControls (app, html, data) {
+        const canCreateActor = game.user.can("ACTOR_CREATE");
+        const canCreateItem = game.user.can("ITEM_CREATE");
+        const display = canCreateActor && canCreateItem;
+        const vis = (!!game.user.character && !game.settings.get("satasupe", "turnskip"))
+        let ddMenu = html.find('.fa-toolbox').parent();
+        if(!game.user.isGM) ddMenu = html.find('.fa-bookmark').parent();
+        ddMenu.addClass('satasupe-menu')
+        ddMenu.after(
+            '<li class="scene-control satasupe-menu satasupe-memo" title="' +
+              game.i18n.localize('SATASUPE.MEMO') +
+              '"><i class="fas fa-sticky-note"></i></li>'
+        );
+        if (vis) {
+            let act = "";
+            if(game.user.character.data.data.status.turn.value) act = "active"
+            ddMenu.after(
+              `<li class="scene-control satasupe-menu toggle ${act} satasupe-acted" title="` +
+                game.i18n.localize('SATASUPE.Acted') +
+                `"><i class="fas fa-user-check"></i></li>`
+            )
+        }
+        if (display) {
+          ddMenu.after(
+            '<li class="scene-control satasupe-menu satasupe-char-dl" title="' +
+              game.i18n.localize('SATASUPE.MenuLoad') +
+              '"><i class="fas fa-file-download"></i></li>'
+          )
+        }
+        html
+          .find('.satasupe-menu.satasupe-memo')
+          .click(async (event) => await memoApplication.memorender(event))
+        html
+          .find('.satasupe-menu.satasupe-char-dl')
+          .click(async (event) => await SatasupeMenu.charaloaddialog(event))
+        html
+          .find('.satasupe-menu.satasupe-acted')
+          .click(async event => await SatasupeMenu.actedintheTurn(event))
     }
 
     static async turnskip(event, option){
@@ -246,7 +157,7 @@ export class SatasupeMenu {
                 let turn = false;
                 for(let k = 0;k<list.length;k++){
                     let actor = game.users.get(list[k].id).character;
-                    if(actor) {
+                    if(actor){
                         if(!actor.data.data.status.turn.value){
                             turn = true;
                         }
@@ -264,7 +175,28 @@ export class SatasupeMenu {
                         value =1+value;
                     }
                     await game.settings.set("satasupe", "turnCount", value);
-                    if(!game.settings.get("satasupe", "turnskip")) await game.socket.emit('system.satasupe', {result:null,type:"selected",data:null,voteT:"notact"});
+                    let self = list.filter((j) => game.user.id == j.id);
+                    let other = list.filter((j) => game.user.id != j.id);
+                    if(self){
+                        const ownActor = duplicate(game.user.character.data);
+                        ownActor.data.status.turn.value = !ownActor.data.status.turn.value;
+                        if((value%game.settings.get("satasupe", 'worktimeValue') == 1)&&(value != 1)) ownActor.data.status.investigation.value = 0;
+                        ui.notifications.info(game.i18n.localize("SATASUPE.UnActedinfo"));
+                        await game.user.character.update({'data.status' : ownActor.data.status});
+                        ui.controls.render();
+                    }
+                    if(other){
+                        for(let pl of other){
+                            let plactor = duplicate(game.users.get(pl.id).character?.data);
+                            if(plactor){
+                                if((value%game.settings.get("satasupe", 'worktimeValue') == 1)&&(value != 1)) {
+                                    plactor.data.status.investigation.value = 0;
+                                    await game.users.get(pl.id).character.update({'data.status' : plactor.data.status});
+                                }
+                            }
+                        }
+                    }
+                    if(!game.settings.get("satasupe", "turnskip")) await game.socket.emit('system.satasupe', {result:null,type:"selected",data:value,voteT:"notact"});
                     if(value>0){
                         let worktime = game.settings.get("satasupe", 'worktimeValue');
                         let dayturn = value%worktime;
@@ -400,21 +332,17 @@ export class SatasupeMenu {
         }
     }
 
-    static async actedintheTurn(event, force){
+    static async actedintheTurn(data, option){
         if(game.user.character){
-            if(!force){
-                const Actor = game.user.character;
-                const ownActor = duplicate(game.user.character.data);
-                ownActor.data.status.turn.value = !Actor.data.data.status.turn.value;
-                if(ownActor.data.status.turn.value){
-                    ui.notifications.info(game.i18n.localize("SATASUPE.Actedinfo"))
-                }else{
-                    ui.notifications.info(game.i18n.localize("SATASUPE.UnActedinfo"))
-                }
-                await Actor.update({'data.status' : ownActor.data.status})
+            const Actor = game.user.character;
+            const ownActor = duplicate(game.user.character.data);
+            ownActor.data.status.turn.value = !Actor.data.data.status.turn.value;
+            if(ownActor.data.status.turn.value){
+                ui.notifications.info(game.i18n.localize("SATASUPE.Actedinfo"))
             }else{
-                if($(window.document.children[0].children[1]).find("ol.app.control-tools").children("div").children("li.custom-control.toggle").hasClass("active")) $(window.document.children[0].children[1]).find("ol.app.control-tools").children("div").children("li.custom-control.toggle").click();
+                ui.notifications.info(game.i18n.localize("SATASUPE.UnActedinfo"))
             }
+            await Actor.update({'data.status' : ownActor.data.status})
         }else{
             ui.notifications.warn(game.i18n.localize("SATASUPE.DontHaveActor"))
         }
@@ -468,7 +396,6 @@ export class SatasupeMenu {
     }
 
     static async menuReset(event){
-        event.preventDefault();
         await game.settings.set("satasupe", 'turnCount', 0);
         await game.settings.set("satasupe", 'worktimeValue', 5);
         await game.settings.set("satasupe", 'worklimit', {limit: 10,secret:true});
@@ -603,13 +530,18 @@ export class SatasupeMenu {
     static async createImportCharactersFolderIfNotExists() {
         let importedCharactersFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedCharacters") && entry.data.type === 'Actor')
         if (importedCharactersFolder === null || importedCharactersFolder === undefined) {
-          // Create the folder
-          importedCharactersFolder = await Folder.create({
-            name: game.i18n.localize("SATASUPE.ImportedCharacters"),
-            type: 'Actor',
-            parent: null
-          })
-          ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedFolder"))
+            if(Folder.canUserCreate(game.user)){
+                // Create the folder
+                importedCharactersFolder = await Folder.create({
+                    name: game.i18n.localize("SATASUPE.ImportedCharacters"),
+                    type: 'Actor',
+                    parent: null
+                })
+                ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedFolder"))
+            }else{
+                ui.notifications.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedCharacters")}));
+                console.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedCharacters")}));
+            }
         }
         return importedCharactersFolder;
     }
@@ -617,76 +549,116 @@ export class SatasupeMenu {
     static async createImportItemsFolderIfNotExists() {
         let importedItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedItems") && entry.data.type === 'Item')
         if (importedItemsFolder === null || importedItemsFolder === undefined) {
-          // Create the folder
-          importedItemsFolder = await Folder.create({
-            name: game.i18n.localize("SATASUPE.ImportedItems"),
-            type: 'Item',
-            parent: null
-          });
-          ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedItemsFolder"))
+            if(Folder.canUserCreate(game.user)){
+                // Create the folder
+                importedItemsFolder = await Folder.create({
+                    name: game.i18n.localize("SATASUPE.ImportedItems"),
+                    type: 'Item',
+                    parent: null
+                });
+                ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedItemsFolder"))
+            }else{
+                ui.notifications.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedItems")}));
+                console.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedItems")}));
+            }
         }
         let karmaItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedKarmas") && entry.data.type === 'Item')
         if(karmaItemsFolder === null || karmaItemsFolder === undefined){
-        karmaItemsFolder = await Folder.create({
-            name: game.i18n.localize("SATASUPE.ImportedKarmas"),
-            type: 'Item',
-            parent: importedItemsFolder.id
-        });
-        ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedKarmasFolder"))
+            if(Folder.canUserCreate(game.user)){
+                karmaItemsFolder = await Folder.create({
+                    name: game.i18n.localize("SATASUPE.ImportedKarmas"),
+                    type: 'Item',
+                    parent: importedItemsFolder.id
+                });
+                ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedKarmasFolder"))
+            }else{
+                ui.notifications.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedKarmas")}));
+                console.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedKarmas")}));
+            }
         }
         let itemItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedEquipments") && entry.data.type === 'Item')
         if(itemItemsFolder === null || itemItemsFolder === undefined){
-        itemItemsFolder = await Folder.create({
-            name: game.i18n.localize("SATASUPE.ImportedEquipments"),
-            type: 'Item',
-            parent: importedItemsFolder.id
-        });
-        ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedEquipmentsFolder"))
+            if(Folder.canUserCreate(game.user)){
+                itemItemsFolder = await Folder.create({
+                    name: game.i18n.localize("SATASUPE.ImportedEquipments"),
+                    type: 'Item',
+                    parent: importedItemsFolder.id
+                });
+                ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedEquipmentsFolder"))
+            }else{
+                ui.notifications.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedEquipments")}));
+                console.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedEquipments")}));
+            }
         }
         let weaponItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedWeapons") && entry.data.type === 'Item')
         if(weaponItemsFolder === null || weaponItemsFolder === undefined){
-        weaponItemsFolder = await Folder.create({
-            name: game.i18n.localize("SATASUPE.ImportedWeapons"),
-            type: 'Item',
-            parent: itemItemsFolder.id
-        });
-        ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedWeaponsFolder"))
+            if(Folder.canUserCreate(game.user)){
+                weaponItemsFolder = await Folder.create({
+                    name: game.i18n.localize("SATASUPE.ImportedWeapons"),
+                    type: 'Item',
+                    parent: itemItemsFolder.id
+                });
+                ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedWeaponsFolder"))
+            }else{
+                ui.notifications.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedWeapons")}));
+                console.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedWeapons")}));
+            }
         }
         let vehicleItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedVehicles") && entry.data.type === 'Item')
         if(vehicleItemsFolder === null || vehicleItemsFolder === undefined){
-        vehicleItemsFolder = await Folder.create({
-            name: game.i18n.localize("SATASUPE.ImportedVehicles"),
-            type: 'Item',
-            parent: itemItemsFolder.id
-        });
-        ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedVehiclesFolder"))
+            if(Folder.canUserCreate(game.user)){
+                vehicleItemsFolder = await Folder.create({
+                    name: game.i18n.localize("SATASUPE.ImportedVehicles"),
+                    type: 'Item',
+                    parent: itemItemsFolder.id
+                });
+                ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedVehiclesFolder"))
+            }else{
+                ui.notifications.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedVehicles")}));
+                console.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedVehicles")}));
+            }
         }
         let gadjetItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedGadjets") && entry.data.type === 'Item')
         if(gadjetItemsFolder === null || gadjetItemsFolder === undefined){
-        gadjetItemsFolder = await Folder.create({
-            name: game.i18n.localize("SATASUPE.ImportedGadjets"),
-            type: 'Item',
-            parent: itemItemsFolder.id
-        });
-        ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedGadjetsFolder"))
+            if(Folder.canUserCreate(game.user)){
+                gadjetItemsFolder = await Folder.create({
+                    name: game.i18n.localize("SATASUPE.ImportedGadjets"),
+                    type: 'Item',
+                    parent: itemItemsFolder.id
+                });
+                ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedGadjetsFolder"))
+            }else{
+                ui.notifications.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedGadjets")}));
+                console.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedGadjets")}));
+            }
         }
         let propsItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedProps") && entry.data.type === 'Item')
         if(propsItemsFolder === null || propsItemsFolder === undefined){
-        propsItemsFolder = await Folder.create({
-            name: game.i18n.localize("SATASUPE.ImportedProps"),
-            type: 'Item',
-            parent: itemItemsFolder.id
-        });
-        ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedPropsFolder"))
+            if(Folder.canUserCreate(game.user)){
+                propsItemsFolder = await Folder.create({
+                    name: game.i18n.localize("SATASUPE.ImportedProps"),
+                    type: 'Item',
+                    parent: itemItemsFolder.id
+                });
+                ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedPropsFolder"))
+            }else{
+                ui.notifications.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedProps")}));
+                console.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedProps")}));
+            }
         }
         let palleteItemsFolder = game.folders.find(entry => entry.data.name === game.i18n.localize("SATASUPE.ImportedPalette") && entry.data.type === 'Item')
         if(palleteItemsFolder === null || palleteItemsFolder === undefined){
-        palleteItemsFolder = await Folder.create({
-            name: game.i18n.localize("SATASUPE.ImportedPalette"),
-            type: 'Item',
-            parent: importedItemsFolder.id
-        });
-        ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedPaletteFolder"))
+            if(Folder.canUserCreate(game.user)){
+                palleteItemsFolder = await Folder.create({
+                    name: game.i18n.localize("SATASUPE.ImportedPalette"),
+                    type: 'Item',
+                    parent: importedItemsFolder.id
+                });
+                ui.notifications.info(game.i18n.localize("SATASUPE.CreatedImportedPaletteFolder"))
+            }else{
+                ui.notifications.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedPalette")}));
+                console.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:game.i18n.localize("SATASUPE.ImportedPalette")}));
+            }
         }
         let otherFolders = [karmaItemsFolder,itemItemsFolder,weaponItemsFolder,vehicleItemsFolder,gadjetItemsFolder,propsItemsFolder,palleteItemsFolder]
         return importedItemsFolder, otherFolders;
@@ -701,12 +673,19 @@ export class SatasupeMenu {
             await FilePicker.browse(source, "uploadedCharacterImage");
         }
         catch (error){
-            await FilePicker.createDirectory(source, "uploadedCharacterImage");
+            try{
+                await FilePicker.createDirectory(source, "uploadedCharacterImage");
+            }catch(error2){
+                let fl = "Local folder"
+                if(source == "forgevtt") fl = "Forge VTT Folder"
+                console.error(game.i18n.format('ALERTMESSAGE.FolderPermissionError',{folder:`uploadedCharacterImage(${fl})`}))
+            }
         }
     }
 
     static async importActor(formData, event){
         let importedCharactersFolder = await SatasupeMenu.createImportCharactersFolderIfNotExists();
+        let importedItemsFolder, otherFolders = await SatasupeMenu.createImportItemsFolderIfNotExists();
         await SatasupeMenu.createImortImageFolderIfNotExists();
         let url = formData.get('adress');
         let key;
@@ -743,7 +722,9 @@ export class SatasupeMenu {
             const bin = atob(data.images.uploadImage.replace(/^.*,/, ''));
             const buffer = new Uint8Array(bin.length).map((_,x)=>bin.charCodeAt(x));
             let file = new File([buffer.buffer], (name + '.' + extension), {type: type});
-            response = await FilePicker.upload(source, "uploadedCharacterImage", file, {});
+            try{
+                response = await FilePicker.upload(source, "uploadedCharacterImage", file, {});
+            }catch(error){}
             let img = response.path;
             if(!response) img = data.images.uploadImage;
             const pc = await Actor.create({
@@ -894,7 +875,7 @@ export class SatasupeMenu {
                 }
               }
         });
-        const created = await pc.createEmbeddedEntity('Item', data, { renderSheet: option});
+        const created = await pc.createEmbeddedDocuments('Item', [data], { renderSheet: option});
         return created;
     }
 
@@ -989,7 +970,7 @@ export class SatasupeMenu {
                 let selected = await SelectItemDialog.selectData({data: existlist});
                 if(selected){
                     let id = selected.get('item');
-                    existvehicle = existlist.find((j) => j.data._id == id);
+                    existvehicle = existlist.find((j) => j.data.id == id);
                     if(!id){
                         existvehicle = existlist[0];
                     }
@@ -1000,10 +981,10 @@ export class SatasupeMenu {
                 existvehicle = existlist[0];
             }
             if(existvehicle?.data.name == savevehicle.name){
-                await pc.createEmbeddedEntity('Item', existvehicle.data);
+                await pc.createEmbeddedDocuments('Item', [existvehicle.data]);
             }else{
                 if(existvehicle){
-                    await pc.createEmbeddedEntity('Item', existvehicle.data);
+                    await pc.createEmbeddedDocuments('Item', [existvehicle.data]);
                 }else{
                     const createvehicle = await Item.create({
                         name:savevehicle.name,
@@ -1033,7 +1014,7 @@ export class SatasupeMenu {
                         }
                     }
                     await createvehicle.update(result);
-                    await pc.createEmbeddedEntity('Item', createvehicle.data);
+                    await pc.createEmbeddedDocuments('Item', [createvehicle.data]);
                 }
             }
         }
@@ -1071,7 +1052,7 @@ export class SatasupeMenu {
                 }else{
                     dup.data.storage = "normal";
                 }
-                await pc.createEmbeddedEntity('Item', dup);
+                await pc.createEmbeddedDocuments('Item', [dup]);
             }else{
                 if(existweapon){
                     var dup = duplicate(existweapon);
@@ -1082,7 +1063,7 @@ export class SatasupeMenu {
                     }else{
                         dup.data.storage = "normal";
                     }
-                    await pc.createEmbeddedEntity('Item', dup);
+                    await pc.createEmbeddedDocuments('Item', [dup]);
                 }else{
                     const createweapon = await Item.create({
                         name: saveweapon.name,
@@ -1124,7 +1105,7 @@ export class SatasupeMenu {
                     }else{
                         dup.data.storage = "normal";
                     }
-                    await pc.createEmbeddedEntity('Item', dup);
+                    await pc.createEmbeddedDocuments('Item', [dup]);
                 }
             }
         }
@@ -1162,7 +1143,7 @@ export class SatasupeMenu {
                 }else{
                     dup.data.storage = "normal";
                 }
-                await pc.createEmbeddedEntity('Item', dup);
+                await pc.createEmbeddedDocuments('Item', [dup]);
             }else{
                 if(existitem){
                     var dup = duplicate(existitem);
@@ -1173,7 +1154,7 @@ export class SatasupeMenu {
                     }else{
                         dup.data.storage = "normal";
                     }
-                    await pc.createEmbeddedEntity('Item', dup);
+                    await pc.createEmbeddedDocuments('Item', [dup]);
                 }else{
                     let regE = new RegExp(`${game.i18n.localize("SATASUPE.GADJET")}`);
                     let f;
@@ -1236,7 +1217,7 @@ export class SatasupeMenu {
                     }else{
                         dup.data.storage = "normal";
                     }
-                    await pc.createEmbeddedEntity('Item', dup);
+                    await pc.createEmbeddedDocuments('Item', [dup]);
                 }
             }
         }
@@ -1276,10 +1257,10 @@ export class SatasupeMenu {
                 }
 
                 if(existcompensation?.data.name == savecompensation.name){
-                    await pc.createEmbeddedEntity('Item', existcompensation.data);
+                    await pc.createEmbeddedDocuments('Item', [existcompensation.data]);
                 }else{
                     if(existcompensation){
-                        await pc.createEmbeddedEntity('Item', existcompensation.data);
+                        await pc.createEmbeddedDocuments('Item', [existcompensation.data]);
                     }else{
                         const createcompensation = await Item.create({
                             name: savecompensation.name,
@@ -1350,7 +1331,7 @@ export class SatasupeMenu {
                             }
                         }
                         await createcompensation.update(result);
-                        await pc.createEmbeddedEntity('Item', createcompensation.data);
+                        await pc.createEmbeddedDocuments('Item', [createcompensation.data]);
                     }
                 }
             }
@@ -1376,12 +1357,11 @@ export class SatasupeMenu {
                 }else{
                     existtalent = existlistT[0];
                 }
-
                 if(existtalent?.data.name == savetalent.name){
-                    await pc.createEmbeddedEntity('Item', existtalent.data);
+                    await pc.createEmbeddedDocuments('Item', [existtalent.data]);
                 }else{
                     if(existtalent){
-                        await pc.createEmbeddedEntity('Item', existtalent.data);
+                        await pc.createEmbeddedDocuments('Item', [existtalent.data]);
                     }else{
                         const createtalent = await Item.create({
                             name: savetalent.name,
@@ -1452,7 +1432,7 @@ export class SatasupeMenu {
                             }
                         }
                         await createtalent.update(result);
-                        await pc.createEmbeddedEntity('Item', createtalent.data);
+                        await pc.createEmbeddedDocuments('Item', [createtalent.data]);
                     }
                 }
             }

@@ -707,6 +707,7 @@
           }
         },
         "upkeep":false,
+        "upkeeper":"",
         "price":{
           "value":"",
           "max":9
@@ -783,6 +784,7 @@
           }
         },
         "upkeep":false,
+        "upkeeper":"",
         "price":{
           "value":"",
           "max":9
@@ -864,6 +866,7 @@
           }
         },
         "upkeep":false,
+        "upkeeper":"",
         "price":{
           "value":"",
           "max":9

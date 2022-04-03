@@ -77,7 +77,7 @@
             <legend>{{localize 'SATASUPE.ORIGINALTABLE'}}</legend>
             <div class="original-table-zone">
                 {{#each data.tablelist as |list key|}}
-                    <input type="button" class="table-button original" value="{{list.name}}" name="{{list._id}}" data-tname="origin"/>
+                    <input type="button" class="table-button original" value="{{list.name}}" name="{{list.id}}" data-tname="origin"/>
                 {{/each}}
             </div>
         </fieldset>
