@@ -26,11 +26,6 @@
   "SETTINGS.SatasupeTokenAutoSettingN":"Automate the setting of tokens after character sheet loading",
   "SETTINGS.SatasupeTokenAutoSettingL":"✔: actor link = true, display bars and name = always all",
 
-  "SATASUPE.NotifyGroupDuplicate": "Attribute group already exists.",
-  "SATASUPE.NotifyGroupAttrDuplicate": "Attribute group already exists as an attribute.",
-  "SATASUPE.NotifyGroupAlphanumeric": "Attribute group names may not contain spaces or periods.",
-  "SATASUPE.NotifyAttrDuplicate": "Attribute key already exists as a group.",
-
   "SATASUPE.MenuLoad":"Character sheet load",
   "SATASUPE.Import":"Import",
   "SATASUPE.Cancel" : "Cancel",
@@ -68,6 +63,7 @@
   "SATASUPE.UiOnly" : "Show turn count in the notification",
   "SATASUPE.ChatAndUi" : "Show turn count in the chat and notification",
   "SATASUPE.NoDisplay" : "Don't show turn count",
+  "SATASUPE.Confirm" : "Confirm",
 
   "CIRCUMSTANCE.CRIME": "CRIME",
   "CIRCUMSTANCE.LIFE": "LIFE",
@@ -452,6 +448,7 @@
   "SATASUPE.RemoveTargetTag":"Remove Tag",
   "SATASUPE.Tag":"Tag",
   "SATASUPE.TargetOpen":"Target info open",
+  "SATASUPE.TargetPrivate":"Non-disclosure",
   "SATASUPE.SuccessMusic":"Success Music Playlist",
   "SATASUPE.AddLink":"Add links",
   "SATASUPE.TagAddType":"Add Type",
@@ -631,6 +628,7 @@
   "SATASUPE.MEMO":"Memo",
   "SATASUPE.Turn0": "Now on turn 0!",
   "SATASUPE.LastTurn":"Now on last turn!",
+  "SATASUPE.ConfirmPrevTurn" : "Do you want to go back to the previous turn?",
   "SATASUPE.Unacted":"Unacted character(s) detected",
   "SATASUPE.DontHaveActor":"You don't have own Actor",
   "SATASUPE.ChangeTotalDailyTurns":"Total daily turns",
@@ -700,22 +698,5 @@
   "SATASUPE.AddTable":"Add table",
   "SATASUPE.TableName": "Table Name",
   "SATASUPE.AddList":"Add list",
-
-  "SATASUPE.ResourceMin": "Min",
-  "SATASUPE.ResourceValue": "Value",
-  "SATASUPE.ResourceMax": "Max",
-
-  "SATASUPE.DefineTemplate": "Define as Template",
-  "SATASUPE.UnsetTemplate": "Unset Template",
-  "SATASUPE.NoTemplate": "No Template",
-
-  "SATASUPE.AttributeKey": "Attribute Key",
-  "SATASUPE.AttributeValue": "Value",
-  "SATASUPE.AttributeLabel": "Label",
-  "SATASUPE.AttributeDtype": "Data Type",
-
-  "SATASUPE.DeleteGroup": "Delete group?",
-  "SATASUPE.DeleteGroupContent": "Do you wish to delete this group? This will delete the following group and all attributes included in it: ",
-  "SATASUPE.Create": "Create",
-  "SATASUPE.New": "New"
+  "SATASUPE.MemoDeleteConfirm":"The tab \"{tabname}\" is completely deleted and cannot be restored.<br>Are you sure?"
 }

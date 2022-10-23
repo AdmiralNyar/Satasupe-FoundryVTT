@@ -2,8 +2,15 @@ import { SelectItemDialog} from "./select-item-dialog.js"
 
 export class memoApplication extends FormApplication {
     constructor(){
-        super({});
+        super();
+        this.object = duplicate(game.user.getFlag("satasupe", "memo-data") ?? {
+            tabs: {tab0:{type:"plain", name:`Tab0`, data: "",save:`tabs.tab0.data`, id: 0}}
+        });
         this.dialog = null;
+    }
+
+    set _upObje(data){
+        this.object = data
     }
 
     static get defaultOptions(){
@@ -63,15 +70,15 @@ export class memoApplication extends FormApplication {
     }
 
     async getData(){
-        const data = await super.getData();
+        const context = await super.getData();
         //await game.user.unsetFlag("satasupe", "memo-data");
         var obj = duplicate(game.user.getFlag("satasupe", "memo-data") ?? {
             tabs: {tab0:{type:"plain", name:`Tab0`, data: "",save:`tabs.tab0.data`, id: 0}}
         });
-        if(!data.data) data.data = {};
-        data.data.tabs = Object.keys(obj.tabs).map(function (key) {return obj.tabs[key]})
-        data.editable = this.isEditable;
-        return data;
+        if(!context.data) context.data = {};
+        context.data.tabs = Object.keys(obj.tabs).map(function (key) {return obj.tabs[key]})
+        context.editable = this.isEditable;
+        return context;
     }
 
     activateListeners(html) {
@@ -98,13 +105,29 @@ export class memoApplication extends FormApplication {
             const data = mergeObject(duplicate(game.user.getFlag("satasupe", "memo-data") ?? {
                 tabs: {tab0:{type:"plain",name:`Tab0`, data: "",save:`tabs.tab0.data`, id: 0}}
             }), expandObject(formData));
-            const tabs = formData.tabs || (game.user.getFlag("satasupe", "memo-data")?.tabs || {tab0:{type:"plain",name:`Tab0`, data: "",save:`tabs.tab0.data`, id: 0}});
-            data.tabs = tabs;
-            for(let [k,v] of Object.entries(formData)){
-                data[`${k}`] = v;
+
+            if(event === null){
+
+                const tabs = formData.tabs || (game.user.getFlag("satasupe", "memo-data")?.tabs || {tab0:{type:"plain",name:`Tab0`, data: "",save:`tabs.tab0.data`, id: 0}});
+                data.tabs = tabs;
+
+                for(let [k,v] of Object.entries(formData)){
+                    data[`${k}`] = v;
+                }
+
+                await game.user.unsetFlag("satasupe", "memo-data")
+                await game.user.setFlag("satasupe", "memo-data", data);
+            }else if(event?.type == "submit"){
+                for(let k in formData){
+                    let s = k.split('.')
+                    if(s[0] == "tabs") data[s[0]][s[1]][s[2]] = formData[k]
+                }
+
+                this._upObje = data;
+
+                await game.user.unsetFlag("satasupe", "memo-data")
+                await game.user.setFlag("satasupe", "memo-data", data);
             }
-            await game.user.unsetFlag("satasupe", "memo-data")
-            await game.user.setFlag("satasupe", "memo-data", data);
         }else{
             const data = duplicate(game.user.getFlag("satasupe", "memo-data"));
             if(event.currentTarget.classList){
@@ -175,8 +198,16 @@ export class memoApplication extends FormApplication {
         event.preventDefault();
         let id = event.currentTarget.dataset.id;
         let tabs = game.user.getFlag("satasupe", "memo-data").tabs || {tab0:{type:"plain",name:`Tab0`, data: "",save:`tabs.tab0.data`, id: 0}};
-        delete tabs[`tab${id}`];
-        this._updateObject(null, {tabs: tabs})
+        Dialog.confirm({
+            title: game.i18n.localize("SATASUPE.Confirm"),
+            content: `<div style="display:flex;margin-bottom: 10px;"><i style="font-size: 65px;width: 25%;display: flex;justify-content: center;" class="fas fa-exclamation-triangle"></i><div style="width: 75%;display: flex;align-items: center;">${game.i18n.format("SATASUPE.MemoDeleteConfirm", {tabname : tabs[`tab${id}`].name})}</div></div>`,
+            yes: () => {
+                delete tabs[`tab${id}`];
+                this._updateObject(null, {tabs: tabs})
+            },
+            no:()=>{},
+            defaultYes: false
+        })
     }
 
     addtable(event){
@@ -332,20 +363,23 @@ export class memoApplication extends FormApplication {
 
     mergememo(merge){
         const data = merge;
-        let originaldata = game.user.getFlag("satasupe", "memo-data");
+        const originaldata = duplicate(game.user.getFlag("satasupe", "memo-data") ?? {
+            tabs: {tab0:{type:"plain",name:`Tab0`, data: "",save:`tabs.tab0.data`, id: 0}}
+        });
         let idn = -1;
         for(let [k,v] of Object.entries(originaldata.tabs)){
             if(idn < v.id){
                 idn = v.id;
             }
         }
-        let newdata = data;
+        let newdata = {};
+        newdata.tabs = {}
         for(let [key, value] of Object.entries(data.tabs)){
-            newdata.tabs[key].id = idn + 1;
+            let ed = data.tabs[key]
+            ed.id = idn + 1;
             let newkey = `tab${(idn + 1)}`;
-            newdata.tabs[key].save = `tabs.tab${(idn + 1)}.data`;
-            newdata.tabs[newkey] = newdata.tabs[key];
-            delete newdata.tabs[key];
+            ed.save = `tabs.tab${(idn + 1)}.data`;
+            newdata.tabs[newkey] = ed;
             idn += 1;
         }
         const result = Object.assign(originaldata.tabs, newdata.tabs);
@@ -403,7 +437,7 @@ export class memoApplication extends FormApplication {
 
     static async _sharememo(merge){
         const data = {}
-        data.tabs = merge;
+        data.tabs = duplicate(merge);
         const originaldata = duplicate(game.user.getFlag("satasupe", "memo-data") ?? {
             tabs: {tab0:{type:"plain",name:`Tab0`, data: "",save:`tabs.tab0.data`, id: 0}}
         });
@@ -413,20 +447,24 @@ export class memoApplication extends FormApplication {
                 idn = v.id;
             }
         }
-        let newdata = data;
+
+        let newdata = {};
+        newdata.tabs = {};
         for(let [key, value] of Object.entries(data.tabs)){
-            newdata.tabs[key].id = idn + 1;
+            let ed = data.tabs[key]
+            ed.id = idn + 1;
             let newkey = `tab${(idn + 1)}`;
-            newdata.tabs[key].save = `tabs.tab${(idn + 1)}.data`;
-            newdata.tabs[newkey] = newdata.tabs[key];
-            delete newdata.tabs[key];
+            ed.save = `tabs.tab${(idn + 1)}.data`;
+            newdata.tabs[newkey] = ed;
             idn += 1;
         }
+
         const result = Object.assign(originaldata.tabs, newdata.tabs);
         const tabs = result;
         originaldata.tabs = tabs;
+
         for(let [k,v] of Object.entries(result)){
-            originaldata[`${k}`] = v;
+            originaldata.tabs[`${k}`] = v;
         }
         await game.user.unsetFlag("satasupe", "memo-data")
         await game.user.setFlag("satasupe", "memo-data", originaldata);

@@ -15,19 +15,19 @@
                     </tr>
                 </thead>
                 <tbody class="main-body">
-                    {{#each data.gear as |item id|}}
-                        {{#if item.data.typew}}
+                    {{#each system.gear as |item id|}}
+                        {{#if item.system.typew}}
                             <tr class="item weapon-row equipment-row" data-id={{id}} data-item-id="{{item._id}}" data-itemtype="weapon" draggable="true">
                                 <td colspan="8">
                                     <table rules="none" class="inner-table">
                                         <tr class="weapon-list equipment-list">
                                             <td class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="30" height="30"/></td>
                                             <td class="item-name">{{item.name}}</td>
-                                            <td class="item-hit">{{item.data.weapon.hit}}</td>
-                                            <td class="item-damage">{{item.data.weapon.damageadd}}</td>
-                                            <td class="item-range">{{localize item.data.weapon.range}}</td>
-                                            <td class="item-price">{{item.data.weapon.price.value}}</td>
-                                            <td class="item-upkeep"><input class="checkbox item-upkeepcheck" type="checkbox" name="item.data.weapon.upkeep" {{checked item.data.weapon.upkeep}}/></td>
+                                            <td class="item-hit">{{item.system.weapon.hit}}</td>
+                                            <td class="item-damage">{{item.system.weapon.damageadd}}</td>
+                                            <td class="item-range">{{localize item.system.weapon.range}}</td>
+                                            <td class="item-price">{{item.system.weapon.price.value}}</td>
+                                            <td class="item-upkeep"><input class="checkbox item-upkeepcheck" type="checkbox" name="item.system.weapon.upkeep" {{checked item.system.weapon.upkeep}}/></td>
                                             <td class="item-button item-controls">
                                                 <a class="item-control show-detail" title="{{localize 'SATASUPE.OpenDetail'}}"><i class="fas fa-eye"></i></a><a class="item-control close-detail" title="{{localize 'SATASUPE.CloseDetail'}}"><i class="fas fa-eye-slash"></i></a>
                                                 <a class="item-control item-edit" title="{{localize 'SATASUPE.Edit'}}"><i class="fas fa-edit"></i></a>
@@ -36,14 +36,14 @@
                                         </tr>
                                         <tr class="item-detail">
                                             <td colspan="8" class="item-hide">
-                                                {{#each item.data.weapon.special as |special key|}}
+                                                {{#each item.system.weapon.special as |special key|}}
                                                     {{#if special.value}}
                                                         <button class="special-button  {{#if special.value}}button-on{{/if}}"  data-special="{{key}}" type="button">
                                                             {{localize special.label}}
                                                         </button>
                                                     {{/if}}
                                                 {{/each}}
-                                                {{#each item.data.weapon.specialtext as |specialtext key|}}
+                                                {{#each item.system.weapon.specialtext as |specialtext key|}}
                                                     {{#if specialtext.value}}
                                                         <button class="special-button  {{#if special.value}}button-on{{/if}}"  data-special="{{key}}" type="button">
                                                             {{localize specialtext.label}}: {{specialtext.number}}
@@ -75,19 +75,19 @@
                     </tr>
                 </thead>
                 <tbody class="main-body">
-                    {{#each data.gear as |item id|}}
-                        {{#if item.data.typev}}
+                    {{#each system.gear as |item id|}}
+                        {{#if item.system.typev}}
                             <tr class="item vehicle-row equipment-row" data-id={{id}} data-item-id="{{item._id}}" data-itemtype="vehicle" draggable="true">
                                 <td colspan="8">
                                     <table rules="none" class="inner-table">
                                         <tr class="vehicle-list equipment-list">
                                             <td class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="30" height="30"/></td>
                                             <td class="item-name">{{item.name}}</td>
-                                            <td class="item-speed">{{item.data.vehicle.speed}}</td>
-                                            <td class="item-drp">{{item.data.vehicle.drp}}</td>
-                                            <td class="item-capacity">{{item.data.vehicle.capacity}}</td>
-                                            <td class="item-price">{{item.data.vehicle.price.value}}</td>
-                                            <td class="item-upkeep"><input class="checkbox item-upkeepcheck" type="checkbox" name="item.data.vehicle.upkeep" {{checked item.data.vehicle.upkeep}}/></td>
+                                            <td class="item-speed">{{item.system.vehicle.speed}}</td>
+                                            <td class="item-drp">{{item.system.vehicle.drp}}</td>
+                                            <td class="item-capacity">{{item.system.vehicle.capacity}}</td>
+                                            <td class="item-price">{{item.system.vehicle.price.value}}</td>
+                                            <td class="item-upkeep"><input class="checkbox item-upkeepcheck" type="checkbox" name="item.system.vehicle.upkeep" {{checked item.system.vehicle.upkeep}}/></td>
                                             <td class="item-button item-controls">
                                                 <a class="item-control show-detail" title="{{localize 'SATASUPE.OpenDetail'}}"><i class="fas fa-eye"></i></a><a class="item-control close-detail" title="{{localize 'SATASUPE.CloseDetail'}}"><i class="fas fa-eye-slash"></i></a>
                                                 <a class="item-control item-edit" title="{{localize 'SATASUPE.Edit'}}"><i class="fas fa-edit"></i></a>
@@ -96,14 +96,14 @@
                                         </tr>
                                         <tr class="item-detail">
                                             <td colspan="8" class="item-hide">
-                                                {{#each item.data.vehicle.special as |special key|}}
+                                                {{#each item.system.vehicle.special as |special key|}}
                                                     {{#if special.value}}
                                                         <button class="special-button  {{#if special.value}}button-on{{/if}}"  data-special="{{key}}" type="button">
                                                             {{localize special.label}}
                                                         </button>
                                                     {{/if}}
                                                 {{/each}}
-                                                {{#each item.data.vehicle.specialtext as |specialtext key|}}
+                                                {{#each item.system.vehicle.specialtext as |specialtext key|}}
                                                     {{#if specialtext.value}}
                                                         <button class="special-button  {{#if special.value}}button-on{{/if}}"  data-special="{{key}}" type="button">
                                                             {{localize specialtext.label}}: {{specialtext.number}}
@@ -135,20 +135,20 @@
                     </tr>
                 </thead>
                 <tbody class="main-body">
-                    {{#each data.gear as |item id|}}
-                        {{#if item.data.typep}}
+                    {{#each system.gear as |item id|}}
+                        {{#if item.system.typep}}
                             <tr class="item props-row equipment-row" data-id={{id}} data-item-id="{{item._id}}" data-itemtype="props" draggable="true">
                                 <td colspan="8">
                                     <table rules="none" class="inner-table">
                                         <tr class="props-list equipment-list">
                                             <td class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="30" height="30"/></td>
                                             <td class="item-name">{{item.name}}</td>
-                                            <td class="item-timing">{{localize item.data.props.timing}}</td>
+                                            <td class="item-timing">{{localize item.system.props.timing}}</td>
                                             <td class="item-minivalue">
-                                                {{#if item.data.props.special.mini.value}}
-                                                    <select class="item-minivalue-select" name="item.data.props.minivalue" data-dtype="String">
+                                                {{#if item.system.props.special.mini.value}}
+                                                    <select class="item-minivalue-select" name="item.system.props.minivalue" data-dtype="String">
                                                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                                                    {{#select item.data.props.minivalue}}
+                                                    {{#select item.system.props.minivalue}}
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
                                                         <option value="3">3</option>
@@ -163,9 +163,9 @@
                                                     </select>
                                                 {{/if}} 
                                             </td>
-                                            <td class="item-capacity">{{#uniqueif item.data.props.addcapacity "!==" "0"}}{{item.data.props.addcapacity}}{{/uniqueif}} </td>
-                                            <td class="item-price">{{item.data.props.price.value}}</td>
-                                            <td class="item-upkeep"><input class="checkbox item-upkeepcheck" type="checkbox" name="item.data.props.upkeep" {{checked item.data.props.upkeep}}/></td>
+                                            <td class="item-capacity">{{#uniqueif item.system.props.addcapacity "!==" "0"}}{{item.system.props.addcapacity}}{{/uniqueif}} </td>
+                                            <td class="item-price">{{item.system.props.price.value}}</td>
+                                            <td class="item-upkeep"><input class="checkbox item-upkeepcheck" type="checkbox" name="item.system.props.upkeep" {{checked item.system.props.upkeep}}/></td>
                                             <td class="item-button item-controls">
                                                 <a class="item-control show-detail" title="{{localize 'SATASUPE.OpenDetail'}}"><i class="fas fa-eye"></i></a><a class="item-control close-detail" title="{{localize 'SATASUPE.CloseDetail'}}"><i class="fas fa-eye-slash"></i></a>
                                                 <a class="item-control item-edit" title="{{localize 'SATASUPE.Edit'}}"><i class="fas fa-edit"></i></a>
@@ -174,23 +174,23 @@
                                         </tr>
                                         <tr class="item-detail">
                                             <td colspan="8" class="item-hide">
-                                                {{#each item.data.props.special as |special key|}}
+                                                {{#each item.system.props.special as |special key|}}
                                                     {{#if special.value}}
                                                         <button class="special-button  {{#if special.value}}button-on{{/if}}"  data-special="{{key}}" type="button">
                                                             {{localize special.label}}
                                                         </button>
                                                     {{/if}}
                                                 {{/each}}
-                                                {{#each item.data.props.specialtext as |specialtext key|}}
+                                                {{#each item.system.props.specialtext as |specialtext key|}}
                                                     {{#if specialtext.value}}
                                                         <button class="special-button  {{#if special.value}}button-on{{/if}}"  data-special="{{key}}" type="button">
                                                             {{localize specialtext.label}}: {{specialtext.number}}
                                                         </button>
                                                     {{/if}}
                                                 {{/each}}
-                                                {{#if item.data.props.effect}}
+                                                {{#if item.system.props.effect}}
                                                     <button class="special-button  {{#if special.value}}button-on{{/if}}" type="button">
-                                                        Effect: {{item.data.props.effect}}
+                                                        Effect: {{item.system.props.effect}}
                                                     </button>
                                                 {{/if}}
                                             </td>
@@ -216,17 +216,17 @@
                     </tr>
                 </thead>
                 <tbody class="main-body">
-                    {{#each data.gear as |item id|}}
-                        {{#if item.data.typeg}}
+                    {{#each system.gear as |item id|}}
+                        {{#if item.system.typeg}}
                             <tr class="item gadjet-row equipment-row" data-id={{id}} data-item-id="{{item._id}}" data-itemtype="gadjet" draggable="true">
                                 <td colspan="6">
                                     <table rules="none" class="inner-table">
                                         <tr class="gadjet-list equipment-list">
                                             <td class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="30" height="30"/></td>
                                             <td class="item-name">{{item.name}}</td>
-                                            <td class="item-timing">{{localize item.data.gadjet.timing}}</td>
-                                            <td class="item-times">{{#uniqueif item.data.gadjet.times.ttype "!==" "unlimit"}}{{item.data.gadjet.times.tnumber}}<label class="space">    /  </label>{{/uniqueif}}{{localize item.data.gadjet.times.ttype}}</td>
-                                            <td class="item-capacity">{{#uniqueif item.data.gadjet.addcapacity "!==" "0"}}{{item.data.gadjet.addcapacity}}{{/uniqueif}} </td>
+                                            <td class="item-timing">{{localize item.system.gadjet.timing}}</td>
+                                            <td class="item-times">{{#uniqueif item.system.gadjet.times.ttype "!==" "unlimit"}}{{item.system.gadjet.times.tnumber}}<label class="space">    /  </label>{{/uniqueif}}{{localize item.system.gadjet.times.ttype}}</td>
+                                            <td class="item-capacity">{{#uniqueif item.system.gadjet.addcapacity "!==" "0"}}{{item.system.gadjet.addcapacity}}{{/uniqueif}} </td>
                                             <td class="item-button item-controls">
                                                 <a class="item-control item-edit" title="{{localize 'SATASUPE.Edit'}}"><i class="fas fa-edit"></i></a>
                                                 <a class="item-control item-delete" title="{{localize 'SATASUPE.Delete'}}"><i class="fas fa-trash"></i></a>
@@ -241,12 +241,12 @@
             </table>
         </div>
     </div>
-    <div class="placement-zone passdrparea" data-actorid="{{data.actorid}}">
+    <div class="placement-zone passdrparea" data-actorid="{{system.actorid}}">
         <div class="normal-place">
-            <label>{{localize 'SATASUPE.NORMALEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentplace.normal}}/{{data.equipmentcapacity.normal}}]</label>
-            <div class="normal-placement drparea" data-placetype="normal" data-capacity="{{data.equipmentcapacity.normal}}" data-nowcontain="{{data.equipmentplace.normal}}">
-                {{#each data.gear as |item id|}}
-                    {{#uniqueif item.data.storage "==" "normal"}}
+            <label>{{localize 'SATASUPE.NORMALEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{system.equipmentplace.normal}}/{{system.equipmentcapacity.normal}}]</label>
+            <div class="normal-placement drparea" data-placetype="normal" data-capacity="{{system.equipmentcapacity.normal}}" data-nowcontain="{{system.equipmentplace.normal}}">
+                {{#each system.gear as |item id|}}
+                    {{#uniqueif item.system.storage "==" "normal"}}
                         <button class="gear-name-button" data-id={{id}} data-key={{item._id}} type="button" draggable="true" style="width:fit-content; width:-moz-fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">
                             {{item.name}}
                         </button>
@@ -255,11 +255,11 @@
             </div>
         </div>
         <div class="haven-place">
-            <label>{{localize 'SATASUPE.HAVENEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentplace.haven}}/{{data.equipmentcapacity.haven}}, {{localize 'SATASUPE.COMFORT'}} : {{data.equipmentcapacity.comfort}}, {{localize 'SATASUPE.Security'}} : {{data.equipmentattribs.security}}]</label>
-            <label class="add-haven">  {{localize 'SATASUPE.ADDHAVEN'}} : <input class="checkbox second-haven-check" type="checkbox" name="data.status.secondhaven.value" {{checked data.status.secondhaven.value}}/></label>
-            <div class="haven-placement drparea" data-placetype="haven" data-capacity="{{data.equipmentcapacity.haven}}" data-nowcontain="{{data.equipmentplace.haven}}">
-                {{#each data.gear as |item id|}}
-                    {{#uniqueif item.data.storage "==" "haven"}}
+            <label>{{localize 'SATASUPE.HAVENEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{system.equipmentplace.haven}}/{{system.equipmentcapacity.haven}}, {{localize 'SATASUPE.COMFORT'}} : {{system.equipmentcapacity.comfort}}, {{localize 'SATASUPE.Security'}} : {{system.equipmentattribs.security}}]</label>
+            <label class="add-haven">  {{localize 'SATASUPE.ADDHAVEN'}} : <input class="checkbox second-haven-check" type="checkbox" name="system.status.secondhaven.value" {{checked system.status.secondhaven.value}}/></label>
+            <div class="haven-placement drparea" data-placetype="haven" data-capacity="{{system.equipmentcapacity.haven}}" data-nowcontain="{{system.equipmentplace.haven}}">
+                {{#each system.gear as |item id|}}
+                    {{#uniqueif item.system.storage "==" "haven"}}
                         <button class="gear-name-button" data-id={{id}} data-key={{item._id}} type="button" draggable="true" style="width:fit-content; width:-moz-fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">
                             {{item.name}}
                         </button>
@@ -267,12 +267,12 @@
                 {{/each}}
             </div>
         </div>
-        {{#if data.status.secondhaven.value}}
+        {{#if system.status.secondhaven.value}}
             <div class="haven2-place">
-                <label>{{localize 'SATASUPE.HAVEN2EQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentplace.haven2}}/{{data.equipmentcapacity.haven2}}, {{localize 'SATASUPE.COMFORT'}} : {{data.equipmentcapacity.comfort2}}, {{localize 'SATASUPE.Security'}} : {{data.equipmentattribs.security2}}]</label>
-                <select class="second-haven-place" name="data.infos.haven2" data-dtype="String" value="{{data.infos.haven2}}" data-nowcontain="{{data.equipmentplace.haven2}}">
+                <label>{{localize 'SATASUPE.HAVEN2EQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{system.equipmentplace.haven2}}/{{system.equipmentcapacity.haven2}}, {{localize 'SATASUPE.COMFORT'}} : {{system.equipmentcapacity.comfort2}}, {{localize 'SATASUPE.Security'}} : {{system.equipmentattribs.security2}}]</label>
+                <select class="second-haven-place" name="system.infos.haven2" data-dtype="String" value="{{system.infos.haven2}}" data-nowcontain="{{system.equipmentplace.haven2}}">
                     <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                {{#select data.infos.haven2}}
+                {{#select system.infos.haven2}}
                     <option value="minami">{{localize 'SATASUPE.MINAMI'}}</option>
                     <option value="chinatown">{{localize 'SATASUPE.CHINATOWN'}}</option>
                     <option value="warship">{{localize 'SATASUPE.WARSHIP'}}</option>
@@ -281,9 +281,9 @@
                     <option value="shaokin">{{localize 'SATASUPE.SHAOKIN'}}</option>
                 {{/select}}
             </select>
-            <div class="haven2-placement drparea" data-placetype="haven2" data-capacity="{{data.equipmentcapacity.haven2}}"  data-nowcontain="{{data.equipmentplace.haven}}">
-                {{#each data.gear as |item id|}}
-                    {{#uniqueif item.data.storage "==" "haven2"}}
+            <div class="haven2-placement drparea" data-placetype="haven2" data-capacity="{{system.equipmentcapacity.haven2}}"  data-nowcontain="{{system.equipmentplace.haven}}">
+                {{#each system.gear as |item id|}}
+                    {{#uniqueif item.system.storage "==" "haven2"}}
                         <button class="gear-name-button" data-id={{id}} data-key={{item._id}} type="button" draggable="true" style="width:fit-content; width:-moz-fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">
                             {{item.name}}
                         </button>
@@ -292,12 +292,12 @@
             </div>
             </div>
         {{/if}}
-        {{#if data.equipmentattribs.vehiclehave}}
+        {{#if system.equipmentattribs.vehiclehave}}
             <div class="vehicle-place">
-                <label>{{localize 'SATASUPE.VEHICLEEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentplace.vehicle}}/{{data.equipmentcapacity.vehicle}} ]</label>
-                <div class="vehicle-placement drparea" data-placetype="vehicle" data-habitable="{{data.equipmentattribs.habitable}}" data-capacity="{{data.equipmentcapacity.vehicle}}" data-nowcontain="{{data.equipmentplace.vehicle}}">
-                    {{#each data.gear as |item id|}}
-                        {{#uniqueif item.data.storage "==" "vehicle"}}
+                <label>{{localize 'SATASUPE.VEHICLEEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{system.equipmentplace.vehicle}}/{{system.equipmentcapacity.vehicle}} ]</label>
+                <div class="vehicle-placement drparea" data-placetype="vehicle" data-habitable="{{system.equipmentattribs.habitable}}" data-capacity="{{system.equipmentcapacity.vehicle}}" data-nowcontain="{{system.equipmentplace.vehicle}}">
+                    {{#each system.gear as |item id|}}
+                        {{#uniqueif item.system.storage "==" "vehicle"}}
                             <button class="gear-name-button" data-id={{id}} data-key={{item._id}} type="button" draggable="true" style="width:fit-content; width:-moz-fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">
                                 {{item.name}}
                             </button>
@@ -306,13 +306,13 @@
                 </div>
             </div>
         {{/if}}
-        {{#each data.addcapacity as |addcapacity name|}}
+        {{#each system.addcapacity as |addcapacity name|}}
             {{#uniqueif addcapacity.capacity "!=" "0"}}
                 <div class="addcapacity-place">
                     <label>{{name}}({{localize 'SATASUPE.ADDCAPACITY'}}) [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{addcapacity.equipmentplace}}/{{addcapacity.capacity}} ]</label>
                     <div class="add-placement drparea" data-placetype="{{name}}" data-storageplace="{{addcapacity.storage}}" data-capacity="{{addcapacity.capacity}}" data-nowcontain="{{addcapacity.equipmentplace}}">
-                        {{#each ../data.gear as |item id|}}
-                            {{#uniqueif name "==" item.data.storage}}
+                        {{#each ../system.gear as |item id|}}
+                            {{#uniqueif name "==" item.system.storage}}
                                 <button class="gear-name-button" data-id={{id}} data-key={{item._id}} type="button" draggable="true" style="width:fit-content; width:-moz-fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">
                                     {{item.name}}
                                 </button>
@@ -323,12 +323,12 @@
             {{/uniqueif}}
         {{/each}}
         <div class="ground-place">
-            <label>{{localize 'SATASUPE.GROUNDEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{data.equipmentplace.other}}/{{data.equipmentcapacity.other}} ]</label>
+            <label>{{localize 'SATASUPE.GROUNDEQUIPMENT'}} [{{localize 'SATASUPE.EQUIPMENTLIMIT'}} : {{system.equipmentplace.other}}/{{system.equipmentcapacity.other}} ]</label>
             <button class="empty-ground" type="button" style="width:fit-content; width:-moz-fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">{{localize 'SATASUPE.EMPTY'}}</button>
             <button class="all-drop-ground" type="button" style="margin-left:5px; width:fit-content; width:-moz-fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">{{localize 'SATASUPE.ALLDROP'}}</button>
-            <div class="ground-placement drparea" data-placetype="" data-capacity="{{data.equipmentcapacity.other}}" data-nowcontain="{{data.equipmentplace.other}}">
-                {{#each data.gear as |item id|}}
-                    {{#uniqueif item.data.storage "==" ""}}
+            <div class="ground-placement drparea" data-placetype="" data-capacity="{{system.equipmentcapacity.other}}" data-nowcontain="{{system.equipmentplace.other}}">
+                {{#each system.gear as |item id|}}
+                    {{#uniqueif item.system.storage "==" ""}}
                         <button class="gear-name-button" data-id={{id}} data-key={{item._id}} type="button" draggable="true" style="width:fit-content; width:-moz-fit-content; font-size: 0.8rem; line-height: 18px;padding: 0px 5px;margin: 2px;">
                             {{item.name}}
                         </button>
