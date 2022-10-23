@@ -76,10 +76,10 @@ export class SatasupeChatCard{
                     let deleteadmit = false;
                     if(buttontype=="check" && type=="addiction"){
                         let actor = game.actors.get(actorid);
-                        let def = Number(actor.data.data.addiction[id].value);
+                        let def = Number(actor.system.addiction[id].value);
                         let addicset = await game.settings.get("satasupe", "addiction")
                         if(addicset) {
-                            if(actor.data.data.addiction[id].times > 1) def += (Number(actor.data.data.addiction[id].times) - 1);
+                            if(actor.system.addiction[id].times > 1) def += (Number(actor.system.addiction[id].times) - 1);
                         }
                         checkresult = await SatasupeChatCard._rollbutton(event, actor, "mind", def, cardid);
                     }
@@ -135,6 +135,7 @@ export class SatasupeChatCard{
                         }
                     }
                     let result={cardid:cardid,userid:userid,buttontype:buttontype,type:type,id:id,actorid:actorid,prisonername:prisonername,addic:addic,karma:karma,button:button,checkresult:checkresult,itemid:itemid,life:life,totalupkeep:totalupkeep,deleteadmit:deleteadmit}
+
                     await game.socket.emit('system.satasupe', {result:result,type:"selected",data:null,voteT:"button"});
                     if(game.user.isGM){
                         await SatasupeChatCard._onChatCardAction(result);
@@ -333,8 +334,8 @@ export class SatasupeChatCard{
             const actor = game.users.get(list[i].id).character;
             switch (type){
                 case "addiction":
-                    if(actor.data.data.addiction){
-                        let addiction = actor.data.data.addiction;
+                    if(actor.system.addiction){
+                        let addiction = actor.system.addiction;
                         let progresslist = game.settings.get("satasupe", "afterplayprogress");
                         let progid = progresslist.addiction.list.findIndex((u) => u.id ==list[i].id);
                         progresslist.addiction.list[progid].cardlist = [];
@@ -373,8 +374,8 @@ export class SatasupeChatCard{
                     await game.settings.set("satasupe", "afterplayprogress", progr);
                     break;
                 case "karma":
-                    if(actor.data.items?._source){
-                        let karmalist = actor.data.items._source.filter((j) => (j.data.timing?.name == "epilogue") && (j.type == "karma"));
+                    if(actor.items?._source){
+                        let karmalist = actor.items._source.filter((j) => (j.system.timing?.name == "epilogue") && (j.type == "karma"));
                             let progresslist = game.settings.get("satasupe", "afterplayprogress");
                         let progid = progresslist.karma.list.findIndex((u) => u.id ==list[i].id);
                         progresslist.karma.list[progid].cardlist = [];
@@ -434,13 +435,13 @@ export class SatasupeChatCard{
                 case "discussionMVP":
                     break;
                 case "prisoner":
-                    if(actor.data.data.prisoner){
+                    if(actor.system.prisoner){
                         let progresslist = game.settings.get("satasupe", "afterplayprogress");
                         let progid = progresslist.prisoner.list.findIndex((u) => u.id ==list[i].id);
                         progresslist.prisoner.list[progid].cardlist = [];
-                        for(let k=0;k<actor.data.data.prisoner.length;k++){
-                            if((actor.data.data.prisoner[k].keep == false) && (!!actor.data.data.prisoner[k].title)){
-                                message = await renderTemplate(`systems/satasupe/templates/cards/prisonercheck.html`,{id:k,userid:list[i].id,type:type,prisoner:actor.data.data.prisoner[k].title,prisonercheck:game.i18n.format("SATASUPE.KeepPrisoner",{name:actor.data.data.prisoner[k].title}),actor:actor.id,keep:false,discard:false,skip:false});
+                        for(let k=0;k<actor.system.prisoner.length;k++){
+                            if((actor.system.prisoner[k].keep == false) && (!!actor.system.prisoner[k].title)){
+                                message = await renderTemplate(`systems/satasupe/templates/cards/prisonercheck.html`,{id:k,userid:list[i].id,type:type,prisoner:actor.system.prisoner[k].title,prisonercheck:game.i18n.format("SATASUPE.KeepPrisoner",{name:actor.system.prisoner[k].title}),actor:actor.id,keep:false,discard:false,skip:false});
                                 let chatMessage = {
                                     user: game.user.id,
                                     speaker: ChatMessage.getSpeaker({alias : "System"}),
@@ -468,28 +469,28 @@ export class SatasupeChatCard{
                     break;
                 case "itemUpkeep":
                     let upkeep = [];
-                    if(actor.data.data.status.secondhaven.value) upkeep.push({type:"haven",name:"haven",id:0,upkeepV:2,on:false});
-                    let upkeepWlist = actor.data.items._source.filter((j) => (j.data.typew == true));
-                    let upkeepVlist = actor.data.items._source.filter((j) => (j.data.typev == true));
-                    let upkeepPlist = actor.data.items._source.filter((j) => (j.data.typep == true));
+                    if(actor.system.status.secondhaven.value) upkeep.push({type:"haven",name:"haven",id:0,upkeepV:2,on:false});
+                    let upkeepWlist = actor.items._source.filter((j) => (j.system.typew == true));
+                    let upkeepVlist = actor.items._source.filter((j) => (j.system.typev == true));
+                    let upkeepPlist = actor.items._source.filter((j) => (j.system.typep == true));
                     let richitemlist = [];
                     for(let n=0;n<upkeepWlist?.length;n++){
-                        if(upkeepWlist[n].data.weapon.specialtext.upkeepcost.value == true){
-                            if(upkeepWlist[n].data.weapon.specialtext.upkeepcost.number) upkeep.push({type:"weapon",name:upkeepWlist[n].name,id:upkeepWlist[n]._id,upkeepV:upkeepWlist[n].data.weapon.specialtext.upkeepcost.number,on:false});
+                        if(upkeepWlist[n].system.weapon.specialtext.upkeepcost.value == true){
+                            if(upkeepWlist[n].system.weapon.specialtext.upkeepcost.number) upkeep.push({type:"weapon",name:upkeepWlist[n].name,id:upkeepWlist[n]._id,upkeepV:upkeepWlist[n].system.weapon.specialtext.upkeepcost.number,on:false});
                         }
-                        if((upkeepWlist[n].data.weapon.price.value > actor.data.data.circumstance.life.value)&&(!upkeepWlist[n].data.weapon.upkeep)) richitemlist.push({type:"weapon",name:upkeepWlist[n].name, id:upkeepWlist[n]._id,price:upkeepWlist[n].data.weapon.price.value,on:false});
+                        if((upkeepWlist[n].system.weapon.price.value > actor.system.circumstance.life.value)&&(!upkeepWlist[n].system.weapon.upkeep)) richitemlist.push({type:"weapon",name:upkeepWlist[n].name, id:upkeepWlist[n]._id,price:upkeepWlist[n].system.weapon.price.value,on:false});
                     }
                     for(let m=0;m<upkeepVlist?.length;m++){
-                        if(upkeepVlist[m].data.vehicle.specialtext.upkeepcost.value == true){
-                            if(upkeepVlist[m].data.vehicle.specialtext.upkeepcost.number) upkeep.push({type:"vehicle",name:upkeepVlist[m].name,id:upkeepVlist[m]._id,upkeepV:upkeepVlist[m].data.vehicle.specialtext.upkeepcost.number,on:false});
+                        if(upkeepVlist[m].system.vehicle.specialtext.upkeepcost.value == true){
+                            if(upkeepVlist[m].system.vehicle.specialtext.upkeepcost.number) upkeep.push({type:"vehicle",name:upkeepVlist[m].name,id:upkeepVlist[m]._id,upkeepV:upkeepVlist[m].system.vehicle.specialtext.upkeepcost.number,on:false});
                         }
-                        if((upkeepVlist[m].data.vehicle.price.value > actor.data.data.circumstance.life.value)&&(!upkeepVlist[m].data.vehicle.upkeep)) richitemlist.push({type:"vehicle",name:upkeepVlist[m].name, id:upkeepVlist[m]._id,price:upkeepVlist[m].data.vehicle.price.value,on:false})
+                        if((upkeepVlist[m].system.vehicle.price.value > actor.system.circumstance.life.value)&&(!upkeepVlist[m].system.vehicle.upkeep)) richitemlist.push({type:"vehicle",name:upkeepVlist[m].name, id:upkeepVlist[m]._id,price:upkeepVlist[m].system.vehicle.price.value,on:false})
                     }
                     for(let o=0;o<upkeepPlist?.length;o++){
-                        if(upkeepPlist[o].data.props.specialtext.upkeepcost.value == true){
-                            if(upkeepPlist[o].data.props.specialtext.upkeepcost.number) upkeep.push({type:"props",name:upkeepPlist[o].name,id:upkeepPlist[o]._id,upkeepV:upkeepPlist[o].data.props.specialtext.upkeepcost.number,on:false});
+                        if(upkeepPlist[o].system.props.specialtext.upkeepcost.value == true){
+                            if(upkeepPlist[o].system.props.specialtext.upkeepcost.number) upkeep.push({type:"props",name:upkeepPlist[o].name,id:upkeepPlist[o]._id,upkeepV:upkeepPlist[o].system.props.specialtext.upkeepcost.number,on:false});
                         }
-                        if((upkeepPlist[o].data.props.price.value > actor.data.data.circumstance.life.value)&&(!upkeepPlist[o].data.props.upkeep)) richitemlist.push({type:"props",name:upkeepPlist[o].name, id:upkeepPlist[o]._id,price:upkeepPlist[o].data.props.price.value,on:false})
+                        if((upkeepPlist[o].system.props.price.value > actor.system.circumstance.life.value)&&(!upkeepPlist[o].system.props.upkeep)) richitemlist.push({type:"props",name:upkeepPlist[o].name, id:upkeepPlist[o]._id,price:upkeepPlist[o].system.props.price.value,on:false})
                     }
                     let totalupkeep = 0;
                     for(let p=0;p<upkeep.length;p++){
@@ -520,8 +521,8 @@ export class SatasupeChatCard{
                         await game.settings.set("satasupe", "afterplayprogress", progresslist);
                         game.settings.set("satasupe", 'chatcardlog',data);
                     }
-                    if(totalupkeep>actor.data.data.circumstance.life.value){
-                        message = await renderTemplate(`systems/satasupe/templates/cards/upkeepcheck.html`,{upkeep:upkeep,life:actor.data.data.circumstance.life.value,lifetext:game.i18n.format("SATASUPE.LifeVtext",{life:actor.data.data.circumstance.life.value}),totalupkeep:totalupkeep,totalupkeeptext:game.i18n.format("SATASUPE.TotalUpkeepText",{totalupkeep:totalupkeep}),actorid:actor.id,userid:list[i].id,type:type,admitted:false})
+                    if(totalupkeep>actor.system.circumstance.life.value){
+                        message = await renderTemplate(`systems/satasupe/templates/cards/upkeepcheck.html`,{upkeep:upkeep,life:actor.system.circumstance.life.value,lifetext:game.i18n.format("SATASUPE.LifeVtext",{life:actor.system.circumstance.life.value}),totalupkeep:totalupkeep,totalupkeeptext:game.i18n.format("SATASUPE.TotalUpkeepText",{totalupkeep:totalupkeep}),actorid:actor.id,userid:list[i].id,type:type,admitted:false})
                         let chatMessage ={
                             user: game.user.id,
                             speaker: ChatMessage.getSpeaker({alias : "System"}),
@@ -563,7 +564,7 @@ export class SatasupeChatCard{
         let vote = result.vote;
         if(vote){
             const message = game.messages.get(id);
-            if(message.data.user == game.user.id){
+            if(message.user.id == game.user.id){
                 let data = game.settings.get("satasupe", 'vote');
                 let index = data.findIndex((i) => i.id == id);
                 var votedata = data[index].votedata;
@@ -654,7 +655,7 @@ export class SatasupeChatCard{
         let vote = result.vote;
         if(vote){
             const message = game.messages.get(id);
-            if(message.data.user == game.user.id){ //???
+            if(message.user.id == game.user.id){ //???
                 let data = game.settings.get("satasupe", 'vote');
                 let index = data.findIndex((i) => i.id == id);
                 let ind = data[index].list.findIndex((j) => j.userid == userid);
@@ -756,7 +757,7 @@ export class SatasupeChatCard{
         let re=false;
         if(karma){
             const message = game.messages.get(id);
-            if(message.data.user == game.user.id){
+            if(message.user.id == game.user.id){
                 let data = game.settings.get("satasupe", 'vote');
                 let index = data.findIndex((i) => i.id == id);
                 let ind = data[index].list.findIndex((j) => j.userid == userid);
@@ -798,6 +799,7 @@ export class SatasupeChatCard{
                 await message.update({content:dd});
 
                 let ok=true;
+
                 for(let j=0;j<data[index].list.length;j++){
                     if(!data[index].list[j].select){
                         ok=false;
@@ -988,10 +990,10 @@ export class SatasupeChatCard{
         let id = result.id;
         let actorid = result.actorid;
         let message = game.messages.get(cardid);
-        if(message.data.user == game.user.id){
+        if(message.user.id == game.user.id){
             const actor = game.actors.get(actorid);
-            const origindata = game.settings.get("satasupe", 'chatcardlog');
-            let data = game.settings.get("satasupe", 'chatcardlog');
+            const origindata = await game.settings.get("satasupe", 'chatcardlog');
+            let data = duplicate(game.settings.get("satasupe", 'chatcardlog'));
             let index = data.findIndex((i) => i.id == cardid);
             let ind = data[index].list.findIndex((j) => j.userid == userid);
             if(!data[index].list[ind].select){
@@ -1023,7 +1025,7 @@ export class SatasupeChatCard{
                         let prisonername = result.prisonername;
                         let mess = await renderTemplate(`systems/satasupe/templates/cards/prisonercheck.html`,{id:id,userid:userid,type:type,prisoner:prisonername,prisonercheck:game.i18n.format("SATASUPE.KeepPrisoner",{name:prisonername}),actor:actor.id,keep:true,discard:false,skip:false});
                         if((origindata[index].list[ind].result !="keep")&&(origindata[index].list[ind].result !="discard")){
-                            let ad = duplicate(actor.data.data);
+                            let ad = duplicate(actor.system);
                             if(ad.exp.upkeep.value){
                                 ad.exp.upkeep.value +=1;
                             }else{
@@ -1031,7 +1033,7 @@ export class SatasupeChatCard{
                             }
                             ad.prisoner[id].exp = true;
                             ad.prisoner[id].keep = true;
-                            await actor.update({'data' : ad});
+                            await actor.update({'system' : ad});
                             await message.update({content: mess});
                             await game.settings.set("satasupe", 'chatcardlog', data);
                             let cardnum = progresslist[type].list[progid].cardlist.findIndex((i)=>i.cardid ==cardid);
@@ -1046,11 +1048,11 @@ export class SatasupeChatCard{
                     case "addiction":{
                         let addic = result.addic;
                         let mess = await renderTemplate(`systems/satasupe/templates/cards/addictioncheck.html`,{id:id,userid:userid,type:type,addic:addic,actor:actor.id,button:true,skip:false,check:true});
-                        let addiction = actor.data.data.addiction;
+                        let addiction = actor.system.addiction;
                         if(origindata[index].list[ind].result !="check"){
                             if(!addiction[id].addic){
                                 if(addiction[id].use){
-                                    let ad = duplicate(actor.data.data.addiction);
+                                    let ad = duplicate(actor.system.addiction);
                                     if(result.checkresult){
                                         if(!result.checkresult.success){
                                             ad[id].addic = true;
@@ -1058,7 +1060,7 @@ export class SatasupeChatCard{
                                     }
                                     ad[id].use = false;
                                     ad[id].times = 0;
-                                    await actor.update({'data.addiction' : ad});
+                                    await actor.update({'system.addiction' : ad});
                                     await message.update({content:mess});
                                     await game.settings.set("satasupe", 'chatcardlog', data);
                                     await game.settings.set("satasupe", "afterplayprogress", progresslist);
@@ -1130,9 +1132,9 @@ export class SatasupeChatCard{
                         if(origindata[index].list[ind].result !="admit"){
                             let addic = result.addic;
                             let mess = await renderTemplate(`systems/satasupe/templates/cards/addictioncheck.html`,{id:id,userid:userid,type:type,addic:addic,actor:actor.id,button:false,skip:false,check:true});
-                            let use = duplicate(actor.data.data.status);
+                            let use = duplicate(actor.system.status);
                             use.trauma.value += 1;
-                            await actor.update({'data.status' : use});
+                            await actor.update({'system.status' : use});
                             await message.update({content:mess});
                             await game.settings.set("satasupe", 'chatcardlog', data);
                             let cardnum = progresslist[type].list[progid].cardlist.findIndex((i)=>i.cardid ==cardid);
@@ -1163,16 +1165,16 @@ export class SatasupeChatCard{
                                     deletelist = data[index].upkeep.filter((j) => j.on == true);
                                 }
                                 if(deletelist[0]?.type=="haven"){
-                                    let items = duplicate(actor.data.items);
+                                    let items = duplicate(actor.items);
                                     for(let item of items){
                                         if(item.type == "item"){
-                                            if(item.data.storage == "haven2"){
-                                                item.data.storage = "";
+                                            if(item.system.storage == "haven2"){
+                                                item.system.storage = "";
                                             }
                                         }
                                     }
                                     await actor.update({'items': items});
-                                    await actor.update({'data.status.secondhaven.value':false});
+                                    await actor.update({'system.status.secondhaven.value':false});
                                     deletelist.splice(0,1);
                                 }
                                 for(let n = 0; n<deletelist.length;n++){
@@ -1250,9 +1252,9 @@ export class SatasupeChatCard{
                         let prisonername = result.prisonername;
                         let mess = await renderTemplate(`systems/satasupe/templates/cards/prisonercheck.html`,{id:id,userid:userid,type:type,prisoner:prisonername,prisonercheck:game.i18n.format("SATASUPE.KeepPrisoner",{name:prisonername}),actor:actor.id,keep:false,discard:true,skip:false});
                         if((origindata[index].list[ind].result !="keep")&&(origindata[index].list[ind].result !="discard")){
-                            let ad = duplicate(actor.data.data);
+                            let ad = duplicate(actor.system);
                             ad.prisoner.splice(id,1);
-                            await actor.update({'data' : ad});
+                            await actor.update({'system' : ad});
                             await message.update({content: mess});
                             await game.settings.set("satasupe", 'chatcardlog', data);
                             let cardnum = progresslist[type].list[progid].cardlist.findIndex((i)=>i.cardid ==cardid);
@@ -1475,18 +1477,18 @@ export class SatasupeChatCard{
 
     static async _deleteItem(itemid,actorid){
         const actor = game.actors.get(actorid);
-        /*let newkeep = actor.data.data.exp.upkeep.value == null ? 0 : actor.data.data.exp.upkeep.value;
-        let item = actor.data.items.find((i) => i.id == itemid);
-        if(item.data.typew){
-            if(item.data.weapon.upkeep) newkeep = newkeep - 1;
+        /*let newkeep = actor.system.exp.upkeep.value == null ? 0 : actor.system.exp.upkeep.value;
+        let item = actor.items.find((i) => i.id == itemid);
+        if(item.system.typew){
+            if(item.system.weapon.upkeep) newkeep = newkeep - 1;
         }
-        if(item.data.typev){
-            if(item.data.vehicle.upkeep) newkeep = newkeep - 1;
+        if(item.system.typev){
+            if(item.system.vehicle.upkeep) newkeep = newkeep - 1;
         }
-        if(item.data.typep){
-            if(item.data.props.upkeep) newkeep = newkeep - 1;
+        if(item.system.typep){
+            if(item.system.props.upkeep) newkeep = newkeep - 1;
         }
-        await actor.update({'data.exp.upkeep.value' : newkeep});*/
+        await actor.update({'system.exp.upkeep.value' : newkeep});*/
         await actor.deleteEmbeddedDocuments("Item", [itemid]);
     }
 
@@ -1530,38 +1532,38 @@ export class SatasupeChatCard{
     static async _rollbutton(event, actorData, option, def, cardid){
         if(!game.messages.get(cardid).getFlag('satasupe', 'activate')){
             const char = option;
-            const actor = actorData.data;
-            const copy = duplicate(actorData.data.data);
+            const actor = actorData.system;
+            const copy = duplicate(actorData.system);
             let setting = {nobpwound:false,nompwound:false,nooverwork:false,killstop:false,nompcost:true,defdifficult:def};
-            if(actor.data.settings){
-            setting = actor.data.settings;
+            if(actor.settings){
+            setting = actor.settings;
             setting.defdifficult = def;
             }
         
             let value = "";
             if(char == "crime"){
-            value = actor.data.circumstance.crime.value;
+            value = actor.circumstance.crime.value;
             }else if(char == "life"){
-            value = actor.data.circumstance.life.value;
+            value = actor.circumstance.life.value;
             }else if(char == "love"){
-            value = actor.data.circumstance.love.value;
+            value = actor.circumstance.love.value;
             }else if(char == "culture"){
-            value = actor.data.circumstance.cluture.value;
+            value = actor.circumstance.cluture.value;
             }else if(char == "combat"){
-            value = actor.data.circumstance.combat.value;
+            value = actor.circumstance.combat.value;
             }else if(char == "body"){
-            value = actor.data.aptitude.body.value;
+            value = actor.aptitude.body.value;
             }else if(char == "mind"){
-            value = actor.data.aptitude.mind.value;
+            value = actor.aptitude.mind.value;
             }else if(char == "arms"){
-            value = actor.data.combat.arms.value;
+            value = actor.combat.arms.value;
             }else if(char == "generic"){
             value = 0;
             }else if(char == "alignment"){
-            value = actor.data.attribs.alignment.value;
+            value = actor.attribs.alignment.value;
             }
             const indata = await CheckDialog._createCheckdialog(char, value, setting);
-            const fumble = actor.data.status.fumble.value;
+            const fumble = actor.status.fumble.value;
             var bpwounds = 0;
             var mpwounds = 0;
             var overwork = 0;
@@ -1569,13 +1571,13 @@ export class SatasupeChatCard{
             overwork = 0;
             copy.settings.nooverwork = true;
             }else{
-            overwork = Number(actor.data.status.sleep.value);
+            overwork = Number(actor.status.sleep.value);
             copy.settings.nooverwork = false;
             }
             if(Number(indata.get('bpwound')) == 1){
             bpwounds = 0;
             copy.settings.nobpwound = true;
-            }else if(actor.data.attribs.bp.value <= 5){
+            }else if(actor.attribs.bp.value <= 5){
             bpwounds = 1;
             copy.settings.nobpwound = false;
             }else{
@@ -1585,7 +1587,7 @@ export class SatasupeChatCard{
             if(Number(indata.get('mpwound')) == 1){
             bpwounds = 0;
             copy.settings.nompwound = true;
-            }else if(actor.data.attribs.mp.value <= 5){
+            }else if(actor.attribs.mp.value <= 5){
             bpwounds = 1;
             copy.settings.nompwound = false;
             }else{
@@ -1606,10 +1608,10 @@ export class SatasupeChatCard{
             if(Number(indata.get('cost')) != 1){
             copy.settings.nompcost = false;
             copy.attribs.mp.value -= Number(indata.get('boost'));
-            await actorData.update({'data' : copy});
+            await actorData.update({'system' : copy});
             }else{
             copy.settings.nompcost = true;
-            await actorData.update({'data' : copy});
+            await actorData.update({'system' : copy});
             }
         
             if(char == "generic"){
@@ -1647,7 +1649,7 @@ export class SatasupeChatCard{
 
       static async _bcdicesend(event, text, char, actorData){
         event.preventDefault();
-        const actor = duplicate(actorData.data);
+        const actor = duplicate(actorData.system);
         const speaker = actorData;
         const user = actorData.user ? actorData.user : game.user;
         const asyncFunc = function(){
@@ -1707,8 +1709,8 @@ export class SatasupeChatCard{
                     actor.data.attribs.alignment.value -= 1;
                     actorData.update({'data': actor.data});
                   }else if((data.rands[0].value == 1) && (data.rands[1].value == 1)){
-                    actor.data.attribs.alignment.value += 1;
-                    actorData.update({'data': actor.data});
+                    actor.attribs.alignment.value += 1;
+                    actorData.update({'system': actor.system});
                   }
                 }
                 resolve(data);
@@ -1770,11 +1772,11 @@ export class SatasupeChatCard{
                 ChatMessage.create({user:user.id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
                 if(char = "alignment"){
                   if((data2.rands[0].value == 6) && (data2.rands[1].value == 6)){
-                    actor.data.attribs.alignment.value -= 1;
-                    actorData.update({'data': actor.data});
+                    actor.attribs.alignment.value -= 1;
+                    actorData.update({'system': actor.system});
                   }else if((data2.rands[0].value == 1) && (data2.rands[1].value == 1)){
                     actor.data.attribs.alignment.value += 1;
-                    actorData.update({'data': actor.data});
+                    actorData.update({'system': actor.system});
                   }
                 }
                 resoleve(data2);

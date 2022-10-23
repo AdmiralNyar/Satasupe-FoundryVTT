@@ -39,13 +39,13 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
   }
   
     /** @override */
-  getData() {
-    const data = super.getData();
-    const itemData = data.data;
-    data.data = itemData.data;
+  async getData() {
+    const context = await super.getData();
+    const itemData = context.item;
+    context.system = itemData.system;
     var list = game.settings.get("satasupe", "bcdicelist");
-    data.data.bcdicelist = list.game_system;
-    return data;
+    context.system.bcdicelist = list.game_system;
+    return context;
   }
   
   /** @override */
@@ -65,7 +65,7 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
     if (!this.options.editable) return;
 
     html.find('.all-on-off-button').click(ev =>{
-      const nowonoff = this.item.data.data.status.allonoff.value;
+      const nowonoff = this.item.system.status.allonoff.value;
       this._allonoffToggle(nowonoff);
     });
     html.find('.chatsend-button').click(ev => {
@@ -90,7 +90,7 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
     /* -------------------------------------------- */
 
   async _allonoffToggle(nowonoff){
-    let chat = duplicate(this.object.data.data.chatpalette);
+    let chat = duplicate(this.object.system.chatpalette);
     if(!nowonoff){
       for(let i=0 ; i < chat.variable?.length ; i++){
         chat.variable[i].substitution = true;
@@ -100,13 +100,13 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
         chat.variable[j].substitution = false;
       }
     }
-    await this.object.update({'data.chatpalette':chat});
+    await this.object.update({'system.chatpalette':chat});
   }
 
   async _tableshowblind(event){
-    let data = duplicate(this.object.data.data);
+    let data = duplicate(this.object.system);
     data.status.allonoff.variableonoff = !data.status.allonoff.variableonoff;
-    await this.object.update({'data': data});
+    await this.object.update({'system': data});
   }
 
   _titleinfomation(event){
@@ -180,9 +180,9 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
 
   _sendMessage(event, index, system){
     event.preventDefault();
-    let item = this.item.data;
-    let text = this.item.data.data.chatpalette.chat[index].text ? this.item.data.data.chatpalette.chat[index].text : "";
-    let message = this.item.data.data.chatpalette.chat[index].message ? this.item.data.data.chatpalette.chat[index].message : "";
+    let item = this.item;
+    let text = this.item.system.chatpalette.chat[index].text ? this.item.system.chatpalette.chat[index].text : "";
+    let message = this.item.system.chatpalette.chat[index].message ? this.item.system.chatpalette.chat[index].message : "";
     const user = this.item.user ? this.item.user : game.user;
     text = text.replace(/[！-～]/g, function(s) {
         return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
@@ -191,10 +191,10 @@ export class SatasupeChatpaletteSheet extends ItemSheet {
     const re = /\{.*?\}/;
     if(repal){
       for (let i = 0 ; i < repal.length ; i++){
-        if(!item.data.chatpalette.variable) item.data.chatpalette.variable = [];
-        for(let j = 0; j < item.data.chatpalette.variable.length ; j++){
-          if((item.data.chatpalette.variable[j].variable == repal[i]) && item.data.chatpalette.variable[j].substitution){
-            text = text.replace(re,Number(item.data.chatpalette.variable[j].title));
+        if(!item.system.chatpalette.variable) item.system.chatpalette.variable = [];
+        for(let j = 0; j < item.system.chatpalette.variable.length ; j++){
+          if((item.system.chatpalette.variable[j].variable == repal[i]) && item.system.chatpalette.variable[j].substitution){
+            text = text.replace(re,Number(item.system.chatpalette.variable[j].title));
             break;
           }
         }

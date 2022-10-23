@@ -25,11 +25,6 @@
     "SETTINGS.SatasupeWorkTimeChangeL": "✔: 睡眠に必要なターン数 = 1日の\"総\"ターン数 / 2 - 1 (ルールブック:p.49)",
     "SETTINGS.SatasupeTokenAutoSettingN":"キャラシロード後のトークン設定の自動化",
     "SETTINGS.SatasupeTokenAutoSettingL":"✔: アクターデータの共有 = 有効, ネームプレートとリソースバーの表示 = 常に表示(全員)",
-  
-    "SATASUPE.NotifyGroupDuplicate": "Attribute group already exists.",
-    "SATASUPE.NotifyGroupAttrDuplicate": "Attribute group already exists as an attribute.",
-    "SATASUPE.NotifyGroupAlphanumeric": "Attribute group names may not contain spaces or periods.",
-    "SATASUPE.NotifyAttrDuplicate": "Attribute key already exists as a group.",
 
     "SATASUPE.MenuLoad" : "キャラクターシートのロード",
     "SATASUPE.Import" : "取り込む",
@@ -68,6 +63,7 @@
     "SATASUPE.UiOnly" : "通知でターン数を表示する",
     "SATASUPE.ChatAndUi" : "チャット欄と通知でターン数を表示する",
     "SATASUPE.NoDisplay" : "ターン数の表示をしない",
+    "SATASUPE.Confirm" : "確認",
 
     "CIRCUMSTANCE.CRIME": "犯罪",
     "CIRCUMSTANCE.LIFE": "生活",
@@ -452,6 +448,7 @@
     "SATASUPE.RemoveTargetTag":"タグ削除",
     "SATASUPE.Tag":"タグ",
     "SATASUPE.TargetOpen":"ターゲットトピックを公開する",
+    "SATASUPE.TargetPrivate":"非公開",
     "SATASUPE.SuccessMusic":"到達時に自動再生するプレイリスト",
     "SATASUPE.AddLink":"リンクをのばす",
     "SATASUPE.TagAddType":"追加の種類",
@@ -631,6 +628,7 @@
     "SATASUPE.MEMO":"メモ",
     "SATASUPE.Turn0": "今は0ターン目です!",
     "SATASUPE.LastTurn":"最後のターンです!",
+    "SATASUPE.ConfirmPrevTurn" : "前のターンに戻しますか？",
     "SATASUPE.Unacted":"このターンに未行動のキャラクターがいます",
     "SATASUPE.DontHaveActor":"あなたはキャラクターを所持していません",
     "SATASUPE.ChangeTotalDailyTurns":"1日の合計ターン数",
@@ -700,22 +698,5 @@
     "SATASUPE.AddTable":"表を追加",
     "SATASUPE.TableName": "表の名前",
     "SATASUPE.AddList":"リストを追加",
-
-    "SATASUPE.ResourceMin": "Min",
-    "SATASUPE.ResourceValue": "Value",
-    "SATASUPE.ResourceMax": "Max",
-  
-    "SATASUPE.DefineTemplate": "Define as Template",
-    "SATASUPE.UnsetTemplate": "Unset Template",
-    "SATASUPE.NoTemplate": "No Template",
-  
-    "SATASUPE.AttributeKey": "Attribute Key",
-    "SATASUPE.AttributeValue": "Value",
-    "SATASUPE.AttributeLabel": "Label",
-    "SATASUPE.AttributeDtype": "Data Type",
-  
-    "SATASUPE.DeleteGroup": "Delete group?",
-    "SATASUPE.DeleteGroupContent": "Do you wish to delete this group? This will delete the following group and all attributes included in it: ",
-    "SATASUPE.Create": "Create",
-    "SATASUPE.New": "New"
+    "SATASUPE.MemoDeleteConfirm":"タブ \"{tabname}\" は完全に削除され、元には戻せません。<br>よろしいですか？"
   }

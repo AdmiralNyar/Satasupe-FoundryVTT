@@ -20,14 +20,14 @@ export class SatasupeItemSheet extends ItemSheet {
   }
 
     /** @override */
-  getData() {
-    const data = super.getData();
-    const itemData = data.data;
-    data.data = itemData.data;
-    if((data.data.weapon?.special?.blast) && (data.data.weapon?.specialtext?.blast)){
-      delete data.data.weapon?.special?.blast;
+  async getData() {
+    const context = await super.getData();
+    const itemData = context.item;
+    context.system = itemData.system;
+    if((context.system.weapon?.special?.blast) && (context.system.weapon?.specialtext?.blast)){
+      delete context.system.weapon?.special?.blast;
     }
-    return data;
+    return context;
   }
 
   /** @override */
@@ -54,12 +54,12 @@ export class SatasupeItemSheet extends ItemSheet {
   _updateObject(event, formData) {
     if( event.currentTarget){
       if(event.currentTarget.classList){
-        if(this.object.data.type == 'item'){
+        if(this.object.type == 'item'){
           if(this.object.parent?.type == 'character'){
             if(event.currentTarget.classList.contains('item-upkeep')){
               const bool = event.currentTarget.checked;
               let name = $(event.currentTarget).parent(".upkeep").parent(".detail").parent(".tab.active")[0].dataset.tab;
-              this.object.parent.updateEquipmentUpkeep(bool, this.object.data.data[name].upkeeper);
+              this.object.parent.updateEquipmentUpkeep(bool, this.object.system[name].upkeeper);
             }
           }
           if(event.currentTarget.classList.contains('effect-area')){
@@ -81,23 +81,23 @@ export class SatasupeItemSheet extends ItemSheet {
 
   async upkeeperreset(event){
     let name = $(event.currentTarget).parent(".upkeep").parent(".detail").parent(".tab.active")[0].dataset.tab;
-    if(!this.object.data.data[name].upkeep){
-      let up = duplicate(this.object.data.data);
+    if(!this.object.system[name].upkeep){
+      let up = duplicate(this.object.system);
       up[name].upkeeper = this.object.parent?.id;
-      await this.object.update({'data': up});
+      await this.object.update({'system': up});
     }
   }
   
   async _updateEffectArea(object, value, key){
-      const efare = duplicate(object.data.data);
+      const efare = duplicate(object.system);
       efare[key].effect = value;
-      await this.item.update({'data': efare});
+      await this.item.update({'system': efare});
   }
   
   async _updateSpecialtext(object, value, key, specialtextname){
-      const stext = duplicate(object.data.data);
+      const stext = duplicate(object.system);
       stext[key].specialtext[specialtextname].number = value;
-      await this.item.update({'data': stext});
+      await this.item.update({'system': stext});
   }
 
   async _onSpecialButtonToggle(event){

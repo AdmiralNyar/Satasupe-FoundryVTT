@@ -26,37 +26,37 @@ export class SatasupeKarmaSheet extends ItemSheet {
         return this.object.update(formData);
       }
 
-    getData(){
-        const data = super.getData();
-        const itemData = data.data;
-        data.data = itemData.data;
-        data._alignment = game.i18n.localize("ALIGNMENTS.CALM");
+    async getData(){
+        const context = await super.getData();
+        const itemData = context.item;
+        context.system = itemData.system;
+        context._alignment = game.i18n.localize("ALIGNMENTS.CALM");
 
         for( let [key, value] of Object.entries(SATASUPE['check'])){
-            if (key == data.data.check.checkValue.name){
-                data._propertiesValue = value;
+            if (key == context.system.check.checkValue.name){
+                context._propertiesValue = value;
             }
         }
         for( let [key, value] of Object.entries(SATASUPE['alignment'])){
-            if (key === data.data.check.alignment.name){
-                data._alignment = value;
+            if (key === context.system.check.alignment.name){
+                context._alignment = value;
              }
         }
         /*
-        data.dtypes = ["String", "Number", "Boolean"];
+        context.dtypes = ["String", "Number", "Boolean"];
 
-        for (let attr of Object.values(data.data.attributes)) {
+        for (let attr of Object.values(context.system.attributes)) {
         attr.isCheckbox = attr.dtype === "Boolean";
         }
         */
-        return data;
+        return context;
     }
 
     async _updateEffectArea(object, value){
-        const kar = duplicate(object.data.data);
+        const kar = duplicate(object.system);
         kar.effect = value;
         kar.effecthtml = value.replace(/\r?\n/g, '<br>');
-        await this.item.update({'data': kar});
+        await this.item.update({'system': kar});
     }
 
 /*

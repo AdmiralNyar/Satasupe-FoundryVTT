@@ -46,7 +46,7 @@ export class SatasupeGiveItem{
 
     static async receiveItem({sendActor,receiveActor,currentItem}){
         const duplicatedItem = duplicate(currentItem);
-        duplicatedItem.data.storage = "";
+        duplicatedItem.system.storage = "";
         //if(duplicatedItem.data.props.upkeep) duplicatedItem.data.props.upkeep = false
         //if(duplicatedItem.data.weapon.upkeep) duplicatedItem.data.weapon.upkeep = false
         //if(duplicatedItem.data.vehicle.upkeep) duplicatedItem.data.vehicle.upkeep = false
@@ -83,7 +83,7 @@ export class SatasupeGiveItem{
             user: game.userId,
             speaker: ChatMessage.getSpeaker(),
             content: game.i18n.format('SATASUPEMESSAGE.ITEMTRADEFGM',{sendActor: tradeData.sendActor.name,receiveActor:tradeData.receiveActor.name,Item:tradeData.currentItem.name}),
-            whisper: game.users.contents.filter(u => u.isGM).map(u => u.id).concat(game.users.contents.filter(u => u.character.id == tradeData.sendActor.id).map(u => u.id)).concat(game.users.contents.filter(u => u.character.id == tradeData.receiveActor.id).map(u => u.id))
+            whisper: game.users.contents.filter(u => u.isGM).map(u => u.id).concat(game.users.contents.filter(u => u?.character?._id == tradeData.sendActor.id).map(u => u.id)).concat(game.users.contents.filter(u => u?.character?._id == tradeData.receiveActor.id).map(u => u.id))
         };
     
         chatMessage.whisper = Array.from(new Set(chatMessage.whisper));
