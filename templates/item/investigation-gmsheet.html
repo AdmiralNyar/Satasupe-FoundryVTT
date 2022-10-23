@@ -23,7 +23,7 @@
         <button class="target-add" type="button" style="display:inline-block;width:fit-content;width:-moz-fit-content;height:fit-content;height:-moz-fit-content;margin: 2px 5px;line-height: 18px;">{{localize 'SATASUPE.AddTarget'}}</button>
         <button class="target-remove" type="button" style="display:inline-block;width:fit-content;width:-moz-fit-content;height:-moz-fit-content;height:fit-content;margin: 2px 5px;line-height: 18px;">{{localize 'SATASUPE.RemoveTarget'}}</button>
         <div>
-            {{#each data.target as |info index|}}
+            {{#each system.target as |info index|}}
             <div style="display: block;border:1px solid black;margin:2px 2px 5px 2px;padding:2px 0px">
                 <div style="display: inline-block;"><label style="display: inline-block;width:30px">SL : </label><input class="targetsl" data-index="{{index}}" style="display: inline-block;width:fit-content;width:-moz-fit-content;" type="number" min="1" name="info.sl" value="{{info.sl}}" data-dtype="Number"/></div>
                 <div style="display: block;">
@@ -37,7 +37,7 @@
                         <select class="targettagselect" data-index="{{index}}" data-ind="{{ind}}" name="{{hobby}}" style="display: inline-block;margin-right: 5px;" data-dtype="String">
                             <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
                         {{#select hobby}}
-                            {{#each ../../data.hobbylist as |list key|}}
+                            {{#each ../../system.hobbylist as |list key|}}
                                 <option value="{{key}}">{{localize list}}</option>
                             {{/each}}
                         {{/select}}
@@ -45,7 +45,7 @@
                         </div>
                     {{/each}}
                 </div>
-                {{#if ../data.playlistAllow}}
+                {{#if ../system.playlistAllow}}
                 <div style="display:block;">
                     <div style="display: inline-block;"><label style="display: inline-block;">{{localize 'SATASUPE.TargetOpen'}} : </label><input class="targetopen" data-index="{{index}}" style="display: inline-block;" type="checkbox" name="info.open" {{checked info.open}}/></div>
                     <div style="display: inline-block;">
@@ -53,7 +53,7 @@
                         <select class="playlistselect" data-index="{{index}}" style="display: inline-block;margin-right: 5px;" data-dtype="String">
                             <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
                             {{#select info.playlist}}
-                                {{#each ../data.playlist as |list key|}}
+                                {{#each ../system.playlist as |list key|}}
                                         <option value="{{list.id}}">{{list.name}}</option>
                                 {{/each}}
                             {{/select}}

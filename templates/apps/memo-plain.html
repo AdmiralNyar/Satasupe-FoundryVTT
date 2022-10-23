@@ -1,5 +1,5 @@
 <div class="tab" style="height:100%">
-    <div style="height: 90%;margin-top:5px;">
-        {{editor content=this.data target=save style="height:95%" button=true owner=true editable=@root.editable}}
+    <div style="height: 90%;margin-top:5px;" data-o='{{this.data}}'>
+        {{editor this.data target=save style="height:95%" button=true owner=true editable=@root.editable engine="prosemirror"}}
     </div>
 </div>

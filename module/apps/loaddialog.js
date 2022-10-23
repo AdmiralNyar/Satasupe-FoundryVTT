@@ -1,9 +1,11 @@
+import {NoKeyDownDialog} from './noKeyDown.js';
 export class LoadDialog {
+  #onKeyDown = true
   static async _createclipborddialog(textdata){
     const html = await renderTemplate('systems/satasupe/templates/apps/clipload.html', this);
     return new Promise((resolve) =>{
       let formData = null;
-      const dlg = new Dialog({
+      const dlg = new NoKeyDownDialog({
         title: game.i18n.localize("SATASUPE.LOADCLIPBOARD"),
         content:html,
         buttons:{
@@ -16,7 +18,7 @@ export class LoadDialog {
           }
         },
         default: '',
-        close:() => {return;}
+        close:() => {return;},
       });
       dlg.render(true);
     });
@@ -25,7 +27,7 @@ export class LoadDialog {
     const html = await renderTemplate('systems/satasupe/templates/apps/fvttbcdice.html', data);
     return new Promise((resolve) =>{
       let formData = null;
-      const dlg = new Dialog({
+      const dlg = new NoKeyDownDialog({
         title: game.i18n.localize("SATASUPE.LOADFVTTBCDICE"),
         content:html,
         buttons:{

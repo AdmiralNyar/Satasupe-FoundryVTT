@@ -317,24 +317,24 @@ Hooks.once('diceSoNiceReady', (dice3d) => {
 });
 
 Hooks.on('createActor', async (document, options, userId) => {
-  const actor = document.data;
-  for(let [key, value] of Object.entries(actor.data.circumstance)){
-    actor.data.circumstance[key].variable = game.i18n.localize(actor.data.circumstance[key].variable);
+  const actor = document.system;
+  for(let [key, value] of Object.entries(actor.circumstance)){
+    actor.circumstance[key].variable = game.i18n.localize(actor.circumstance[key].variable);
   }
-  for(let [key, value] of Object.entries(actor.data.aptitude)){
-    actor.data.aptitude[key].variable = game.i18n.localize(actor.data.aptitude[key].variable);
+  for(let [key, value] of Object.entries(actor.aptitude)){
+    actor.aptitude[key].variable = game.i18n.localize(actor.aptitude[key].variable);
   }
-  for(let [key, value] of Object.entries(actor.data.attribs)){
-    actor.data.attribs[key].variable = game.i18n.localize(actor.data.attribs[key].variable);
+  for(let [key, value] of Object.entries(actor.attribs)){
+    actor.attribs[key].variable = game.i18n.localize(actor.attribs[key].variable);
   }
-  for(let [key, value] of Object.entries(actor.data.combat)){
-    actor.data.combat[key].variable = game.i18n.localize(actor.data.combat[key].variable);
+  for(let [key, value] of Object.entries(actor.combat)){
+    actor.combat[key].variable = game.i18n.localize(actor.combat[key].variable);
   }
-  actor.data.status.majorWoundsOffset.variable = game.i18n.localize(actor.data.status.majorWoundsOffset.variable);
-  actor.data.status.sleep.variable = game.i18n.localize(actor.data.status.sleep.variable);
-  actor.data.status.fumble.variable = game.i18n.localize(actor.data.status.fumble.variable);
-  actor.data.status.trauma.variable = game.i18n.localize(actor.data.status.trauma.variable);
-  await document.update({'data':actor.data});
+  actor.status.majorWoundsOffset.variable = game.i18n.localize(actor.status.majorWoundsOffset.variable);
+  actor.status.sleep.variable = game.i18n.localize(actor.status.sleep.variable);
+  actor.status.fumble.variable = game.i18n.localize(actor.status.fumble.variable);
+  actor.status.trauma.variable = game.i18n.localize(actor.status.trauma.variable);
+  await document.update({'system':actor});
 });
 
 Hooks.on('renderChatLog', (app, html, data) => SatasupeChatCard.chatListeners(app, html, data));
@@ -459,10 +459,10 @@ Hooks.on("renderActorSheet", async (app, html, data) => {
 });
 
 Hooks.on("renderItemSheet", async (app, html, data) => {
-  if(app.object.data.type == "investigation"){
+  if(app.object.type == "investigation"){
     const itemid = app.object.id; 
-    if(app.object.data.permission.default != 3) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.DefaultInvestigationPermission"));
-    const maxsl = data.data.maxsl + 3;
+    if(app.object.ownership.default != 3) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.DefaultInvestigationPermission"));
+    const maxsl = data.system.maxsl + 3;
     for(let i = 0; i < maxsl;i++){
       if(i==0){
         $(`.investigation-main#${itemid} .investigation-sl`).append(`<div class="sl${i}list" style="vertical-align: top;display: inline-block;width: 200px;"><div class="sllist" style="display: inline-block;width:50px;vertical-align: top;">SL ${i}</div><button class="start-topic-add" type="button" style="vertical-align: top;display:inline-block;width:120px;height:fit-content;height:-moz-fit-content;margin: 0px 2px 0px 5px;line-height: 16px;">${ game.i18n.localize("SATASUPE.AddStartTopic")}</button></div>`);
@@ -471,37 +471,38 @@ Hooks.on("renderItemSheet", async (app, html, data) => {
       }
     }
 
-    for(let k = 0; k < data.data.target.length; k++){
-      if(data.data.target[k].open){
-        let place = data.data.target[k].sl;
+    for(let k = 0; k < data.system.target.length; k++){
+      let place = data.system.target[k].sl;
+      if(data.system.target[k].open){
         var taglist = "";
-        for(let l=0; l < data.data.target[k].tag.length; l++){
+        for(let l=0; l < data.system.target[k].tag.length; l++){
           for(let [key,v] of Object.entries(SATASUPE['hobby'])){
-            if(data.data.target[k].tag[l]){
-              if(key == data.data.target[k].tag[l]){
+            if(data.system.target[k].tag[l]){
+              if(key == data.system.target[k].tag[l]){
                 taglist += game.i18n.localize(v);
-                if(l != (data.data.target[k].tag.length - 1))taglist += ", ";
+                if(l != (data.system.target[k].tag.length - 1))taglist += ", ";
               }
             }
           }
         }
-        if(data.data.target[k].checked) taglist += " ★";
-        $(`.investigation-main#${itemid} .investigation-sl .sl${place}list`).append(`<div class="target-sl" style="width:150px;display:block;white-space:normal;">TARGET : ${taglist}</div>`);
       }
+      if(!taglist) taglist = game.i18n.localize("SATASUPE.TargetPrivate")
+      if(data.system.target[k].checked) taglist += " ★";
+      $(`.investigation-main#${itemid} .investigation-sl .sl${place}list`).append(`<div class="target-sl" style="width:150px;display:block;white-space:normal;">TARGET : ${taglist}</div>`);
     }
 
-    for(let j=0;j<data.data.dendrogram.length;j++){
-      if(Object.keys(data.data.dendrogram[j]).length){
-        const parentindex = data.data.dendrogram[j].path[data.data.dendrogram[j].path.length - 2];
-        const sl = data.data.dendrogram[j].sl;
+    for(let j=0;j<data.system.dendrogram.length;j++){
+      if(Object.keys(data.system.dendrogram[j]).length){
+        const parentindex = data.system.dendrogram[j].path[data.system.dendrogram[j].path.length - 2];
+        const sl = data.system.dendrogram[j].sl;
         let parentsl = -1;
-        const grandparentindex = data.data.dendrogram[j].path[data.data.dendrogram[j].path.length - 3];
+        const grandparentindex = data.system.dendrogram[j].path[data.system.dendrogram[j].path.length - 3];
         let grandparentsl = -1;
         if(sl != 0){
-          parentsl = data.data.dendrogram[parentindex].sl;
+          parentsl = data.system.dendrogram[parentindex].sl;
         }
-        if(data.data.dendrogram[grandparentindex]){
-          grandparentsl = data.data.dendrogram[grandparentindex].sl;
+        if(data.system.dendrogram[grandparentindex]){
+          grandparentsl = data.system.dendrogram[grandparentindex].sl;
         }
         let tagaddzone ="";
         var style = ``;
@@ -531,8 +532,8 @@ Hooks.on("renderItemSheet", async (app, html, data) => {
     }
 
     html.find('.target-set').click( ev => {
-      app.object.update({'data.gmsetting': !data.data.gmsetting});
-      if(data.data.gmsetting && game.user.isGM){
+      app.object.update({'system.gmsetting': !data.system.gmsetting});
+      if(data.system.gmsetting && game.user.isGM){
         $(`.investigation-main#${itemid}`).css('display','none');
         $(`.investigation-target#${itemid}`).css('display','');
       }else{
@@ -540,7 +541,7 @@ Hooks.on("renderItemSheet", async (app, html, data) => {
         $(`.investigation-target#${itemid}`).css('display','none');
       }
     });
-    if(data.data.gmsetting && game.user.isGM){
+    if(data.system.gmsetting && game.user.isGM){
       $(`.investigation-main#${itemid}`).css('display','none');
       $(`.investigation-target#${itemid}`).css('display','');
     }else{
@@ -550,18 +551,18 @@ Hooks.on("renderItemSheet", async (app, html, data) => {
     html.find('.add-branch').click( ev => {
       const index = parseInt(ev.currentTarget.dataset.slindex);
       let view = true;
-      if(app.object.data.data.dendrogram[index].playerlist.length == 0){
+      if(app.object.system.dendrogram[index].playerlist.length == 0){
         view = true;
       }
-      for(let m=0; m < app.object.data.data.dendrogram[index].playerlist.length; m++){
-        if((app.object.data.data.dendrogram[index].playerlist[m].id != game.user.id) || (game.user.isGM) || (game.settings.get("satasupe", "InvestigationTopicReuse"))){
-        }else if((app.object.data.data.dendrogram[index].playerlist[m].id == game.user.id) && (!game.user.isGM) && ( !game.settings.get("satasupe", "InvestigationTopicReuse"))){ 
+      for(let m=0; m < app.object.system.dendrogram[index].playerlist.length; m++){
+        if((app.object.system.dendrogram[index].playerlist[m].id != game.user.id) || (game.user.isGM) || (game.settings.get("satasupe", "InvestigationTopicReuse"))){
+        }else if((app.object.system.dendrogram[index].playerlist[m].id == game.user.id) && (!game.user.isGM) && ( !game.settings.get("satasupe", "InvestigationTopicReuse"))){ 
           ui.notifications.error(game.i18n.localize("ALERTMESSAGE.SelectedTopic"));
           view = false;
         }
       }
       if(view){
-        if(data.data.dendrogram[index].tag){
+        if(data.system.dendrogram[index].tag){
           SatasupeInvestigationSheet._createBranch(ev, app.object, index, data);
         }else{
           ui.notifications.error(game.i18n.localize("ALERTMESSAGE.ParentTag"));

@@ -8,33 +8,33 @@
                 <div class="status">
                     <div class="status-box">
                         <div class="status-name">{{localize 'STATUS.Info'}}</div>
-                        <div class="status-score"><label class="checkbox"><input type="checkbox" title="{{localize 'STATUS.InfoL'}}" name="data.status.investigation.value" {{checked data.status.investigation.value}}/></label></div>
+                        <div class="status-score"><label class="checkbox"><input type="checkbox" title="{{localize 'STATUS.InfoL'}}" name="system.status.investigation.value" {{checked system.status.investigation.value}}/></label></div>
                     </div>
                     <div class="status-box">
                         <div class="status-name">{{localize 'STATUS.FumbleH'}}</div>
-                        <div class="status-score"><input name="data.status.fumble.value" title="{{localize 'STATUS.FumbleL'}}" type="number" min="0" value="{{data.status.fumble.value}}"/></div>
+                        <div class="status-score"><input name="system.status.fumble.value" title="{{localize 'STATUS.FumbleL'}}" type="number" min="0" value="{{system.status.fumble.value}}"/></div>
                     </div>
                     <div class="status-box">
                         <div class="status-name">{{localize 'STATUS.SleepS'}}</div>
-                        <div class="status-score"><input name="data.status.sleep.value" title="{{localize 'STATUS.SleepL'}}" type="number" value="{{data.status.sleep.value}}"/></div>
+                        <div class="status-score"><input name="system.status.sleep.value" title="{{localize 'STATUS.SleepL'}}" type="number" value="{{system.status.sleep.value}}"/></div>
                     </div>
                     <div class="status-box">
                         <div class="status-name">{{localize 'STATUS.TraumaH'}}</div>
-                        <div class="status-score"><input name="data.status.trauma.value" title="{{localize 'STATUS.TraumaL'}}" type="number" value="{{data.status.trauma.value}}"/></div>
+                        <div class="status-score"><input name="system.status.trauma.value" title="{{localize 'STATUS.TraumaL'}}" type="number" value="{{system.status.trauma.value}}"/></div>
                     </div>
                     <div class="status-box">
                         <div class="status-name">{{localize 'STATUS.MajorWoundesOffsetS'}}</div>
-                        {{#if data.status.unconscious.value}}
+                        {{#if system.status.unconscious.value}}
                         <div class="status-score"><i class="fas fa-user-slash"></i></div>
                         {{else}}
-                            {{#if data.status.mpmajorWounds.value}}
-                                {{#if data.status.bpmajorWounds.value}}
+                            {{#if system.status.mpmajorWounds.value}}
+                                {{#if system.status.bpmajorWounds.value}}
                                     <div class="status-score double"><i class="fas fa-head-side-virus"></i> <i class="fas fa-user-injured"></i></div>
                                 {{else}}
                                     <div class="status-score"><i class="fas fa-head-side-virus"></i></div>
                                 {{/if}}
                             {{else}}
-                                {{#if data.status.bpmajorWounds.value}}
+                                {{#if system.status.bpmajorWounds.value}}
                                     <div class="status-score"><i class="fas fa-user-injured"></i></div>
                                 {{else}}
                                     <div class="status-score"><i class="fas fa-smile"></i></div>
@@ -44,7 +44,7 @@
                     </div>
                     <div class="status-box">
                         <div class="status-name">{{localize 'STATUS.AlertS'}}</div>
-                        <div class="status-score"><label class="checkbox"><input type="checkbox" title="{{localize 'STATUS.AlertL'}}" name="data.status.alert.value" {{checked data.status.alert.value}}/></label></div>
+                        <div class="status-score"><label class="checkbox"><input type="checkbox" title="{{localize 'STATUS.AlertL'}}" name="system.status.alert.value" {{checked system.status.alert.value}}/></label></div>
                     </div>
                 </div>
             </div>
@@ -55,63 +55,63 @@
                 </div>
                 <div class="row flexrow">
                     <label>{{localize 'SATASUPE.Homeland'}} :</label>
-                    <input name="data.infos.homeland" type="text" value="{{data.infos.homeland}}"/>
+                    <input name="system.infos.homeland" type="text" value="{{system.infos.homeland}}"/>
                 </div>
                 <div class="row flexrow">
                     <label><a class="sexroll" title="{{localize 'SATASUPE.SexRoll'}}">{{localize 'SATASUPE.Sex'}} :</a></label>
-                    <input name="data.infos.sex" type="text" value="{{data.infos.sex}}"/>
+                    <input name="system.infos.sex" type="text" value="{{system.infos.sex}}"/>
                 </div>
                 <div class="row flexrow">
                     <label><a class="ageroll" title="{{localize 'SATASUPE.AgeRoll'}}">{{localize 'SATASUPE.Age'}} :</a></label>
-                    <input name="data.infos.age" type="number" min="0" value="{{data.infos.age}}"/>
+                    <input name="system.infos.age" type="number" min="0" value="{{system.infos.age}}"/>
                 </div>
                 <div class="row flexrow">
                     <label>{{localize 'SATASUPE.Style'}} :</label>
-                    <input name="data.infos.style" type="text" value="{{data.infos.style}}"/>
+                    <input name="system.infos.style" type="text" value="{{system.infos.style}}"/>
                 </div>
                 <div class="row flexrow">
                     <label>{{localize 'SATASUPE.Likes'}} :</label>
-                    <input name="data.infos.likes" type="text" value="{{data.infos.likes}}"/>
+                    <input name="system.infos.likes" type="text" value="{{system.infos.likes}}"/>
                 </div>
                 <div class="row flexrow">
                     <label>{{localize 'SATASUPE.Dislikes'}} :</label>
-                    <input name="data.infos.dislikes" type="text" value="{{data.infos.dislikes}}"/>
+                    <input name="system.infos.dislikes" type="text" value="{{system.infos.dislikes}}"/>
                 </div>
                 <div class="row flexrow">
                     <label>{{localize 'SATASUPE.Team'}} :</label>
-                    <input name="data.infos.team" type="text" value="{{data.infos.team}}"/>
+                    <input name="system.infos.team" type="text" value="{{system.infos.team}}"/>
                 </div>
                 <div class="row flexrow">
                     <label>{{localize 'SATASUPE.Alliance'}} :</label>
-                    <input name="data.infos.alliance" type="text" value="{{data.infos.alliance}}"/>
+                    <input name="system.infos.alliance" type="text" value="{{system.infos.alliance}}"/>
                 </div>
                 <div class="row flexrow">
                     <label>{{localize 'SATASUPE.Hierarchy'}} :</label>
-                    <input name="data.infos.hierarchy" type="text" value="{{data.infos.hierarchy}}"/>
+                    <input name="system.infos.hierarchy" type="text" value="{{system.infos.hierarchy}}"/>
                 </div>
                 <div class="row flexrow">
                     <label>{{localize 'SATASUPE.Surface'}} :</label>
-                    <input name="data.infos.surface" type="text" value="{{data.infos.surface}}"/>
+                    <input name="system.infos.surface" type="text" value="{{system.infos.surface}}"/>
                 </div>
                 <div class="row flexrow">
                     <label>{{localize 'SATASUPE.Language'}} :</label>
-                    <input name="data.infos.language" type="text" value="{{data.infos.language}}"/>
+                    <input name="system.infos.language" type="text" value="{{system.infos.language}}"/>
                 </div>
                 <div class="row flexrow favorite">
                     <label><a class="favorite-button" title="{{localize 'SATASUPE.FavoriteRoll'}}">{{localize 'SATASUPE.Favorite'}} :</a></label>
-                    <input name="data.infos.favorite" type="text" value="{{data.infos.favorite}}"/>
+                    <input name="system.infos.favorite" type="text" value="{{system.infos.favorite}}"/>
                 </div>
-                {{#if data.favmovie}}
+                {{#if system.favmovie}}
                 <div class="row flexrow">
                     <label>{{localize 'SATASUPE.FavMovie'}} :</label>
-                    <input name="data.infos.movie" type="text" value="{{data.infos.movie}}"/>
+                    <input name="system.infos.movie" type="text" value="{{system.infos.movie}}"/>
                 </div>
                 {{/if}}
                 <div class="row flexrow">
                     <label>{{localize 'SATASUPE.Haven'}} :</label>
-                    <select class="haven-place" name="data.infos.haven" data-dtype="String" value="{{data.infos.haven}}">
+                    <select class="haven-place" name="system.infos.haven" data-dtype="String" value="{{system.infos.haven}}">
                             <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                        {{#select data.infos.haven}}
+                        {{#select system.infos.haven}}
                             <option value="minami">{{localize 'SATASUPE.MINAMI'}}</option>
                             <option value="chinatown">{{localize 'SATASUPE.CHINATOWN'}}</option>
                             <option value="warship">{{localize 'SATASUPE.WARSHIP'}}</option>
@@ -127,12 +127,12 @@
                     <div class="char-boxtytle">
                         <div class="tytle-name">{{localize 'SATASUPE.CRICUMSTANCE'}}</div>
                     </div>
-                    {{#each data.circumstance as |circumstance key|}}
+                    {{#each system.circumstance as |circumstance key|}}
                     <div class="char-box"  data-characteristic="{{key}}" draggable="true">
                         <div class="charac-name">{{localize circumstance.short}}</div>
                         <div class="charac-score">
                             <div class="main-score">
-                                <input class="characteristic-score {{#uniqueif key "==" "life"}}life-characteristic{{/uniqueif}}" type="number" min="0" max="8" name="data.circumstance.{{key}}.value" value="{{circumstance.value}}" data-dtype="Number"/>
+                                <input class="characteristic-score {{#uniqueif key "==" "life"}}life-characteristic{{/uniqueif}}" type="number" min="0" max="8" name="system.circumstance.{{key}}.value" value="{{circumstance.value}}" data-dtype="Number"/>
                             </div>
                         </div>
                     </div>
@@ -143,12 +143,12 @@
                         <div class="char-boxtytle">
                             <div class="tytle-name">{{localize 'SATASUPE.APTITUDE'}}</div>
                         </div>
-                        {{#each data.aptitude as |aptitude key|}}
+                        {{#each system.aptitude as |aptitude key|}}
                         <div class="char-box"  data-characteristic="{{key}}" draggable="true">
                             <div class="charac-name">{{localize aptitude.short}}</div>
                             <div class="charac-score">
                                 <div class="main-score">
-                                    <input class="characteristic-score" type="number" min="0" max="8" name="data.aptitude.{{key}}.value" value="{{aptitude.value}}" data-dtype="Number"/>
+                                    <input class="characteristic-score" type="number" min="0" max="8" name="system.aptitude.{{key}}.value" value="{{aptitude.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -156,14 +156,14 @@
                     </div>
                     <div class="combat">
                         <div class="char-boxtytle">
-                            <div class="tytle-name">{{localize 'EXP.COMBATPOWERS'}} ({{localize 'SATSUPE.total'}}:{{data.exp.combatpower.value}})</div>
+                            <div class="tytle-name">{{localize 'EXP.COMBATPOWERS'}} ({{localize 'SATSUPE.total'}}:{{system.exp.combatpower.value}})</div>
                         </div>
-                        {{#each data.combat as |combat key|}}
+                        {{#each system.combat as |combat key|}}
                         <div class="char-box"  data-characteristic="{{key}}" draggable="true">
                             <div class="charac-name">{{localize combat.short}}</div>
                             <div class="charac-score">
                                 <div class="main-score">
-                                    <input class="characteristic-score" type="number" min="0" name="data.combat.{{key}}.value" value="{{combat.value}}" data-dtype="Number"/>
+                                    <input class="characteristic-score" type="number" min="0" name="system.combat.{{key}}.value" value="{{combat.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -176,7 +176,7 @@
                             <div class="others-name">{{localize 'ATTRIBS.BPS'}}</div>
                             <div class="others-score">
                                 <div class="main-score">
-                                    <input class="bp" name="data.attribs.bp.value" title="{{localize 'ATTRIBS.BPL'}}" type="number" value="{{data.attribs.bp.value}}" data-dtype="Number"/>
+                                    <input class="bp" name="system.attribs.bp.value" title="{{localize 'ATTRIBS.BPL'}}" type="number" value="{{system.attribs.bp.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -186,7 +186,7 @@
                             <div class="others-name">{{localize 'ATTRIBS.MPS'}}</div>
                             <div class="others-score">
                                 <div class="main-score">
-                                    <input class="mp" name="data.attribs.mp.value" title="{{localize 'ATTRIBS.MPL'}}" type="number" value="{{data.attribs.mp.value}}" data-dtype="Number"/>
+                                    <input class="mp" name="system.attribs.mp.value" title="{{localize 'ATTRIBS.MPL'}}" type="number" value="{{system.attribs.mp.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -196,7 +196,7 @@
                             <div class="others-name">{{localize 'ATTRIBS.WPS'}}</div>
                             <div class="others-score">
                                 <div class="main-score">
-                                    <input name="data.attribs.wallet.value" title="{{localize 'ATTRIBS.WPL'}}" type="number" value="{{data.attribs.wallet.value}}" data-dtype="Number"/>
+                                    <input name="system.attribs.wallet.value" title="{{localize 'ATTRIBS.WPL'}}" type="number" value="{{system.attribs.wallet.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -206,7 +206,7 @@
                             <div class="others-name alignmentroll"><a>{{localize 'ATTRIBS.ALIGNMENTS'}}</a></div>
                             <div class="others-score">
                                 <div class="main-score">
-                                    <input name="data.attribs.alignment.value" title="{{localize 'ATTRIBS.ALIGNMENTL'}}" type="number" value="{{data.attribs.alignment.value}}" data-dtype="Number"/>
+                                    <input name="system.attribs.alignment.value" title="{{localize 'ATTRIBS.ALIGNMENTL'}}" type="number" value="{{system.attribs.alignment.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -216,7 +216,7 @@
                             <div class="others-name">{{localize 'ATTRIBS.DRPS'}}</div>
                             <div class="others-score">
                                 <div class="main-score">
-                                    <input name="data.attribs.drp.value" title="{{localize 'ATTRIBS.DRPL'}}" type="number" value="{{data.attribs.drp.value}}" data-dtype="Number"/>
+                                    <input name="system.attribs.drp.value" title="{{localize 'ATTRIBS.DRPL'}}" type="number" value="{{system.attribs.drp.value}}" data-dtype="Number"/>
                                 </div>
                             </div>
                         </div>
@@ -227,7 +227,7 @@
                         <div class="exp-box">
                             <div class="exp-name">{{localize 'EXP.UNUSEDEXPS'}}</div>
                             <div class="exp-score">
-                                <input name="data.usedexp.unused" title="{{localize 'EXP.UNUSEDEXPL'}}" type="number" value="{{data.usedexp.unused}}" data-dtype="Number" readonly/>
+                                <input name="system.usedexp.unused" title="{{localize 'EXP.UNUSEDEXPL'}}" type="number" value="{{system.usedexp.unused}}" data-dtype="Number" readonly/>
                             </div>
                         </div>
                     </div>
@@ -235,7 +235,7 @@
                         <div class="exp-box">
                             <div class="exp-name">{{localize 'EXP.EXPGAINS'}}</div>
                             <div class="exp-score">
-                                <input name="data.exp.expgain.value" title="{{localize 'EXP.EXPGAINL'}}" type="number" value="{{data.exp.expgain.value}}" data-dtype="Number"/>
+                                <input name="system.exp.expgain.value" title="{{localize 'EXP.EXPGAINL'}}" type="number" value="{{system.exp.expgain.value}}" data-dtype="Number"/>
                             </div>
                         </div>
                     </div>
@@ -243,7 +243,7 @@
                         <div class="exp-box">
                             <div class="exp-name">{{localize 'STATUS.REACTION'}}</div>
                             <div class="exp-score">
-                                <input name="data.status.reaction.value" title="{{localize 'STATUS.REACTION'}}" type="text" value="{{data.status.reaction.value}}" data-dtype="text"/>
+                                <input name="system.status.reaction.value" title="{{localize 'STATUS.REACTION'}}" type="text" value="{{system.status.reaction.value}}" data-dtype="text"/>
                             </div>
                         </div>
                     </div>
@@ -251,7 +251,7 @@
                         <div class="exp-box">
                             <div class="exp-name">{{localize 'STATUS.SIZE'}}</div>
                             <div class="exp-score">
-                                <input name="data.status.size.value" title="{{localize 'STATUS.SIZE'}}" type="text" value="{{data.status.size.value}}" data-dtype="text"/>
+                                <input name="system.status.size.value" title="{{localize 'STATUS.SIZE'}}" type="text" value="{{system.status.size.value}}" data-dtype="text"/>
                             </div>
                         </div>
                     </div>
@@ -259,7 +259,7 @@
                         <div class="exp-box">
                             <div class="exp-name">{{localize 'STATUS.Drop'}}</div>
                             <div class="exp-score">
-                                <input name="data.status.drop.value" title="{{localize 'STATUS.Drop'}}" type="text" value="{{data.status.drop.value}}" data-dtype="text"/>
+                                <input name="system.status.drop.value" title="{{localize 'STATUS.Drop'}}" type="text" value="{{system.status.drop.value}}" data-dtype="text"/>
                             </div>
                         </div>
                     </div>
@@ -273,7 +273,7 @@
             <a class="item" data-tab="karma">{{localize 'SATASUPE.Karma'}}</a>
             <a class="item" data-tab="equipment">{{localize 'SATASUPE.Equipment'}}</a>
             <a class="item" data-tab="history">{{localize 'SATASUPE.History'}}</a>
-            {{#if data.showchatpalette}}<a class="item" data-tab="chatpalette">{{localize 'SATASUPE.Chatpalette'}}</a>{{/if}}
+            {{#if system.showchatpalette}}<a class="item" data-tab="chatpalette">{{localize 'SATASUPE.Chatpalette'}}</a>{{/if}}
             <a class="item" data-tab="buttons">Buttons</a>
         </nav>
 
@@ -291,7 +291,7 @@
             <div class="tab history" data-group="primary" data-tab="history">
                 {{> "systems/satasupe/templates/parts/npc-history.html"}}
             </div>
-            {{#if data.showchatpalette}}<div class="tab chatpalette" data-group="primary" data-tab="chatpalette">
+            {{#if system.showchatpalette}}<div class="tab chatpalette" data-group="primary" data-tab="chatpalette">
                 {{> "systems/satasupe/templates/parts/actor-chatpalette.html"}}
             </div>{{/if}}
             <div class="tab buttons" data-group="primary" data-tab="buttons">

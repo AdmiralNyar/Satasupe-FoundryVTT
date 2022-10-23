@@ -27,7 +27,7 @@ export class SatasupeActorSheet extends ActorSheet {
 
   /** @override */
   get template() {
-    if(this.actor.data.type === "npc"){
+    if(this.actor.type === "npc"){
       if ( !game.user.isGM && this.actor.limited ) return "systems/satasupe/templates/npclimit-sheet.html";
       return `systems/satasupe/templates/npc-sheet.html`;
     }else{
@@ -40,23 +40,20 @@ export class SatasupeActorSheet extends ActorSheet {
 
   /** @override */
   async getData(options) {
-    const data = await super.getData(options);
-    const actorData = this.actor.data.toObject(false);
-    data.data = actorData.data;
-    data.editable = this.isEditable;
-    data.dtypes = ["String", "Number", "Boolean"];
-    /*
-    for (let attr of Object.values(data.data.attributes)) {
-      attr.isCheckbox = attr.dtype === "Boolean";
-    }*/
-    if (this.actor.data.type == 'character') {
-      this._prepareCharacterItems(data);
+    const context = await super.getData(options);
+    const actorData = this.actor.toObject(false);
+    context.system = actorData.system;
+    context.editable = this.isEditable;
+    context.dtypes = ["String", "Number", "Boolean"];
+
+    if (this.actor.type == 'character') {
+      this._prepareCharacterItems(context);
     }
-    if (this.actor.data.type == 'npc') {
-      this._prepareCharacterItems(data);
+    if (this.actor.type == 'npc') {
+      this._prepareCharacterItems(context);
     }
-    if(!data.data.circumstance){
-      data.data.circumstance={
+    if(!context.system.circumstance){
+      context.system.circumstance={
         crime:{value:1,max:null,short:"CIRCUMSTANCE.CRIME",label:"CIRCUMSTANCE.CRIME",folmula:null,variable:"CIRCUMSTANCE.CRIME",substitution:false},
         life:{value:1,max:null,short:"CIRCUMSTANCE.LIFE",label:"CIRCUMSTANCE.LIFE",folmula:null,variable:"CIRCUMSTANCE.LIFE",substitution:false},
         love:{value:1,max:null,short:"CIRCUMSTANCE.LOVE",label:"CIRCUMSTANCE.LOVE",folmula:null,variable:"CIRCUMSTANCE.LOVE",substitution:false},
@@ -65,16 +62,16 @@ export class SatasupeActorSheet extends ActorSheet {
       }
     }
 
-    if(!data.data.combat){
-      data.data.combat ={
+    if(!context.system.combat){
+      context.system.combat ={
         reflex:{value:1,max:9,short:"COMBAT.REFLEX",label:"COMBAT.REFLEX",folmula:null,variable:"COMBAT.REFLEX",substitution:false},
         arms:{value:1,max:9,short:"COMBAT.ARMS",label:"COMBAT.ARMS",folmula:null,variable:"COMBAT.ARMS",substitution:false},
         damage:{value:1,max:9,short:"COMBAT.DAMAGE",label:"COMBAT.DAMAGE",folmula:null,variable:"COMBAT.DAMAGE",substitution:false}
       };
     }
 
-    if(!data.data.status){
-      data.data.status ={
+    if(!context.system.status){
+      context.system.status ={
         bpmajorWounds:{type:"Boolean",value:false},
         mpmajorWounds:{type:"Boolean",value:false},
         majorWoundsOffset:{value:0,max:2,short:"STATUS.MajorWoundesOffsetS", label:"STATUS.MajorWoundesOffsetL",folmula:null,auto:true,variable:"STATUS.MajorWoundesOffsetL",substitution:false},
@@ -92,23 +89,23 @@ export class SatasupeActorSheet extends ActorSheet {
         drop:{value:null}
       };
     }
-    if(!data.data.status.unconscious){
-      data.data.status.unconscious = {type:"Boolean",value:false};
+    if(!context.system.status.unconscious){
+      context.system.status.unconscious = {type:"Boolean",value:false};
     }
 
-    if(!data.data.aptitude){
-      data.data.aptitude = {
+    if(!context.system.aptitude){
+      context.system.aptitude = {
         body:{value: 3, short:"APTITUDE.BODY", label:"APTITUDE.BODY", folmula:null, variable:"APTITUDE.BODY", substitution:false},
         mind:{value:3, short:"APTITUDE.MIND", label:"APTITUDE.MIND", folmula:null, variable:"APTITUDE.MIND", substitution:false}
       }
     }
 
-    if(!data.data.infos){
-      data.data.infos = {name: "",homeland:"",sex:"",age:"",style:"",likes:"",dislikes:"",team:"",alliance:"",hierarchy:"",surface:"",language:"",favorite:"",haven:"",haven2:""}
+    if(!context.system.infos){
+      context.system.infos = {name: "",homeland:"",sex:"",age:"",style:"",likes:"",dislikes:"",team:"",alliance:"",hierarchy:"",surface:"",language:"",favorite:"",haven:"",haven2:""}
     }
 
-    if(!data.data.attribs){
-      data.data.attribs = {
+    if(!context.system.attribs){
+      context.system.attribs = {
         alignment:{value: null, max:null,short: "ATTRIBS.ALIGNMENTS",label:"ATTRIBS.ALIGNMENTL",auto:true,variable:"ATTRIBS.ALIGNMENTS",substitution:false},
         bp:{value:null,max:null,short: "ATTRIBS.BPS",label:"ATTRIBS.BPL",auto:true,variable:"ATTRIBS.BPS",substitution:false},
         mp:{value:null,max:null,short: "ATTRIBS.MPS",label:"ATTRIBS.MPL",auto:true,variable:"ATTRIBS.MPS",substitution:false},
@@ -116,8 +113,8 @@ export class SatasupeActorSheet extends ActorSheet {
         drp:{value:null,max:null,short: "ATTRIBS.DRPS",label:"ATTRIBS.DRPL",auto:true,variable:"ATTRIBS.DRPS",substitution:false}
       };
     }
-    if(!data.data.exp){
-      data.data.exp ={
+    if(!context.system.exp){
+      context.system.exp ={
         combatpower:{value: null, max:null,short: "EXP.COMBATPOWERS",label:"EXP.COMBATPOWERS",folmula: null,auto:true},
         expgain:{value: null, max:null,short: "EXP.EXPGAINS",label:"EXP.EXPGAINL",folmula: null,auto:true},
         upkeep:{value: null, max:null,short: "EXP.UPKEEPS",label:"EXP.UPKEEPL",folmula: null,auto:true},
@@ -126,9 +123,9 @@ export class SatasupeActorSheet extends ActorSheet {
       }
     }
 
-    if(!data.data.hobby){
-      data.data.hobby = this.actor.data.data.hobby;
-      /*data.data.hobby = {
+    if(!context.system.hobby){
+      context.system.hobby = this.actor.context.system.hobby;
+      /*context.system.hobby = {
         subcluture:{
           abnormal:{type: "Boolean", value: false},
           kawai:{type: "Boolean", value: false},
@@ -174,230 +171,231 @@ export class SatasupeActorSheet extends ActorSheet {
       }*/
     }
 
-    if(!data.data.scenario){
-      data.data.scenario = [{title : null, dd : null, day : null, karma :null,exp:null,note:null}]
+    if(!context.system.scenario){
+      context.system.scenario = [{title : null, dd : null, day : null, karma :null,exp:null,note:null}]
     }
 
-    if(data.data.attribs.bp.value <= 5){
-      if(data.data.attribs.bp.value <= 0){
-        if(!data.data.status.unconscious.value) data.data.status.unconscious.value = true;
-      }else if(data.data.attribs.mp.value > 0){data.data.status.unconscious.value = false;}
-      if(data.data.attribs.mp.value <= 5){
-        if(data.data.attribs.mp.value <= 0){
-          if(!data.data.status.unconscious.value) data.data.status.unconscious.value = true;
-        }else if(data.data.attribs.bp.value > 0){data.data.status.unconscious.value = false;}
-        if(!data.data.status.mpmajorWounds.value) data.data.status.mpmajorWounds.value = true;
-        if(!data.data.status.bpmajorWounds.value) data.data.status.bpmajorWounds.value = true;
+    if(context.system.attribs.bp.value <= 5){
+      if(context.system.attribs.bp.value <= 0){
+        if(!context.system.status.unconscious.value) context.system.status.unconscious.value = true;
+      }else if(context.system.attribs.mp.value > 0){context.system.status.unconscious.value = false;}
+      if(context.system.attribs.mp.value <= 5){
+        if(context.system.attribs.mp.value <= 0){
+          if(!context.system.status.unconscious.value) context.system.status.unconscious.value = true;
+        }else if(context.system.attribs.bp.value > 0){context.system.status.unconscious.value = false;}
+        if(!context.system.status.mpmajorWounds.value) context.system.status.mpmajorWounds.value = true;
+        if(!context.system.status.bpmajorWounds.value) context.system.status.bpmajorWounds.value = true;
       }else{
-        if(!data.data.status.bpmajorWounds.value) data.data.status.bpmajorWounds.value = true;
-        if(data.data.status.mpmajorWounds.value) data.data.status.mpmajorWounds.value = false;
+        if(!context.system.status.bpmajorWounds.value) context.system.status.bpmajorWounds.value = true;
+        if(context.system.status.mpmajorWounds.value) context.system.status.mpmajorWounds.value = false;
       }
     }else{
-      if(data.data.attribs.mp.value <= 5){
-        if(data.data.attribs.mp.value <= 0){
-          if(!data.data.status.unconscious.value) data.data.status.unconscious.value = true;
-        }else if(data.data.attribs.bp.value > 0){data.data.status.unconscious.value = false;}
-        if(!data.data.status.mpmajorWounds.value) data.data.status.mpmajorWounds.value = true;
-        if(data.data.status.bpmajorWounds.value) data.data.status.bpmajorWounds.value = false;
+      if(context.system.attribs.mp.value <= 5){
+        if(context.system.attribs.mp.value <= 0){
+          if(!context.system.status.unconscious.value) context.system.status.unconscious.value = true;
+        }else if(context.system.attribs.bp.value > 0){context.system.status.unconscious.value = false;}
+        if(!context.system.status.mpmajorWounds.value) context.system.status.mpmajorWounds.value = true;
+        if(context.system.status.bpmajorWounds.value) context.system.status.bpmajorWounds.value = false;
       }else{
-        if(data.data.status.bpmajorWounds.value) data.data.status.bpmajorWounds.value = false;
-        if(data.data.status.mpmajorWounds.value) data.data.status.mpmajorWounds.value = false;
-        if(data.data.status.unconscious.value) data.data.status.unconscious.value = false;
+        if(context.system.status.bpmajorWounds.value) context.system.status.bpmajorWounds.value = false;
+        if(context.system.status.mpmajorWounds.value) context.system.status.mpmajorWounds.value = false;
+        if(context.system.status.unconscious.value) context.system.status.unconscious.value = false;
       }
     }
 
-    if(data.data.status.trauma.value > 0 || data.data.status.trauma.value){
-      data.data.attribs.mp.max = data.data.attribs.mp.max? (Number(data.data.attribs.mp.max) - Number(data.data.status.trauma.value)) : (10 -Number(data.data.status.trauma.value));
+    if(context.system.status.trauma.value > 0 || context.system.status.trauma.value){
+      context.system.attribs.mp.max = context.system.attribs.mp.max? (Number(context.system.attribs.mp.max) - Number(context.system.status.trauma.value)) : (10 -Number(context.system.status.trauma.value));
     }
 
-    data.data.karmaSortable = game.settings.get("satasupe", "karmaSortable");
-    if(data.data.attribs.wallet.value == null && data.data.circumstance.life.value != null) data.data.attribs.wallet.value=data.data.circumstance.life.value;
-    data.data.exp.combatpower.value = (Number(data.data.circumstance.combat.value) * 2) + Number(data.data.aptitude.body.value);
-    if(Number(data.data.exp.combatpower.value) < (Number(data.data.combat.reflex.value)+Number(data.data.combat.arms.value)+Number(data.data.combat.damage.value))){
-      if(!data.data.status.alert.value) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.CombatPoints"));
+    context.system.karmaSortable = game.settings.get("satasupe", "karmaSortable");
+    if(context.system.attribs.wallet.value == null && context.system.circumstance.life.value != null) context.system.attribs.wallet.value=context.system.circumstance.life.value;
+    context.system.exp.combatpower.value = (Number(context.system.circumstance.combat.value) * 2) + Number(context.system.aptitude.body.value);
+    if(Number(context.system.exp.combatpower.value) < (Number(context.system.combat.reflex.value)+Number(context.system.combat.arms.value)+Number(context.system.combat.damage.value))){
+      if(!context.system.status.alert.value) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.CombatPoints"));
     }
-    if(!data.data.combat.reflex.value || !data.data.combat.arms.value || !data.data.combat.damage.value){
-      if(!data.data.status.alert.value) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.CombatAttributes"));
+    if(!context.system.combat.reflex.value || !context.system.combat.arms.value || !context.system.combat.damage.value){
+      if(!context.system.status.alert.value) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.CombatAttributes"));
     }
 
-    if((data.data.aptitude.body.value < 3) || (data.data.aptitude.mind.value < 3) || !data.data.aptitude.mind.value || !data.data.aptitude.body.value){
-      if(!data.data.status.alert.value) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.AptitudePoints"));
+    if((context.system.aptitude.body.value < 3) || (context.system.aptitude.mind.value < 3) || !context.system.aptitude.mind.value || !context.system.aptitude.body.value){
+      if(!context.system.status.alert.value) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.AptitudePoints"));
     }
     
-    data.data.usedexp = {};
-    data.data.usedexp.value = 0;
-    for (let [key, circumstance]of Object.entries(data.data.circumstance)){
+    context.system.usedexp = {};
+    context.system.usedexp.value = 0;
+    for (let [key, circumstance]of Object.entries(context.system.circumstance)){
       if(circumstance.value == 1 || circumstance.value == null){
       }else if(circumstance.value == 2){
-      data.data.usedexp.value += 1;
+      context.system.usedexp.value += 1;
       }else if(circumstance.value == 3){
-        data.data.usedexp.value += 2;
+        context.system.usedexp.value += 2;
       }else if(circumstance.value == 4){
-        data.data.usedexp.value += 4;
+        context.system.usedexp.value += 4;
       }else if(circumstance.value ==5){
-        data.data.usedexp.value += 6;
+        context.system.usedexp.value += 6;
       }else if(circumstance.value == 6){
-        data.data.usedexp.value += 9;
+        context.system.usedexp.value += 9;
       }else if(circumstance.value == 7){
-        data.data.usedexp.value += 13;
+        context.system.usedexp.value += 13;
       }else if(circumstance.value == 8){
-        data.data.usedexp.value += 18;
+        context.system.usedexp.value += 18;
       }else{}
     } 
-    for (let [key, aptitude]of Object.entries(data.data.aptitude)){
+    for (let [key, aptitude]of Object.entries(context.system.aptitude)){
       if(aptitude.value <= 3 || aptitude.value == null){
       }else if(aptitude.value == 4){
-      data.data.usedexp.value += 1;
+      context.system.usedexp.value += 1;
       }else if(aptitude.value == 5){
-        data.data.usedexp.value += 2;
+        context.system.usedexp.value += 2;
       }else if(aptitude.value == 6){
-        data.data.usedexp.value += 4;
+        context.system.usedexp.value += 4;
       }else if(aptitude.value ==7){
-        data.data.usedexp.value += 10;
+        context.system.usedexp.value += 10;
       }else if(aptitude.value == 8){
-        data.data.usedexp.value += 18;
+        context.system.usedexp.value += 18;
       }else{}
     } 
 
-    data.data.usedexp.unused = 13 - data.data.usedexp.value + Number(data.data.exp.expgain.value) - Number(data.data.exp.upkeep.value);
-    if(data.data.usedexp.unused < 0){
-      if(!data.data.status.alert.value) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.EXPPoints"));
+    context.system.usedexp.unused = 13 - context.system.usedexp.value + Number(context.system.exp.expgain.value) - Number(context.system.exp.upkeep.value);
+    if(context.system.usedexp.unused < 0){
+      if(!context.system.status.alert.value) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.EXPPoints"));
     }
 
-    data.data.equipmentcapacity={};
-    data.data.equipmentplace={};
-    data.data.addcapacity={};
-    data.data.hobbychoicenumber=0;
-    data.data.equipmentcapacity.normal = Number(data.data.circumstance.crime.value) + Number(data.data.aptitude.body.value);
-    data.data.equipmentcapacity.haven = 10;
-    data.data.equipmentcapacity.haven2 = 10;
-    data.data.equipmentcapacity.vehicle = 0;
-    data.data.equipmentcapacity.comfort=10;
-    data.data.equipmentcapacity.comfort2=10;
-    data.data.equipmentcapacity.add = 0;
-    data.data.equipmentplace.normal = 0;
-    data.data.equipmentplace.vehicle = 0;
-    data.data.equipmentplace.add = 0;
-    data.data.equipmentplace.haven = 0;
-    data.data.equipmentplace.haven2 = 0;
-    data.data.equipmentplace.other = 0;
-    data.data.equipmentattribs={};
-    data.data.equipmentattribs.security = 0;
-    data.data.equipmentattribs.securityadd = 0;
-    data.data.equipmentattribs.upkeep = 0;
-    data.data.equipmentattribs.placeorder = 0;
-    data.data.equipmentattribs.security2 = 0;
-    data.data.equipmentattribs.securityadd2 = 0;
-    data.data.equipmentattribs.placeorder2 = 0;
-    data.data.equipmentattribs.vehiclehave = false;
-    data.data.equipmentattribs.habitable = false;
-    data.data.hobbynumerror = false;
-    for(let i = 0; i < data.items.length ; i++){
-      if(data.items[i].type == 'item'){
-        if(data.items[i].data.typev&&Number(data.items[i].data.vehicle.capacity)){
-          data.data.equipmentcapacity.vehicle = data.items[i].data.vehicle.capacity;
-          data.data.equipmentattribs.habitable = data.items[i].data.vehicle.special.habitable.value || data.data.equipmentattribs.habitable;
+    context.system.equipmentcapacity={};
+    context.system.equipmentplace={};
+    context.system.addcapacity={};
+    context.system.hobbychoicenumber=0;
+    context.system.equipmentcapacity.normal = Number(context.system.circumstance.crime.value) + Number(context.system.aptitude.body.value);
+    context.system.equipmentcapacity.haven = 10;
+    context.system.equipmentcapacity.haven2 = 10;
+    context.system.equipmentcapacity.vehicle = 0;
+    context.system.equipmentcapacity.comfort=10;
+    context.system.equipmentcapacity.comfort2=10;
+    context.system.equipmentcapacity.add = 0;
+    context.system.equipmentplace.normal = 0;
+    context.system.equipmentplace.vehicle = 0;
+    context.system.equipmentplace.add = 0;
+    context.system.equipmentplace.haven = 0;
+    context.system.equipmentplace.haven2 = 0;
+    context.system.equipmentplace.other = 0;
+    context.system.equipmentattribs={};
+    context.system.equipmentattribs.security = 0;
+    context.system.equipmentattribs.securityadd = 0;
+    context.system.equipmentattribs.upkeep = 0;
+    context.system.equipmentattribs.placeorder = 0;
+    context.system.equipmentattribs.security2 = 0;
+    context.system.equipmentattribs.securityadd2 = 0;
+    context.system.equipmentattribs.placeorder2 = 0;
+    context.system.equipmentattribs.vehiclehave = false;
+    context.system.equipmentattribs.habitable = false;
+    context.system.hobbynumerror = false;
+
+    for(let i = 0; i < context.items.length ; i++){
+      if(context.items[i].type == 'item'){
+        if(context.items[i].system.typev&&Number(context.items[i].system.vehicle.capacity)){
+          context.system.equipmentcapacity.vehicle = context.items[i].system.vehicle.capacity;
+          context.system.equipmentattribs.habitable = context.items[i].system.vehicle.special.habitable.value || context.system.equipmentattribs.habitable;
         }
-        if((Number(data.items[i].data.props.addcapacity) && data.items[i].data.typep) || (Number(data.items[i].data.gadjet.addcapacity) && data.items[i].data.typep)){
-          data.data.equipmentcapacity.add += Number(data.items[i].data.props.addcapacity) + Number(data.items[i].data.gadjet.addcapacity);
+        if((Number(context.items[i].system.props.addcapacity) && context.items[i].system.typep) || (Number(context.items[i].system.gadjet.addcapacity) && context.items[i].system.typep)){
+          context.system.equipmentcapacity.add += Number(context.items[i].system.props.addcapacity) + Number(context.items[i].system.gadjet.addcapacity);
         }
-        if(!data.items[i].data.count){
-          if(data.items[i].data.storage == 'normal') {
-            if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
-              data.data.equipmentplace.normal += (data.items[i].data.props.minivalue / 10);
+        if(!context.items[i].system.count){
+          if(context.items[i].system.storage == 'normal') {
+            if(context.items[i].system.typep && context.items[i].system.props.special.mini.value && (context.items[i].system.props.minivalue !== 0)){
+              context.system.equipmentplace.normal += (context.items[i].system.props.minivalue / 10);
             }else{
-              data.data.equipmentplace.normal +=1;
+              context.system.equipmentplace.normal +=1;
             }
           }
-          if(data.items[i].data.storage == 'haven') {
-            if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
-              data.data.equipmentplace.haven += (data.items[i].data.props.minivalue / 10);
+          if(context.items[i].system.storage == 'haven') {
+            if(context.items[i].system.typep && context.items[i].system.props.special.mini.value && (context.items[i].system.props.minivalue !== 0)){
+              context.system.equipmentplace.haven += (context.items[i].system.props.minivalue / 10);
             }else{
-              data.data.equipmentplace.haven +=1;
+              context.system.equipmentplace.haven +=1;
             }
-            if(data.items[i].data.typep && data.items[i].data.props.specialtext.furniture.value && (Number(data.items[i].data.props.specialtext.furniture.number) <= Number(data.data.circumstance.life.value))){
-              data.data.equipmentplace.haven -=1;
+            if(context.items[i].system.typep && context.items[i].system.props.specialtext.furniture.value && (Number(context.items[i].system.props.specialtext.furniture.number) <= Number(context.system.circumstance.life.value))){
+              context.system.equipmentplace.haven -=1;
             }
           }
-          if(data.items[i].data.storage == 'haven2') {
-            if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
-              data.data.equipmentplace.haven2 += (data.items[i].data.props.minivalue / 10);
+          if(context.items[i].system.storage == 'haven2') {
+            if(context.items[i].system.typep && context.items[i].system.props.special.mini.value && (context.items[i].system.props.minivalue !== 0)){
+              context.system.equipmentplace.haven2 += (context.items[i].system.props.minivalue / 10);
             }else{
-              data.data.equipmentplace.haven2 +=1;
+              context.system.equipmentplace.haven2 +=1;
             }
-            if(data.items[i].data.typep && data.items[i].data.props.specialtext.furniture.value && (Number(data.items[i].data.props.specialtext.furniture.number) <= Number(data.data.circumstance.life.value))){
-              data.data.equipmentplace.haven2 -=1;
-            }
-          }
-          if(data.items[i].data.storage == 'vehicle') {
-            if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
-              data.data.equipmentplace.vehicle += (data.items[i].data.props.minivalue / 10);
-            }else{
-              data.data.equipmentplace.vehicle +=1;
+            if(context.items[i].system.typep && context.items[i].system.props.specialtext.furniture.value && (Number(context.items[i].system.props.specialtext.furniture.number) <= Number(context.system.circumstance.life.value))){
+              context.system.equipmentplace.haven2 -=1;
             }
           }
-          if(!data.items[i].data.storage) {
-            if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
-              data.data.equipmentplace.other += (data.items[i].data.props.minivalue / 10);
+          if(context.items[i].system.storage == 'vehicle') {
+            if(context.items[i].system.typep && context.items[i].system.props.special.mini.value && (context.items[i].system.props.minivalue !== 0)){
+              context.system.equipmentplace.vehicle += (context.items[i].system.props.minivalue / 10);
             }else{
-              data.data.equipmentplace.other +=1;
+              context.system.equipmentplace.vehicle +=1;
+            }
+          }
+          if(!context.items[i].system.storage) {
+            if(context.items[i].system.typep && context.items[i].system.props.special.mini.value && (context.items[i].system.props.minivalue !== 0)){
+              context.system.equipmentplace.other += (context.items[i].system.props.minivalue / 10);
+            }else{
+              context.system.equipmentplace.other +=1;
             }
           }
         }
 
-        data.data.equipmentattribs.vehiclehave = data.items[i].data.typev || data.data.equipmentattribs.vehiclehave;
+        context.system.equipmentattribs.vehiclehave = context.items[i].system.typev || context.system.equipmentattribs.vehiclehave;
         
         //
-        if((data.items[i].data.typep && (data.items[i].data.props.addcapacity !==0))||(data.items[i].data.typeg && (data.items[i].data.gadjet.addcapacity !==0))){
+        if((context.items[i].system.typep && (context.items[i].system.props.addcapacity !==0))||(context.items[i].system.typeg && (context.items[i].system.gadjet.addcapacity !==0))){
           var addobj = new Object();
           addobj = {capacity:null};
-          if(data.items[i].data.typep && (data.items[i].data.props.addcapacity !==0)){
-            if(data.items[i].data.typeg && (data.items[i].data.gadjet.addcapacity !==0)){
-              addobj['capacity']=Number(data.items[i].data.props.addcapacity)+Number(data.items[i].data.gadjet.addcapacity);
+          if(context.items[i].system.typep && (context.items[i].system.props.addcapacity !==0)){
+            if(context.items[i].system.typeg && (context.items[i].system.gadjet.addcapacity !==0)){
+              addobj['capacity']=Number(context.items[i].system.props.addcapacity)+Number(context.items[i].system.gadjet.addcapacity);
             }else{
-              addobj['capacity']=Number(data.items[i].data.props.addcapacity);
+              addobj['capacity']=Number(context.items[i].system.props.addcapacity);
             }
           }else{
-            addobj['capacity']=Number(data.items[i].data.gadjet.addcapacity);
+            addobj['capacity']=Number(context.items[i].system.gadjet.addcapacity);
           }
           
-          addobj['storage']=data.items[i].data.storage;
+          addobj['storage']=context.items[i].system.storage;
           addobj['equipmentplace']=0;
-          data.data.addcapacity[data.items[i].name]=addobj;
+          context.system.addcapacity[context.items[i].name]=addobj;
         }
 
-        if(data.items[i].data.typep && (data.items[i].data.props.specialtext.securityadd.value)) {
-          if(data.items[i].data.storage == 'haven'){
-            data.data.equipmentattribs.securityadd += parseInt(data.items[i].data.props.specialtext.securityadd.number,10);
-          }else if(data.items[i].data.storage == 'haven2'){
-            data.data.equipmentattribs.securityadd2 += parseInt(data.items[i].data.props.specialtext.securityadd.number,10);
+        if(context.items[i].system.typep && (context.items[i].system.props.specialtext.securityadd.value)) {
+          if(context.items[i].system.storage == 'haven'){
+            context.system.equipmentattribs.securityadd += parseInt(context.items[i].system.props.specialtext.securityadd.number,10);
+          }else if(context.items[i].system.storage == 'haven2'){
+            context.system.equipmentattribs.securityadd2 += parseInt(context.items[i].system.props.specialtext.securityadd.number,10);
           }
         }
-        if(data.items[i].data.typep && data.items[i].data.props.specialtext.upkeepcost.value) data.data.equipmentattribs.upkeep += Number(data.items[i].data.props.specialtext.upkeepcost.number);
-        if(data.items[i].data.typev && data.items[i].data.vehicle.specialtext.upkeepcost.value) data.data.equipmentattribs.upkeep += Number(data.items[i].data.vehicle.specialtext.upkeepcost.number);
-        if(data.items[i].data.typew && data.items[i].data.weapon.specialtext.upkeepcost.value) data.data.equipmentattribs.upkeep += Number(data.items[i].data.weapon.specialtext.upkeepcost.number);
+        if(context.items[i].system.typep && context.items[i].system.props.specialtext.upkeepcost.value) context.system.equipmentattribs.upkeep += Number(context.items[i].system.props.specialtext.upkeepcost.number);
+        if(context.items[i].system.typev && context.items[i].system.vehicle.specialtext.upkeepcost.value) context.system.equipmentattribs.upkeep += Number(context.items[i].system.vehicle.specialtext.upkeepcost.number);
+        if(context.items[i].system.typew && context.items[i].system.weapon.specialtext.upkeepcost.value) context.system.equipmentattribs.upkeep += Number(context.items[i].system.weapon.specialtext.upkeepcost.number);
       }
     }
     
-    data.data.equipmentplace.normal = Math.ceil(data.data.equipmentplace.normal*10)/10;
-    data.data.equipmentplace.vehicle = Math.ceil(data.data.equipmentplace.vehicle*10)/10;
-    data.data.equipmentplace.haven = Math.ceil(data.data.equipmentplace.haven*10)/10;
-    data.data.equipmentplace.haven2 = Math.ceil(data.data.equipmentplace.haven2*10)/10;
-    data.data.equipmentplace.other = Math.ceil(data.data.equipmentplace.other*10)/10;
+    context.system.equipmentplace.normal = Math.ceil(context.system.equipmentplace.normal*10)/10;
+    context.system.equipmentplace.vehicle = Math.ceil(context.system.equipmentplace.vehicle*10)/10;
+    context.system.equipmentplace.haven = Math.ceil(context.system.equipmentplace.haven*10)/10;
+    context.system.equipmentplace.haven2 = Math.ceil(context.system.equipmentplace.haven2*10)/10;
+    context.system.equipmentplace.other = Math.ceil(context.system.equipmentplace.other*10)/10;
     
 
-    for(let i = 0; i < data.items.length ; i++){
-      if(data.items[i].type == 'item'){
-        for(let [key, value] of Object.entries(data.data.addcapacity)){
+    for(let i = 0; i < context.items.length ; i++){
+      if(context.items[i].type == 'item'){
+        for(let [key, value] of Object.entries(context.system.addcapacity)){
           if(value.capacity !==0){
-            if(data.items[i].data.storage == key) {
-              if(!data.items[i].data.count){
-                if(data.items[i].data.typep && data.items[i].data.props.special.mini.value && (data.items[i].data.props.minivalue !== 0)){
-                  data.data.addcapacity[key]['equipmentplace'] += (data.items[i].data.props.minivalue / 10);
+            if(context.items[i].system.storage == key) {
+              if(!context.items[i].system.count){
+                if(context.items[i].system.typep && context.items[i].system.props.special.mini.value && (context.items[i].system.props.minivalue !== 0)){
+                  context.system.addcapacity[key]['equipmentplace'] += (context.items[i].system.props.minivalue / 10);
                 }else{
-                  data.data.addcapacity[key]['equipmentplace'] +=1;
+                  context.system.addcapacity[key]['equipmentplace'] +=1;
                 }
-		data.data.addcapacity[key]['equipmentplace'] = Math.ceil(data.data.addcapacity[key]['equipmentplace']*10)/10;
+		context.system.addcapacity[key]['equipmentplace'] = Math.ceil(context.system.addcapacity[key]['equipmentplace']*10)/10;
               }
             }
           }
@@ -405,91 +403,92 @@ export class SatasupeActorSheet extends ActorSheet {
       }
     }
 
-    /*for(let [key, value] of Object.entries(data.data.addcapacity)){
+    /*for(let [key, value] of Object.entries(context.system.addcapacity)){
       if(value.capacity !==0){
-        data.data.addcapacity[key]['equipmentplace'] = Math.ceil(data.data.addcapacity[key]['equipmentplace']);
+        context.system.addcapacity[key]['equipmentplace'] = Math.ceil(context.system.addcapacity[key]['equipmentplace']);
       }
     }*/
 
-    data.data.equipmentcapacity.other = 99;
-    if(data.data.equipmentplace.haven > Number(data.data.circumstance.life.value)){
-      data.data.equipmentcapacity.comfort = 10 - Number(data.data.equipmentplace.haven) + Number(data.data.circumstance.life.value);
-      data.data.equipmentcapacity.comfort = Math.ceil(data.data.equipmentcapacity.comfort);
+    context.system.equipmentcapacity.other = 99;
+    if(context.system.equipmentplace.haven > Number(context.system.circumstance.life.value)){
+      context.system.equipmentcapacity.comfort = 10 - Number(context.system.equipmentplace.haven) + Number(context.system.circumstance.life.value);
+      context.system.equipmentcapacity.comfort = Math.ceil(context.system.equipmentcapacity.comfort);
     }
 
-    if(data.data.infos.haven == 'minami') data.data.equipmentattribs.placeorder = 9;
-    if(data.data.infos.haven == 'chinatown') data.data.equipmentattribs.placeorder = 10;
-    if(data.data.infos.haven == 'warship') data.data.equipmentattribs.placeorder = 8;
-    if(data.data.infos.haven == 'civic') data.data.equipmentattribs.placeorder = 11;
-    if(data.data.infos.haven == 'downtown') data.data.equipmentattribs.placeorder = 10;
-    if(data.data.infos.haven == 'shaokin') data.data.equipmentattribs.placeorder = 7;
-    if((Number(data.data.circumstance.life.value) + data.data.equipmentattribs.securityadd) > data.data.equipmentattribs.placeorder){
-      data.data.equipmentattribs.security = (Number(data.data.circumstance.life.value) + data.data.equipmentattribs.securityadd);
+    if(context.system.infos.haven == 'minami') context.system.equipmentattribs.placeorder = 9;
+    if(context.system.infos.haven == 'chinatown') context.system.equipmentattribs.placeorder = 10;
+    if(context.system.infos.haven == 'warship') context.system.equipmentattribs.placeorder = 8;
+    if(context.system.infos.haven == 'civic') context.system.equipmentattribs.placeorder = 11;
+    if(context.system.infos.haven == 'downtown') context.system.equipmentattribs.placeorder = 10;
+    if(context.system.infos.haven == 'shaokin') context.system.equipmentattribs.placeorder = 7;
+    if((Number(context.system.circumstance.life.value) + context.system.equipmentattribs.securityadd) > context.system.equipmentattribs.placeorder){
+      context.system.equipmentattribs.security = (Number(context.system.circumstance.life.value) + context.system.equipmentattribs.securityadd);
     }else{
-      data.data.equipmentattribs.security = data.data.equipmentattribs.placeorder;
+      context.system.equipmentattribs.security = context.system.equipmentattribs.placeorder;
     }
 
-    if(data.data.status.secondhaven.value) {
-      if(data.data.infos.haven2 == 'minami') data.data.equipmentattribs.placeorder2 = 9;
-      if(data.data.infos.haven2 == 'chinatown') data.data.equipmentattribs.placeorder2 = 10;
-      if(data.data.infos.haven2 == 'warship') data.data.equipmentattribs.placeorder2 = 8;
-      if(data.data.infos.haven2 == 'civic') data.data.equipmentattribs.placeorder2 = 11;
-      if(data.data.infos.haven2 == 'downtown') data.data.equipmentattribs.placeorder2 = 10;
-      if(data.data.infos.haven2 == 'shaokin') data.data.equipmentattribs.placeorder2 = 7;
-      if((Number(data.data.circumstance.life.value) + data.data.equipmentattribs.securityadd2) > data.data.equipmentattribs.placeorder2){
-        data.data.equipmentattribs.security2 = (Number(data.data.circumstance.life.value) + data.data.equipmentattribs.securityadd2);
+    if(context.system.status.secondhaven.value) {
+      if(context.system.infos.haven2 == 'minami') context.system.equipmentattribs.placeorder2 = 9;
+      if(context.system.infos.haven2 == 'chinatown') context.system.equipmentattribs.placeorder2 = 10;
+      if(context.system.infos.haven2 == 'warship') context.system.equipmentattribs.placeorder2 = 8;
+      if(context.system.infos.haven2 == 'civic') context.system.equipmentattribs.placeorder2 = 11;
+      if(context.system.infos.haven2 == 'downtown') context.system.equipmentattribs.placeorder2 = 10;
+      if(context.system.infos.haven2 == 'shaokin') context.system.equipmentattribs.placeorder2 = 7;
+      if((Number(context.system.circumstance.life.value) + context.system.equipmentattribs.securityadd2) > context.system.equipmentattribs.placeorder2){
+        context.system.equipmentattribs.security2 = (Number(context.system.circumstance.life.value) + context.system.equipmentattribs.securityadd2);
       }else{
-        data.data.equipmentattribs.security2 = data.data.equipmentattribs.placeorder2;
+        context.system.equipmentattribs.security2 = context.system.equipmentattribs.placeorder2;
       }
-      if(data.data.equipmentplace.haven2 > Number(data.data.circumstance.life.value)){
-        data.data.equipmentcapacity.comfort2 = 10 - Number(data.data.equipmentplace.haven2) + Number(data.data.circumstance.life.value);
-        data.data.equipmentcapacity.comfort2 = Math.ceil(data.data.equipmentcapacity.comfort2);
+      if(context.system.equipmentplace.haven2 > Number(context.system.circumstance.life.value)){
+        context.system.equipmentcapacity.comfort2 = 10 - Number(context.system.equipmentplace.haven2) + Number(context.system.circumstance.life.value);
+        context.system.equipmentcapacity.comfort2 = Math.ceil(context.system.equipmentcapacity.comfort2);
       }
     }
 
-    for(let [key, value] of Object.entries(data.data.hobby)){
-      for(let [tag, choice]of Object.entries(data.data.hobby[key])){
+    for(let [key, value] of Object.entries(context.system.hobby)){
+      for(let [tag, choice]of Object.entries(context.system.hobby[key])){
         if(choice.value){
-          data.data.hobbychoicenumber +=1;
+          context.system.hobbychoicenumber +=1;
         }
       }
     }
-    if(data.data.hobbychoicenumber > Math.ceil((Number(data.data.circumstance.life.value)+Number(data.data.circumstance.cluture.value))/2)){
-      data.data.hobbynumerror = true;
-    }else{data.data.hobbynumerror = false;}
+    if(context.system.hobbychoicenumber > Math.ceil((Number(context.system.circumstance.life.value)+Number(context.system.circumstance.cluture.value))/2)){
+      context.system.hobbynumerror = true;
+    }else{context.system.hobbynumerror = false;}
 
-    data.data.tablelist = Array.from(game.tables);
-    for(let u = 0; u < data.data.tablelist.length; u++){
-      if(data.data.tablelist[u].visible == false){
-        data.data.tablelist.splice(u, 1);
+    context.system.tablelist = Array.from(game.tables);
+    for(let u = 0; u < context.system.tablelist.length; u++){
+      if(context.system.tablelist[u].visible == false){
+        context.system.tablelist.splice(u, 1);
       }
     }
-    data.data.actorid = this.actor.id;
+    context.system.actorid = this.actor.id;
 
-    data.data.showchatpalette = game.settings.get("satasupe", "showchatpalette");
-    data.data.addictionrule = game.settings.get("satasupe", "addiction");
-    data.data.favmovie = game.settings.get("satasupe", "favmovie");
+    context.system.showchatpalette = game.settings.get("satasupe", "showchatpalette");
+    context.system.addictionrule = game.settings.get("satasupe", "addiction");
+    context.system.favmovie = game.settings.get("satasupe", "favmovie");
 
-    data.data.fvttbcdiceuse = false;
+    context.system.fvttbcdiceuse = false;
     if(game.modules.get('fvtt-bcdice')?.active){
-      data.data.fvttbcdiceuse = true;
+      context.system.fvttbcdiceuse = true;
     }
 
     var list = game.settings.get("satasupe", "bcdicelist");
-    data.data.bcdicelist = list.game_system;
-    return data;
+    context.system.bcdicelist = list.game_system;
+
+    return context;
   }
 
   /* -------------------------------------------- */
 
   _prepareCharacterItems(sheetData){
-    const actorData = sheetData.data;
+    const actorData = sheetData.system;
     const karma = [];
     const gear = [];
     const investigation = [];
     const chatpalette = [];
     for(let i of sheetData.items){
-      let item = i.data;
+      let item = i.system;
       i.img = i.img || CONST.DEFAULT_ICON;
       if(i.type ==="item"){
         gear.push(i);
@@ -515,7 +514,8 @@ export class SatasupeActorSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html);
     // Everything below here is only needed if the sheet is editable
-    if ( !this.options.editable ) return;
+    if ( !this.isEditable ) return;
+
 
     // Update Inventory Item
     html.find('.item-edit').click(ev => {
@@ -552,9 +552,8 @@ export class SatasupeActorSheet extends ActorSheet {
 
     html.on("drop", this._dropchat.bind(this));
 
-    html.find('.all-on-off-button').click(ev =>{
-      const nowonoff = this.actor.data.data.status.allonoff.value;
-      this._allonoffToggle(nowonoff);
+    html.find('.all-on-off-button input').change(ev =>{
+      this._allonoffToggle();
     });
     html.find('a.table-show-hide').on("click", this._tableshowblind.bind(this));
 
@@ -602,10 +601,6 @@ export class SatasupeActorSheet extends ActorSheet {
     html.find(".sort-table-down").on("click", this._onTableSort.bind(this));
     html.find(".sort-table-before").on("click", this._onTableSort.bind(this));
 
-    /*
-    html.find(".show-detail").on("click", this._onItemSummary.bind(this));
-    html.find(".close-detail").on("click", this._offItemSummary.bind(this));
-    */
     html.find(".hobby-button").click( this._onButtonToggle.bind(this));
 
     // Delete Inventory Item
@@ -642,32 +637,32 @@ export class SatasupeActorSheet extends ActorSheet {
     event.preventDefault();
     let itemid = $(event.currentTarget).attr("data-item-id");
     const item = this.actor.items.get(itemid);
-    let text = item.data.data.effecthtml;
-    let timing = game.i18n.localize(item.data.data.timing.label);
-    let target = game.i18n.localize(item.data.data.target.label);
+    let text = item.system.effecthtml;
+    let timing = game.i18n.localize(item.system.timing.label);
+    let target = game.i18n.localize(item.system.target.label);
     let check;
     let type;
     let diff;
-    if(item.data.data.check.none){
+    if(item.system.check.none){
       check = game.i18n.localize("SATASUPE.NoCheck");
-    }else if(item.data.data.check.type){
+    }else if(item.system.check.type){
       type = "alignment";
-      if(!!item.data.data.check.checkText){
-        check = item.data.data.check.checkText;
+      if(!!item.system.check.checkText){
+        check = item.system.check.checkText;
       }else{
-        check = `〔`+ game.i18n.localize("ATTRIBS.ALIGNMENTS") +`〕/` + game.i18n.localize(item.data.data.check.alignment.label);
+        check = `〔`+ game.i18n.localize("ATTRIBS.ALIGNMENTS") +`〕/` + game.i18n.localize(item.system.check.alignment.label);
       }
     }else{
-      type = item.data.data.check.checkValue.name;
-      if(!!item.data.data.check.checkText){
-        check = item.data.data.check.checkText;
+      type = item.system.check.checkValue.name;
+      if(!!item.system.check.checkText){
+        check = item.system.check.checkText;
       }else{
-        check = `〔`+ game.i18n.localize(item.data.data.check.checkValue.label) +`〕/` + item.data.data.check.difficulty ;
-        diff = Number(item.data.data.check.difficulty);
+        check = `〔`+ game.i18n.localize(item.system.check.checkValue.label) +`〕/` + item.system.check.difficulty ;
+        diff = Number(item.system.check.difficulty);
       }
     }
-    if(!item.data.data.check.none && !item.data.data.check.checkText) check = `<a class="bcroll" data-type="${type}" data-actor="${this.actor.id}" data-diff="${diff}">`+ `<i class="fas fa-dice-d20"></i>` + check + `</a>`;
-    let message = await renderTemplate(`systems/satasupe/templates/cards/karmausecard.html`,{pic:item.img,name:item.name,ruby:item.data.data.description.otherName,timing:timing,target:target,check:check,text:text});
+    if(!item.system.check.none && !item.system.check.checkText) check = `<a class="bcroll" data-type="${type}" data-actor="${this.actor.id}" data-diff="${diff}">`+ `<i class="fas fa-dice-d20"></i>` + check + `</a>`;
+    let message = await renderTemplate(`systems/satasupe/templates/cards/karmausecard.html`,{pic:item.img,name:item.name,ruby:item.system.description.otherName,timing:timing,target:target,check:check,text:text});
     let chatMessage = {
       user: game.user.id,
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -690,14 +685,14 @@ export class SatasupeActorSheet extends ActorSheet {
     let sp = false;
     let dispt = false;
     let text = [];
-    if(item.data.data.typeg) type.push("gadjet");
-    if(item.data.data.typep) type.push("props");
-    if(item.data.data.typev) type.push("vehicle");
-    if(item.data.data.typew) type.push("weapon");
+    if(item.system.typeg) type.push("gadjet");
+    if(item.system.typep) type.push("props");
+    if(item.system.typev) type.push("vehicle");
+    if(item.system.typew) type.push("weapon");
     if(itemtype == "weapon" || itemtype == "vehicle"){
       if(type.indexOf("weapon") >= 0){
-        let special = Object.entries(item.data.data.weapon.special).map(([key, value]) => ({'key': key, 'value': value}));
-        let specialtext = Object.entries(item.data.data.weapon.specialtext).map(([key, value]) => ({'key': key, 'value': value}));
+        let special = Object.entries(item.system.weapon.special).map(([key, value]) => ({'key': key, 'value': value}));
+        let specialtext = Object.entries(item.system.weapon.specialtext).map(([key, value]) => ({'key': key, 'value': value}));
         let list1 = special.filter((i) => i.value.value == true);
         let list2 = specialtext.filter((j) => j.value.value == true);
         if(list1.length > 0){
@@ -712,8 +707,8 @@ export class SatasupeActorSheet extends ActorSheet {
         }
       }
       if(type.indexOf("vehicle") >= 0){
-        let special = Object.entries(item.data.data.vehicle.special).map(([key, value]) => ({'key': key, 'value': value}));
-        let specialtext = Object.entries(item.data.data.vehicle.specialtext).map(([key, value]) => ({'key': key, 'value': value}));
+        let special = Object.entries(item.system.vehicle.special).map(([key, value]) => ({'key': key, 'value': value}));
+        let specialtext = Object.entries(item.system.vehicle.specialtext).map(([key, value]) => ({'key': key, 'value': value}));
         let list1 = special.filter((i) => i.value.value == true);
         let list2 = specialtext.filter((j) => j.value.value == true);
         if(list1.length > 0){
@@ -729,20 +724,20 @@ export class SatasupeActorSheet extends ActorSheet {
       }
     }
     if(itemtype == "props" || itemtype == "gadjet"){
-      timing = game.i18n.localize(item.data.data[itemtype].timing);
+      timing = game.i18n.localize(item.system[itemtype].timing);
       if(timing == game.i18n.localize("SATASUPE.Passive")) timing = game.i18n.localize("SATASUPE.Equipping");
       if(type.indexOf("gadjet") >= 0){
-        if(item.data.data.gadjet.effect) text.push(item.data.data.gadjet.effect);
+        if(item.system.gadjet.effect) text.push(item.system.gadjet.effect);
       }
       if(type.indexOf("props") >= 0){
-        if(item.data.data.props.effect) text.push(item.data.data.props.effect);
-        let special = Object.entries(item.data.data.props.special).map(([key, value]) => ({'key': key, 'value': value}));
-        let specialtext = Object.entries(item.data.data.props.specialtext).map(([key, value]) => ({'key': key, 'value': value}));
+        if(item.system.props.effect) text.push(item.system.props.effect);
+        let special = Object.entries(item.system.props.special).map(([key, value]) => ({'key': key, 'value': value}));
+        let specialtext = Object.entries(item.system.props.specialtext).map(([key, value]) => ({'key': key, 'value': value}));
         let list1 = special.filter((i) => i.value.value == true);
         let list2 = specialtext.filter((j) => j.value.value == true);
         if(list1.length > 0){
           for(let k=0;k<list1.length;k++){
-            if(list1[k].key == "mini") mini = Number(item.data.data.props.minivalue);
+            if(list1[k].key == "mini") mini = Number(item.system.props.minivalue);
             speciallist.push({label:list1[k].value.label,num:false})
           }
         }
@@ -756,7 +751,7 @@ export class SatasupeActorSheet extends ActorSheet {
     }
     if(speciallist.length > 0) sp = true;
     if(text.length > 0) dispt = true;
-    let message = await renderTemplate(`systems/satasupe/templates/cards/itemausecard.html`,{pic:item.img,name:item.name,ruby:item.data.data.otherName,timing:timing,actor:this.actor.id,text:text,dispt:dispt,mini:mini,addic:addic,sp:sp,speciallist:speciallist});
+    let message = await renderTemplate(`systems/satasupe/templates/cards/itemausecard.html`,{pic:item.img,name:item.name,ruby:item.system.otherName,timing:timing,actor:this.actor.id,text:text,dispt:dispt,mini:mini,addic:addic,sp:sp,speciallist:speciallist});
     let chatMessage = {
       user: game.user.id,
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -795,10 +790,10 @@ export class SatasupeActorSheet extends ActorSheet {
   }
 
   async _variablesum(event){
-    for(let n=0; n<this.actor.data.data.variable.length;n++){
+    for(let n=0; n<this.actor.system.variable.length;n++){
       if(n==10) break
-      if((this.actor.data.data.variable[n].title != "") && (this.actor.data.data.variable[n].title != null)){
-        await this.actor.updateVariableSection( n, this.actor.data.data.variable[n].title, 'title');
+      if((this.actor.system.variable[n].title != "") && (this.actor.system.variable[n].title != null)){
+        await this.actor.updateVariableSection( n, this.actor.system.variable[n].title, 'title');
       }
     }
   }
@@ -838,18 +833,18 @@ export class SatasupeActorSheet extends ActorSheet {
 
   async _loadfvttbcdice(event){
     event.preventDefault();
-    const actor = this.object.data;
-    const copy = duplicate(this.object.data);
+    const actor = this.object.system;
+    const copy = duplicate(this.object.system);
     var tab, tab1, tab2, tab3;
-    if(game.users.get(game.userId).data.flags["fvtt-bcdice"]){
-      var data = game.users.get(game.userId).data.flags["fvtt-bcdice"];
+    if(game.users.get(game.userId).flags["fvtt-bcdice"]){
+      var data = game.users.get(game.userId).flags["fvtt-bcdice"];
       tab1 = data["macro-data"];
       for(let tab of tab1.tabs){
         tab.source = "user";
       }
     }
-    if(game.user.character.data.flags["fvtt-bcdice"]){
-      var data = game.user.character.data.flags["fvtt-bcdice"];
+    if(game.user.character.flags["fvtt-bcdice"]){
+      var data = game.user.character.flags["fvtt-bcdice"];
       tab2 = data["macro-data"];
       for(let tab of tab2.tabs){
         tab.source = "actor";
@@ -857,8 +852,8 @@ export class SatasupeActorSheet extends ActorSheet {
     }
     if(game.canvas.tokens.controlled[0]){
       for(let i = 0; i < game.canvas.tokens.controlled.length; i++){
-        if(game.canvas.tokens.controlled[i].data.flags["fvtt-bcdice"]){
-          var data = game.canvas.tokens.controlled[i].data.flags["fvtt-bcdice"];
+        if(game.canvas.tokens.controlled[i].flags["fvtt-bcdice"]){
+          var data = game.canvas.tokens.controlled[i].flags["fvtt-bcdice"];
           tab3 = data["macro-data"];
           for(let tab of tab3.tabs){
             tab.source = "token";
@@ -946,8 +941,8 @@ export class SatasupeActorSheet extends ActorSheet {
           sp[1] = sp[1].replace(/\}/g,"");
         }
         let ok = false;
-        for(let l=0;l<actor.data.variable.length;l++){
-          if(actor.data.variable[l].variable == sp[0]){
+        for(let l=0;l<actor.variable.length;l++){
+          if(actor.variable[l].variable == sp[0]){
             ok = true;
           }
         }
@@ -966,16 +961,16 @@ export class SatasupeActorSheet extends ActorSheet {
         }
       }
     }
-    copy.data.variable = copy.data.variable.concat(variable);
-    await this.actor.update({'data.variable':copy.data.variable});
-    for(let n=0; n<this.actor.data.data.variable.length;n++){
-      if((this.actor.data.data.variable[n].title != "") && (this.actor.data.data.variable[n].title != null)){
-        await this.actor.updateVariableSection( n, this.actor.data.data.variable[n].title, 'title');
+    copy.variable = copy.variable.concat(variable);
+    await this.actor.update({'system.variable':copy.variable});
+    for(let n=0; n<this.actor.system.variable.length;n++){
+      if((this.actor.system.variable[n].title != "") && (this.actor.system.variable[n].title != null)){
+        await this.actor.updateVariableSection( n, this.actor.system.variable[n].title, 'title');
       }
     }
-    for(let n=0; n<this.actor.data.data.variable.length;n++){
-      if((this.actor.data.data.variable[n].title != "") && (this.actor.data.data.variable[n].title != null)){
-        await this.actor.updateVariableSection( n, this.actor.data.data.variable[n].title, 'title');
+    for(let n=0; n<this.actor.system.variable.length;n++){
+      if((this.actor.system.variable[n].title != "") && (this.actor.system.variable[n].title != null)){
+        await this.actor.updateVariableSection( n, this.actor.system.variable[n].title, 'title');
       }
     }
 
@@ -1033,8 +1028,8 @@ export class SatasupeActorSheet extends ActorSheet {
 
   async _loadclipbord(event){
     event.preventDefault();
-    const actor = this.object.data;
-    const copy = duplicate(this.object.data);
+    const actor = this.object.system;
+    const copy = duplicate(this.object.system);
     const send = await LoadDialog._createclipborddialog();
     let text = send.get('clipbord-data');
     text = text.replace(/[！-～]/g, function(s) {
@@ -1055,8 +1050,8 @@ export class SatasupeActorSheet extends ActorSheet {
             }
           }
           let ok = false
-          for(let k=0;k<actor.data.variable.length;k++){
-            if(actor.data.variable[k].variable == sp[0]){
+          for(let k=0;k<actor.variable.length;k++){
+            if(actor.variable[k].variable == sp[0]){
               ok = true;
             }
           }
@@ -1082,16 +1077,16 @@ export class SatasupeActorSheet extends ActorSheet {
         }
       }
     }
-    copy.data.variable = copy.data.variable.concat(variable);
-    await this.actor.update({'data.variable':copy.data.variable});
-    for(let n=0; n<this.actor.data.data.variable.length;n++){
-      if((this.actor.data.data.variable[n].title != "") && (this.actor.data.data.variable[n].title != null)){
-        await this.actor.updateVariableSection( n, this.actor.data.data.variable[n].title, 'title');
+    copy.variable = copy.variable.concat(variable);
+    await this.actor.update({'system.variable':copy.variable});
+    for(let n=0; n<this.actor.system.variable.length;n++){
+      if((this.actor.system.variable[n].title != "") && (this.actor.system.variable[n].title != null)){
+        await this.actor.updateVariableSection( n, this.actor.system.variable[n].title, 'title');
       }
     }
-    for(let n=0; n<this.actor.data.data.variable.length;n++){
-      if((this.actor.data.data.variable[n].title != "") && (this.actor.data.data.variable[n].title != null)){
-        await this.actor.updateVariableSection( n, this.actor.data.data.variable[n].title, 'title');
+    for(let n=0; n<this.actor.system.variable.length;n++){
+      if((this.actor.system.variable[n].title != "") && (this.actor.system.variable[n].title != null)){
+        await this.actor.updateVariableSection( n, this.actor.system.variable[n].title, 'title');
       }
     }
     if(formula.length > 0){
@@ -1128,38 +1123,38 @@ export class SatasupeActorSheet extends ActorSheet {
   async _rollbutton(event){
     event.preventDefault();
     const char = event.currentTarget.dataset.char;
-    const actor = this.object.data;
-    const copy = duplicate(this.object.data.data);
+    const actor = this.object.system;
+    const copy = duplicate(this.object.system);
     let setting = {nobpwound:false,nompwound:false,nooverwork:false,killstop:false,nompcost:true};
-    if(actor.data.settings){
-      setting = actor.data.settings;
+    if(actor.settings){
+      setting = actor.settings;
     }
 
     let value = "";
     if(char == "crime"){
-      value = actor.data.circumstance.crime.value;
+      value = actor.circumstance.crime.value;
     }else if(char == "life"){
-      value = actor.data.circumstance.life.value;
+      value = actor.circumstance.life.value;
     }else if(char == "love"){
-      value = actor.data.circumstance.love.value;
+      value = actor.circumstance.love.value;
     }else if(char == "culture"){
-      value = actor.data.circumstance.cluture.value;
+      value = actor.circumstance.cluture.value;
     }else if(char == "combat"){
-      value = actor.data.circumstance.combat.value;
+      value = actor.circumstance.combat.value;
     }else if(char == "body"){
-      value = actor.data.aptitude.body.value;
+      value = actor.aptitude.body.value;
     }else if(char == "mind"){
-      value = actor.data.aptitude.mind.value;
+      value = actor.aptitude.mind.value;
     }else if(char == "arms"){
-      value = actor.data.combat.arms.value;
+      value = actor.combat.arms.value;
     }else if(char == "generic"){
       value = 0;
     }else if(char == "alignment"){
-      value = actor.data.attribs.alignment.value;
+      value = actor.attribs.alignment.value;
     }
     const indata = await CheckDialog._createCheckdialog(char, value, setting);
 
-    const fumble = actor.data.status.fumble.value;
+    const fumble = actor.status.fumble.value;
     var bpwounds = 0;
     var mpwounds = 0;
     var overwork = 0;
@@ -1167,13 +1162,13 @@ export class SatasupeActorSheet extends ActorSheet {
       overwork = 0;
       copy.settings.nooverwork = true;
     }else{
-      overwork = Number(actor.data.status.sleep.value);
+      overwork = Number(actor.status.sleep.value);
       copy.settings.nooverwork = false;
     }
     if(Number(indata.get('bpwound')) == 1){
       bpwounds = 0;
       copy.settings.nobpwound = true;
-    }else if(actor.data.attribs.bp.value <= 5){
+    }else if(actor.attribs.bp.value <= 5){
       bpwounds = 1;
       copy.settings.nobpwound = false;
     }else{
@@ -1181,13 +1176,13 @@ export class SatasupeActorSheet extends ActorSheet {
       copy.settings.nobpwound = false;
     }
     if(Number(indata.get('mpwound')) == 1){
-      bpwounds = 0;
+      mpwounds = 0;
       copy.settings.nompwound = true;
-    }else if(actor.data.attribs.mp.value <= 5){
-      bpwounds = 1;
+    }else if(Number(actor.attribs.mp.value) <= 5){
+      mpwounds = 1;
       copy.settings.nompwound = false;
     }else{
-      bpwounds = 0;
+      mpwounds = 0;
       copy.settings.nompwound = false;
     }
     var text = ""
@@ -1204,11 +1199,13 @@ export class SatasupeActorSheet extends ActorSheet {
     if(Number(indata.get('cost')) != 1){
       copy.settings.nompcost = false;
       copy.attribs.mp.value -= Number(indata.get('boost'));
-      await this.object.update({'data' : copy});
+      await this.object.update({'system' : copy});
     }else{
       copy.settings.nompcost = true;
-      await this.object.update({'data' : copy});
+      await this.object.update({'system' : copy});
     }
+
+    if(typeof value == "string") value = Number(value)
 
     if(char == "generic"){
       if((Number(indata.get('killstop'))==1)&&(kill != "")){
@@ -1291,7 +1288,7 @@ export class SatasupeActorSheet extends ActorSheet {
   async _bcdicesend(event, text, char){
     event.preventDefault();
     const up = this;
-    const actor = duplicate(this.object.data);
+    const actor = duplicate(this.object.system);
     const speaker = this.object;
     const user = this.object.user ? this.object.user : game.user;
     const asyncFunc = function(){
@@ -1349,11 +1346,11 @@ export class SatasupeActorSheet extends ActorSheet {
 
             if(char == "alignment"){
               if((data.rands[0].value == 6) && (data.rands[1].value == 6)){
-                actor.data.attribs.alignment.value -= 1;
-                up.object.update({'data': actor.data});
+                actor.attribs.alignment.value -= 1;
+                up.object.update({'system': actor});
               }else if((data.rands[0].value == 1) && (data.rands[1].value == 1)){
-                actor.data.attribs.alignment.value += 1;
-                up.object.update({'data': actor.data});
+                actor.attribs.alignment.value += 1;
+                up.object.update({'system': actor});
               }
             }
             resolve(data);
@@ -1415,11 +1412,11 @@ export class SatasupeActorSheet extends ActorSheet {
             ChatMessage.create({user:user.id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
             if(char == "alignment"){
               if((data2.rands[0].value == 6) && (data2.rands[1].value == 6)){
-                actor.data.attribs.alignment.value -= 1;
-                up.object.update({'data': actor.data});
+                actor.attribs.alignment.value -= 1;
+                up.object.update({'system': actor});
               }else if((data2.rands[0].value == 1) && (data2.rands[1].value == 1)){
-                actor.data.attribs.alignment.value += 1;
-                up.object.update({'data': actor.data});
+                actor.attribs.alignment.value += 1;
+                up.object.update({'system': actor});
               }
             }
             resoleve(data2);
@@ -1448,11 +1445,11 @@ export class SatasupeActorSheet extends ActorSheet {
   }
 
   async _emptyGroundCreate(event){
-    let items = this.actor.data.items;
+    let items = this.actor.items;
     let id = "";
     for(let item of items.contents){
       if(item.type == "item"){
-        if(item.data.data.storage == ""){
+        if(item.system.storage == ""){
           id = item.id;
           await this.object.deleteEmbeddedDocuments("Item", [id]);
         }
@@ -1461,11 +1458,11 @@ export class SatasupeActorSheet extends ActorSheet {
   }
 
   async _allItemDrop(event){
-    let items = duplicate(this.actor.data.items);
+    let items = duplicate(this.actor.items);
     for(let item of items){
       if(item.type == "item"){
-        if(item.data.storage != ""){
-          item.data.storage = "";
+        if(item.system.storage != ""){
+          item.system.storage = "";
         }
       }
     }
@@ -1473,24 +1470,15 @@ export class SatasupeActorSheet extends ActorSheet {
   }
 
   async _dropchat(event){
-    var actor = duplicate(this.object.data);
+    var actor = duplicate(this.object);
     var data = JSON.parse(event.originalEvent.dataTransfer.getData('text/plain'));
     if(data.type == "Item"){
-      let item;
-      if (data.pack) {
-        const pack = game.packs.get(data.pack);
-        if (pack.metadata.entity !== 'Item') return;
-        item = await pack.getEntity(data.id);
-      } else if (data.data) {
-        item = data;
-      } else {
-        item = game.items.get(data.id);
-      }
+      let item = fromUuidSync(data.uuid);
       if(item.type == "chatpalette"){
-        var vari =  duplicate(item.data.data.chatpalette.variable);
-        for(let j=0 ; j <item.data.data.chatpalette.variable.length; j++){
-          for(let i = 0 ; i < actor.data.variable?.length;i++){
-            if(actor.data.variable[i]?.variable == item.data.data.chatpalette.variable[j].variable){
+        var vari =  duplicate(item.system.chatpalette.variable);
+        for(let j=0 ; j <item.system.chatpalette.variable.length; j++){
+          for(let i = 0 ; i < actor.system.variable?.length;i++){
+            if(actor.system.variable[i]?.variable == item.system.chatpalette.variable[j].variable){
               vari[j] = {};
             }
           }
@@ -1501,8 +1489,8 @@ export class SatasupeActorSheet extends ActorSheet {
             vari.splice(k-1,1);
           }
         }
-        actor.data.variable = actor.data.variable.concat(vari);
-        await this.actor.update({'data.variable':actor.data.variable});
+        actor.system.variable = actor.system.variable.concat(vari);
+        await this.actor.update({'system.variable':actor.system.variable});
       }
     }    
   }
@@ -1510,14 +1498,14 @@ export class SatasupeActorSheet extends ActorSheet {
   async _geardrop(event){
     var id = JSON.parse(event.originalEvent.dataTransfer.getData('text/plain'));
     let dataset = event.currentTarget.dataset;
-    let items = duplicate(this.actor.data.items.contents);
+    let items = duplicate(this.actor.items.contents);
     let value = 0;
     for(let item of items){
       if(item._id === id.key){
-        if(!item.data.count){
-          if(item.data.typep){
-            if(item.data.props.minivalue > 0){
-              value = item.data.props.minivalue / 10;
+        if(!item.system.count){
+          if(item.system.typep){
+            if(item.system.props.minivalue > 0){
+              value = item.system.props.minivalue / 10;
             }else{
               value = 1;
             }
@@ -1526,12 +1514,12 @@ export class SatasupeActorSheet extends ActorSheet {
           }
         }
         if((Number(dataset.nowcontain) + value) <= Number(dataset.capacity)){
-          if((dataset.placetype == 'vehicle') && (item.data.typev||(item.data.typep&&(item.data.props.special.normalstorage.value||item.data.props.special.room.value&&(dataset.habitable == 'false'))))){
+          if((dataset.placetype == 'vehicle') && (item.system.typev||(item.system.typep&&(item.system.props.special.normalstorage.value||item.system.props.special.room.value&&(dataset.habitable == 'false'))))){
           }else{
-            if((dataset.placetype == 'normal')&&(item.data.typep&&item.data.props.special.room.value)){}else{
-              if(((dataset.placetype == 'haven')||(dataset.placetype == 'haven2'))&&(item.data.typep&&item.data.props.special.normalstorage.value)){}else{
-                if(((item.data.typep&&(item.data.props.addcapacity !== 0))||(item.data.typeg&&(item.data.gadjet.addcapacity !== 0)))&&(dataset.placetype == item.name)){}else{
-                  item.data.storage = dataset.placetype;
+            if((dataset.placetype == 'normal')&&(item.system.typep&&item.system.props.special.room.value)){}else{
+              if(((dataset.placetype == 'haven')||(dataset.placetype == 'haven2'))&&(item.system.typep&&item.system.props.special.normalstorage.value)){}else{
+                if(((item.system.typep&&(item.system.props.addcapacity !== 0))||(item.system.typeg&&(item.system.gadjet.addcapacity !== 0)))&&(dataset.placetype == item.name)){}else{
+                  item.system.storage = dataset.placetype;
                 }
               }
             }
@@ -1545,22 +1533,22 @@ export class SatasupeActorSheet extends ActorSheet {
   async _deleteItemSection(ev){
     const li = $(ev.currentTarget).parents(".item");
     const id = li.attr("data-item-id");
-    /*let item = this.object.data.items.contents;
-    let newkeep = this.object.data.data.exp.upkeep.value == null ? 0 : this.object.data.data.exp.upkeep.value;
+    /*let item = this.object.items.contents;
+    let newkeep = this.object.system.exp.upkeep.value == null ? 0 : this.object.system.exp.upkeep.value;
     for(let i = 0 ; i < item.length ; i++){
       if(item[i].id == id){
-        if(item[i].data.data.typew){
-          if(item[i].data.data.weapon.upkeep) newkeep = newkeep - 1;
+        if(item[i].system.typew){
+          if(item[i].system.weapon.upkeep) newkeep = newkeep - 1;
         }
-        if(item[i].data.data.typev){
-          if(item[i].data.data.vehicle.upkeep) newkeep = newkeep - 1;
+        if(item[i].system.typev){
+          if(item[i].system.vehicle.upkeep) newkeep = newkeep - 1;
         }
-        if(item[i].data.data.typep){
-          if(item[i].data.data.props.upkeep) newkeep = newkeep - 1;
+        if(item[i].system.typep){
+          if(item[i].system.props.upkeep) newkeep = newkeep - 1;
         }
       }
     }
-    await this.actor.update({'data.exp.upkeep.value' : newkeep});*/
+    await this.actor.update({'system.exp.upkeep.value' : newkeep});*/
     this.actor.deleteEmbeddedDocuments('Item', [id]);
     li.slideUp(200, () => this.render(false));
   }
@@ -1634,15 +1622,16 @@ export class SatasupeActorSheet extends ActorSheet {
     }
   }
 
-  async _allonoffToggle(nowonoff){
-    const actor = duplicate(this.object.data);
-    const circumstance = actor.data.circumstance;
-    const aptitude = actor.data.aptitude;
-    const attribs = actor.data.attribs;
-    const combat = actor.data.combat;
-    const status = actor.data.status;
-    let variable = actor.data.variable;
-    if(!nowonoff){
+  async _allonoffToggle(){
+    const actor = duplicate(this.object.system);
+    const nowonoff = actor.status.allonoff;
+    const circumstance = actor.circumstance;
+    const aptitude = actor.aptitude;
+    const attribs = actor.attribs;
+    const combat = actor.combat;
+    const status = actor.status;
+    let variable = actor.variable;
+    if(!nowonoff.value){
       circumstance.crime.substitution = circumstance.life.substitution = circumstance.cluture.substitution = circumstance.love.substitution = circumstance.combat.substitution = true;
       aptitude.body.substitution = aptitude.mind.substitution = true;
       attribs.alignment.substitution = attribs.bp.substitution = attribs.mp.substitution = attribs.wallet.substitution = attribs.drp.substitution = true;
@@ -1661,7 +1650,8 @@ export class SatasupeActorSheet extends ActorSheet {
         variable[j].substitution = false;
       }
     }
-    await this.object.update({'data':actor.data});
+    nowonoff.value = !nowonoff.value
+    await this.object.update({'system':actor});
   }
 
   _onTableSort(event){
@@ -1719,9 +1709,9 @@ export class SatasupeActorSheet extends ActorSheet {
   }
 
   _tableshowblind(event){
-    const actor = this.actor.data;
-    actor.data.status.allonoff.variableonoff = !actor.data.status.allonoff.variableonoff;
-    const updated = {id:actor._id, data:actor.data};
+    const actor = this.actor;
+    actor.system.status.allonoff.variableonoff = !actor.system.status.allonoff.variableonoff;
+    const updated = {id:actor._id, system:actor.system};
     game.actors.get(actor._id).update(updated);
   }
 
@@ -1817,7 +1807,7 @@ export class SatasupeActorSheet extends ActorSheet {
 
   async _createSex(event){
     event.preventDefault();
-    const actor = duplicate(this.object.data);
+    const actor = duplicate(this.object.system);
     const roll = new Roll('1d2');
     await roll.roll();
     let sex = null;
@@ -1827,7 +1817,7 @@ export class SatasupeActorSheet extends ActorSheet {
       sex = game.i18n.localize("SATASUPE.Female");
     }
     const user = this.object.user ? this.object.user : game.user;
-    actor.data.infos.sex = sex;
+    actor.infos.sex = sex;
     if( game.modules.get('dice-so-nice')?.active){
       await game.dice3d.showForRoll(roll,user);
     }
@@ -1839,38 +1829,38 @@ export class SatasupeActorSheet extends ActorSheet {
       flavor: game.i18n.localize("SATASUPE.SexRolltitle") + text,
     };
     ChatMessage.create(chatData);
-    const updated = {id:actor.id, data:actor.data};
-    await this.object.update({'data.infos': actor.data.infos});
+    const updated = {id:actor.id, system:actor};
+    await this.object.update({'system.infos': actor.infos});
   }
 
   async _createAge(event){
     event.preventDefault();
-    const actor = duplicate(this.object.data);
+    const actor = duplicate(this.object.system);
     const roll1 = new Roll('1d6');
-    await roll1.roll();
+    await roll1._evaluateSync();
     let age = 0;
     let roll2 = null;
     if(roll1._total == 1){
       roll2 = new Roll('2d6+6');
-      await roll2.roll();
+      await roll2._evaluateSync();
     }else if(roll1._total == 2){
       roll2 = new Roll('2d6+10');
-      await roll2.roll();
+      await roll2._evaluateSync();
     }else if(roll1._total == 3){
       roll2 = new Roll('3d6+15');
-      await roll2.roll();
+      await roll2._evaluateSync();
     }else if(roll1._total == 4){
       roll2 = new Roll('4d6+25');
-      await roll2.roll();
+      await roll2._evaluateSync();
     }else if(roll1._total == 5){
       roll2 = new Roll('5d6+40');
-      await roll2.roll();
+      await roll2._evaluateSync();
     }else if(roll1._total == 6){
       roll2 = new Roll('6d6+60');
-      await roll2.roll();
+      await roll2._evaluateSync();
     }
     const user = this.object.user ? this.object.user : game.user;
-    actor.data.infos.age = roll2._total;
+    actor.infos.age = roll2._total;
     if( game.modules.get('dice-so-nice')?.active){
       await game.dice3d.showForRoll(roll1,user);
       game.dice3d.showForRoll(roll2,user);
@@ -1883,15 +1873,15 @@ export class SatasupeActorSheet extends ActorSheet {
       flavor: game.i18n.localize("SATASUPE.AgeRolltitle") + text,
     };
     ChatMessage.create(chatData);
-    const updated = {id:actor.id, data:actor.data};
-    await this.object.update({'data.infos': actor.data.infos});
+    const updated = {id:actor.id, system:actor};
+    await this.object.update({'system.infos': actor.infos});
   }
 
   async _createAlignment(event){
     event.preventDefault();
-    const actor = duplicate(this.object.data);
+    const actor = duplicate(this.object.system);
     let roll = new Roll('2d6');
-    await roll.roll();
+    await roll._evaluateSync();
     let align = 0;
     if(roll._total == 6 ||roll._total == 7 || roll._total == 8){
       align = 7;
@@ -1910,7 +1900,7 @@ export class SatasupeActorSheet extends ActorSheet {
     }
 
     const user = this.object.user ? this.object.user : game.user;
-    actor.data.attribs.alignment.value = align;
+    actor.attribs.alignment.value = align;
     if( game.modules.get('dice-so-nice')?.active){
       await game.dice3d.showForRoll(roll,user);
     }
@@ -1923,14 +1913,14 @@ export class SatasupeActorSheet extends ActorSheet {
     };
 
     ChatMessage.create(chatData);
-    const updated = {id:actor.id, data:actor.data};
-    await this.object.update({'data.attribs': actor.data.attribs});
+    const updated = {id:actor.id, system:actor};
+    await this.object.update({'system.attribs': actor.attribs});
   }
 
   createFavorite(event){
     event.preventDefault();
     const up = this;
-    const actor = duplicate(this.object.data);
+    const actor = duplicate(this.object.system);
     const speaker = this.object;
     const user = this.object.user ? this.object.user : game.user;
     var text = "NPCT"
@@ -1986,8 +1976,8 @@ export class SatasupeActorSheet extends ActorSheet {
         var favoriteText = halftext.replace(/.*?\):/g,"")
         var contenthtml = "<div><div style=\"word-break : break-all;\">" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
         ChatMessage.create({user:user.id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
-        actor.data.infos.favorite = favoriteText;
-        up.object.update({'data': actor.data});
+        actor.infos.favorite = favoriteText;
+        up.object.update({'system': actor});
       }
     };
     request.send();
@@ -2046,8 +2036,8 @@ export class SatasupeActorSheet extends ActorSheet {
         var favoriteText = halftext.replace(/.*?\):/g,"")
         var contenthtml = "<div><div style=\"word-break : break-all;\">" + favoriteText + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "FAVORITE TABLE" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">"+ belowtext + "</section></div></div>"; 
         ChatMessage.create({user:user.id,speaker: ChatMessage.getSpeaker({actor : speaker}),content:contenthtml},{});
-        actor.data.infos.favorite = favoriteText;
-        up.object.update({'data': actor.data});
+        actor.infos.favorite = favoriteText;
+        up.object.update({'system': actor});
       }
     };
       request2.send();
@@ -2058,7 +2048,7 @@ export class SatasupeActorSheet extends ActorSheet {
     event.preventDefault();
     let li = $(event.currentTarget).parents('.item'),
         item = this.actor.items.get(li.data('item-id')),
-        chatData = item.data;
+        chatData = item.system;
     if(li.hasClass('expanded')){
       let summary = li.children('.item-summary');
       summary.slideUp(200, () => summary.remove());
@@ -2074,7 +2064,7 @@ export class SatasupeActorSheet extends ActorSheet {
 
   _sendMessage(event,index, id, system){
     event.preventDefault();
-    let actor = this.actor.data.data;
+    let actor = this.actor.system;
     //let item = this.actor._data.items;
     let item = this.actor.items.contents;
     const speaker = this.actor;
@@ -2091,8 +2081,8 @@ export class SatasupeActorSheet extends ActorSheet {
     for(let i = 0; i < item.length ; i++){
       if(item[i].id != id){
       }else{
-        let text = item[i].data.data.chatpalette.chat[index].text ? item[i].data.data.chatpalette.chat[index].text : "";
-        let message = item[i].data.data.chatpalette.chat[index].message ? item[i].data.data.chatpalette.chat[index].message : "";
+        let text = item[i].system.chatpalette.chat[index].text ? item[i].system.chatpalette.chat[index].text : "";
+        let message = item[i].system.chatpalette.chat[index].message ? item[i].system.chatpalette.chat[index].message : "";
         text = text.replace(/[！-～]/g, function(s) {
             return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);});
         text = text.replace(/　/g," ");

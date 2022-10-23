@@ -1,8 +1,8 @@
 <form class="chatpalette flexcol {{cssClass}}" autocomplete="off">
     <div class="bcdicesystem">
-        <select name="data.selecttable.value" data-dtype="String" value="{{data.selecttable.value}}" class="bcdicetable">
-            {{#select data.selecttable.value}}
-                {{#each data.bcdicelist as |list key|}}
+        <select name="system.selecttable.value" data-dtype="String" value="{{system.selecttable.value}}" class="bcdicetable">
+            {{#select system.selecttable.value}}
+                {{#each system.bcdicelist as |list key|}}
                     <option value="{{list.id}}">{{list.name}}</option>
                 {{/each}}
             {{/select}}
@@ -20,7 +20,7 @@
                 </tr>
             </thead>
             <tbody>
-                {{#each data.chatpalette.chat as |section index|}}
+                {{#each system.chatpalette.chat as |section index|}}
                     <tr class="chatpalette-section" data-index='{{index}}' draggable="true">
                         <td>
                             <div class="text-section section-key" data-sectionkey="text">
@@ -44,17 +44,17 @@
                 {{/each}}
             </tbody>
         </table>
-        <table id="variable-setting-table" class="variable-setting-table {{#unless data.status.allonoff.variableonoff}}hide-table{{/unless}}">
+        <table id="variable-setting-table" class="variable-setting-table {{#unless system.status.allonoff.variableonoff}}hide-table{{/unless}}">
             <thead>
                 <tr class="header">
                     <th class="characteristics"><div>{{localize 'SATASUPE.CharacteristicName'}}</div></th>
                     <th class="variable"><div title="{{localize 'SATASUPE.VariableExplanation'}}">{{localize 'SATASUPE.VaribleText'}}</div></th>
-                    <th class="all-on-off"><div class="on-off"><label class="checkbox all-on-off-button">{{localize 'SATASUPE.Activate'}}({{localize 'SATASUPE.AllOnOff'}}: <input type="checkbox" value="{{data.status.allonoff.value}}" name="data.status.allonoff.value" {{checked data.status.allonoff.value}}/>)</label></div></th>
+                    <th class="all-on-off"><div class="on-off"><label class="checkbox all-on-off-button">{{localize 'SATASUPE.Activate'}}({{localize 'SATASUPE.AllOnOff'}}: <input type="checkbox" value="{{system.status.allonoff.value}}" name="system.status.allonoff.value" {{checked system.status.allonoff.value}}/>)</label></div></th>
                     <th class="item-button item-controls"><a class="button item-control add-new-variable" title="Add new variable"><i class="fas fa-plus"></i></a></th>
                 </tr>
             </thead>
             <tbody class="variable-setting-tbody chatpalette-tbody">
-                {{#each data.chatpalette.variable as |section index|}}
+                {{#each system.chatpalette.variable as |section index|}}
                     <tr class="item variable-section" data-index='{{index}}' draggable="false">
                         <td>
                             <div class="characteristics-section variable-key section-key" data-sectionkey="title">
