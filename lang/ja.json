@@ -257,6 +257,8 @@
     "ALERTMESSAGE.DoubleByteSymbol":"全角記号が検出されたので、半角記号に変換しました",
     "ALERTMESSAGE.DoubleByteSpace":"全角スペースが検出されたので、半角スペースに変換しました",
     "ALERTMESSAGE.FolderPermissionError":"アップロード用の規定のフォルダ『{folder}』が存在していなく、ユーザーにフォルダ作成の権限がありません。一度GMがキャラクターをアップロードすれば、規定のフォルダが自動作成されます。",
+    "ALERTMESSAGE.FileUploadPermissionError":"Fileのアップロード権限が無いので、キャラクターの画像を別にアップロードするよう権限がある人に依頼してください",
+    "NOTIFYMESSAGE.Base64":"Base64形式でアップロードした",
 
     "SATASUPEMESSAGE.ITEMTRADEFGM":"{sendActor}が{receiveActor}に{Item}を渡した",
     "SATASUPEMESSAGE.TRADETITLE":"アイテムの受け渡し要求",
@@ -363,6 +365,8 @@
     "SATASUPE.UPSETSUCCESS": "逆転からの成功",
     "SATASUPE.SUCCESSRATE": "(成功度{rate})",
     "SATASUPE.UPSET": "ファンブルからの逆転",
+    "SATASUPE.Faint":"行動不能（気絶）によりロール不可",
+    "SATASUPE.AutoFailure":"自動失敗",
 
     "SATASUPE.WEAPONNAME":"武器名",
     "SATASUPE.VEHICLENAME":"乗物名",

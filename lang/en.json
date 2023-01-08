@@ -257,6 +257,8 @@
   "ALERTMESSAGE.DoubleByteSymbol":"Double-byte symbol detected, so it converted into half-width symbol",
   "ALERTMESSAGE.DoubleByteSpace":"Double-byte space detected, so it converted into half-width space",
   "ALERTMESSAGE.FolderPermissionError":"The specified folder {folder} for upload does not exist and the user does not have permission to create a folder. Once the GM uploads a character, the specified folder is automatically created.",
+  "ALERTMESSAGE.FileUploadPermissionError":"Since you don't have upload permission for Files, please ask someone with permission to upload a separate image of the character",
+  "NOTIFYMESSAGE.Base64":"Uploaded in Base64 format",
 
   "SATASUPEMESSAGE.ITEMTRADEFGM":"{sendActor} has sent {receiveActor} {Item}",
   "SATASUPEMESSAGE.TRADETITLE":"Incoming Trade Request",
@@ -362,7 +364,9 @@
   "SATASUPE.PARTICALSUCCESS": "PARTICAL SUCCESS",
   "SATASUPE.UPSETSUCCESS": "UPSET SUCCESS",
   "SATASUPE.SUCCESSRATE": "(LEVEL {rate})",
-  "SATASUPE.UPSET": "",
+  "SATASUPE.UPSET": "Upset success from the fumble",
+  "SATASUPE.Faint":"Unable to roll due to inability to act (fainted)",
+  "SATASUPE.AutoFailure":"Auto Failure",
 
   "SATASUPE.WEAPONNAME":"Weapon Name",
   "SATASUPE.VEHICLENAME":"Vehicle Name",
