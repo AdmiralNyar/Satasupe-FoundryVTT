@@ -1,4 +1,4 @@
-## <span style="color: red; ">Note:Satasupe-FoundryVTT (on and after v0.4.x) isn't supported by FoundryVTT v0.7.x.</span>
+## <span style="color:#ff0000;">Note:Satasupe-FoundryVTT (on and after v0.6.x) isn't supported by FoundryVTT v0.10.x.<br>For FVTT v0.9.x, use Satasupe-FoundryVTT v0.6.x</span>
 
 # Welcome to Satasupe for FounderyVTT system! (Unofficial)
 

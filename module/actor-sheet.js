@@ -53,6 +53,7 @@ export class SatasupeActorSheet extends ActorSheet {
     if (this.actor.type == 'npc') {
       this._prepareCharacterItems(context);
     }
+
     if (!context.system.circumstance) {
       context.system.circumstance = {
         crime: { value: 1, max: null, short: "CIRCUMSTANCE.CRIME", label: "CIRCUMSTANCE.CRIME", folmula: null, variable: "CIRCUMSTANCE.CRIME", substitution: false },
@@ -446,6 +447,7 @@ export class SatasupeActorSheet extends ActorSheet {
       }
     }
 
+
     for (let [key, value] of Object.entries(context.system.hobby)) {
       for (let [tag, choice] of Object.entries(context.system.hobby[key])) {
         if (choice.value) {
@@ -488,6 +490,7 @@ export class SatasupeActorSheet extends ActorSheet {
     const gear = [];
     const investigation = [];
     const chatpalette = [];
+
     for (let i of sheetData.items) {
       let item = i.system;
       i.img = i.img || CONST.DEFAULT_ICON;
@@ -516,7 +519,6 @@ export class SatasupeActorSheet extends ActorSheet {
     super.activateListeners(html);
     // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return;
-
 
     // Update Inventory Item
     html.find('.item-edit').click(ev => {
@@ -2721,6 +2723,7 @@ export class SatasupeActorSheet extends ActorSheet {
                 }
                 successtext += `<h4 class="dice-total">${dicetotal}</h4>`;
               }
+
               var text_line2 = data2.text.replace(/\r?\n/g, "<br>");
               var contenthtml = "<div><div style=\"word-break : break-all;\">" + "<br>" + system + " : " + text_line2 + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + text + "</div><div class=\"dice-tooltip\" style=\"display:none;\">" + belowtext + successtext + "</div></div></div>";
               ChatMessage.create({ user: user.id, speaker: ChatMessage.getSpeaker({ actor: speaker }), whisper: whisper, blind: blind, content: contenthtml, flavor: message }, {});
@@ -2751,6 +2754,7 @@ export class SatasupeActorSheet extends ActorSheet {
                 content: `<p>${message}</p>`
               }
               ChatMessage.create(chatMessage);
+
             }
           };
           request2.send();

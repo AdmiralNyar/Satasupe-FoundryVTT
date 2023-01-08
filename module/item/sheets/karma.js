@@ -31,7 +31,6 @@ export class SatasupeKarmaSheet extends ItemSheet {
         const itemData = context.item;
         context.system = itemData.system;
         context._alignment = game.i18n.localize("ALIGNMENTS.CALM");
-
         for (let [key, value] of Object.entries(SATASUPE['check'])) {
             if (key == context.system.check.checkValue.name) {
                 context._propertiesValue = value;

@@ -1,5 +1,5 @@
 <div class="karma-panel" style="height: 100%">
-	{{#if data.karmaSortable}}
+	{{#if system.karmaSortable}}
 		<table id="karma-table" class="karma-table">
 			<thead>
 				<tr class="karma-header">
@@ -13,32 +13,32 @@
 				</tr>
 			</thead>
 			<tbody class="main-body">
-				{{#each data.karma as |item id|}}
+				{{#each system.karma as |item id|}}
 					<tr class="item karma-row" data-item-id="{{item._id}}" draggable="true">
 						<td colspan="7">
 							<table rules="none" class="inner-table">
 								<tr class="karma-list">
-									<td class="karma-typeName">{{localize item.data.type.label}}<br>{{item.data.description.typeName}}</td>
+									<td class="karma-typeName">{{localize item.system.type.label}}<br>{{item.system.description.typeName}}</td>
 									<td class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="30" height="30"/></td>
-									<td class="item-name">{{localize item.data.abilityType.label}} :{{item.name}}</td>
-									<td class="item-timing">{{localize item.data.timing.label}}</td>
-									<td class="item-target">{{localize item.data.target.label}}</td>
+									<td class="item-name">{{localize item.system.abilityType.label}} :{{item.name}}</td>
+									<td class="item-timing">{{localize item.system.timing.label}}</td>
+									<td class="item-target">{{localize item.system.target.label}}</td>
 									<td class="item-check">
-										{{#if item.data.check.none}}
+										{{#if item.system.check.none}}
 											{{localize 'SATASUPE.None'}}
 										{{else}}
-											{{#if item.data.check.type}}
-												{{#unless item.data.check.checkText}}
-													〔{{localize 'SATASUPE.ALIGNMENT'}}〕 / {{localize item.data.check.alignment.label}}
+											{{#if item.system.check.type}}
+												{{#unless item.system.check.checkText}}
+													〔{{localize 'SATASUPE.ALIGNMENT'}}〕 / {{localize item.system.check.alignment.label}}
 												{{else}}
-													{{item.data.check.checkText}}
+													{{item.system.check.checkText}}
 												{{/unless}}
 											{{else}}
-												{{#unless item.data.check.checkText}}
-													〔{{localize item.data.check.checkValue.label}}〕/ {{item.data.check.difficulty}}
+												{{#uniqueif item.system.check.checkText "==" ""}}
+													〔{{localize item.system.check.checkValue.label}}〕/ {{item.system.check.difficulty}}
 												{{else}}
-													{{item.data.check.checkText}}
-												{{/unless}}
+													{{item.system.check.checkText}}
+												{{/uniqueif}}
 											{{/if}}
 										{{/if}}
 									</td>
@@ -49,7 +49,7 @@
 									</td>
 								</tr>
 								<tr class="item-detail">
-									<td colspan="7" class="item-hide" data-item-id="{{id}}">{{{item.data.effecthtml}}}</td>
+									<td colspan="7" class="item-hide" data-item-id="{{id}}">{{{item.system.effecthtml}}}</td>
 								</tr>
 							</table>
 						</td>
@@ -67,32 +67,49 @@
 					<th data-id="item-timing" class="item-timing">{{localize 'SATASUPE.Timing'}}</th>
 					<th data-id="item-target" class="item-target">{{localize 'SATASUPE.Target'}}</th>
 					<th data-id="item-check" class="item-check">{{localize 'SATASUPE.Check'}}</th>
-					<th data-id="item-button item-controls"><a class="item-control add-item" title="{{localize 'SATASUPE.AddKarma'}}" data-type="karma"><i class="fas fa-plus"></i>     </a></th>
+					<th data-id="item-button item-controls" class="item-button"><a class="item-control add-item" title="{{localize 'SATASUPE.AddKarma'}}" data-type="karma"><i class="fas fa-plus"></i>     </a></th>
 				</tr>
 			</thead>
 			<tbody>
-				{{#each data.karma as |item id|}}
+				{{#each system.karma as |item id|}}
 					<tr class="item karma-row" data-item-id="{{item._id}}" draggable="true">
 						{{#if_odd @index}}
 						{{else}}
-							<td class="karma-typeName" rowspan="2">{{localize item.data.type.label}}<br>{{item.data.description.typeName}}</td>
+							<td class="karma-typeName" rowspan="2">{{localize item.system.type.label}}<br>{{item.system.description.typeName}}</td>
 						{{/if_odd}}
 						<td colspan="6">
 							<table rules="none" class="inner-table">
 								<tr class="karma-list" draggable="true">
 									<td class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="20" height="20"/></td>
-									<td class="item-name">{{localize item.data.abilityType.label}} :{{item.name}}</td>
-									<td class="item-timing">{{localize item.data.timing.label}}</td>
-									<td class="item-target">{{localize item.data.target.label}}</td>
-									<td class="item-check">{{#if item.data.check.none}}{{localize 'SATASUPE.None'}}{{else}}{{#if item.data.check.type}}〔{{localize 'SATASUPE.ALIGNMENT'}}〕 / {{localize item.data.check.alignment.label}}{{else}}〔{{localize item.data.check.checkValue.label}}〕/ {{item.data.check.difficulty}}{{/if}}{{/if}}</td>
+									<td class="item-name">{{localize item.system.abilityType.label}} :{{item.name}}</td>
+									<td class="item-timing">{{localize item.system.timing.label}}</td>
+									<td class="item-target">{{localize item.system.target.label}}</td>
+									<td class="item-check">
+									{{#if item.system.check.none}}
+										{{localize 'SATASUPE.None'}}
+									{{else}}
+										{{#if item.system.check.type}}
+											{{#unless item.system.check.checkText}}
+												〔{{localize 'SATASUPE.ALIGNMENT'}}〕 / {{localize item.system.check.alignment.label}}
+											{{else}}
+												{{item.system.check.checkText}}
+											{{/unless}}
+										{{else}}
+											{{#uniqueif item.system.check.checkText "==" ""}}
+												〔{{localize item.system.check.checkValue.label}}〕/ {{item.system.check.difficulty}}
+											{{else}}
+												{{item.system.check.checkText}}
+											{{/uniqueif}}
+										{{/if}}
+									{{/if}}</td>
 									<td class="item-button item-controls">
-										<a class="item-control show-detail" title="{{localize 'SATASUPE.OpenDetail'}}"><i class="fas fa-eye"></i></a><a class="item-control close-detail" title="CLOSE DETAIL"><i class="fas fa-eye-slash"></i></a>
+										<a class="item-control show-detail" title="{{localize 'SATASUPE.OpenDetail'}}"><i class="fas fa-eye"></i></a><a class="item-control close-detail" title="{{localize 'SATASUPE.CloseDetail'}}"><i class="fas fa-eye-slash"></i></a>
 										<a class="item-control item-edit" title="{{localize 'SATASUPE.Edit'}}"><i class="fas fa-edit"></i></a>
 										<a class="item-control karma-delete" title="{{localize 'SATASUPE.Delete'}}"><i class="fas fa-trash"></i></a>
 									</td>
 								</tr>
 								<tr class="item-detail">
-									<td colspan="6" class="item-hide">{{item.data.effect}}</td>
+									<td colspan="6" class="item-hide">{{item.system.effect}}</td>
 								</tr>
 							</table>
 						</td>

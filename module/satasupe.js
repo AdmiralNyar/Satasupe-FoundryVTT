@@ -1117,6 +1117,7 @@ Hooks.on("renderActorSheet", async (app, html, data) => {
 });
 
 Hooks.on("renderItemSheet", async (app, html, data) => {
+
   if (app.object.type == "investigation") {
     const itemid = app.object.id;
     if (app.object.ownership.default != 3) ui.notifications.error(game.i18n.localize("ALERTMESSAGE.DefaultInvestigationPermission"));
@@ -1144,6 +1145,7 @@ Hooks.on("renderItemSheet", async (app, html, data) => {
           }
         }
       }
+
       if (!taglist) taglist = game.i18n.localize("SATASUPE.TargetPrivate")
       if (data.system.target[k].checked) taglist += " ★";
       $(`.investigation-main#${itemid} .investigation-sl .sl${place}list`).append(`<div class="target-sl" style="width:150px;display:block;white-space:normal;">TARGET : ${taglist}</div>`);
