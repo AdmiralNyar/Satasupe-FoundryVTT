@@ -2,7 +2,7 @@
     <div class="number-zone">
         <div class="check" style="padding: 4px 0;">
             <label>{{localize 'SATASUPE.Difficulty'}} : </label>
-            <input name="difficulty" type="number" min="5" value="5"/>
+            {{#if defdifficult}}<input name="difficulty" type="number" value="{{defdifficult}}" {{#if option}}readonly{{/if}} />{{else}}<input name="difficulty" type="number" min="5" value="5"/>{{/if}}
         </div>
         <div class="check" style="padding: 4px 0;">
             <label>{{localize 'SATASUPE.SUCCESSSTOP'}} : </label>
@@ -18,7 +18,7 @@
         </div>
         <div class="check" style="padding: 4px 0;">
             <label>{{localize 'SATASUPE.BOOSTMP'}} :</label>
-            <input name="boost" type="number" min="0" value="0"/>
+            <input name="boost" type="number" min="0" value="0" {{#if option}}readonly{{/if}}/>
         </div>
         <div class="check" style="padding: 4px 0;">
             <label>{{localize 'SPEC.KILL'}} :</label>

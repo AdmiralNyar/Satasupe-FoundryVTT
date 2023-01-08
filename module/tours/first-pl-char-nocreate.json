@@ -1,0 +1,24 @@
+{
+    "title":"SATASUPETOUR.HasCharTitle",
+    "description":"SATASUPETOUR.HasCharDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"canvas",
+            "selector":"",
+            "title": "SATASUPETOUR.FPCC1T",
+            "content": "SATASUPETOUR.FPCN1C",
+            "sidebarTab": null
+        },
+        {
+            "id":"canvas",
+            "selector":"",
+            "title": "SATASUPETOUR.FPCC2T",
+            "content": "SATASUPETOUR.FPCN2C"
+        }
+    ],
+    "suggestedNextTours": [
+        "satasupe.char-sheet"
+    ]
+}

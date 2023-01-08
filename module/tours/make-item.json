@@ -1,0 +1,43 @@
+{
+    "title":"SATASUPETOUR.MakeItemTitle",
+    "description":"SATASUPETOUR.MakeItemDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"items",
+            "selector":"#items .header-actions",
+            "title": "SATASUPETOUR.MI1T",
+            "content": "SATASUPETOUR.MI1C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "items",
+            "karmaTab": null,
+            "itemid": null,
+            "itemTab": null
+        },
+        {
+            "id":"itemDirectory",
+            "selector":"#items .directory-list",
+            "title": "SATASUPETOUR.MI2T",
+            "content": "SATASUPETOUR.MI2C",
+            "tooltipDirection": "LEFT",
+            "sidebarTab": "items",
+            "karmaTab": null,
+            "itemid": null,
+            "itemTab": null
+        },
+        {
+            "id":"itemEach",
+            "selector":"",
+            "title": "SATASUPETOUR.MI3T",
+            "content": "SATASUPETOUR.MI3C",
+            "tooltipDirection": null,
+            "sidebarTab": null,
+            "karmaTab": null,
+            "itemid": null,
+            "itemTab": null
+        }
+    ],
+    "suggestedNextTours": [
+    ]
+}

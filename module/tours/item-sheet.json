@@ -1,0 +1,154 @@
+{
+    "title":"SATASUPETOUR.ItemItemTitle",
+    "description":"SATASUPETOUR.ItemItemDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"itemItem",
+            "selector":"#SatasupeItemSheet-Compendium-satasupe-items-4KxizPWxeMjp1Xll form.item-sheet",
+            "title": "SATASUPETOUR.IS1T",
+            "content": "SATASUPETOUR.IS1C",
+            "tooltipDirection": "DOWN",
+            "karmaTab": null,
+            "itemid" : "4KxizPWxeMjp1Xll",
+            "itemTab": "weapon",
+            "investigation": null
+        },
+        {
+            "id":"itemName",
+            "selector":"#SatasupeItemSheet-Compendium-satasupe-items-4KxizPWxeMjp1Xll form.item-sheet .header-names",
+            "title": "SATASUPETOUR.IS2T",
+            "content": "SATASUPETOUR.IS2C",
+            "tooltipDirection": "RIGHT",
+            "karmaTab": null,
+            "itemid" : "4KxizPWxeMjp1Xll",
+            "itemTab": "weapon",
+            "investigation": null
+        },
+        {
+            "id":"itemImg",
+            "selector":"#SatasupeItemSheet-Compendium-satasupe-items-4KxizPWxeMjp1Xll form.item-sheet header img",
+            "title": "SATASUPETOUR.IS3T",
+            "content": "SATASUPETOUR.IS3C",
+            "tooltipDirection": "DOWN",
+            "karmaTab": null,
+            "itemid" : "4KxizPWxeMjp1Xll",
+            "itemTab": "weapon",
+            "investigation": null
+        },
+        {
+            "id":"itemSetting",
+            "selector":"#SatasupeItemSheet-Compendium-satasupe-items-4KxizPWxeMjp1Xll form.item-sheet header .header-settings.select-group",
+            "title": "SATASUPETOUR.IS4T",
+            "content": "SATASUPETOUR.IS4C",
+            "tooltipDirection": "LEFT",
+            "karmaTab": null,
+            "itemid" : "4KxizPWxeMjp1Xll",
+            "itemTab": "weapon",
+            "investigation": null
+        },
+        {
+            "id":"itemWeaponDetail",
+            "selector":"#SatasupeItemSheet-Compendium-satasupe-items-4KxizPWxeMjp1Xll form.item-sheet .weapon-detail",
+            "title": "SATASUPETOUR.IS5T",
+            "content": "SATASUPETOUR.IS5C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "4KxizPWxeMjp1Xll",
+            "itemTab": "weapon",
+            "investigation": null
+        },
+        {
+            "id":"itemWeaponSpecial",
+            "selector":"#SatasupeItemSheet-Compendium-satasupe-items-4KxizPWxeMjp1Xll form.item-sheet .weapon-special",
+            "title": "SATASUPETOUR.IS6T",
+            "content": "SATASUPETOUR.IS6C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "4KxizPWxeMjp1Xll",
+            "itemTab": "weapon",
+            "investigation": null
+        },
+        {
+            "id":"itemVehicleDetail",
+            "selector":"#SatasupeItemSheet-Compendium-satasupe-items-ywR4pw8MntLIC8Vk form.item-sheet .vehicle-detail",
+            "title": "SATASUPETOUR.IS7T",
+            "content": "SATASUPETOUR.IS7C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "ywR4pw8MntLIC8Vk",
+            "itemTab": "vehicle",
+            "investigation": null
+        },
+        {
+            "id":"itemVehicleSpecial",
+            "selector":"#SatasupeItemSheet-Compendium-satasupe-items-ywR4pw8MntLIC8Vk form.item-sheet .vehicle-special",
+            "title": "SATASUPETOUR.IS8T",
+            "content": "SATASUPETOUR.IS8C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "ywR4pw8MntLIC8Vk",
+            "itemTab": "vehicle",
+            "investigation": null
+        },
+        {
+            "id":"itemPropsDetail",
+            "selector":"#SatasupeItemSheet-Compendium-satasupe-items-cAYFrfvrPdEXLxYV form.item-sheet .props-detail",
+            "title": "SATASUPETOUR.IS9T",
+            "content": "SATASUPETOUR.IS9C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "cAYFrfvrPdEXLxYV",
+            "itemTab": "props",
+            "investigation": null
+        },
+        {
+            "id":"itemPropsEffect",
+            "selector":"#SatasupeItemSheet-Compendium-satasupe-items-cAYFrfvrPdEXLxYV form.item-sheet .props-effect",
+            "title": "SATASUPETOUR.IS10T",
+            "content": "SATASUPETOUR.IS10C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "cAYFrfvrPdEXLxYV",
+            "itemTab": "props",
+            "investigation": null
+        },
+        {
+            "id":"itemPropsSpecial",
+            "selector":"#SatasupeItemSheet-Compendium-satasupe-items-cAYFrfvrPdEXLxYV form.item-sheet .props-special",
+            "title": "SATASUPETOUR.IS11T",
+            "content": "SATASUPETOUR.IS11C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "cAYFrfvrPdEXLxYV",
+            "itemTab": "props",
+            "investigation": null
+        },
+        {
+            "id":"itemGadjetDetail",
+            "selector":"#SatasupeItemSheet-Compendium-satasupe-items-PLU4FGoEGlmwjmSr form.item-sheet .gadjet-detail",
+            "title": "SATASUPETOUR.IS12T",
+            "content": "SATASUPETOUR.IS12C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "PLU4FGoEGlmwjmSr",
+            "itemTab": "gadjet",
+            "investigation": null
+        },
+        {
+            "id":"itemGadjetEffect",
+            "selector":"#SatasupeItemSheet-Compendium-satasupe-items-PLU4FGoEGlmwjmSr form.item-sheet .gadjet-effect",
+            "title": "SATASUPETOUR.IS13T",
+            "content": "SATASUPETOUR.IS13C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "PLU4FGoEGlmwjmSr",
+            "itemTab": "gadjet",
+            "investigation": null
+        }
+    ],
+    "suggestedNextTours": [
+        "satasupe.make-item"
+    ]
+}

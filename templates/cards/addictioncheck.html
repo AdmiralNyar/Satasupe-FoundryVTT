@@ -2,7 +2,7 @@
     {{#if check}}<div style="display: flex;justify-content: center;height:0px">
         <div class="rotateR" style="position: relative; width: 170px;top: 10px;padding:28px 10px;height: 80px;text-align: center;">
             <label class="specialelite" style="font-size: xx-large;color:#880000;">
-                {{#if ./button}}{{localize "SATASUPE.Checked"}}{{else}}{{localize "SATASUPE.Checked"}}{{/if}}
+                {{#if ./button}}{{localize "SATASUPE.Checked"}}{{else}}{{localize "SATASUPE.Admitted"}}{{/if}}
     </label></div></div>{{/if}}
     {{#if skip}}<div style="display: flex;justify-content: center;height:0px">
         <div class="rotateG" style="position: relative; width: 170px;top: 10px;padding:28px 10px;height: 80px;text-align: center;">
@@ -10,7 +10,7 @@
                 {{localize "SATASUPE.Skipped"}}
     </label></div></div>{{/if}}
     <div style="display: flex;align-items: center;height: 40px;margin-top:20px"><label>
-        {{addic}} {{localize "SATASUPE.AdicCheck"}}
+        {{addic}} {{#if button}}{{localize "SATASUPE.AdicCheck"}}{{else}}{{localize "SATASUPE.AdicUseCheck"}}{{/if}}
     </label></div>
     <div class="card-buttons">
         {{#if button}}<button data-addic="{{addic}}" data-buttontype="check" data-userid="{{userid}}" data-actor="{{actor}}" data-id="{{id}}" data-type="{{type}}">{{localize "SATASUPE.Check"}}</button>{{else}}

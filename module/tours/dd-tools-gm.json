@@ -1,0 +1,173 @@
+{
+    "title":"SATASUPETOUR.DDtoolsTitle",
+    "description":"SATASUPETOUR.DDtoolsDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"ddtool",
+            "selector":"[data-control=\"ddtools\"]",
+            "title": "SATASUPETOUR.DTG1T",
+            "content": "SATASUPETOUR.DTG1C",
+            "tooltipDirection": "RIGHT",
+            "layer": "ddtools",
+            "toolwindow": false
+        },
+        {
+            "id":"turnskip",
+            "selector":"[data-tool=\"nextturn\"]",
+            "title": "SATASUPETOUR.DTG2T",
+            "content": "SATASUPETOUR.DTG2C",
+            "tooltipDirection": "RIGHT",
+            "layer": "ddtools",
+            "toolwindow": false
+        },
+        {
+            "id":"turnprev",
+            "selector":"[data-tool=\"prevturn\"]",
+            "title": "SATASUPETOUR.DTG3T",
+            "content": "SATASUPETOUR.DTG3C",
+            "tooltipDirection": "RIGHT",
+            "layer": "ddtools",
+            "toolwindow": false
+        },
+        {
+            "id":"worktime",
+            "selector":"[data-tool=\"worktime\"]",
+            "title": "SATASUPETOUR.DTG4T",
+            "content": "SATASUPETOUR.DTG4C",
+            "tooltipDirection": "RIGHT",
+            "layer": "ddtools",
+            "toolwindow": false
+        },
+        {
+            "id":"limit",
+            "selector":"[data-tool=\"limit\"]",
+            "title": "SATASUPETOUR.DTG5T",
+            "content": "SATASUPETOUR.DTG5C",
+            "tooltipDirection": "RIGHT",
+            "layer": "ddtools",
+            "toolwindow": false
+        },
+        {
+            "id":"afterplay",
+            "selector":"[data-tool=\"afterplay\"]",
+            "title": "SATASUPETOUR.DTG6T",
+            "content": "SATASUPETOUR.DTG6C",
+            "tooltipDirection": "RIGHT",
+            "layer": "ddtools",
+            "toolwindow": false
+        },
+        {
+            "id":"afterplayWindow",
+            "selector":"div.afterplayListDialog .window-content",
+            "title": "SATASUPETOUR.DTG7T",
+            "content": "SATASUPETOUR.DTG7C",
+            "tooltipDirection": "DOWN",
+            "layer": "ddtools",
+            "toolwindow": "afterplay"
+        },
+        {
+            "id":"afterplayWindowAd",
+            "selector":"div.afterplayListDialog .window-content .addiction",
+            "title": "SATASUPETOUR.DTG8T",
+            "content": "SATASUPETOUR.DTG8C",
+            "tooltipDirection": "LEFT",
+            "layer": "ddtools",
+            "toolwindow": "afterplay"
+        },
+        {
+            "id":"afterplayWindowKa",
+            "selector":"div.afterplayListDialog .window-content .karma",
+            "title": "SATASUPETOUR.DTG9T",
+            "content": "SATASUPETOUR.DTG9C",
+            "tooltipDirection": "UP",
+            "layer": "ddtools",
+            "toolwindow": "afterplay"
+        },
+        {
+            "id":"afterplayWindowAt",
+            "selector":"div.afterplayListDialog .window-content .aftertable",
+            "title": "SATASUPETOUR.DTG10T",
+            "content": "SATASUPETOUR.DTG10C",
+            "tooltipDirection": "UP",
+            "layer": "ddtools",
+            "toolwindow": "afterplay"
+        },
+        {
+            "id":"afterplayWindowVK",
+            "selector":"div.afterplayListDialog .window-content .discussionK",
+            "title": "SATASUPETOUR.DTG11T",
+            "content": "SATASUPETOUR.DTG11C",
+            "tooltipDirection": "UP",
+            "layer": "ddtools",
+            "toolwindow": "afterplay"
+        },
+        {
+            "id":"afterplayWindowVK",
+            "selector":"div.afterplayListDialog .window-content .discussionM",
+            "title": "SATASUPETOUR.DTG12T",
+            "content": "SATASUPETOUR.DTG12C",
+            "tooltipDirection": "UP",
+            "layer": "ddtools",
+            "toolwindow": "afterplay"
+        },
+        {
+            "id":"afterplayWindowPr",
+            "selector":"div.afterplayListDialog .window-content .prisoner",
+            "title": "SATASUPETOUR.DTG13T",
+            "content": "SATASUPETOUR.DTG13C",
+            "tooltipDirection": "UP",
+            "layer": "ddtools",
+            "toolwindow": "afterplay"
+        },
+        {
+            "id":"afterplayWindowUK",
+            "selector":"div.afterplayListDialog .window-content .upkeep",
+            "title": "SATASUPETOUR.DTG14T",
+            "content": "SATASUPETOUR.DTG14C",
+            "tooltipDirection": "UP",
+            "layer": "ddtools",
+            "toolwindow": "afterplay"
+        },
+        {
+            "id":"choicePL",
+            "selector":"[data-tool=\"choiceplayer\"]",
+            "title": "SATASUPETOUR.DTG15T",
+            "content": "SATASUPETOUR.DTG15C",
+            "tooltipDirection": "RIGHT",
+            "layer": "ddtools",
+            "toolwindow": false
+        },
+        {
+            "id":"vote",
+            "selector":"[data-tool=\"vote\"]",
+            "title": "SATASUPETOUR.DTG16T",
+            "content": "SATASUPETOUR.DTG16C",
+            "tooltipDirection": "RIGHT",
+            "layer": "ddtools",
+            "toolwindow": false
+        },
+        {
+            "id":"combat",
+            "selector":"[data-tool=\"combat-check\"]",
+            "title": "SATASUPETOUR.DTG17T",
+            "content": "SATASUPETOUR.DTG17C",
+            "tooltipDirection": "RIGHT",
+            "layer": "ddtools",
+            "toolwindow": false
+        },
+        {
+            "id":"reset",
+            "selector":"ol.active [data-tool=\"reset\"]",
+            "title": "SATASUPETOUR.DTG18T",
+            "content": "SATASUPETOUR.DTG18C",
+            "tooltipDirection": "RIGHT",
+            "layer": "ddtools",
+            "toolwindow": false
+        }
+    ],
+    "suggestedNextTours": [
+        "satasupe.settings"
+    ]
+}

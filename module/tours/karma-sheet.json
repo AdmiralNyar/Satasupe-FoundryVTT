@@ -1,0 +1,99 @@
+{
+    "title":"SATASUPETOUR.KarmaItemTitle",
+    "description":"SATASUPETOUR.KarmaItemDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"itemKarma",
+            "selector":"#SatasupeKarmaSheet-Compendium-satasupe-items-srQUHXOKQ26pifJG form.karma-sheet",
+            "title": "SATASUPETOUR.KS1T",
+            "content": "SATASUPETOUR.KS1C",
+            "tooltipDirection": "DOWN",
+            "karmaTab": "description",
+            "itemid" : "srQUHXOKQ26pifJG",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"karmaName",
+            "selector":"#SatasupeKarmaSheet-Compendium-satasupe-items-srQUHXOKQ26pifJG form.karma-sheet .header-names",
+            "title": "SATASUPETOUR.KS2T",
+            "content": "SATASUPETOUR.KS2C",
+            "tooltipDirection": "RIGHT",
+            "karmaTab": "description",
+            "itemid" : "srQUHXOKQ26pifJG",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"karmaType",
+            "selector":"#SatasupeKarmaSheet-Compendium-satasupe-items-srQUHXOKQ26pifJG form.karma-sheet .header-settings",
+            "title": "SATASUPETOUR.KS3T",
+            "content": "SATASUPETOUR.KS3C",
+            "tooltipDirection": "LEFT",
+            "karmaTab": "description",
+            "itemid" : "srQUHXOKQ26pifJG",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"karmaUse",
+            "selector":"#SatasupeKarmaSheet-Compendium-satasupe-items-srQUHXOKQ26pifJG form.karma-sheet .karma-sheet-body .text",
+            "title": "SATASUPETOUR.KS4T",
+            "content": "SATASUPETOUR.KS4C",
+            "tooltipDirection": "RIGHT",
+            "karmaTab": "description",
+            "itemid" : "srQUHXOKQ26pifJG",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"karmaIamge",
+            "selector":"#SatasupeKarmaSheet-Compendium-satasupe-items-srQUHXOKQ26pifJG form.karma-sheet .karma-sheet-body .photo",
+            "title": "SATASUPETOUR.KS5T",
+            "content": "SATASUPETOUR.KS5C",
+            "tooltipDirection": "LEFT",
+            "karmaTab": "description",
+            "itemid" : "srQUHXOKQ26pifJG",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"karmaEffect",
+            "selector":"#SatasupeKarmaSheet-Compendium-satasupe-items-srQUHXOKQ26pifJG form.karma-sheet .karma-sheet-body .effect",
+            "title": "SATASUPETOUR.KS6T",
+            "content": "SATASUPETOUR.KS6C",
+            "tooltipDirection": "UP",
+            "karmaTab": "description",
+            "itemid" : "srQUHXOKQ26pifJG",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"karmaSettingsHead",
+            "selector":"#SatasupeKarmaSheet-Compendium-satasupe-items-srQUHXOKQ26pifJG form.karma-sheet .karma-sheet-body .setting .setting-header",
+            "title": "SATASUPETOUR.KS7T",
+            "content": "SATASUPETOUR.KS7C",
+            "tooltipDirection": "UP",
+            "karmaTab": "setting",
+            "itemid" : "srQUHXOKQ26pifJG",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"karmaSettingsMain",
+            "selector":"#SatasupeKarmaSheet-Compendium-satasupe-items-srQUHXOKQ26pifJG form.karma-sheet .karma-sheet-body .setting .setting-main",
+            "title": "SATASUPETOUR.KS8T",
+            "content": "SATASUPETOUR.KS8C",
+            "tooltipDirection": "UP",
+            "karmaTab": "setting",
+            "itemid" : "srQUHXOKQ26pifJG",
+            "itemTab": null,
+            "investigation": null
+        }
+    ],
+    "suggestedNextTours": [
+        "satasupe.make-item"
+    ]
+}

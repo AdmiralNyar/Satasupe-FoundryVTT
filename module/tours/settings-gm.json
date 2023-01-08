@@ -1,0 +1,146 @@
+{
+    "title":"SATASUPETOUR.SettingsGMTitle",
+    "description":"SATASUPETOUR.SettingsGMDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"settings",
+            "selector":"#settings #settings-game button[data-action=\"configure\"]",
+            "title": "SATASUPETOUR.SG1T",
+            "content": "SATASUPETOUR.SG1C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsWindowTab",
+            "selector":"div#client-settings .window-content a[data-tab=\"system\"]",
+            "title": "SATASUPETOUR.SG2T",
+            "content": "SATASUPETOUR.SG2C",
+            "tooltipDirection": "RIGHT",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsWindow",
+            "selector":"div#client-settings .window-content form.categories div.scrollable",
+            "title": "SATASUPETOUR.SG3T",
+            "content": "SATASUPETOUR.SG3C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsPalette",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(1)",
+            "title": "SATASUPETOUR.SG4T",
+            "content": "SATASUPETOUR.SG4C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsKarma",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(2)",
+            "title": "SATASUPETOUR.SG5T",
+            "content": "SATASUPETOUR.SG5C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsOriginal",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(3)",
+            "title": "SATASUPETOUR.SG6T",
+            "content": "SATASUPETOUR.SG6C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsTurn",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(4)",
+            "title": "SATASUPETOUR.SG7T",
+            "content": "SATASUPETOUR.SG7C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsAct",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(5)",
+            "title": "SATASUPETOUR.SG8T",
+            "content": "SATASUPETOUR.SG8C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsEat",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(6)",
+            "title": "SATASUPETOUR.SG9T",
+            "content": "SATASUPETOUR.SG9C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsMovie",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(7)",
+            "title": "SATASUPETOUR.SG10T",
+            "content": "SATASUPETOUR.SG10C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsWorkTime",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(8)",
+            "title": "SATASUPETOUR.SG11T",
+            "content": "SATASUPETOUR.SG11C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsFumble",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(9)",
+            "title": "SATASUPETOUR.SG12T",
+            "content": "SATASUPETOUR.SG12C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsBCDiceAPI1",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(10)",
+            "title": "SATASUPETOUR.SG13T",
+            "content": "SATASUPETOUR.SG13C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsBCDiceAPI2",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(11)",
+            "title": "SATASUPETOUR.SG14T",
+            "content": "SATASUPETOUR.SG14C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsInvestigation",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(12)",
+            "title": "SATASUPETOUR.SG15T",
+            "content": "SATASUPETOUR.SG15C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsInvestigation2",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(13)",
+            "title": "SATASUPETOUR.SG16T",
+            "content": "SATASUPETOUR.SG16C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsDefToken",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(14)",
+            "title": "SATASUPETOUR.SG17T",
+            "content": "SATASUPETOUR.SG17C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        }
+    ],
+    "suggestedNextTours": [
+    ]
+}

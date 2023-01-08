@@ -1,0 +1,77 @@
+{
+    "title":"SATASUPETOUR.InvestItemPLTitle",
+    "description":"SATASUPETOUR.InvestItemPLDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"itemInvestigation",
+            "selector":"#SatasupeInvestigationSheet-Compendium-satasupe-items-s5cJDmA4Fk69VHrv form",
+            "title": "SATASUPETOUR.ISG1T",
+            "content": "SATASUPETOUR.ISG1C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "s5cJDmA4Fk69VHrv",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"itemInvestigation",
+            "selector":"#SatasupeInvestigationSheet-Compendium-satasupe-items-s5cJDmA4Fk69VHrv .investigation-header .investigation-name",
+            "title": "SATASUPETOUR.ISG2T",
+            "content": "SATASUPETOUR.ISG2C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "s5cJDmA4Fk69VHrv",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"itemInvestigationSL",
+            "selector":"#SatasupeInvestigationSheet-Compendium-satasupe-items-s5cJDmA4Fk69VHrv .investigation-main .investigation-sl",
+            "title": "SATASUPETOUR.ISG3T",
+            "content": "SATASUPETOUR.ISG3C",
+            "tooltipDirection": "DOWN",
+            "karmaTab": null,
+            "itemid" : "s5cJDmA4Fk69VHrv",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"itemInvestigationTopic",
+            "selector":"#SatasupeInvestigationSheet-Compendium-satasupe-items-s5cJDmA4Fk69VHrv .investigation-main .investigation-property .sl0tagzone.tagindex0 [data-dtype=String]",
+            "title": "SATASUPETOUR.ISG4T",
+            "content": "SATASUPETOUR.ISG4C",
+            "tooltipDirection": "DOWN",
+            "karmaTab": null,
+            "itemid" : "s5cJDmA4Fk69VHrv",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"itemInvestigationAddTopic",
+            "selector":"#SatasupeInvestigationSheet-Compendium-satasupe-items-s5cJDmA4Fk69VHrv .investigation-main .investigation-property .sl0tagzone.tagindex0 .add-branch",
+            "title": "SATASUPETOUR.ISG5T",
+            "content": "SATASUPETOUR.ISG5C",
+            "tooltipDirection": "DOWN",
+            "karmaTab": null,
+            "itemid" : "s5cJDmA4Fk69VHrv",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"itemInvestigationDeleteTopic",
+            "selector":"#SatasupeInvestigationSheet-Compendium-satasupe-items-s5cJDmA4Fk69VHrv .investigation-main .investigation-property .sl0tagzone.tagindex0 .tag-delete",
+            "title": "SATASUPETOUR.ISG6T",
+            "content": "SATASUPETOUR.ISG6C",
+            "tooltipDirection": "DOWN",
+            "karmaTab": null,
+            "itemid" : "s5cJDmA4Fk69VHrv",
+            "itemTab": null,
+            "investigation": null
+        }
+    ],
+    "suggestedNextTours": [
+        "satasupe.make-item"
+    ]
+}

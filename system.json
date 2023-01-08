@@ -1,29 +1,42 @@
 {
-  "name": "satasupe",
   "title": "Asian Punk RPG: Satasupe",
   "description": "Asian punk rpg simple game system",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "compatibility": {
     "minimum": "10",
-    "verified": "10.288",
-    "maximum": "10"
+    "verified": "10.288"
   },
-  "author": "ADNyar",
-  "esmodules": ["module/satasupe.js"],
-  "styles": ["styles/satasupe.css"],
-  "packs": [],
+  "esmodules": [
+    "module/satasupe.js"
+  ],
+  "styles": [
+    "styles/satasupe.css"
+  ],
   "languages": [
     {
       "lang": "en",
       "name": "English",
-      "path": "lang/en.json"
+      "path": "lang/en.json",
+      "flags": {}
     },
     {
       "lang": "ja",
       "name": "日本語",
-      "path": "lang/ja.json"
+      "path": "lang/ja.json",
+      "flags": {}
     }
   ],
+  "packs":[{
+    "name": "items",
+    "label": "Tour Items",
+    "path": "packs/items.db",
+    "type": "Item"
+  },{
+    "name": "actor",
+    "label": "Tour Actor",
+    "path": "packs/actor.db",
+    "type": "Actor"
+  }],
   "initiative": "@combat.reflex.value",
   "socket": true,
   "gridDistance": 5,
@@ -32,6 +45,13 @@
   "secondaryTokenAttribute": "attribs.mp",
   "url": "https://github.com/AdmiralNyar/Satasupe-FoundryVTT",
   "manifest": "https://github.com/AdmiralNyar/Satasupe-FoundryVTT/raw/main/system.json",
-  "download": "https://github.com/AdmiralNyar/Satasupe-FoundryVTT/archive/v0.7.0.zip",
-  "license": "LICENSE"
+  "download": "https://github.com/AdmiralNyar/Satasupe-FoundryVTT/archive/v0.7.1.zip",
+  "license": "LICENSE",
+  "id": "satasupe",
+  "authors": [
+    {
+      "name": "ADNyar",
+      "flags": {}
+    }
+  ]
 }

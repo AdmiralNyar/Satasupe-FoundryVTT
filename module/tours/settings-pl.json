@@ -1,0 +1,50 @@
+{
+    "title":"SATASUPETOUR.SettingsPLTitle",
+    "description":"SATASUPETOUR.SettingsPLDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"settings",
+            "selector":"#settings #settings-game button[data-action=\"configure\"]",
+            "title": "SATASUPETOUR.SG1T",
+            "content": "SATASUPETOUR.SG1C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsWindowTab",
+            "selector":"div#client-settings .window-content a[data-tab=\"system\"]",
+            "title": "SATASUPETOUR.SG2T",
+            "content": "SATASUPETOUR.SG2C",
+            "tooltipDirection": "RIGHT",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsWindow",
+            "selector":"div#client-settings .window-content form.categories div.scrollable",
+            "title": "SATASUPETOUR.SG3T",
+            "content": "SATASUPETOUR.SP3C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsPalette",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(1)",
+            "title": "SATASUPETOUR.SG4T",
+            "content": "SATASUPETOUR.SG4C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        },
+        {
+            "id":"settingsKarma",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"system\"] div.form-group:nth-of-type(2)",
+            "title": "SATASUPETOUR.SG5T",
+            "content": "SATASUPETOUR.SG5C",
+            "tooltipDirection": "DOWN",
+            "sidebarTab": "settings"
+        }
+    ],
+    "suggestedNextTours": [
+    ]
+}
