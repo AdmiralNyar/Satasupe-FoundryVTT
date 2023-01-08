@@ -1336,7 +1336,7 @@ export class SatasupeActorSheet extends ActorSheet {
       let result = await this._bcdicesend(event, text, char, dif, "");
       return result;
     } else {
-      var contenthtml = "<div><div style=\"word-break : break-all;\">" + "行動不能（気絶）によりロール不可" + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "自動失敗" + "</div><div class=\"dice-tooltip\" style=\"display:none;\">" + "</section></div></div>";
+      var contenthtml = "<div><div style=\"word-break : break-all;\">" + game.i18n.localize("SATASUPE.Faint") + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + game.i18n.localize("SATASUPE.AutoFailure") + "</div><div class=\"dice-tooltip\" style=\"display:none;\">" + "</section></div></div>";
       ChatMessage.create({ user: game.user.id, speaker: ChatMessage.getSpeaker({ actor: actor }), content: contenthtml }, {});
       let result = { critical: false, failure: true, fumble: false, ok: true, rands: [{ kind: 'noraml', sides: 6, value: 0 }], secret: false, success: false, text: "" }
       return result;

@@ -1842,7 +1842,7 @@ export class SatasupeChatCard {
                 let result = await SatasupeChatCard._bcdicesend(event, text, char, actorData, dif, message);
                 return result;
             } else {
-                var contenthtml = "<div><div style=\"word-break : break-all;\">" + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + "行動不能（気絶）によりロール不可" + "</div><div class=\"dice-tooltip\" style=\"display:none;\"></div><h4 class=\"dice-total\">" + "自動的に失敗" + "</h4></div></div>";
+                var contenthtml = "<div><div style=\"word-break : break-all;\">" + "</div><div class=\"dice-roll\"><div class=\"dice-result\"><div class=\"dice-formula\">" + game.i18n.localize("SATASUPE.Faint") + "</div><div class=\"dice-tooltip\" style=\"display:none;\"></div><h4 class=\"dice-total\">" + game.i18n.localize("SATASUPE.AutoFailure") + "</h4></div></div>";
                 ChatMessage.create({ user: game.user.id, speaker: ChatMessage.getSpeaker({ actor: actor }), content: contenthtml }, {});
                 let result = { critical: false, failure: true, fumble: false, ok: true, rands: [{ kind: 'noraml', sides: 6, value: 0 }], secret: false, success: false, text: "" }
                 return result;

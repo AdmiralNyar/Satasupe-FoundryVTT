@@ -750,14 +750,14 @@ export class SatasupeMenu {
                         response = await FilePicker.upload(source, "uploadedCharacterImage", file, {});
                     } else {
                         response = true;
-                        ui.notifications.error("Fileのアップロード権限が無いので、キャラクターの画像を別にアップロードするよう権限がある人に依頼してください")
+                        ui.notifications.error(game.i18n.localize("ALERTMESSAGE.FileUploadPermissionError"))
                     }
                 } catch (error) { console.error(error) }
                 let img = response?.path;
 
                 if (!response) {
                     img = data.images.uploadImage;
-                    ui.notifications.info("Base64形式でアップロードした")
+                    ui.notifications.info(game.i18n.localize("NOTIFYMESSAGE.Base64"))
                 }
 
                 const pc = await Actor.create({
