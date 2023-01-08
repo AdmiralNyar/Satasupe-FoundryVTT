@@ -17,7 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-                {{#each data.scenario as |section index|}}
+                {{#each system.scenario as |section index|}}
                     <tr class='scenario-section' data-index='{{index}}' draggable="true">
                         <td class="scenario-title">
                             <div class="title-section section-key" data-sectionkey="title">
@@ -75,6 +75,6 @@
     </div>
     <div class="background-zone">
         <label class="background-header">{{localize 'SATASUPE.BACKGROUND'}}</label>
-        {{editor content=data.bg.bg.value target="data.bg.bg.value" style="height:95%" button=true owner=owner editable=editable}}
+        {{editor system.bg.bg.value target="system.bg.bg.value" style="height:95%" button=true owner=owner editable=editable engine="prosemirror"}}
     </div>
 </div>
