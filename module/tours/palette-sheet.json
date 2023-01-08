@@ -1,0 +1,121 @@
+{
+    "title":"SATASUPETOUR.PaletteItemTitle",
+    "description":"SATASUPETOUR.PaletteItemDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"itemChatpalette",
+            "selector":"#SatasupeChatpaletteSheet-Compendium-satasupe-items-y8IJAzsHHjOZOYt6 form.chatpalette",
+            "title": "SATASUPETOUR.PS1T",
+            "content": "SATASUPETOUR.PS1C",
+            "tooltipDirection": "DOWN",
+            "karmaTab": null,
+            "itemid" : "y8IJAzsHHjOZOYt6",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"itemChatpaletteSystem",
+            "selector":"#SatasupeChatpaletteSheet-Compendium-satasupe-items-y8IJAzsHHjOZOYt6 form.chatpalette .bcdicesystem",
+            "title": "SATASUPETOUR.PS2T",
+            "content": "SATASUPETOUR.PS2C",
+            "tooltipDirection": "DOWN",
+            "karmaTab": null,
+            "itemid" : "y8IJAzsHHjOZOYt6",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"itemChatpaletteCommand",
+            "selector":"#SatasupeChatpaletteSheet-Compendium-satasupe-items-y8IJAzsHHjOZOYt6 form.chatpalette .chatpalette-table .dice-folmula-text",
+            "title": "SATASUPETOUR.PS3T",
+            "content": "SATASUPETOUR.PS3C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "y8IJAzsHHjOZOYt6",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"itemChatpaletteText",
+            "selector":"#SatasupeChatpaletteSheet-Compendium-satasupe-items-y8IJAzsHHjOZOYt6 form.chatpalette .chatpalette-table .other-message",
+            "title": "SATASUPETOUR.PS4T",
+            "content": "SATASUPETOUR.PS4C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "y8IJAzsHHjOZOYt6",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"itemChatpaletteNewChat",
+            "selector":"#SatasupeChatpaletteSheet-Compendium-satasupe-items-y8IJAzsHHjOZOYt6 form.chatpalette .chatpalette-table .add-new-chat",
+            "title": "SATASUPETOUR.PS5T",
+            "content": "SATASUPETOUR.PS5C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "y8IJAzsHHjOZOYt6",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"itemChatpaletteShowSetting",
+            "selector":"#SatasupeChatpaletteSheet-Compendium-satasupe-items-y8IJAzsHHjOZOYt6 form.chatpalette .chatpalette-table .setting",
+            "title": "SATASUPETOUR.PS6T",
+            "content": "SATASUPETOUR.PS6C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "y8IJAzsHHjOZOYt6",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"itemChatpaletteVariable",
+            "selector":"#SatasupeChatpaletteSheet-Compendium-satasupe-items-y8IJAzsHHjOZOYt6 form.chatpalette .variable-setting-table .characteristics",
+            "title": "SATASUPETOUR.PS7T",
+            "content": "SATASUPETOUR.PS7C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "y8IJAzsHHjOZOYt6",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"itemChatpaletteVariable",
+            "selector":"#SatasupeChatpaletteSheet-Compendium-satasupe-items-y8IJAzsHHjOZOYt6 form.chatpalette .variable-setting-table .variable",
+            "title": "SATASUPETOUR.PS8T",
+            "content": "SATASUPETOUR.PS8C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "y8IJAzsHHjOZOYt6",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"itemChatpaletteVariable",
+            "selector":"#SatasupeChatpaletteSheet-Compendium-satasupe-items-y8IJAzsHHjOZOYt6 form.chatpalette .variable-setting-table .all-on-off",
+            "title": "SATASUPETOUR.PS9T",
+            "content": "SATASUPETOUR.PS9C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "y8IJAzsHHjOZOYt6",
+            "itemTab": null,
+            "investigation": null
+        },
+        {
+            "id":"itemChatpaletteVariable",
+            "selector":"#SatasupeChatpaletteSheet-Compendium-satasupe-items-y8IJAzsHHjOZOYt6 form.chatpalette .variable-setting-table th.item-button.item-controls",
+            "title": "SATASUPETOUR.PS10T",
+            "content": "SATASUPETOUR.PS10C",
+            "tooltipDirection": "UP",
+            "karmaTab": null,
+            "itemid" : "y8IJAzsHHjOZOYt6",
+            "itemTab": null,
+            "investigation": null
+        }
+    ],
+    "suggestedNextTours": [
+        "satasupe.make-item"
+    ]
+}

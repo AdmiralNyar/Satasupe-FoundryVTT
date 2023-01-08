@@ -1,17 +1,17 @@
 <form class="flexcol {{cssClass}} karma-sheet" autocomplete="off">
     <div class="karma-content">
-        <header class="karma-sheet-header">
+        <section class="karma-sheet-header">
             <div class="karma-header">
                 <div class="header-fields">
                     <div class="header-names flexrow">
-                        <h4 class="otherlangName"><input name="data.description.otherName" type="text" value="{{data.description.otherName}}" placeholder="{{localize 'SATASUPE.OtherLangName'}}"/></h4>
+                        <h4 class="otherlangName"><input name="system.description.otherName" type="text" value="{{system.description.otherName}}" placeholder="{{localize 'SATASUPE.OtherLangName'}}"/></h4>
                         <h1 class="name"><input name="name" value="{{item.name}}" placeholder="{{localize 'SATASUPE.KarmaName'}}"/></h1>
                     </div>
                     <div class="header-settings">
                         <div class="karma-type select-group stacked">
-                            <select name="data.type.name" data-dtype="String">
+                            <select name="system.type.name" data-dtype="String">
                                     <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                                {{#select data.type.name}}
+                                {{#select system.type.name}}
                                     <option value="basic">{{localize 'KARMA.BASIC'}}</option>
                                     <option value="advanced">{{localize 'KARMA.ADVANCED'}}</option>
                                     <option value="newbie">{{localize 'KARMA.NEWBIE'}}</option>
@@ -27,12 +27,12 @@
                             </select>
                         </div>
                         <div class="karma-typeName">
-                            <input name="data.description.typeName" type="text" value="{{data.description.typeName}}" placeholder="{{localize 'SATASUPE.KarmaTypeName'}}"/>
+                            <input name="system.description.typeName" type="text" value="{{system.description.typeName}}" placeholder="{{localize 'SATASUPE.KarmaTypeName'}}"/>
                         </div>
                         <div class="goodORbad">
-                            <select name="data.abilityType.name" data-dtype="String">
+                            <select name="system.abilityType.name" data-dtype="String">
                                     <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                                {{#select data.abilityType.name}}
+                                {{#select system.abilityType.name}}
                                     <option value="talent">{{localize 'SATASUPE.Talent'}}</option>
                                     <option value="compensation">{{localize 'SATASUPE.COMPENSATION'}}</option>
                                     <option value="heteromorph">{{localize 'SATASUPE.HETEROMORPH'}}</option>
@@ -42,21 +42,21 @@
                     </div>
                 </div>
             </div>
-        </header>
+        </section>
 
         <nav class="sheet-tabs tabs karma" data-group="primary">
-            <a class="item active" data-tab="description" >{{localize 'SATASUPE.Main'}}</a>
-            <a class="item" data-tab="setting" >{{localize 'SATASUPE.Setting'}}</a>
+            <a class="item" data-tab="description" draggable="true">{{localize 'SATASUPE.Main'}}</a>
+            <a class="item" data-tab="setting" draggable="true">{{localize 'SATASUPE.Setting'}}</a>
         </nav>
 
         <section class="sheet-body karma-sheet-body">
-            <div class="tab description active" data-group="primary" data-tab="description">
+            <div class="tab description" data-group="primary" data-tab="description">
                 <div class="text">
                     <div class="margin karma-timing select-group stacked">
                         <label>{{localize 'SATASUPE.Timing'}} :</label>
-                        <select name="data.timing.name" data-dtype="String">
+                        <select name="system.timing.name" data-dtype="String">
                                 <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                            {{#select data.timing.name}}
+                            {{#select system.timing.name}}
                                 <option value="passive">{{localize 'SATASUPE.Passive'}}</option>
                                 <option value="planning">{{localize 'SATASUPE.Planning'}}</option>
                                 <option value="support">{{localize 'SATASUPE.Support'}}</option>
@@ -70,9 +70,9 @@
 
                     <div class="margin karma-target select-group stacked">
                         <label>{{localize 'SATASUPE.Target'}} :</label>
-                        <select name="data.target.name" data-dtype="String">
+                        <select name="system.target.name" data-dtype="String">
                                 <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                            {{#select data.target.name}}
+                            {{#select system.target.name}}
                                 <option value="own">{{localize 'SATASUPE.Own'}}</option>
                                 <option value="other">{{localize 'SATASUPE.Other'}}</option>
                                 <option value="ownother">{{localize 'SATASUPE.OwnOther'}}</option>
@@ -89,21 +89,21 @@
                     </div>
                     <div class="margin karma-check">
                         <label>{{localize 'SATASUPE.Check'}} :</label>
-                        {{#if data.check.none}}
+                        {{#if system.check.none}}
                             <div class="tytle-name">{{localize 'SATASUPE.None'}}</div>
                         {{else}}
                             <div class="tytle-name">
-                                {{#if data.check.type}}
-                                    {{#unless data.check.checkText}}
+                                {{#if system.check.type}}
+                                    {{#unless system.check.checkText}}
                                         〔{{localize 'ATTRIBS.ALIGNMENTS'}}〕/ {{localize _alignment}}
                                     {{else}}
-                                        {{data.check.checkText}}
+                                        {{system.check.checkText}}
                                     {{/unless}}
                                 {{else}}
-                                    {{#unless data.check.checkText}}
-                                        〔{{localize _propertiesValue}}〕/ {{data.check.difficulty}}
+                                    {{#unless system.check.checkText}}
+                                        〔{{localize _propertiesValue}}〕/ {{system.check.difficulty}}
                                     {{else}}
-                                        {{data.check.checkText}}
+                                        {{system.check.checkText}}
                                     {{/unless}}
                                 {{/if}}</div>
                         {{/if}}
@@ -117,10 +117,10 @@
 
                 <div class="effect">
                     <div class="effect-editor">
-                        <textarea class="effect-area" rows="4" cols="30" placeholder="{{localize 'SATASUPE.KarmaEffect'}}">{{data.effect}}</textarea>
+                        <textarea class="effect-area" rows="4" cols="30" placeholder="{{localize 'SATASUPE.KarmaEffect'}}">{{system.effect}}</textarea>
                     </div>
                     <div class="flavor-box">
-                        <input name="data.flavor" type="text" value="{{data.flavor}}" placeholder="{{localize 'SATASUPE.KarmaFlavor'}}"/>
+                        <input name="system.flavor" type="text" value="{{system.flavor}}" placeholder="{{localize 'SATASUPE.KarmaFlavor'}}"/>
                     </div>
                 </div>
             </div>
@@ -130,23 +130,23 @@
 
                 <div class="setting-header">
                     <label class="checkbox">
-                        {{localize 'SATASUPE.NoCheck'}} <input type="checkbox" name="data.check.none" {{checked data.check.none}}/>
+                        {{localize 'SATASUPE.NoCheck'}} <input type="checkbox" name="system.check.none" {{checked system.check.none}}/>
                     </label>
                 </div>
 
-                {{#unless data.check.none}}
+                {{#unless system.check.none}}
                     <div class="setting-main">
                         <div class="karma-type select-group stacked">
                             <label class="checkbox">
-                                {{localize 'SATASUPE.ALIGNMENTCHECK'}} <input type="checkbox" name="data.check.type" {{checked data.check.type}}/>
+                                {{localize 'SATASUPE.ALIGNMENTCHECK'}} <input type="checkbox" name="system.check.type" {{checked system.check.type}}/>
                             </label>
                         </div>
 
-                        {{#unless data.check.type}}
+                        {{#unless system.check.type}}
                             <div class="check-value select-group stacked">
                                 <label>{{localize 'SATASUPE.CheckCharacteristics'}}</label>
-                                    <select class="circumstance-type" name="data.check.checkValue.name" data-dtype="String">
-                                    {{#select data.check.checkValue.name}}
+                                    <select class="circumstance-type" name="system.check.checkValue.name" data-dtype="String">
+                                    {{#select system.check.checkValue.name}}
                                             <option value="crime" selected>{{localize 'CIRCUMSTANCE.CRIME'}}</option>
                                             <option value="life">{{localize 'CIRCUMSTANCE.LIFE'}}</option>
                                             <option value="love">{{localize 'CIRCUMSTANCE.LOVE'}}</option>
@@ -159,13 +159,13 @@
                             </div>
                             <div class="check-difficulty-normal stacked">
                                 <label>{{localize 'SATASUPE.Difficulty'}}</label>
-                                <input name="data.check.difficulty" type="text" value="{{data.check.difficulty}}">
+                                <input name="system.check.difficulty" type="text" value="{{system.check.difficulty}}">
                             </div>
                         {{else}}
                             <div class="check-difficulty-align stacked">
                                 <label>{{localize 'SATASUPE.Difficulty'}}</label>
-                                <select name="data.check.alignment.name" data-dtype="String">
-                                    {{#select data.check.alignment.name}}
+                                <select name="system.check.alignment.name" data-dtype="String">
+                                    {{#select system.check.alignment.name}}
                                     <option value="calm" selected>{{localize 'ALIGNMENTS.CALM'}}</option>
                                     <option value="dither">{{localize 'ALIGNMENTS.DITHER'}}</option>
                                     <option value="desire">{{localize 'ALIGNMENTS.DESIRE'}}</option>
@@ -176,7 +176,7 @@
 
                         <div class="check-other-difficulty stacked">
                             <label>{{localize 'SATASUPE.OtherDifficulty'}}</label>
-                            <input name="data.check.checkText" type="text" value="{{data.check.checkText}}" placeholder="{{localize 'SATASUPE.DifficultyExample'}}">
+                            <input name="system.check.checkText" type="text" value="{{system.check.checkText}}" placeholder="{{localize 'SATASUPE.DifficultyExample'}}">
                         </div>
                     </div>
                 {{/unless}}

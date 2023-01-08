@@ -1,0 +1,31 @@
+{
+    "title":"SATASUPETOUR.HasCharTitle",
+    "description":"SATASUPETOUR.HasCharDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"canvas",
+            "selector":"",
+            "title": "SATASUPETOUR.FPCC1T",
+            "content": "SATASUPETOUR.FPCN1C",
+            "sidebarTab": null
+        },
+        {
+            "id":"canvas",
+            "selector":"",
+            "title": "SATASUPETOUR.FPCC2T",
+            "content": "SATASUPETOUR.FPNCS2C"
+        },
+        {
+            "id":"players",
+            "selector":"#players",
+            "title": "SATASUPETOUR.FPNCS3T",
+            "content": "SATASUPETOUR.FPNC5C",
+            "tooltipDirection": "UP"
+        }
+    ],
+    "suggestedNextTours": [
+        "satasupe.char-sheet"
+    ]
+}

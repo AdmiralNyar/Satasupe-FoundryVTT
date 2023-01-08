@@ -1,0 +1,133 @@
+{
+    "title":"SATASUPETOUR.HasCharGMTitle",
+    "description":"SATASUPETOUR.HasCharGMDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"canvas",
+            "selector":"",
+            "title": "SATASUPETOUR.FGC1T",
+            "content": "SATASUPETOUR.FGC1C",
+            "config": false,
+            "sidebarTab": null
+        },
+        {
+            "id":"addplayers",
+            "selector":"#settings #settings-game button[data-action=\"players\"]",
+            "title": "SATASUPETOUR.FGC2T",
+            "content": "SATASUPETOUR.FGC2C",
+            "sidebarTab": "settings",
+            "config": false,
+            "tooltipDirection": "LEFT"
+        },
+        {
+            "id":"addplayers2",
+            "selector":"",
+            "title": "SATASUPETOUR.FGC3T",
+            "content": "SATASUPETOUR.FGC3C",
+            "sidebarTab": "settings",
+            "config": false
+        },
+        {
+            "id":"configure",
+            "selector":"#settings #settings-game button[data-action=\"configure\"]",
+            "title": "SATASUPETOUR.FGC4T",
+            "content": "SATASUPETOUR.FGC4C",
+            "sidebarTab": "settings",
+            "config": false,
+            "tooltipDirection": "LEFT"
+        },
+        {
+            "id":"userperm",
+            "selector":"div#client-settings .window-content form.categories div.scrollable section[data-tab=\"core\"] div.form-group:nth-of-type(1)",
+            "title": "SATASUPETOUR.FGC5T",
+            "content": "SATASUPETOUR.FGC5C",
+            "sidebarTab": "settings",
+            "config": true,
+            "tooltipDirection": "DOWN"
+        },
+        {
+            "id":"createActor",
+            "selector":"",
+            "title": "SATASUPETOUR.FGC6T",
+            "content": "SATASUPETOUR.FGC6C",
+            "config": false,
+            "sidebarTab": null
+        },
+        {
+            "id":"actorDirectory",
+            "selector":"#actors .header-actions button.create-document",
+            "title": "SATASUPETOUR.FGC7T",
+            "content": "SATASUPETOUR.FGC7C",
+            "config": false,
+            "sidebarTab": "actors",
+            "tooltipDirection": "DOWN"
+        },
+        {
+            "id":"actor",
+            "selector":"#actors ol.directory-list",
+            "title": "SATASUPETOUR.FGC8T",
+            "content": "SATASUPETOUR.FGC8C",
+            "sidebarTab": "actors",
+            "config": false,
+            "tooltipDirection": "LEFT"
+        },
+        {
+            "id":"itemDirectory",
+            "selector":"section#items",
+            "title": "SATASUPETOUR.FGC9T",
+            "content": "SATASUPETOUR.FGC9C",
+            "config": false,
+            "sidebarTab": "items",
+            "tooltipDirection": "LEFT"
+        },
+        {
+            "id":"remarks1",
+            "selector":"",
+            "title": "SATASUPETOUR.FGC10T",
+            "content": "SATASUPETOUR.FGC10C",
+            "tooltipDirection": "",
+            "config": false,
+            "sidebarTab": null
+        },
+        {
+            "id":"remarks2",
+            "selector":"",
+            "title": "SATASUPETOUR.FGC11T",
+            "content": "SATASUPETOUR.FGC11C",
+            "tooltipDirection": "",
+            "config": false,
+            "sidebarTab": null
+        },
+        {
+            "id":"controlsCharDL",
+            "selector":".satasupe-menu.satasupe-char-dl",
+            "title": "SATASUPETOUR.FGC12T",
+            "content": "SATASUPETOUR.FGC12C",
+            "tooltipDirection": "RIGHT",
+            "config": false,
+            "layer": ""
+        },
+        {
+            "id":"players",
+            "selector":"#players",
+            "title": "SATASUPETOUR.FGC13T",
+            "content": "SATASUPETOUR.FGC13C",
+            "config": false,
+            "tooltipDirection": "UP"
+        },
+        {
+            "id":"url",
+            "selector":"#settings #settings-access button[data-action=\"invitations\"]",
+            "title": "SATASUPETOUR.FGC14T",
+            "content": "SATASUPETOUR.FGC14C",
+            "sidebarTab": "settings",
+            "config": false,
+            "tooltipDirection": "LEFT"
+        }
+    ],
+    "suggestedNextTours": [
+        "satasupe.dd-tools"
+    ]
+}

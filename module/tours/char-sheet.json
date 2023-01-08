@@ -1,0 +1,142 @@
+{
+    "id": "char-sheet",
+    "title":"SATASUPETOUR.CharSheetTitle",
+    "description":"SATASUPETOUR.CharSheetDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"sheet",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx",
+            "title": "SATASUPETOUR.CS1T",
+            "content": "SATASUPETOUR.CS1C",
+            "tooltipDirection": "DOWN"
+        },
+        {
+            "id":"img",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .photo",
+            "title": "SATASUPETOUR.CS2T",
+            "content": "SATASUPETOUR.CS2C",
+            "tooltipDirection": "DOWN"
+        },
+        {
+            "id":"stutus",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-header .status",
+            "title": "SATASUPETOUR.CS3T",
+            "content": "SATASUPETOUR.CS3C",
+            "tooltipDirection": "DOWN"
+        },
+        {
+            "id":"info",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-header .infos",
+            "title": "SATASUPETOUR.CS4T",
+            "content": "SATASUPETOUR.CS4C",
+            "tooltipDirection": "DOWN"
+        },
+        {
+            "id":"characteristics",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-header .characteristics",
+            "title": "SATASUPETOUR.CS5T",
+            "content": "SATASUPETOUR.CS5C",
+            "tooltipDirection": "DOWN"
+        },
+        {
+            "id":"hobby",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-body .hobby-zone",
+            "title": "SATASUPETOUR.CS6T",
+            "content": "SATASUPETOUR.CS6C",
+            "tooltipDirection": "RIGHT",
+            "charactersheetTab": "other-status"
+        },
+        {
+            "id":"prisoner",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-body .prisoner-zone",
+            "title": "SATASUPETOUR.CS7T",
+            "content": "SATASUPETOUR.CS7C",
+            "tooltipDirection": "LEFT",
+            "charactersheetTab": "other-status"
+        },
+        {
+            "id":"prisoner",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-body .addiction-zone",
+            "title": "SATASUPETOUR.CS8T",
+            "content": "SATASUPETOUR.CS8C",
+            "tooltipDirection": "LEFT",
+            "charactersheetTab": "other-status"
+        },
+        {
+            "id":"karma",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-body .karma-panel",
+            "title": "SATASUPETOUR.CS9T",
+            "content": "SATASUPETOUR.CS9C",
+            "tooltipDirection": "UP",
+            "charactersheetTab": "karma"
+        },
+        {
+            "id":"equipment",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-body .equipment-panel .element-zone",
+            "title": "SATASUPETOUR.CS10T",
+            "content": "SATASUPETOUR.CS10C",
+            "tooltipDirection": "UP",
+            "charactersheetTab": "equipment"
+        },
+        {
+            "id":"equipment",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-body .equipment-panel .placement-zone",
+            "title": "SATASUPETOUR.CS11T",
+            "content": "SATASUPETOUR.CS11C",
+            "tooltipDirection": "LEFT",
+            "charactersheetTab": "equipment"
+        },
+        {
+            "id":"scenario",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-body .history-panel .scenario-zone",
+            "title": "SATASUPETOUR.CS12T",
+            "content": "SATASUPETOUR.CS12C",
+            "tooltipDirection": "DOWN",
+            "charactersheetTab": "history"
+        },
+        {
+            "id":"history",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-body .history-panel .background-zone",
+            "title": "SATASUPETOUR.CS13T",
+            "content": "SATASUPETOUR.CS13C",
+            "tooltipDirection": "UP",
+            "charactersheetTab": "history"
+        },
+        {
+            "id":"chatpalette",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-body .chatpalette-panel",
+            "title": "SATASUPETOUR.CS14T",
+            "content": "SATASUPETOUR.CS14C",
+            "tooltipDirection": "DOWN",
+            "charactersheetTab": "chatpalette"
+        },
+        {
+            "id":"buttons",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-body .buttons-panel",
+            "title": "SATASUPETOUR.CS15T",
+            "content": "SATASUPETOUR.CS15C",
+            "tooltipDirection": "UP",
+            "charactersheetTab": "buttons"
+        },
+        {
+            "id":"check",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-body .buttons-panel .check-zone",
+            "title": "SATASUPETOUR.CS16T",
+            "content": "SATASUPETOUR.CS16C",
+            "tooltipDirection": "DOWN",
+            "charactersheetTab": "buttons"
+        },
+        {
+            "id":"table",
+            "selector":"#SatasupeActorSheet-Compendium-satasupe-actor-q6BkLzggMsf6Zvpx .sheet-body .buttons-panel .table-zone",
+            "title": "SATASUPETOUR.CS17T",
+            "content": "SATASUPETOUR.CS17C",
+            "tooltipDirection": "UP",
+            "charactersheetTab": "buttons"
+        }
+    ],
+    "suggestedNextTours": [
+    ]
+}

@@ -3,12 +3,12 @@
         <div class="item-header">
             <div class="header-fields">
                 <div class="header-names flexrow">
-                    <h4 class="otherlangName"><input name="data.otherName" type="text" value="{{data.otherName}}" placeholder="{{localize 'SATASUPE.OtherLangName'}}"/></h4>
+                    <h4 class="otherlangName"><input name="system.otherName" type="text" value="{{system.otherName}}" placeholder="{{localize 'SATASUPE.OtherLangName'}}"/></h4>
                     <h1 class="name"><input name="name" value="{{item.name}}" placeholder="Item Name"/></h1>
                     <div class="header-settings">
                         <div class="settings">
                             <label>{{localize 'SATASUPE.CountSetting'}} :</label>
-                            <input type="checkbox" name="data.count" {{checked data.count}}/>
+                            <input type="checkbox" name="system.count" {{checked system.count}}/>
                         </div>
                     </div>
                 </div>
@@ -18,19 +18,19 @@
                 <div class="header-settings select-group stacked">
                     <div class="weapon-setting settings">
                         <label>{{localize 'SATASUPE.WEAPON'}} :</label>
-                        <input type="checkbox" name="data.typew" {{checked data.typew}}/>
+                        <input type="checkbox" name="system.typew" {{checked system.typew}}/>
                     </div>
                     <div class="vehicle-setting settings">
                         <label>{{localize 'SATASUPE.VEHICLE'}} :</label>
-                        <input type="checkbox" name="data.typev" {{checked data.typev}}/>
+                        <input type="checkbox" name="system.typev" {{checked system.typev}}/>
                     </div>
                     <div class="props-setting settings">
                         <label>{{localize 'SATASUPE.PROPS'}} :</label>
-                        <input type="checkbox" name="data.typep" {{checked data.typep}}/>
+                        <input type="checkbox" name="system.typep" {{checked system.typep}}/>
                     </div>
                     <div class="gadjet-setting settings">
                         <label>{{localize 'SATASUPE.GADJET'}} :</label>
-                        <input type="checkbox" name="data.typeg" {{checked data.typeg}}/>
+                        <input type="checkbox" name="system.typeg" {{checked system.typeg}}/>
                     </div>
                 </div>
             </div>
@@ -39,23 +39,23 @@
 
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        {{#if data.typew}}<a class="item" data-tab="weapon">{{localize 'SATASUPE.WEAPON'}}</a>{{/if}}
-        {{#if data.typev}}<a class="item" data-tab="vehicle">{{localize 'SATASUPE.VEHICLE'}}</a>{{/if}}
-        {{#if data.typep}}<a class="item" data-tab="props">{{localize 'SATASUPE.PROPS'}}</a>{{/if}}
-        {{#if data.typeg}}<a class="item" data-tab="gadjet">{{localize 'SATASUPE.GADJET'}}</a>{{/if}}
+        {{#if system.typew}}<a class="item" data-tab="weapon">{{localize 'SATASUPE.WEAPON'}}</a>{{/if}}
+        {{#if system.typev}}<a class="item" data-tab="vehicle">{{localize 'SATASUPE.VEHICLE'}}</a>{{/if}}
+        {{#if system.typep}}<a class="item" data-tab="props">{{localize 'SATASUPE.PROPS'}}</a>{{/if}}
+        {{#if system.typeg}}<a class="item" data-tab="gadjet">{{localize 'SATASUPE.GADJET'}}</a>{{/if}}
     </nav>
 
     {{!-- Sheet Body --}}
-    <section class="sheet-body item-sheet-body">
+    <section class="sheet-body item-sheet-body" style="height:315px">
 
         {{!-- Weapon Tab --}}
         <div class="tab" data-group="primary" data-tab="weapon">
             <div class="weapon-detail detail">
                 <div class="weapon-type">
                     <label>{{localize 'SATASUPE.TYPE'}} :</label>
-                    <select name="data.weapon.wtype" data-dtype="String">
+                    <select name="system.weapon.wtype" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                    {{#select data.weapon.wtype}}
+                    {{#select system.weapon.wtype}}
                         <option value="meleeweapon">{{localize 'SATASUPE.MELEEWEAPON'}}</option>
                         <option value="meleeweaponmartial">{{localize 'SATASUPE.MELEEWEAPONMARTIAL'}}</option>
                         <option value="meleeweaponmechanical">{{localize 'SATASUPE.MELEEWEAPONMECH'}}</option>
@@ -76,21 +76,21 @@
                 </div>
                 <div class="weapon-price">
                     <label>{{localize 'SATASUPE.PRICE'}} :</label>
-                    <input name="data.weapon.price.value" type="number" value="{{data.weapon.price.value}}"/>
+                    <input name="system.weapon.price.value" type="number" value="{{system.weapon.price.value}}"/>
                 </div>
                 <div class="weapon-hit">
                     <label>{{localize 'SATASUPE.HIT'}} :</label>
-                    <input name="data.weapon.hit" type="text" value="{{data.weapon.hit}}"/>
+                    <input name="system.weapon.hit" type="text" value="{{system.weapon.hit}}"/>
                 </div>
                 <div class="weapon-damageadd">
                     <label>{{localize 'SATASUPE.DAMAGE'}} :</label>
-                    <input class="damage" name="data.weapon.damageadd" type="text" value="{{data.weapon.damageadd}}"/>
+                    <input class="damage" name="system.weapon.damageadd" type="text" value="{{system.weapon.damageadd}}"/>
                 </div>
                 <div class="weapon-range">
                     <label>{{localize 'SATASUPE.RANGE'}} :</label>
-                    <select name="data.weapon.range" data-dtype="String">
+                    <select name="system.weapon.range" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                    {{#select data.weapon.range}}
+                    {{#select system.weapon.range}}
                         <option value="SATASUPE.MELEE">{{localize 'SATASUPE.MELEE'}}</option>
                         <option value="SATASUPE.SHOT">{{localize 'SATASUPE.SHOT'}}</option>
                     {{/select}}
@@ -98,20 +98,20 @@
                 </div>
                 <div class="upkeep">
                     <label>{{localize 'EXP.UPKEEPS'}} :</label>
-                    <input class="checkbox item-upkeep" type="checkbox" name="data.weapon.upkeep" {{checked data.weapon.upkeep}}/>
+                    <input class="checkbox item-upkeep" type="checkbox" name="system.weapon.upkeep" {{checked system.weapon.upkeep}}/>
                 </div>
             </div>
             <div class="weapon-special special">
                 <label>{{localize 'SATASUPE.SPECIAL'}} :</label>
                 <div class="weapon-special-switch switch">
-                    {{#each data.weapon.special as |special key|}}
+                    {{#each system.weapon.special as |special key|}}
                         <div class="special-button">
                             <button class="special-button {{#if special.value}}button-on{{/if}}" data-special="{{key}}" data-itemtype="weapon" type="button">
                                 {{localize special.label}}
                             </button>
                         </div>
                     {{/each}}
-                    {{#each data.weapon.specialtext as |specialtext key|}}
+                    {{#each system.weapon.specialtext as |specialtext key|}}
                         <div class="special-button">
                             <button class="special-button {{#if specialtext.value}}button-on{{/if}}" data-specialtext="{{key}}" data-itemtype="weapon" type="button">
                                 {{localize specialtext.label}}
@@ -128,9 +128,9 @@
             <div class="vehicle-detail detail">
                 <div class="vehicle-type">
                     <label>{{localize 'SATASUPE.TYPE'}} :</label>
-                    <select name="data.vehicle.vtype" data-dtype="String">
+                    <select name="system.vehicle.vtype" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                    {{#select data.vehicle.vtype}}
+                    {{#select system.vehicle.vtype}}
                         <option value="skateboard">{{localize 'SATASUPE.SKATEBOARD'}}</option>
                         <option value="hotrod">{{localize 'SATASUPE.HOTROD'}}</option>
                         <option value="bicycle">{{localize 'SATASUPE.BICYCLE'}}</option>
@@ -173,36 +173,36 @@
                 </div>
                 <div class="vehicle-price">
                     <label>{{localize 'SATASUPE.PRICE'}} :</label>
-                    <input name="data.vehicle.price.value" type="number" value="{{data.vehicle.price.value}}"/>
+                    <input name="system.vehicle.price.value" type="number" value="{{system.vehicle.price.value}}"/>
                 </div>
                 <div class="vehicle-speed">
                     <label>{{localize 'SATASUPE.SPEED'}} :</label>
-                    <input name="data.vehicle.speed" type="number" value="{{data.vehicle.speed}}"/>
+                    <input name="system.vehicle.speed" type="number" value="{{system.vehicle.speed}}"/>
                 </div>
                 <div class="vehicle-drp">
                     <label>{{localize 'SATASUPE.CARBODY'}} :</label>
-                    <input name="data.vehicle.drp" type="number" value="{{data.vehicle.drp}}"/>
+                    <input name="system.vehicle.drp" type="number" value="{{system.vehicle.drp}}"/>
                 </div>
                 <div class="vehicle-capacity eftype" data-eftype="capacity">
                     <label>{{localize 'SATASUPE.CAPACITY'}} :</label>
-                    <input class="effect-data" name="data.vehicle.capacity" type="number" value="{{data.vehicle.capacity}}"/>
+                    <input class="effect-data" name="system.vehicle.capacity" type="number" value="{{system.vehicle.capacity}}"/>
                 </div>
                 <div class="upkeep">
                     <label>{{localize 'EXP.UPKEEPS'}} :</label>
-                    <input class="checkbox item-upkeep" type="checkbox" name="data.vehicle.upkeep" {{checked data.vehicle.upkeep}}/>
+                    <input class="checkbox item-upkeep" type="checkbox" name="system.vehicle.upkeep" {{checked system.vehicle.upkeep}}/>
                 </div>
             </div>
             <div class="vehicle-special special">
                 <label>{{localize 'SATASUPE.SPECIAL'}} :</label>
                 <div class="vehicle-special-switch switch">
-                    {{#each data.vehicle.special as |special key|}}
+                    {{#each system.vehicle.special as |special key|}}
                         <div class="special-button">
                             <button class="special-button {{#if special.value}}button-on{{/if}}" data-special="{{key}}" data-itemtype="vehicle" type="button">
                                 {{localize special.label}}
                             </button>
                         </div>
                     {{/each}}
-                    {{#each data.vehicle.specialtext as |specialtext key|}}
+                    {{#each system.vehicle.specialtext as |specialtext key|}}
                     <div class="special-button">
                         <button class="special-button {{#if specialtext.value}}button-on{{/if}}" data-specialtext="{{key}}" data-itemtype="vehicle" type="button">
                             {{localize specialtext.label}}
@@ -219,9 +219,9 @@
             <div class="props-detail detail">
                 <div class="props-type">
                     <label>{{localize 'SATASUPE.TYPE'}} :</label>
-                    <select name="data.props.ptype" data-dtype="String">
+                    <select name="system.props.ptype" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                    {{#select data.props.ptype}}
+                    {{#select system.props.ptype}}
                         <option value="money">{{localize 'SATASUPE.MONEY'}}</option>
                         <option value="communication">{{localize 'SATASUPE.COMMUNICATION'}}</option>
                         <option value="security">{{localize 'SATASUPE.SECURITY'}}</option>
@@ -235,17 +235,17 @@
                 </div>
                 <div class="props-price">
                     <label>{{localize 'SATASUPE.PRICE'}} :</label>
-                    <input name="data.props.price.value" type="number" value="{{data.props.price.value}}"/>
+                    <input name="system.props.price.value" type="number" value="{{system.props.price.value}}"/>
                 </div>
                 <div class="addcapacity">
                     <label>{{localize 'SATASUPE.ADDCAPACITY'}} :</label>
-                    <input type="number" min="0" name="data.props.addcapacity" value="{{data.props.addcapacity}}"/>
+                    <input type="number" min="0" name="system.props.addcapacity" value="{{system.props.addcapacity}}"/>
                 </div>
                 <div class="props-timing">
                     <label>{{localize 'SATASUPE.Timing'}} :</label>
-                    <select name="data.props.timing" data-dtype="String">
+                    <select name="system.props.timing" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                    {{#select data.props.timing}}
+                    {{#select system.props.timing}}
                         <option value="SATASUPE.Passive">{{localize "SATASUPE.Equipping"}}</option>
                         <option value="SATASUPE.Planning">{{localize 'SATASUPE.Planning'}}</option>
                         <option value="SATASUPE.Support">{{localize 'SATASUPE.Support'}}</option>
@@ -256,12 +256,12 @@
                     {{/select}}
                     </select>
                 </div>
-                {{#if data.props.special.mini.value}}
+                {{#if system.props.special.mini.value}}
                 <div class="props-ministock">
                     <label>{{localize 'SATASUPE.STOCK'}} :</label>
-                    <select name="data.props.minivalue" data-dtype="String">
+                    <select name="system.props.minivalue" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                    {{#select data.props.minivalue}}
+                    {{#select system.props.minivalue}}
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -278,24 +278,24 @@
                 {{/if}}
                 <div class="upkeep">
                     <label>{{localize 'EXP.UPKEEPS'}} :</label>
-                    <input class="checkbox item-upkeep" type="checkbox" name="data.props.upkeep" {{checked data.props.upkeep}}/>
+                    <input class="checkbox item-upkeep" type="checkbox" name="system.props.upkeep" {{checked system.props.upkeep}}/>
                 </div>
             </div>
             <div class="props-effect effect">
                 <label>{{localize 'SATASUPE.KarmaEffect'}} :</label>
-                <textarea class="props-effect-area effect-area" rows="4" cols="30" placeholder="{{localize 'SATASUPE.KarmaEffect'}}">{{data.props.effect}}</textarea>
+                <textarea class="props-effect-area effect-area" rows="4" cols="30" placeholder="{{localize 'SATASUPE.KarmaEffect'}}">{{system.props.effect}}</textarea>
             </div>
             <div class="props-special special">
                 <label>{{localize 'SATASUPE.SPECIAL'}} :</label>
                 <div class="props-special-switch switch">
-                    {{#each data.props.special as |special key|}}
+                    {{#each system.props.special as |special key|}}
                         <div class="special-button">
                             <button class="special-button  {{#if special.value}}button-on{{/if}}"  data-special="{{key}}" data-itemtype="props" type="button">
                                 {{localize special.label}}
                             </button>
                         </div>
                     {{/each}}
-                    {{#each data.props.specialtext as |specialtext key|}}
+                    {{#each system.props.specialtext as |specialtext key|}}
                     <div class="special-button">
                         <button class="special-button {{#if specialtext.value}}button-on{{/if}}" data-specialtext="{{key}}" data-itemtype="props" type="button">
                             {{localize specialtext.label}}
@@ -312,9 +312,9 @@
             <div class="gadjet-detail detail">
                 <div class="gadjet-type">
                     <label>{{localize 'SATASUPE.TYPE'}} :</label>
-                    <select name="data.gadjet.gtype" data-dtype="String">
+                    <select name="system.gadjet.gtype" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                    {{#select data.gadjet.gtype}}
+                    {{#select system.gadjet.gtype}}
                         <option value="wideuse">{{localize 'SATASUPE.WIDEUSEGADJET'}}</option>
                         <option value="hobby">{{localize 'SATASUPE.HOBBYGADJET'}}</option>
                         <option value="alliance">{{localize 'SATASUPE.ALLIANCEGADJET'}}</option>
@@ -323,17 +323,17 @@
                 </div>
                 <div class="gadjet-hobby">
                     <label>{{localize 'SATASUPE.HOBBY'}} :</label>
-                    <input name="data.gadjet.hobby" style="width:100px;" type="text" value="{{data.gadjet.hobby}}"/>
+                    <input name="system.gadjet.hobby" style="width:100px;" type="text" value="{{system.gadjet.hobby}}"/>
                 </div>
                 <div class="addcapacity">
                     <label>{{localize 'SATASUPE.ADDCAPACITY'}} :</label>
-                    <input type="number" min="0" name="data.gadjet.addcapacity" value="{{data.gadjet.addcapacity}}"/>
+                    <input type="number" min="0" name="system.gadjet.addcapacity" value="{{system.gadjet.addcapacity}}"/>
                 </div>
                 <div class="gadjet-timing">
                     <label>{{localize 'SATASUPE.Timing'}} :</label>
-                    <select name="data.gadjet.timing" data-dtype="String">
+                    <select name="system.gadjet.timing" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                    {{#select data.gadjet.timing}}
+                    {{#select system.gadjet.timing}}
                         <option value="SATASUPE.Passive">{{localize "SATASUPE.Equipping"}}</option>
                         <option value="SATASUPE.Planning">{{localize 'SATASUPE.Planning'}}</option>
                         <option value="SATASUPE.Support">{{localize 'SATASUPE.Support'}}</option>
@@ -346,10 +346,10 @@
                 </div>
                 <div class="gadjet-times">
                     <label>{{localize 'SATASUPE.TIMES'}} :</label>
-                    {{#uniqueif data.gadjet.times.ttype "!==" "unlimit"}}<input name="data.gadjet.times.tnumber" type="number" value="{{data.gadjet.times.tnumber}}"/><label class="space">    /  </label>{{/uniqueif}}
-                    <select name="data.gadjet.times.ttype" data-dtype="String">
+                    {{#uniqueif system.gadjet.times.ttype "!==" "unlimit"}}<input name="system.gadjet.times.tnumber" type="number" value="{{system.gadjet.times.tnumber}}"/><label class="space">    /  </label>{{/uniqueif}}
+                    <select name="system.gadjet.times.ttype" data-dtype="String">
                         <option hidden value="">{{localize 'SATASUPE.Select'}}</option>
-                    {{#select data.gadjet.times.ttype}}
+                    {{#select system.gadjet.times.ttype}}
                         <option value="SATASUPE.TIME">{{localize 'SATASUPE.TIME'}}</option>
                         <option value="SATASUPE.SONSUMABLE">{{localize 'SATASUPE.SONSUMABLE'}}</option>
                         <option value="SATASUPE.UNLIMIT">{{localize 'SATASUPE.UNLIMIT'}}</option>
@@ -359,7 +359,7 @@
             </div>
             <div class="gadjet-effect effect">
                 <label>{{localize 'SATASUPE.KarmaEffect'}} :</label>
-                <textarea class="gadjet-effect-area effect-area" rows="4" cols="30" placeholder="{{localize 'SATASUPE.KarmaEffect'}}">{{data.gadjet.effect}}</textarea>
+                <textarea class="gadjet-effect-area effect-area" rows="4" cols="30" placeholder="{{localize 'SATASUPE.KarmaEffect'}}">{{system.gadjet.effect}}</textarea>
             </div>
         </div>
     </section>

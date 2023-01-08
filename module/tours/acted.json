@@ -1,0 +1,18 @@
+{
+    "title":"SATASUPETOUR.ActedTitle",
+    "description":"SATASUPETOUR.ActedDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"acted",
+            "selector":".satasupe-menu.satasupe-acted",
+            "title": "SATASUPETOUR.AC1T",
+            "content": "SATASUPETOUR.AC1C",
+            "tooltipDirection": "RIGHT",
+            "layer": ""
+        }
+    ],
+    "suggestedNextTours": [
+    ]
+}

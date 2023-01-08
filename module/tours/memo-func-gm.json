@@ -1,0 +1,138 @@
+{
+    "title":"SATASUPETOUR.MemoFuncGMTitle",
+    "description":"SATASUPETOUR.MemoFuncGMDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"memoAbout",
+            "selector":"",
+            "title": "SATASUPETOUR.MFG1T",
+            "content": "SATASUPETOUR.MFG1C",
+            "tooltipDirection": "",
+            "checkTab": false
+        },
+        {
+            "id":"memoButton",
+            "selector":"li.satasupe-menu.satasupe-memo",
+            "title": "SATASUPETOUR.MFG2T",
+            "content": "SATASUPETOUR.MFG2C",
+            "tooltipDirection": "RIGHT",
+            "checkTab": false
+        },
+        {
+            "id":"memoForm",
+            "selector":"div.app.satasupe.memo section form#memo-form",
+            "title": "SATASUPETOUR.MFG3T",
+            "content": "SATASUPETOUR.MFG3C",
+            "tooltipDirection": "",
+            "checkTab": false
+        },
+        {
+            "id":"memoAddTab",
+            "selector":"div.app.satasupe.memo header.window-header a.memo-addtab",
+            "title": "SATASUPETOUR.MFG4T",
+            "content": "SATASUPETOUR.MFG4C",
+            "tooltipDirection": "DOWN",
+            "checkTab": false
+        },
+        {
+            "id":"memoTab",
+            "selector":"div.app.satasupe.memo section form#memo-form div.tab-list",
+            "title": "SATASUPETOUR.MFG5T",
+            "content": "SATASUPETOUR.MFG5C",
+            "tooltipDirection": "DOWN",
+            "checkTab": false
+        },        
+        {
+            "id":"memoPlain",
+            "selector":"div.app.satasupe.memo #memo-form .sheet-body .tab.active",
+            "title": "SATASUPETOUR.MFG6T",
+            "content": "SATASUPETOUR.MFG6C",
+            "tooltipDirection": "DOWN",
+            "checkTab": false
+        },
+        {
+            "id":"memoExport",
+            "selector":"div.app.satasupe.memo header.window-header a.export-memo",
+            "title": "SATASUPETOUR.MFG7T",
+            "content": "SATASUPETOUR.MFG7C",
+            "tooltipDirection": "DOWN",
+            "checkTab": true
+        },
+        {
+            "id":"memoInport",
+            "selector":"div.app.satasupe.memo header.window-header a.import-memo",
+            "title": "SATASUPETOUR.MFG8T",
+            "content": "SATASUPETOUR.MFG8C",
+            "tooltipDirection": "DOWN",
+            "checkTab": true
+        },        
+        {
+            "id":"memoCheck",
+            "selector":"div.app.satasupe.memo #memo-form .sheet-body .tab.check.active",
+            "title": "SATASUPETOUR.MFG9T",
+            "content": "SATASUPETOUR.MFG9C",
+            "tooltipDirection": "DOWN",
+            "checkTab": true
+        },        
+        {
+            "id":"memoCheckAddRaw",
+            "selector":"div.app.satasupe.memo #memo-form .sheet-body .tab.check.active button.memo-addlist",
+            "title": "SATASUPETOUR.MFG10T",
+            "content": "SATASUPETOUR.MFG10C",
+            "tooltipDirection": "UP",
+            "checkTab": true
+        },        
+        {
+            "id":"memoCheckAddTable",
+            "selector":"div.app.satasupe.memo #memo-form .sheet-body .tab.check.active button.memo-addtable",
+            "title": "SATASUPETOUR.MFG11T",
+            "content": "SATASUPETOUR.MFG11C",
+            "tooltipDirection": "UP",
+            "checkTab": true
+        },        
+        {
+            "id":"memoTableTitle",
+            "selector":"div.app.satasupe.memo #memo-form .sheet-body .tab.check.active label.check.input.name",
+            "title": "SATASUPETOUR.MFG12T",
+            "content": "SATASUPETOUR.MFG12C",
+            "tooltipDirection": "UP",
+            "checkTab": true
+        },        
+        {
+            "id":"memoTableCheckbox",
+            "selector":"div.app.satasupe.memo #memo-form .sheet-body .tab.check.active input.check.checkbox",
+            "title": "SATASUPETOUR.MFG13T",
+            "content": "SATASUPETOUR.MFG13C",
+            "tooltipDirection": "UP",
+            "checkTab": true
+        },        
+        {
+            "id":"memoTableLimit",
+            "selector":"div.app.satasupe.memo #memo-form .sheet-body .tab.check.active label.check.input.limit",
+            "title": "SATASUPETOUR.MFG14T",
+            "content": "SATASUPETOUR.MFG14C",
+            "tooltipDirection": "UP",
+            "checkTab": true
+        },        
+        {
+            "id":"memoTableTodo",
+            "selector":"div.app.satasupe.memo #memo-form .sheet-body .tab.check.active label.check.input.memo",
+            "title": "SATASUPETOUR.MFG15T",
+            "content": "SATASUPETOUR.MFG15C",
+            "tooltipDirection": "UP",
+            "checkTab": true
+        },        
+        {
+            "id":"memoShare",
+            "selector":"div.app.satasupe.memo header.window-header a.share-memo",
+            "title": "SATASUPETOUR.MFG16T",
+            "content": "SATASUPETOUR.MFG16C",
+            "tooltipDirection": "DOWN",
+            "checkTab": true
+        }
+    ],
+    "suggestedNextTours": [
+    ]
+}
