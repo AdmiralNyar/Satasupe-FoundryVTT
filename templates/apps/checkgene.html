@@ -18,7 +18,7 @@
         </div>
         <div class="check" style="padding: 4px 0;">
             <label>{{localize 'SATASUPE.BOOSTMP'}} :</label>
-            <input name="boost" type="number" min="0" value="0"/>
+            <input name="boost" type="number" min="0" value="0" {{#if option}}readonly{{/if}}/>
         </div>
         <div class="check" style="padding: 4px 0;">
             <label>{{localize 'SPEC.KILL'}} :</label>

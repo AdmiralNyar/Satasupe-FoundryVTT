@@ -1,6 +1,6 @@
 <form class="flexcol {{cssClass}} karma-sheet" autocomplete="off">
     <div class="karma-content">
-        <header class="karma-sheet-header">
+        <section class="karma-sheet-header">
             <div class="karma-header">
                 <div class="header-fields">
                     <div class="header-names flexrow">
@@ -42,15 +42,15 @@
                     </div>
                 </div>
             </div>
-        </header>
+        </section>
 
         <nav class="sheet-tabs tabs karma" data-group="primary">
-            <a class="item active" data-tab="description" >{{localize 'SATASUPE.Main'}}</a>
-            <a class="item" data-tab="setting" >{{localize 'SATASUPE.Setting'}}</a>
+            <a class="item" data-tab="description" draggable="true">{{localize 'SATASUPE.Main'}}</a>
+            <a class="item" data-tab="setting" draggable="true">{{localize 'SATASUPE.Setting'}}</a>
         </nav>
 
         <section class="sheet-body karma-sheet-body">
-            <div class="tab description active" data-group="primary" data-tab="description">
+            <div class="tab description" data-group="primary" data-tab="description">
                 <div class="text">
                     <div class="margin karma-timing select-group stacked">
                         <label>{{localize 'SATASUPE.Timing'}} :</label>

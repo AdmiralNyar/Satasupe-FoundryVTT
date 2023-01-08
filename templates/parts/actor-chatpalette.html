@@ -7,7 +7,7 @@
                 {{/each}}
             {{/select}}
         </select>
-        <a class="button item-control infomation" title="{{localize 'SATASUPE.BCDiceBotInfo'}}" data-type="chatpalette" style="margin-left: 10px;padding-top: 3px;"><i class="fas fa-info-circle" style="font-size: 1.1rem;"></i></a>
+        <a class="button item-control information" title="{{localize 'SATASUPE.BCDiceBotInfo'}}" data-type="chatpalette" style="margin-left: 10px;padding-top: 3px;"><i class="fas fa-info-circle" style="font-size: 1.1rem;"></i></a>
         <div style="margin-left: auto;">
             <input type="button" class="loadclipbord" value="{{localize 'SATASUPE.LOADCLIPBOARD'}}"/>
             {{#if system.fvttbcdiceuse}}<input type="button" class="loadfvttbcdice" value="{{localize 'SATASUPE.LOADFVTTBCDICE'}}"/>{{/if}}
@@ -19,7 +19,7 @@
                 <th class="dice-folmula-text" title="{{localize 'SATASUPE.DicebotCommandExplanation'}}">{{localize 'SATASUPE.DiceFolmula'}}</th>
                 <th class="other-message">{{localize 'SATASUPE.DiceMessage'}}</th>
                 <th class="item-button item-controls"><a class="button item-control add-item" title="{{localize 'SATASUPE.AddChatpalette'}}" data-type="chatpalette"><i class="fas fa-plus"></i></a></th>
-                <th class="setting"><a class="button item-control table-show-hide" title="{{localize 'SATASUPE.VariableSetteings'}}" data-type="chatpalette"><i class="fas fa-cogs"></i></a></th>
+                <th class="setting"><a class="button item-control table-show-hide" title="{{localize 'SATASUPE.VariableToggle'}}" data-type="chatpalette"><i class="fas fa-cogs"></i></a></th>
             </tr>
         </thead>
         <tbody class="chatpalette-tbody">
@@ -53,10 +53,10 @@
     <table id="variable-setting-table" class="variable-setting-table {{#unless system.status.allonoff.variableonoff}}hide-table{{/unless}}">
         <thead>
             <tr class="header">
-                <th class="characteristics title change"><div>{{localize 'SATASUPE.CharacteristicName'}}</div></th>
+                <th class="characteristics title change" title="{{localize 'SATASUPE.TitleExplanation'}}"><div><a>{{localize 'SATASUPE.CharacteristicName'}}</a></div></th>
                 <th class="variable"><div title="{{localize 'SATASUPE.VariableExplanation'}}">{{localize 'SATASUPE.VaribleText'}}</div></th>
                 <th class="all-on-off"><div class="on-off"><div class="checkbox all-on-off-button">{{localize 'SATASUPE.Activate'}}({{localize 'SATASUPE.AllOnOff'}}: <input type="checkbox" style="height:16px" value="{{system.status.allonoff.value}}" data-dtype="Boolean"  name="system.status.allonoff.value"  {{checked system.status.allonoff.value}}/>)</div></div></th>
-                <th class="item-button item-controls"><a class="button item-control add-new-variable" title="Add new variable"><i class="fas fa-plus"></i></a></th>
+                <th class="item-button item-controls"><a class="button item-control add-new-variable" title="{{localize 'SATASUPE.VariableSetteings'}}"><i class="fas fa-plus"></i></a></th>
             </tr>
         </thead>
         <tbody class="variable-setting-tbody chatpalette-tbody">
@@ -64,7 +64,7 @@
                 <tr class="item variable-section" data-index='{{index}}' draggable="false">
                     <td>
                         <div class="characteristics-section variable-key section-key" data-sectionkey="title">
-                            <input class="variable-title variable-section-input" type="text" name="section.title" placeholder="Input value" data-dtype="String" value="{{section.title}}"/>
+                            <input class="variable-title variable-section-input" type="text" name="section.title" placeholder="{{localize 'SATASUPE.VariableTitle'}}" data-dtype="String" value="{{section.title}}"/>
                         </div>
                     </td>
                     <td>

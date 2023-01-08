@@ -1,0 +1,46 @@
+{
+    "title":"SATASUPETOUR.HasCharTitle",
+    "description":"SATASUPETOUR.HasCharDesc",
+    "canBeResumed":true,
+    "display":true,
+    "steps":[
+        {
+            "id":"canvas",
+            "selector":"",
+            "title": "SATASUPETOUR.FPCC1T",
+            "content": "SATASUPETOUR.FPCC1C",
+            "sidebarTab": null
+        },
+        {
+            "id":"canvas",
+            "selector":"",
+            "title": "SATASUPETOUR.FPCC2T",
+            "content": "SATASUPETOUR.FPNC2C"
+        },
+        {
+            "id":"controlsCharDL",
+            "selector":".satasupe-menu.satasupe-char-dl",
+            "title": "SATASUPETOUR.FPCC4T",
+            "content": "SATASUPETOUR.FPCC4C",
+            "tooltipDirection": "RIGHT",
+            "layer": ""
+        },
+        {
+            "id":"actorDirectory",
+            "selector":"#actors .header-actions",
+            "title": "SATASUPETOUR.FPCC5T",
+            "content": "SATASUPETOUR.FPNC4C",
+            "sidebarTab": "actors"
+        },
+        {
+            "id":"players",
+            "selector":"#players",
+            "title": "SATASUPETOUR.FPNCS3T",
+            "content": "SATASUPETOUR.FPNC5C",
+            "tooltipDirection": "UP"
+        }
+    ],
+    "suggestedNextTours": [
+        "satasupe.char-sheet"
+    ]
+}
