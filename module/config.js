@@ -70,6 +70,8 @@ SATASUPE.karmaType = {
     bad : 'KARMA.BAD',
     team : 'KARMA.TEAM',
     booster : 'KARMA.BOOSTER',
+    esoterica : 'KARMA.ESOTERICA',
+    legend : 'KARMA.LEGEND',
     deadman : 'KARMA.HETEROMORPH',
     newbie : 'KARMA.NEWBIE',
     gamer : 'KARMA.GAMER'
